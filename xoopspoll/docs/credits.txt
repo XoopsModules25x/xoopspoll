@@ -1,0 +1,6 @@
+Credits
+===============
+Developed by 'Raul Recio'(Onokazu)
+
+Updated to Blue Move by Niclas Einarsson (Mazarin)
+Updated to XOOPS 2.5.0 Standard GUI by Michael Beck (Mamba), with contributions by Gregory Mage (Mage)
