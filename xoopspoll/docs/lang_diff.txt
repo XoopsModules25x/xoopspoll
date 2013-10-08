@@ -1,0 +1,33 @@
+LANGUAGE DIFFERENCES
+=====================
+
+Below are language differences from a version to next version.
+
+Version 1.32
+----------------
+
+admin.php
+----------
+
+// About.php
+define("_AM_XOOPSPOLL_ABOUT_RELEASEDATE",        "Released: ");
+define("_AM_XOOPSPOLL_ABOUT_UPDATEDATE",               "Updated: ");
+define("_AM_XOOPSPOLL_ABOUT_AUTHOR",                   "Author: ");
+define("_AM_XOOPSPOLL_ABOUT_CREDITS",                  "Credits: ");
+define("_AM_XOOPSPOLL_ABOUT_LICENSE",                  "License: ");
+define("_AM_XOOPSPOLL_ABOUT_MODULE_STATUS",            "Status: ");
+define("_AM_XOOPSPOLL_ABOUT_WEBSITE",                  "Website: ");
+define("_AM_XOOPSPOLL_ABOUT_AUTHOR_NAME",              "Author name: ");
+define("_AM_XOOPSPOLL_ABOUT_CHANGELOG",                "Change Log");
+define("_AM_XOOPSPOLL_ABOUT_MODULE_INFO",              "Module Infos");
+define("_AM_XOOPSPOLL_ABOUT_AUTHOR_INFO",              "Author Infos");
+define("_AM_XOOPSPOLL_ABOUT_DESCRIPTION",          "Description: ");
+define("_AM_XOOPSPOLL_ADMIN_ABOUT",          "About");
+
+// text in admin footer
+define("_AM_XOOPSPOLL_ADMIN_FOOTER",                 "<div class='right smallsmall italic pad5'><b>" . $xoopsModule->getVar("name") . "</b> is maintained by the <a class='tooltip' rel='external' href='http://xoops.org/' title='Visit XOOPS Community'>XOOPS Community</a></div>");
+
+//xoopspoll.php
+
+define("_AM_ACTIONS","Actions");
+define("_AM_POLLVOTERS","Voters participating in this Poll");
