@@ -12,24 +12,24 @@
 <tr><td rowspan="1" colspan="3">Delete</td></tr>
 </thead><tbody>
 <tr>
-	<td>open</td>
-	<td>/xtest251/modules/xoopspoll/admin/index.php</td>
-	<td></td>
+  <td>open</td>
+  <td>/modules/xoopspoll/admin/index.php</td>
+  <td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>//li[@id='List Polls']/a/span</td>
-	<td></td>
+  <td>clickAndWait</td>
+  <td>//li[@id='List Polls']/a/span</td>
+  <td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>//img[@alt='Delete']</td>
-	<td></td>
+  <td>clickAndWait</td>
+  <td>//img[@alt='Delete']</td>
+  <td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>confirm_submit</td>
-	<td></td>
+  <td>clickAndWait</td>
+  <td>confirm_submit</td>
+  <td></td>
 </tr>
 </tbody></table>
 </body>
