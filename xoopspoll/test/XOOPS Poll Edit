@@ -12,34 +12,34 @@
 <tr><td rowspan="1" colspan="3">Edit Poll</td></tr>
 </thead><tbody>
 <tr>
-	<td>open</td>
-	<td>/xtest251/modules/xoopspoll/admin/index.php</td>
-	<td></td>
+  <td>open</td>
+  <td>/modules/xoopspoll/admin/index.php</td>
+  <td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>//li[@id='List Polls']/a/span</td>
-	<td></td>
+  <td>clickAndWait</td>
+  <td>//li[@id='List Polls']/a/span</td>
+  <td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>//img[@alt='Edit poll']</td>
-	<td></td>
+  <td>clickAndWait</td>
+  <td>//img[@alt='Edit poll']</td>
+  <td></td>
 </tr>
 <tr>
-	<td>type</td>
-	<td>description</td>
-	<td>Poll Description Edited now</td>
+  <td>type</td>
+  <td>description</td>
+  <td>Poll Description Edited now</td>
 </tr>
 <tr>
-	<td>type</td>
-	<td>question</td>
-	<td>XoopsPoll2</td>
+  <td>type</td>
+  <td>question</td>
+  <td>XoopsPoll2</td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>poll_submit</td>
-	<td></td>
+  <td>clickAndWait</td>
+  <td>poll_submit</td>
+  <td></td>
 </tr>
 </tbody></table>
 </body>
