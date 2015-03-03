@@ -96,7 +96,7 @@ class XoopspollRenderer
      *
      * assigns form values to template for display
      * @access public
-     * @var object $tpl
+     * @var    object $tpl
      * @return null
      */
     public function assignForm(&$tpl)
@@ -165,7 +165,7 @@ class XoopspollRenderer
      *
      * assigns form results to template
      * @access public
-     * @var object tpl
+     * @var    object tpl
      * @return null
      */
     public function assignResults(&$tpl)

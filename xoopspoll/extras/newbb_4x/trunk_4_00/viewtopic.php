@@ -421,17 +421,17 @@ if (($xoopspoll instanceof XoopsModule) && $xoopspoll->isactive()) {
 
             $adminpoll_actions = array();
             $adminpoll_actions['editpoll'] = array(
-                "link"	=> XOOPS_URL.'/modules/'.$xoopsModule->getVar("dirname", "n").'/polls.php?op=edit&amp;poll_id='.$topic_obj->getVar('poll_id').'&amp;topic_id='.$topic_id,
-                "image"	=> $poll_edit,
-                "name"	=> _MD_EDITPOLL);
+                "link"    => XOOPS_URL.'/modules/'.$xoopsModule->getVar("dirname", "n").'/polls.php?op=edit&amp;poll_id='.$topic_obj->getVar('poll_id').'&amp;topic_id='.$topic_id,
+                "image"    => $poll_edit,
+                "name"    => _MD_EDITPOLL);
             $adminpoll_actions['deletepoll'] = array(
-                "link"	=> XOOPS_URL.'/modules/'.$xoopsModule->getVar("dirname", "n").'/polls.php?op=delete&amp;poll_id='.$topic_obj->getVar('poll_id').'&amp;topic_id='.$topic_id,
-                "image"	=> $poll_delete,
-                "name"	=> _MD_DELETEPOLL);
+                "link"    => XOOPS_URL.'/modules/'.$xoopsModule->getVar("dirname", "n").'/polls.php?op=delete&amp;poll_id='.$topic_obj->getVar('poll_id').'&amp;topic_id='.$topic_id,
+                "image"    => $poll_delete,
+                "name"    => _MD_DELETEPOLL);
             $adminpoll_actions['restartpoll'] = array(
-                "link"	=> XOOPS_URL.'/modules/'.$xoopsModule->getVar("dirname", "n").'/polls.php?op=restart&amp;poll_id='.$topic_obj->getVar('poll_id').'&amp;topic_id='.$topic_id.'&amp;forum='.$forum_id,
-                "image"	=> $poll_restart,
-                "name"	=> _MD_RESTARTPOLL);
+                "link"    => XOOPS_URL.'/modules/'.$xoopsModule->getVar("dirname", "n").'/polls.php?op=restart&amp;poll_id='.$topic_obj->getVar('poll_id').'&amp;topic_id='.$topic_id.'&amp;forum='.$forum_id,
+                "image"    => $poll_restart,
+                "name"    => _MD_RESTARTPOLL);
 
             $xoopsTpl->assign_by_ref('adminpoll_actions', $adminpoll_actions);
       }

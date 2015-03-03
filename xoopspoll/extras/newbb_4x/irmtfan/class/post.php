@@ -81,6 +81,7 @@ class Post extends ArtObject
         $attachment = $this->getVar('attachment');
         if (empty($attachment)) $this->attachment_array = null;
         else $this->attachment_array = @unserialize(base64_decode($attachment));
+
         return $this->attachment_array;
     }
 
@@ -115,7 +116,7 @@ class Post extends ArtObject
     }
 
     /**
-     * @param null $attach_array
+     * @param  null $attach_array
      * @return bool
      */
     function deleteAttachment($attach_array = null)
@@ -144,10 +145,10 @@ class Post extends ArtObject
     }
 
     /**
-     * @param string $name_saved
-     * @param string $name_display
-     * @param string $mimetype
-     * @param int $num_download
+     * @param  string $name_saved
+     * @param  string $name_display
+     * @param  string $mimetype
+     * @param  int    $num_download
      * @return bool
      */
     function setAttachment($name_saved = '', $name_display = '', $mimetype = '', $num_download = 0)
@@ -174,7 +175,7 @@ class Post extends ArtObject
 
     /**
      * TODO: refactor
-     * @param bool $asSource
+     * @param  bool   $asSource
      * @return string
      */
     function displayAttachment($asSource = false)
@@ -222,8 +223,8 @@ class Post extends ArtObject
     // ////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * @param string $poster_name
-     * @param string $post_editmsg
+     * @param  string $poster_name
+     * @param  string $post_editmsg
      * @return bool
      */
     function setPostEdit($poster_name = '',$post_editmsg='')
@@ -348,7 +349,7 @@ class Post extends ArtObject
     }
 
     /**
-     * @param string $action_tag
+     * @param  string $action_tag
      * @return bool
      */
     function checkTimelimit($action_tag = 'edit_timelimit')
@@ -362,7 +363,7 @@ class Post extends ArtObject
     }
 
     /**
-     * @param int $uid
+     * @param  int  $uid
      * @return bool
      */
     function checkIdentity($uid = -1)
@@ -611,14 +612,14 @@ class Post extends ArtObject
         }
 
         $post = array(
-                  'post_id'	        => $post_id,
+                  'post_id'            => $post_id,
                   'post_parent_id'  => $this->getVar('pid'),
                   'post_date'       => newbb_formatTimestamp($this->getVar('post_time')),
                   'post_image'      => $post_image,
-                  'post_title'      => $post_title, 		// irmtfan $post_title to add highlight keywords
+                  'post_title'      => $post_title,        // irmtfan $post_title to add highlight keywords
                   'post_text'       => $post_text,
                   'post_attachment' => $post_attachment,
-                  'post_edit' 		=> $this->displayPostEdit(),
+                  'post_edit'        => $this->displayPostEdit(),
                   'post_no'         => $post_no,
                   'post_signature'  => ($this->getVar('attachsig')) ? @$poster["signature"] : "",
                   'poster_ip'       => ($isadmin && $GLOBALS['xoopsModuleConfig']['show_ip']) ? long2ip($this->getVar('poster_ip')) : "",
@@ -661,7 +662,7 @@ class NewbbPostHandler extends ArtObjectHandler
     }
 
     /**
-     * @param mixed|null $id
+     * @param  mixed|null  $id
      * @return null|object
      */
     function &get($id)
@@ -678,9 +679,9 @@ class NewbbPostHandler extends ArtObjectHandler
     }
 
     /**
-     * @param int $topic_id
-     * @param int $limit
-     * @param int $approved
+     * @param  int   $topic_id
+     * @param  int   $limit
+     * @param  int   $approved
      * @return array
      */
     function &getByLimit($topic_id, $limit, $approved = 1)
@@ -719,7 +720,7 @@ class NewbbPostHandler extends ArtObjectHandler
 
     /**
      * @param $post
-     * @param bool $force
+     * @param  bool $force
      * @return bool
      */
     function approve(&$post, $force = false)
@@ -785,8 +786,8 @@ class NewbbPostHandler extends ArtObjectHandler
     }
 
     /**
-     * @param object $post
-     * @param bool $force
+     * @param  object $post
+     * @param  bool   $force
      * @return bool
      */
     function insert(&$post, $force = true)
@@ -895,9 +896,9 @@ class NewbbPostHandler extends ArtObjectHandler
     }
 
     /**
-     * @param object $post
-     * @param bool $isDeleteOne
-     * @param bool $force
+     * @param  object $post
+     * @param  bool   $isDeleteOne
+     * @param  bool   $force
      * @return bool
      */
     function delete(&$post, $isDeleteOne = true, $force = false)
@@ -950,7 +951,7 @@ class NewbbPostHandler extends ArtObjectHandler
 
     /**
      * @param $post
-     * @param bool $force
+     * @param  bool $force
      * @return bool
      */
     function _delete(&$post, $force = false)
@@ -1076,8 +1077,8 @@ class NewbbPostHandler extends ArtObjectHandler
 
 // START irmtfan enhance getPostCount when there is join (read_mode = 2)
     /**
-     * @param null $criteria
-     * @param null $join
+     * @param  null     $criteria
+     * @param  null     $join
      * @return int|null
      */
     function getPostCount($criteria = null, $join = null)
@@ -1112,10 +1113,10 @@ class NewbbPostHandler extends ArtObjectHandler
      *@TODO: combining viewtopic.php
      */
     /**
-     * @param null $criteria
-     * @param int $limit
-     * @param int $start
-     * @param null $join
+     * @param  null  $criteria
+     * @param  int   $limit
+     * @param  int   $start
+     * @param  null  $join
      * @return array
      */
     function &getPostsByLimit($criteria = null, $limit = 1, $start = 0, $join = null)
