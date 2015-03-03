@@ -103,7 +103,7 @@ class Post extends XoopsObject
     }
 
     /**
-     * @param null $attach_array
+     * @param  null $attach_array
      * @return bool
      */
     function deleteAttachment($attach_array = null)
@@ -136,10 +136,10 @@ class Post extends XoopsObject
     }
 
     /**
-     * @param string $name_saved
-     * @param string $name_display
-     * @param string $mimetype
-     * @param int $num_download
+     * @param  string $name_saved
+     * @param  string $name_display
+     * @param  string $mimetype
+     * @param  int    $num_download
      * @return bool
      */
     function setAttachment($name_saved = '', $name_display = '', $mimetype = '', $num_download = 0)
@@ -166,7 +166,7 @@ class Post extends XoopsObject
 
     /**
      * TODO: refactor
-     * @param bool $asSource
+     * @param  bool   $asSource
      * @return string
      */
     function displayAttachment($asSource = false)
@@ -209,7 +209,7 @@ class Post extends XoopsObject
     // ////////////////////////////////////////////////////////////////////////////////////
 
     /**
-     * @param string $poster_name
+     * @param  string $poster_name
      * @return bool
      */
     function setPostEdit($poster_name = '')
@@ -322,7 +322,7 @@ class Post extends XoopsObject
     }
 
     /**
-     * @param string $action_tag
+     * @param  string $action_tag
      * @return bool
      */
     function checkTimelimit($action_tag = 'edit_timelimit')
@@ -330,11 +330,12 @@ class Post extends XoopsObject
         require_once XOOPS_ROOT_PATH . "/modules/newbb/include/functions.config.php";
         $newbb_config = newbb_loadConfig();
         if ( empty($newbb_config["edit_timelimit"]) ) return true;
+
         return ($this->getVar('post_time') > time() - $newbb_config[$action_tag] * 60);
     }
 
     /**
-     * @param int $uid
+     * @param  int  $uid
      * @return bool
      */
     function checkIdentity($uid = -1)
@@ -527,7 +528,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
     }
 
     /**
-     * @param mixed|null $id
+     * @param  mixed|null  $id
      * @return null|object
      */
     function &get($id)
@@ -544,9 +545,9 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
     }
 
     /**
-     * @param int $topic_id
-     * @param int $limit
-     * @param int $approved
+     * @param  int   $topic_id
+     * @param  int   $limit
+     * @param  int   $approved
      * @return array
      */
     function &getByLimit($topic_id, $limit, $approved = 1)
@@ -585,7 +586,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
 
     /**
      * @param $post
-     * @param bool $force
+     * @param  bool $force
      * @return bool
      */
     function approve(&$post, $force = false)
@@ -651,8 +652,8 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
     }
 
     /**
-     * @param object $post
-     * @param bool $force
+     * @param  object $post
+     * @param  bool   $force
      * @return bool
      */
     function insert(&$post, $force = true)
@@ -760,9 +761,9 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
     }
 
     /**
-     * @param object $post
-     * @param bool $isDeleteOne
-     * @param bool $force
+     * @param  object $post
+     * @param  bool   $isDeleteOne
+     * @param  bool   $force
      * @return bool
      */
     function delete(&$post, $isDeleteOne = true, $force = false)
@@ -797,7 +798,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
 
     /**
      * @param $post
-     * @param bool $force
+     * @param  bool $force
      * @return bool
      */
     function _delete(&$post, $force = false)
@@ -903,7 +904,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
     }
 
     /**
-     * @param null $criteria
+     * @param  null $criteria
      * @return int
      */
     function getPostCount($criteria = null)
@@ -915,10 +916,10 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
      * TODO: combining viewtopic.php
      */
     /**
-     * @param null $criteria
-     * @param int $limit
-     * @param int $start
-     * @param null $join
+     * @param  null  $criteria
+     * @param  int   $limit
+     * @param  int   $start
+     * @param  null  $join
      * @return array
      */
     function &getPostsByLimit($criteria = null, $limit = 1, $start = 0, $join = null)

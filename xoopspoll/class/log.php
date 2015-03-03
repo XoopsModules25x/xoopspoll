@@ -162,7 +162,7 @@ class XoopspollLogHandler extends XoopsPersistableObjectHandler
     /**
      *
      * Delete all log entries by Option ID
-     * @param  int $option_id
+     * @param  int  $option_id
      * @return bool $success
      */
     public function deleteByOptionId($option_id)
@@ -177,7 +177,7 @@ class XoopspollLogHandler extends XoopsPersistableObjectHandler
      *
      * Delete all log entries by Poll ID
      * @uses CriteriaCompo
-     * @param  int $pid
+     * @param  int  $pid
      * @return bool $success
      */
     public function deleteByPollId($pid)
@@ -192,8 +192,8 @@ class XoopspollLogHandler extends XoopsPersistableObjectHandler
      *
      * Gets all log entries by Poll ID
      * @uses CriteriaCompo
-     * @param  int $pid
-     * @param  string $sortby sort all results by this field
+     * @param  int    $pid
+     * @param  string $sortby  sort all results by this field
      * @param  string $orderby sort order (ASC, DESC)
      * @return bool   $success
      */
@@ -259,9 +259,9 @@ class XoopspollLogHandler extends XoopsPersistableObjectHandler
     /**
      * hasVoted indicates if user (logged in or not) has voted in a poll
      * @uses $_COOKIE
-     * @param  int $pid of the poll the check
-     * @param  string $ip the ip address for this voter
-     * @param  int $uid the XOOPS user id of this voter (0 for anon)
+     * @param  int    $pid of the poll the check
+     * @param  string $ip  the ip address for this voter
+     * @param  int    $uid the XOOPS user id of this voter (0 for anon)
      * @return bool
      */
     public function hasVoted($pid, $ip, $uid = 0)

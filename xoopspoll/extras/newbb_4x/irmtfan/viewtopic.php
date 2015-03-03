@@ -54,15 +54,15 @@ foreach ($query_vars as $var) {
 $page_query = htmlspecialchars(implode("&", array_values($query_array)));
 unset($query_array);
 
-$forum_id 	= !empty($_GET['forum']) ? intval($_GET['forum']) : 0;
-$read 		= (!empty($_GET['read']) && in_array($_GET['read'], array("new"))) ? $_GET['read'] : "";
-$topic_id 	= isset($_GET['topic_id']) ? intval($_GET['topic_id']) : 0;
-$post_id 	= !empty($_GET['post_id']) ? intval($_GET['post_id']) : 0;
-$move 		= isset($_GET['move'])? strtolower($_GET['move']) : '';
-$start 		= !empty($_GET['start']) ? intval($_GET['start']) : 0;
-$status 	= (!empty($_GET['status']) && in_array($_GET['status'], array("active", "pending", "deleted"))) ? $_GET['status'] : "";
-$mode 		= !empty($_GET['mode']) ? intval($_GET['mode']) : (!empty($status) ? 2 : 0);
-$order 		= (!empty($_GET['order']) && in_array($_GET['order'], array("ASC","DESC"))) ? $_GET['order'] : "";
+$forum_id    = !empty($_GET['forum']) ? intval($_GET['forum']) : 0;
+$read        = (!empty($_GET['read']) && in_array($_GET['read'], array("new"))) ? $_GET['read'] : "";
+$topic_id    = isset($_GET['topic_id']) ? intval($_GET['topic_id']) : 0;
+$post_id    = !empty($_GET['post_id']) ? intval($_GET['post_id']) : 0;
+$move        = isset($_GET['move'])? strtolower($_GET['move']) : '';
+$start        = !empty($_GET['start']) ? intval($_GET['start']) : 0;
+$status    = (!empty($_GET['status']) && in_array($_GET['status'], array("active", "pending", "deleted"))) ? $_GET['status'] : "";
+$mode        = !empty($_GET['mode']) ? intval($_GET['mode']) : (!empty($status) ? 2 : 0);
+$order        = (!empty($_GET['order']) && in_array($_GET['order'], array("ASC","DESC"))) ? $_GET['order'] : "";
 
 if ("" == $order) {
     if (($xoopsUser instanceof XoopsUser) && $xoopsUser->isActive()) {
@@ -191,11 +191,11 @@ if ($infobox['show'] > 0) {
                         "collapse" => $icon_handler->getImageSource("more")
     );
     if (1 == $infobox['show']) {
-        $infobox['style'] = 'none'; 		//irmtfan move semicolon
+        $infobox['style'] = 'none';        //irmtfan move semicolon
         $infobox['alt']   = _MD_NEWBB_SEEUSERDATA;
         $infobox['src']   = "more";
     } else {
-        $infobox['style'] = 'block';  		//irmtfan move semicolon
+        $infobox['style'] = 'block';        //irmtfan move semicolon
         $infobox['alt']   = _MD_NEWBB_HIDEUSERDATA;
         $infobox['src']   = "less";
     }
@@ -304,7 +304,7 @@ if ($GLOBALS['xoopsModuleConfig']['show_advertising']) {
                     'thread_action'   => '',
                     'thread_buttons'  => '',
                     'mod_buttons'     => '',
-                    'poster' 			=> array('uid' => -1, 'link' => _MD_ADVERTISING_USER, 'avatar' => 'avatars/blank.gif', 'regdate' => 0, 'last_login' => 0, 'rank' => array('title' => '')), // irmtfan add last_login
+                    'poster'            => array('uid' => -1, 'link' => _MD_ADVERTISING_USER, 'avatar' => 'avatars/blank.gif', 'regdate' => 0, 'last_login' => 0, 'rank' => array('title' => '')), // irmtfan add last_login
                     'post_permalink'  => ''
     );
 }
@@ -377,65 +377,65 @@ $ad_undigest   = "";
 // START irmtfan add restore to viewtopic
 if ($topic_obj->getVar('approved') > 0 ) { // if the topic is active
     $admin_actions['merge'] = array(
-                "link"	=> XOOPS_URL.'/modules/'.$xoopsModule->getVar("dirname", "n").'/topicmanager.php?mode=merge&amp;topic_id='.$topic_id,
-                "name"	=> _MD_MERGETOPIC,
-                "image"	=> $ad_merge
+                "link"    => XOOPS_URL.'/modules/'.$xoopsModule->getVar("dirname", "n").'/topicmanager.php?mode=merge&amp;topic_id='.$topic_id,
+                "name"    => _MD_MERGETOPIC,
+                "image"    => $ad_merge
     );
     $admin_actions['move'] = array(
-                "link"	=> XOOPS_URL.'/modules/'.$xoopsModule->getVar("dirname", "n").'/topicmanager.php?mode=move&amp;topic_id='.$topic_id,
-                "name"	=> _MD_MOVETOPIC,
-                "image"	=> $ad_move
+                "link"    => XOOPS_URL.'/modules/'.$xoopsModule->getVar("dirname", "n").'/topicmanager.php?mode=move&amp;topic_id='.$topic_id,
+                "name"    => _MD_MOVETOPIC,
+                "image"    => $ad_move
     );
     $admin_actions['delete'] = array(
-                "link"	=> XOOPS_URL.'/modules/'.$xoopsModule->getVar("dirname", "n").'/topicmanager.php?mode=delete&amp;topic_id='.$topic_id,
-                "name"	=> _MD_DELETETOPIC,
-                "image"	=> $ad_delete
+                "link"    => XOOPS_URL.'/modules/'.$xoopsModule->getVar("dirname", "n").'/topicmanager.php?mode=delete&amp;topic_id='.$topic_id,
+                "name"    => _MD_DELETETOPIC,
+                "image"    => $ad_delete
     );
     if (!$topic_obj->getVar('topic_status')) {
         $admin_actions['lock'] = array(
-                    "link"	=> XOOPS_URL.'/modules/'.$xoopsModule->getVar("dirname", "n").'/topicmanager.php?mode=lock&amp;topic_id='.$topic_id,
-                    "image"	=> $ad_lock,
-                    "name"	=> _MD_LOCKTOPIC
+                    "link"    => XOOPS_URL.'/modules/'.$xoopsModule->getVar("dirname", "n").'/topicmanager.php?mode=lock&amp;topic_id='.$topic_id,
+                    "image"    => $ad_lock,
+                    "name"    => _MD_LOCKTOPIC
         );
     } else {
         $admin_actions['unlock'] = array(
-                    "link"	=> XOOPS_URL.'/modules/'.$xoopsModule->getVar("dirname", "n").'/topicmanager.php?mode=unlock&amp;topic_id='.$topic_id,
-                    "image"	=> $ad_unlock,
-                    "name"	=> _MD_UNLOCKTOPIC
+                    "link"    => XOOPS_URL.'/modules/'.$xoopsModule->getVar("dirname", "n").'/topicmanager.php?mode=unlock&amp;topic_id='.$topic_id,
+                    "image"    => $ad_unlock,
+                    "name"    => _MD_UNLOCKTOPIC
         );
     }
     if (!$topic_obj->getVar('topic_sticky')) {
         $admin_actions['sticky'] = array(
-                    "link"	=> XOOPS_URL.'/modules/'.$xoopsModule->getVar("dirname", "n").'/topicmanager.php?mode=sticky&amp;topic_id='.$topic_id,
-                    "image"	=> $ad_sticky,
-                    "name"	=> _MD_STICKYTOPIC
+                    "link"    => XOOPS_URL.'/modules/'.$xoopsModule->getVar("dirname", "n").'/topicmanager.php?mode=sticky&amp;topic_id='.$topic_id,
+                    "image"    => $ad_sticky,
+                    "name"    => _MD_STICKYTOPIC
         );
     } else {
         $admin_actions['unsticky'] = array(
-                    "link"	=> XOOPS_URL.'/modules/'.$xoopsModule->getVar("dirname", "n").'/topicmanager.php?mode=unsticky&amp;topic_id='.$topic_id,
-                    "image"	=> $ad_unsticky,
-                    "name"	=> _MD_UNSTICKYTOPIC
+                    "link"    => XOOPS_URL.'/modules/'.$xoopsModule->getVar("dirname", "n").'/topicmanager.php?mode=unsticky&amp;topic_id='.$topic_id,
+                    "image"    => $ad_unsticky,
+                    "name"    => _MD_UNSTICKYTOPIC
         );
     }
     if (!$topic_obj->getVar('topic_digest')) {
         $admin_actions['digest'] = array(
-                    "link"	=> XOOPS_URL.'/modules/'.$xoopsModule->getVar("dirname", "n").'/topicmanager.php?mode=digest&amp;topic_id='.$topic_id,
-                    "image"	=> $ad_digest,
-                    "name"	=> _MD_DIGESTTOPIC
+                    "link"    => XOOPS_URL.'/modules/'.$xoopsModule->getVar("dirname", "n").'/topicmanager.php?mode=digest&amp;topic_id='.$topic_id,
+                    "image"    => $ad_digest,
+                    "name"    => _MD_DIGESTTOPIC
         );
     } else {
         $admin_actions['undigest'] = array(
-                    "link"	=> XOOPS_URL.'/modules/'.$xoopsModule->getVar("dirname", "n").'/topicmanager.php?mode=undigest&amp;topic_id='.$topic_id,
-                    "image"	=> $ad_undigest,
-                    "name"	=> _MD_UNDIGESTTOPIC
+                    "link"    => XOOPS_URL.'/modules/'.$xoopsModule->getVar("dirname", "n").'/topicmanager.php?mode=undigest&amp;topic_id='.$topic_id,
+                    "image"    => $ad_undigest,
+                    "name"    => _MD_UNDIGESTTOPIC
         );
     }
 
 } else { // if the topic is pending/deleted then restore/approve
     $admin_actions['restore'] = array(
-                "link"	=> XOOPS_URL.'/modules/'.$xoopsModule->getVar("dirname", "n").'/topicmanager.php?mode=restore&amp;topic_id='.$topic_id,
-                "name"	=> _MD_RESTORETOPIC,
-                "image"	=> $ad_restore);
+                "link"    => XOOPS_URL.'/modules/'.$xoopsModule->getVar("dirname", "n").'/topicmanager.php?mode=restore&amp;topic_id='.$topic_id,
+                "name"    => _MD_RESTORETOPIC,
+                "image"    => $ad_restore);
 }
 // END irmtfan add restore to viewtopic
 
@@ -596,17 +596,17 @@ if ($pollmodules) { /** {@internal pollmodules set in header.php} */
 
             $adminpoll_actions = array();
             $adminpoll_actions['editpoll'] = array(
-                "link"	=> XOOPS_URL.'/modules/'.$xoopsModule->getVar("dirname", "n").'/polls.php?op=edit&amp;poll_id='.$topic_obj->getVar('poll_id').'&amp;topic_id='.$topic_id,
-                "image"	=> $poll_edit,
-                "name"	=> _MD_EDITPOLL);
+                "link"    => XOOPS_URL.'/modules/'.$xoopsModule->getVar("dirname", "n").'/polls.php?op=edit&amp;poll_id='.$topic_obj->getVar('poll_id').'&amp;topic_id='.$topic_id,
+                "image"    => $poll_edit,
+                "name"    => _MD_EDITPOLL);
             $adminpoll_actions['deletepoll'] = array(
-                "link"	=> XOOPS_URL.'/modules/'.$xoopsModule->getVar("dirname", "n").'/polls.php?op=delete&amp;poll_id='.$topic_obj->getVar('poll_id').'&amp;topic_id='.$topic_id,
-                "image"	=> $poll_delete,
-                "name"	=> _MD_DELETEPOLL);
+                "link"    => XOOPS_URL.'/modules/'.$xoopsModule->getVar("dirname", "n").'/polls.php?op=delete&amp;poll_id='.$topic_obj->getVar('poll_id').'&amp;topic_id='.$topic_id,
+                "image"    => $poll_delete,
+                "name"    => _MD_DELETEPOLL);
             $adminpoll_actions['restartpoll'] = array(
-                "link"	=> XOOPS_URL.'/modules/'.$xoopsModule->getVar("dirname", "n").'/polls.php?op=restart&amp;poll_id='.$topic_obj->getVar('poll_id').'&amp;topic_id='.$topic_id.'&amp;forum='.$forum_id,
-                "image"	=> $poll_restart,
-                "name"	=> _MD_RESTARTPOLL);
+                "link"    => XOOPS_URL.'/modules/'.$xoopsModule->getVar("dirname", "n").'/polls.php?op=restart&amp;poll_id='.$topic_obj->getVar('poll_id').'&amp;topic_id='.$topic_id.'&amp;forum='.$forum_id,
+                "image"    => $poll_restart,
+                "name"    => _MD_RESTARTPOLL);
 
             $xoopsTpl->assign_by_ref('adminpoll_actions', $adminpoll_actions);
       }
@@ -781,11 +781,11 @@ if ( !empty($GLOBALS['xoopsModuleConfig']['quickreply_enabled'])
     $quickreply['show']   = 1; // = !empty($GLOBALS['xoopsModuleConfig']['quickreply_enabled']
     $quickreply['expand'] = (count($toggles) > 0) ? ( (in_array('qr', $toggles)) ? false : true ) : true;
     if ($quickreply['expand']) {
-        $quickreply['style'] = 'block';  		//irmtfan move semicolon
+        $quickreply['style'] = 'block';        //irmtfan move semicolon
         $quickreply_icon_display  = $qr_expand;
         $quickreply_alt = _MD_NEWBB_HIDE.' '._MD_QUICKREPLY;
     } else {
-        $quickreply['style'] = 'none';  		//irmtfan move semicolon
+        $quickreply['style'] = 'none';        //irmtfan move semicolon
         $quickreply_icon_display  = $qr_collapse;
         $quickreply_alt = _MD_NEWBB_SEE.' '._MD_QUICKREPLY;
     }

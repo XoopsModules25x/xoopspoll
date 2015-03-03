@@ -133,10 +133,10 @@ class XoopspollPoll extends XoopsObject
      * @uses CriteriaCompo()
      * @uses XoopspollPollHandler::getAll()
      * @uses XoopspollLogHandler
-     * @param  int $optionId
-     * @param  string $ip ip address of voter
+     * @param  int    $optionId
+     * @param  string $ip       ip address of voter
      * @param $time
-     * @return bool true vote entered, false voting failed* @internal param int $uid
+     * @return bool   true vote entered, false voting failed* @internal param int $uid
      */
     public function vote($optionId, $ip, $time)
     {
@@ -210,9 +210,9 @@ class XoopspollPoll extends XoopsObject
     /**
      *
      * display the poll form
-     * @param string $rtnPage where to send the form result
+     * @param string $rtnPage   where to send the form result
      * @param string $rtnMethod return method  get|post
-     * @param array $addHidden
+     * @param array  $addHidden
      */
     public function renderForm($rtnPage, $rtnMethod='post', $addHidden=array())
     {
