@@ -225,10 +225,10 @@ class XoopspollOptionHandler extends XoopsPersistableObjectHandler
      *
      * Gets all options for poll ID
      *
-     * @param  int $pid
-     * @param string $sortby
-     * @param string $orderby
-     * @return array an array of Option objects
+     * @param  int    $pid
+     * @param  string $sortby
+     * @param  string $orderby
+     * @return array  an array of Option objects
      * @uses CriteriaCompo
      * @uses XoopsPersistableObjectHandler::deleteAll
      */

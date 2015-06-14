@@ -47,7 +47,7 @@ function b_marquee_xoopspoll($limit, $dateformat, $itemssize)
             $title = xoops_substr($title, 0, $itemssize+3);
         }
         $xuStartTimestamp = xoops_getUserTimestamp($pollValues['start_time']);
-        $block[]=array(	'date' => formatTimestamp($xuStartTimestamp, $dateformat),
+        $block[]=array(    'date' => formatTimestamp($xuStartTimestamp, $dateformat),
                     'category' => '',
                       'author' => $pollValues['user_id'],
                        'title' => $title,
