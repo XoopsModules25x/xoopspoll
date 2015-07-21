@@ -1,7 +1,9 @@
 <?php
 // $Id: main.php 10055 2012-08-11 12:46:10Z beckmi $
-if (defined('MAIN_DEFINED')) return;
-define('MAIN_DEFINED',true);
+if (defined('MAIN_DEFINED')) {
+    return;
+}
+define('MAIN_DEFINED', true);
 
 define('_MD_ERROR', 'Error');
 //define('_MD_NOPOSTS', 'No Posts');

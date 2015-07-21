@@ -25,13 +25,13 @@
 /**
  * Poll Results page for the XoopsPoll Module
  *
- * @copyright::  {@link http://sourceforge.net/projects/xoops/ The XOOPS Project}
- * @license::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package::    xoopspoll
+ * @copyright ::  {@link http://xoops.org/ The XOOPS Project}
+ * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
+ * @package   ::    xoopspoll
  * @subpackage:: admin
- * @since::		 1.0
- * @author::     {@link http://www.myweb.ne.jp/ Kazumi Ono (AKA onokazu)}
- * @version::    $Id: pollresults.php 11553 2013-05-17 04:15:44Z zyspec $
+ * @since     ::         1.0
+ * @author    ::     {@link http://www.myweb.ne.jp/ Kazumi Ono (AKA onokazu)}
+ * @version   ::    $Id: pollresults.php 11553 2013-05-17 04:15:44Z zyspec $
  **/
 
 /**
@@ -52,10 +52,10 @@ $pollId = XoopsRequest::getInt('poll_id', 0);
  */
 if ($GLOBALS['xoopsModuleConfig']['hide_forum_polls']) {
     $module_handler =& xoops_gethandler('module');
-    $newbbModule =& $module_handler->getByDirname('newbb');
+    $newbbModule    =& $module_handler->getByDirname('newbb');
     if ($newbbModule instanceof XoopsModule && $newbbModule->isactive()) {
         $topic_handler = xoops_getmodulehandler('topic', 'newbb');
-        $tCount = $topic_handler->getCount(new Criteria('poll_id', $pollId, '='));
+        $tCount        = $topic_handler->getCount(new Criteria('poll_id', $pollId, '='));
         if (!empty($tCount)) {
             $pollId = 0; // treat it as if no poll requested
         }
@@ -69,7 +69,7 @@ $GLOBALS['xoopsOption']['template_main'] = 'xoopspoll_results.tpl';
 include $GLOBALS['xoops']->path("header.php");
 
 $pollHandler =& xoops_getmodulehandler('poll', 'xoopspoll');
-$pollObj = $pollHandler->get($pollId);
+$pollObj     = $pollHandler->get($pollId);
 if ((!empty($pollObj)) && ($pollObj instanceof XoopspollPoll)) {
     /* make sure the poll has started */
     if ($pollObj->getVar('start_time') > time()) {
@@ -80,17 +80,16 @@ if ((!empty($pollObj)) && ($pollObj instanceof XoopspollPoll)) {
     $renderer = new XoopspollRenderer($pollObj);
     $renderer->assignResults($GLOBALS['xoopsTpl']);
 
-    $visReturn = $pollObj->isResultVisible();
-    $isVisible = (true === $visReturn) ? true : false;
+    $visReturn  = $pollObj->isResultVisible();
+    $isVisible  = (true === $visReturn) ? true : false;
     $visibleMsg = ($isVisible) ? "" : $visReturn;
 
     $GLOBALS['xoopsTpl']->assign(array(
-                                   'visible_msg'    => $visibleMsg,
-                                   'disp_votes'     => $GLOBALS['xoopsModuleConfig']['disp_vote_nums'],
-                                   'back_link_icon' => $GLOBALS['xoopsModule']->getInfo('icons16') . "/back.png",
-                                   'back_link'      => $GLOBALS['xoops']->url("modules/xoopspoll/index.php"),
-                                   'back_text'      => _BACK)
-    );
+                                     'visible_msg'    => $visibleMsg,
+                                     'disp_votes'     => $GLOBALS['xoopsModuleConfig']['disp_vote_nums'],
+                                     'back_link_icon' => $GLOBALS['xoopsModule']->getInfo('icons16') . "/back.png",
+                                     'back_link'      => $GLOBALS['xoops']->url("modules/xoopspoll/index.php"),
+                                     'back_text'      => _BACK));
 } else {
     redirect_header('index.php', XoopspollConstants::REDIRECT_DELAY_MEDIUM, _MD_XOOPSPOLL_ERROR_INVALID_POLLID);
 }

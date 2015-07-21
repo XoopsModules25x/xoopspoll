@@ -11,7 +11,7 @@
 /**
  * Xoopspoll install functions.php
  *
- * @copyright:: {@link http://sourceforge.net/projects/xoops/ The XOOPS Project}
+ * @copyright:: {@link http://xoops.org/ The XOOPS Project}
  * @license  ::   {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
  * @package  ::   xoopspoll
  * @since    ::     1.40

@@ -1,7 +1,9 @@
 <?php
 // $Id: main.php 17 2007-11-18 14:22:36Z LupusC $
-if(defined('MAIN_DEFINED')) return;
-define('MAIN_DEFINED',true);
+if (defined('MAIN_DEFINED')) {
+    return;
+}
+define('MAIN_DEFINED', true);
 
 define('_MD_ERROR', 'Error');
 define('_MD_SELFORUM', 'Select a Forum');
@@ -474,17 +476,17 @@ define("_MD_POSTTIME", "posted on");
 // 4.2
 define("_MD_ADVERTISING_BLOCK", "<br />You could place your Ad here!<br />Please contact us to learn more about it.");
 define("_MD_ADVERTISING_USER", "Advertisement");
-define('_MD_SHARE_FACEBOOK',"Facebook");
-define('_MD_SHARE_TWITTER',"Twitter");
-define('_MD_SHARE_GOOGLEPLUS',"Google Plus");
-define('_MD_SHARE_LINKEDIN',"Linkedin");
-define('_MD_SHARE_STUMBLEUPON',"Stumbleupon");
-define('_MD_SHARE_FRIENDFEED',"FriendFeed");
-define('_MD_SHARE_REDDIT',"Reddit");
-define('_MD_SHARE_DELICIOUS',"Del.icio.us");
-define('_MD_SHARE_DIGG',"Digg");
-define('_MD_SHARE_TECHNORATI',"Technorati");
-define('_MD_SHARE_MRWONG',"Mr. Wong");
+define('_MD_SHARE_FACEBOOK', "Facebook");
+define('_MD_SHARE_TWITTER', "Twitter");
+define('_MD_SHARE_GOOGLEPLUS', "Google Plus");
+define('_MD_SHARE_LINKEDIN', "Linkedin");
+define('_MD_SHARE_STUMBLEUPON', "Stumbleupon");
+define('_MD_SHARE_FRIENDFEED', "FriendFeed");
+define('_MD_SHARE_REDDIT', "Reddit");
+define('_MD_SHARE_DELICIOUS', "Del.icio.us");
+define('_MD_SHARE_DIGG', "Digg");
+define('_MD_SHARE_TECHNORATI', "Technorati");
+define('_MD_SHARE_MRWONG', "Mr. Wong");
 
 //4.3
 define("_MD_GO", "Go");

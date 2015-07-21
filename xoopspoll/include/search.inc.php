@@ -12,24 +12,24 @@
 /**
  * Description: Search function for the XoopsPoll Module
  *
- * @copyright::  {@link http://sourceforge.net/projects/xoops/ The XOOPS Project}
- * @license::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package::    xoopspoll
+ * @copyright ::  {@link http://xoops.org/ The XOOPS Project}
+ * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
+ * @package   ::    xoopspoll
  * @subpackage:: search
- * @since::      1.40
- * @author::     John Neill, zyspec <owners@zyspec.com>
- * @version::    $Id: $
+ * @since     ::      1.40
+ * @author    ::     John Neill, zyspec <owners@zyspec.com>
+ * @version   ::    $Id: $
  */
 // defined('XOOPS_ROOT_PATH') || die('XOOPS Root Path not defined');
 
 /**
  * xoopspoll_search()
  *
- * @param $queryArray
+ * @param       $queryArray
  * @param mixed $andor
  * @param mixed $limit
  * @param mixed $offset
- * @param $uid
+ * @param       $uid
  * @return array
  * @internal param mixed $queryarray
  * @internal param mixed $userid
@@ -37,11 +37,11 @@
 function xoopspoll_search($queryArray, $andor, $limit, $offset, $uid)
 {
     $ret = array();
-    if (0 == intval($uid)) {
+    if (0 == (int)($uid)) {
         xoops_load('pollUtility', 'xoopspoll');
         $pollHandler =& xoops_getmodulehandler('poll', 'xoopspoll');
-        $pollFields = array('poll_id', 'user_id', 'question', 'start_time');
-        $criteria = new CriteriaCompo();
+        $pollFields  = array('poll_id', 'user_id', 'question', 'start_time');
+        $criteria    = new CriteriaCompo();
         $criteria->add(new Criteria('start_time', time(), '<=')); // only show polls that have started
         /**
          * @todo:
@@ -51,9 +51,9 @@ function xoopspoll_search($queryArray, $andor, $limit, $offset, $uid)
         /**
          * check to see if we want to include polls created with forum (newbb)
          */
-        $configHandler =& xoops_gethandler('config');
-        $moduleHandler =& xoops_gethandler('module');
-        $thisModule =& $moduleHandler->getByDirname('xoopspoll');
+        $configHandler      =& xoops_gethandler('config');
+        $moduleHandler      =& xoops_gethandler('module');
+        $thisModule         =& $moduleHandler->getByDirname('xoopspoll');
         $this_module_config =& $configHandler->getConfigsByCat(0, $thisModule->getVar('mid'));
 
         $pollsWithTopics = array();
@@ -61,8 +61,8 @@ function xoopspoll_search($queryArray, $andor, $limit, $offset, $uid)
             $newbbModule =& $moduleHandler->getByDirname('newbb');
             if ($newbbModule instanceof XoopsModule && $newbbModule->isactive()) {
                 $topic_handler = xoops_getmodulehandler('topic', 'newbb');
-                $tFields = array('topic_id', 'poll_id');
-                $tArray = $topic_handler->getAll(new Criteria('topic_haspoll', 0, '>'), $tFields, false);
+                $tFields       = array('topic_id', 'poll_id');
+                $tArray        = $topic_handler->getAll(new Criteria('topic_haspoll', 0, '>'), $tFields, false);
                 foreach ($tArray as $t) {
                     $pollsWithTopics[$t['poll_id']] = $t['topic_id'];
                 }
@@ -72,10 +72,10 @@ function xoopspoll_search($queryArray, $andor, $limit, $offset, $uid)
 
         $criteria->setSort('start_time');
         $criteria->setOrder('DESC');
-        $criteria->setLimit(intval($limit));
-        $criteria->setStart(intval($offset));
+        $criteria->setLimit((int)($limit));
+        $criteria->setStart((int)($offset));
 
-        if ( (is_array($queryArray)) && !empty($queryArray)) {
+        if ((is_array($queryArray)) && !empty($queryArray)) {
             $criteria->add(new Criteria('question', "%{$queryArray[0]}%", 'LIKE'));
             $criteria->add(new Criteria('description', "%{$queryArray[0]}%", 'LIKE'), 'OR');
             array_shift($queryArray); //get rid of first element
@@ -93,11 +93,11 @@ function xoopspoll_search($queryArray, $andor, $limit, $offset, $uid)
                 $link = "pollresults.php?poll_id={$poll['poll_id']}";
             }
 
-            $ret[] = array ('image' => 'assets/images/icons/logo_large.png',
-                            'link'  => $link,
-                            'title' => $poll['question'],
-                            'time'  => $poll['start_time'],
-            );
+            $ret[] = array(
+                'image' => 'assets/images/icons/logo_large.png',
+                'link'  => $link,
+                'title' => $poll['question'],
+                'time'  => $poll['start_time'],);
         }
     }
 

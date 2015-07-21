@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * @copyright       The XOOPS Project http://sourceforge.net/projects/xoops/
+ * @copyright       The XOOPS Project http://xoops.org/
  * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
  * @package         newbb
  * @since           4.0
@@ -19,15 +19,15 @@
 
 require_once __DIR__ . "/header.php";
 
-$poll_id  = (isset($_GET['poll_id']))   ? intval($_GET['poll_id'])   : 0;
-$poll_id  = (isset($_POST['poll_id']))  ? intval($_POST['poll_id'])  : $poll_id;
-$topic_id = (isset($_GET['topic_id']))  ? intval($_GET['topic_id'])  : 0;
-$topic_id = (isset($_POST['topic_id'])) ? intval($_POST['topic_id']) : $topic_id;
-$forum    = (isset($_GET['forum']))     ? intval($_GET['forum'])     : 0;
-$forum    = (isset($_POST['forum']))    ? intval($_POST['forum'])    : $forum;
+$poll_id  = (isset($_GET['poll_id'])) ? (int)($_GET['poll_id']) : 0;
+$poll_id  = (isset($_POST['poll_id'])) ? (int)($_POST['poll_id']) : $poll_id;
+$topic_id = (isset($_GET['topic_id'])) ? (int)($_GET['topic_id']) : 0;
+$topic_id = (isset($_POST['topic_id'])) ? (int)($_POST['topic_id']) : $topic_id;
+$forum    = (isset($_GET['forum'])) ? (int)($_GET['forum']) : 0;
+$forum    = (isset($_POST['forum'])) ? (int)($_POST['forum']) : $forum;
 
 $topic_handler =& xoops_getmodulehandler('topic', 'newbb');
-$topic_obj =& $topic_handler->get($topic_id);
+$topic_obj     =& $topic_handler->get($topic_id);
 if (!$topic_handler->getPermission($topic_obj->getVar("forum_id"), $topic_obj->getVar('topic_status'), "vote")) {
     // irmtfan - issue with javascript:history.go(-1)
     redirect_header($_SERVER['HTTP_REFERER'], 2, _NOPERM);
@@ -39,25 +39,25 @@ if (empty($_POST['option_id'])) {
 }
 
 $module_handler =& xoops_gethandler('module');
-$xoopspoll =& $module_handler->getByDirname('xoopspoll');
+$xoopspoll      =& $module_handler->getByDirname('xoopspoll');
 
 if (($xoopspoll instanceof XoopsModule) && $xoopspoll->isactive()) {
     /* xoopspoll module installed & active */
     xoops_load('constants', 'xoopspoll');
     xoops_loadLanguage('main', 'xoopspoll');
     $xpPollHandler =& xoops_getmodulehandler('poll', 'xoopspoll');
-    $xpLogHandler =& xoops_getmodulehandler('log', 'xoopspoll');
+    $xpLogHandler  =& xoops_getmodulehandler('log', 'xoopspoll');
 } else {
     //no active poll module found
     redirect_header($_SERVER['HTTP_REFERER'], 2, _MD_POLLMODULE_ERROR);
 }
 
 $mail_author = false;
-$pollObj = $xpPollHandler->get($poll_id);
+$pollObj     = $xpPollHandler->get($poll_id);
 if ($pollObj instanceof XoopspollPoll) {
     if ($pollObj->getVar('multiple')) {
         $optionId = $_POST['option_id'];
-        $optionId = (array) $optionId; // type cast to make sure it's an array
+        $optionId = (array)$optionId; // type cast to make sure it's an array
         $optionId = array_map('intval', $optionId); // make sure values are integers
     } else {
         $optionId = $_POST['option_id'];
@@ -65,9 +65,9 @@ if ($pollObj instanceof XoopspollPoll) {
     if (!$pollObj->hasExpired()) {
         $msg = _MD_XOOPSPOLL_MUSTLOGIN;
         //@todo:: add $url to all redirects
-//        $url = $GLOBALS['xoops']->buildUrl("index.php", array('poll_id' => $poll_id));
+        //        $url = $GLOBALS['xoops']->buildUrl("index.php", array('poll_id' => $poll_id));
         if ($pollObj->isAllowedToVote()) {
-            $thisVoter = (!empty($GLOBALS['xoopsUser']) && ($GLOBALS['xoopsUser'] instanceof XoopsUser)) ? $GLOBALS['xoopsUser']->getVar('uid') : null ;
+            $thisVoter     = (!empty($GLOBALS['xoopsUser']) && ($GLOBALS['xoopsUser'] instanceof XoopsUser)) ? $GLOBALS['xoopsUser']->getVar('uid') : null;
             $votedThisPoll = $xpLogHandler->hasVoted($poll_id, xoops_getenv('REMOTE_ADDR'), $thisVoter);
             if (!$votedThisPoll) {
                 /* user that hasn't voted before in this poll or module preferences allow it */
@@ -100,12 +100,10 @@ if ($pollObj instanceof XoopspollPoll) {
 } else {
     $msg = _MD_XOOPSPOLL_ERROR_INVALID_POLLID;
 }
-    if (null != $url) {
-        redirect_header($url, XoopspollConstants::REDIRECT_DELAY_MEDIUM, $msg);
-    } else {
-    redirect_header($GLOBALS['xoops']->buildUrl("viewtopic.php", array('topic_id' => $topic_id)),
-                                           XoopspollConstants::REDIRECT_DELAY_MEDIUM,
-                                           $msg);
+if (null != $url) {
+    redirect_header($url, XoopspollConstants::REDIRECT_DELAY_MEDIUM, $msg);
+} else {
+    redirect_header($GLOBALS['xoops']->buildUrl("viewtopic.php", array('topic_id' => $topic_id)), XoopspollConstants::REDIRECT_DELAY_MEDIUM, $msg);
 }
 // irmtfan - simple url
 redirect_header("viewtopic.php?topic_id={$topic_id}", 1, $msg);
