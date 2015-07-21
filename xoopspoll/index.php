@@ -152,7 +152,7 @@ if (empty($pollId)) {
     }
     unset($pollObjs);
     include $GLOBALS['xoops']->path('footer.php');
-} elseif (XoopsRequest::getInt('option_id','','POST')) {
+} elseif (!empty($_POST['option_id'])) {
     /* user just tried to vote */
     $option_id = XoopsRequest::getInt('option_id', 0, 'POST');
     $mail_author = false;
