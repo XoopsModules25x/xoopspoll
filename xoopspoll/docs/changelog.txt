@@ -1,6 +1,14 @@
-1.40 RC1            2015-02-18
+1.40 RC1            NOT RELEASED
 =================================
 - reversed adding "mod_" to tables names (mamba)
+- replaced XoopspollRequest with XoopsRequest (mamba)
+- fix bug #6: wrong check on $_POST variable (slider84/mamba)
+- fix bug #4: missing routine for table update (slider84/mamba)
+- updated intval() with (int) (mamba)
+- updated strval() with (string) (mamba)
+- code cleaning (mamba)
+- updated URL link to XOOPS (mamba)
+
 
 1.40 BETA 2          2014-04-23
 =================================

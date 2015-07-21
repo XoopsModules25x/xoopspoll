@@ -11,7 +11,7 @@
 /**
  *  userlog module
  *
- * @copyright       The XOOPS Project http://sourceforge.net/projects/xoops/
+ * @copyright       The XOOPS Project http://xoops.org/
  * @license         GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
  * @package         newbb class plugin
  * @since           4.31
@@ -19,14 +19,13 @@
  * @author          The XOOPS Project <www.xoops.org> <www.xoops.ir>
  * @version         $Id: userlog.php 4.31 2013/05/08 16:25:04Z irmtfan $
  */
-
 // defined('XOOPS_ROOT_PATH') || die('XOOPS Root Path not defined');
 
 class XoopspollUserlogPlugin extends Userlog_Module_Plugin_Abstract implements UserlogPluginInterface
 {
     /**
      * @param string $subscribe_from Name of the script
-   *
+     *
      * 'name' => 'thread';
      * 'title' => _MI_NEWBB_THREAD_NOTIFY;
      * 'description' => _MI_NEWBB_THREAD_NOTIFYDSC;
@@ -41,12 +40,12 @@ class XoopspollUserlogPlugin extends Userlog_Module_Plugin_Abstract implements U
         xoops_load('XoopsRequest');
         $poll_id = XoopsRequest::getInt('poll_id', 0);
         switch ($subscribe_from) {
-        case "index.php":
-      case "pollresults.php":
-        return array("item_name"=>"poll_id", "item_id"=>$poll_id);
-        break;
-    }
+            case "index.php":
+            case "pollresults.php":
+                return array("item_name" => "poll_id", "item_id" => $poll_id);
+                break;
+        }
 
-    return false;
+        return false;
     }
 }

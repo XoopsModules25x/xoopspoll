@@ -12,12 +12,12 @@
 /**
  * Xoopspoll uninstall functions.php
  *
- * @copyright:: {@link http://sourceforge.net/projects/xoops/ The XOOPS Project}
- * @license::   {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package::   xoopspoll
- * @since::     1.40
- * @author::    zyspec <owners@zyspec.com>
- * @version::   $Id: $
+ * @copyright:: {@link http://xoops.org/ The XOOPS Project}
+ * @license  ::   {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
+ * @package  ::   xoopspoll
+ * @since    ::     1.40
+ * @author   ::    zyspec <owners@zyspec.com>
+ * @version  ::   $Id: $
  * @param $module
  * @return bool
  */
@@ -26,14 +26,14 @@ function xoops_module_pre_uninstall_xoopspoll(&$module)
 {
     /* make sure that any polls associated with xoopspoll are cleared from newbb */
     $module_handler = &xoops_gethandler('module');
-    $newbbModule = &$module_handler->getByDirname('newbb');
-    $success = true;
+    $newbbModule    = &$module_handler->getByDirname('newbb');
+    $success        = true;
     if (is_object($newbbModule) && $newbbModule->getVar('isactive')) {
         $topic_handler = xoops_getmodulehandler('topic', 'newbb');
-        $criteria = new Criteria('topic_haspoll', 0, '>');
-        $s1 = $topic_handler->updateAll('poll_id', 0, $criteria);  // clear any polls associated with forum topic
-        $s2 = $topic_handler->updateAll('topic_haspoll', 0, $criteria); // clear haspoll indicator in forum
-        $success = $s1 && $s2;
+        $criteria      = new Criteria('topic_haspoll', 0, '>');
+        $s1            = $topic_handler->updateAll('poll_id', 0, $criteria);  // clear any polls associated with forum topic
+        $s2            = $topic_handler->updateAll('topic_haspoll', 0, $criteria); // clear haspoll indicator in forum
+        $success       = $s1 && $s2;
     }
 
     return $success;
@@ -45,7 +45,7 @@ function xoops_module_pre_uninstall_xoopspoll(&$module)
  */
 function xoops_module_uninstall_xoopspoll(&$module)
 {
-  /* clear the voted cookie(s) for the admin user's machine when module is uninstalled */
+    /* clear the voted cookie(s) for the admin user's machine when module is uninstalled */
     xoops_load('pollUtility', 'xoopspoll');
     $success = XoopspollPollUtility::setVoteCookie("", null, (time() - 3600));
 

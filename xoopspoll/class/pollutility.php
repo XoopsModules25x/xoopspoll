@@ -12,15 +12,14 @@
 /**
  *  XoopsPoll Utility Class Elements
  *
- * @copyright::  {@link http://sourceforge.net/projects/xoops/ The XOOPS Project}
- * @license::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package::    xoopspoll
+ * @copyright ::  {@link http://xoops.org/ The XOOPS Project}
+ * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
+ * @package   ::    xoopspoll
  * @subpackage:: class
- * @since::      1.40
- * @version::    $Id: $
+ * @since     ::      1.40
+ * @version   ::    $Id: $
  * @access::     public
  */
-
 // defined('XOOPS_ROOT_PATH') || die('XOOPS Root Path not defined');
 
 class XoopspollPollUtility
@@ -34,9 +33,9 @@ class XoopspollPollUtility
     public static function getHostByAddrWithCache(&$ipAddr)
     {
         static $ipArray = array();
-        $retVal = $ipAddr;
+        $retVal  = $ipAddr;
         $options = array('flags' => FILTER_FLAG_NO_PRIV_RANGE, FILTER_FLAG_NO_RES_RANGE);
-        if (filter_var($ipAddr,  FILTER_VALIDATE_IP, $options)) {
+        if (filter_var($ipAddr, FILTER_VALIDATE_IP, $options)) {
             if (array_key_exists($ipAddr, $ipArray)) {
                 $retVal = $ipArray[$ipAddr];
             } else {
@@ -45,7 +44,7 @@ class XoopspollPollUtility
                     $retVal = $ipAddr;
                 } else {
                     $ipArray[$ipAddr] = htmlspecialchars($hostAddr);
-                    $retVal = $ipArray[$ipAddr];
+                    $retVal           = $ipArray[$ipAddr];
                 }
             }
         }
@@ -62,9 +61,9 @@ class XoopspollPollUtility
         static $mConfig;
         if (!isset($mConfig)) {
             $mHandler =& xoops_gethandler('module');
-            $mod =& $mHandler->getByDirname('xoopspoll');
+            $mod      =& $mHandler->getByDirname('xoopspoll');
             $cHandler =& xoops_gethandler('config');
-            $mConfig =& $cHandler->getConfigsByCat(0, $mod->getVar('mid'));
+            $mConfig  =& $cHandler->getConfigsByCat(0, $mod->getVar('mid'));
         }
 
         return $mConfig['com_rule'];
@@ -85,11 +84,10 @@ class XoopspollPollUtility
             xoops_loadLanguage('main', 'xoopspoll');
             xoops_load('constants', 'xoopspoll');
             $visOptions = array(
-                            XoopspollConstants::HIDE_NEVER  => _MD_XOOPSPOLL_HIDE_NEVER,
-                            XoopspollConstants::HIDE_END    => _MD_XOOPSPOLL_HIDE_END,
-                            XoopspollConstants::HIDE_VOTED  => _MD_XOOPSPOLL_HIDE_VOTED,
-                            XoopspollConstants::HIDE_ALWAYS => _MD_XOOPSPOLL_HIDE_ALWAYS
-            );
+                XoopspollConstants::HIDE_NEVER  => _MD_XOOPSPOLL_HIDE_NEVER,
+                XoopspollConstants::HIDE_END    => _MD_XOOPSPOLL_HIDE_END,
+                XoopspollConstants::HIDE_VOTED  => _MD_XOOPSPOLL_HIDE_VOTED,
+                XoopspollConstants::HIDE_ALWAYS => _MD_XOOPSPOLL_HIDE_ALWAYS);
         }
 
         return $visOptions;
@@ -105,7 +103,7 @@ class XoopspollPollUtility
      * @param  string $cookieBaseName
      * @return array  contains cookie for polls, empty array if not found
      */
-    public static function getVoteCookie($cookieBaseName='voted_polls')
+    public static function getVoteCookie($cookieBaseName = 'voted_polls')
     {
         $pollDir = basename(dirname(__DIR__));
         if ("xoopspoll" == $pollDir) {
@@ -116,6 +114,7 @@ class XoopspollPollUtility
 
         return $pollCookie;
     }
+
     /**
      * Sets vote cookie on client system
      * The cookie name is based on the module directory. If module is
@@ -129,7 +128,7 @@ class XoopspollPollUtility
      * @param  string       $cookieBaseName name of cookie (without directory prefix)
      * @return bool         success in setting cookie
      */
-    public static function setVoteCookie($index, $value, $expires=0, $cookieBaseName='voted_polls')
+    public static function setVoteCookie($index, $value, $expires = 0, $cookieBaseName = 'voted_polls')
     {
         $pollDir = basename(dirname(__DIR__));
         $success = false;
@@ -140,16 +139,16 @@ class XoopspollPollUtility
             } else {
                 $cookieName = $pollDir . "_" . $cookieBaseName;
             }
-            $iVal = strval($index);
+            $iVal = (string)($index);
             if (!empty($iVal)) {
-                if ($success = setcookie($cookieName[$index], $value, intval($expires))) {
+                if ($success = setcookie($cookieName[$index], $value, (int)($expires))) {
                     $clientCookie = self::getVoteCookie();
                     if (!array_key_exists($index, $clientCookie) || $clientCookie[$index] != $value) {
                         $success = false;
                     }
                 }
             } else {  //clear the cookie
-                if ($success = setcookie($cookieName, "", intval($expires))) {
+                if ($success = setcookie($cookieName, "", (int)($expires))) {
                     $clientCookie = self::getVoteCookie();
                     if (!empty($clientCookie)) {
                         $success = false;
@@ -179,9 +178,9 @@ class XoopspollPollUtility
     public static function dbTableExists(&$db, $tablename)
     {
         $tablename = addslashes($tablename);
-        $mytable = $db->prefix("{$tablename}");
-        $result = $db->queryF("SHOW TABLES LIKE '{$mytable}'");
-        $found = $db->getRowsNum($result);
+        $mytable   = $db->prefix("{$tablename}");
+        $result    = $db->queryF("SHOW TABLES LIKE '{$mytable}'");
+        $found     = $db->getRowsNum($result);
 
         return empty($found) ? false : true;
     }

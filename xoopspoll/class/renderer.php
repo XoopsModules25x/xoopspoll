@@ -26,13 +26,13 @@
 /**
  * Poll Renderer class for the XoopsPoll Module
  *
- * @copyright::  {@link http://sourceforge.net/projects/xoops/ The XOOPS Project}
- * @license::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package::    xoopspoll
+ * @copyright ::  {@link http://xoops.org/ The XOOPS Project}
+ * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
+ * @package   ::    xoopspoll
  * @subpackage:: admin
- * @since::		 1.0
- * @author::     {@link http://www.myweb.ne.jp/ Kazumi Ono (AKA onokazu)}
- * @version::    $Id: $
+ * @since     ::         1.0
+ * @author    ::     {@link http://www.myweb.ne.jp/ Kazumi Ono (AKA onokazu)}
+ * @version   ::    $Id: $
  */
 
 xoops_loadLanguage('main', 'xoopspoll');
@@ -54,7 +54,7 @@ class XoopspollRenderer
     /**
      * @param null $poll
      */
-    function __construct(&$poll=null)
+    function __construct(&$poll = null)
     {
         // setup handlers
         $this->pHandler = xoops_getmodulehandler('poll', 'xoopspoll');
@@ -63,8 +63,8 @@ class XoopspollRenderer
 
         if ($poll instanceof XoopspollPoll) {
             $this->pollObj = $poll;
-        } elseif (!empty($poll) && (intval($poll) > 0)) {
-            $this->pollObj = $this->pHandler->get(intval($poll));
+        } elseif (!empty($poll) && ((int)($poll) > 0)) {
+            $this->pollObj = $this->pHandler->get((int)($poll));
         } else {
             $this->pollObj = $this->pHandler->create();
         }
@@ -73,7 +73,7 @@ class XoopspollRenderer
     /**
      * @param null $poll
      */
-    public function XoopspollRenderer(&$poll=null)
+    public function XoopspollRenderer(&$poll = null)
     {
         $this->__construct($poll);
     }
@@ -101,7 +101,7 @@ class XoopspollRenderer
      */
     public function assignForm(&$tpl)
     {
-        $myts =& MyTextSanitizer::getInstance();
+        $myts       =& MyTextSanitizer::getInstance();
         $optionObjs = $this->oHandler->getAllByPollId($this->pollObj->getVar('poll_id'));
 
         if (XoopspollConstants::MULTIPLE_SELECT_POLL == $this->pollObj->getVar('multiple')) {
@@ -112,11 +112,9 @@ class XoopspollRenderer
             $optionName = 'option_id';
         }
         foreach ($optionObjs as $optionObj) {
-            $options[] = array('input' => "<input type='{$optionType}' "
-                                          . "name='{$optionName}' "
-                                          . "value='" . $optionObj->getVar('option_id')
-                                          . "' />",
-                               'text'  => $optionObj->getVar('option_text'));
+            $options[] = array(
+                'input' => "<input type='{$optionType}' " . "name='{$optionName}' " . "value='" . $optionObj->getVar('option_id') . "' />",
+                'text'  => $optionObj->getVar('option_text'));
         }
         $uid = (isset($GLOBALS['xoopsUser']) && is_object($GLOBALS['xoopsUser'])) ? $GLOBALS['xoopsUser']->getVar('uid') : 0;
         if ($this->pollObj->isAllowedToVote() && (!$this->lHandler->hasVoted($this->pollObj->getVar('poll_id'), xoops_getenv('REMOTE_ADDR'), $uid))) {
@@ -124,27 +122,26 @@ class XoopspollRenderer
         } else {
             $can_vote = false;
         }
-/*
-        $tpl->assign('poll', array(
-                               'question'     => $myts->htmlSpecialChars($this->pollObj->getVar('question')),
-                               'pollId'       => $this->pollObj->getVar('poll_id'),
-                               'viewresults'  => $GLOBALS['xoops']->url("modules/xoopspoll/pollresults.php") . "?poll_id=" . $this->pollObj->getVar('poll_id'),
-                               'options'      => $options,
-                               'description'  => $myts->displayTarea($myts->undoHtmlSpecialChars($this->pollObj->getVar('description')), 1))
-        );
-*/
+        /*
+                $tpl->assign('poll', array(
+                                       'question'     => $myts->htmlSpecialChars($this->pollObj->getVar('question')),
+                                       'pollId'       => $this->pollObj->getVar('poll_id'),
+                                       'viewresults'  => $GLOBALS['xoops']->url("modules/xoopspoll/pollresults.php") . "?poll_id=" . $this->pollObj->getVar('poll_id'),
+                                       'options'      => $options,
+                                       'description'  => $myts->displayTarea($myts->undoHtmlSpecialChars($this->pollObj->getVar('description')), 1))
+                );
+        */
         $tpl->assign(array(
-                       'poll'         => array(
-                                           'question'     => $myts->htmlSpecialChars($this->pollObj->getVar('question')),
-                                           'pollId'       => $this->pollObj->getVar('poll_id'),
-                                           'viewresults'  => $GLOBALS['xoops']->url("modules/xoopspoll/pollresults.php") . "?poll_id=" . $this->pollObj->getVar('poll_id'),
-                                           'options'      => $options,
-                                           'description'  => $myts->displayTarea($myts->undoHtmlSpecialChars($this->pollObj->getVar('description')), 1)),
-                       'can_vote'     => $can_vote,
-                       'action'       => $GLOBALS['xoops']->url("modules/xoopspoll/index.php"),
-                       'lang_vote'    => _MD_XOOPSPOLL_VOTE,
-                       'lang_results' => _MD_XOOPSPOLL_RESULTS)
-        );
+                         'poll'         => array(
+                             'question'    => $myts->htmlSpecialChars($this->pollObj->getVar('question')),
+                             'pollId'      => $this->pollObj->getVar('poll_id'),
+                             'viewresults' => $GLOBALS['xoops']->url("modules/xoopspoll/pollresults.php") . "?poll_id=" . $this->pollObj->getVar('poll_id'),
+                             'options'     => $options,
+                             'description' => $myts->displayTarea($myts->undoHtmlSpecialChars($this->pollObj->getVar('description')), 1)),
+                         'can_vote'     => $can_vote,
+                         'action'       => $GLOBALS['xoops']->url("modules/xoopspoll/index.php"),
+                         'lang_vote'    => _MD_XOOPSPOLL_VOTE,
+                         'lang_results' => _MD_XOOPSPOLL_RESULTS));
     }
 
     /**
@@ -170,25 +167,25 @@ class XoopspollRenderer
      */
     public function assignResults(&$tpl)
     {
-        $myts =& MyTextSanitizer::getInstance();
-        $xuEndTimestamp = xoops_getUserTimestamp($this->pollObj->getVar('end_time'));
-        $xuEndFormatted = ucfirst(date(_MEDIUMDATESTRING, $xuEndTimestamp));
+        $myts             =& MyTextSanitizer::getInstance();
+        $xuEndTimestamp   = xoops_getUserTimestamp($this->pollObj->getVar('end_time'));
+        $xuEndFormatted   = ucfirst(date(_MEDIUMDATESTRING, $xuEndTimestamp));
         $xuStartTimestamp = xoops_getUserTimestamp($this->pollObj->getVar('start_time'));
         $xuStartFormatted = ucfirst(date(_MEDIUMDATESTRING, $xuStartTimestamp));
 
-//        $lHandler =& xoops_getmodulehandler('log', 'xoopspoll');
+        //        $lHandler =& xoops_getmodulehandler('log', 'xoopspoll');
         $criteria = new CriteriaCompo();
         $criteria->add(new Criteria('poll_id', $this->pollObj->getVar('poll_id'), '='));
         $criteria->setSort('option_id');
         $optObjsArray = $this->oHandler->getAll($criteria);
-        $total = $this->pollObj->getVar('votes');
-        $i = 0;
+        $total        = $this->pollObj->getVar('votes');
+        $i            = 0;
         foreach ($optObjsArray as $optObj) {
             $optionVars = $optObj->getValues();
-            $percent = ($total > 0) ? (100 * $optionVars['option_count'] / $total) : 0;
+            $percent    = ($total > 0) ? (100 * $optionVars['option_count'] / $total) : 0;
             if ($percent > 0) {
-                $width = intval($percent * 2);
-                $options[$i]['image'] = "<img src='" . $GLOBALS['xoops']->url("modules/xoopspoll/assets/images/colorbars/{$optionVars['option_color']}'") . " style='height: 14px; width: {$width}px; vertical-align: middle;' alt='" . intval($percent) . "%' />";
+                $width                = (int)($percent * 2);
+                $options[$i]['image'] = "<img src='" . $GLOBALS['xoops']->url("modules/xoopspoll/assets/images/colorbars/{$optionVars['option_color']}'") . " style='height: 14px; width: {$width}px; vertical-align: middle;' alt='" . (int)($percent) . "%' />";
             } else {
                 $options[$i]['image'] = "";
             }
@@ -217,21 +214,21 @@ class XoopspollRenderer
             $vote = null;
         }
         if ($xp_config['disp_vote_nums']) {
-      $totalVotes  = sprintf(_MD_XOOPSPOLL_TOTALVOTES, $total);
+            $totalVotes  = sprintf(_MD_XOOPSPOLL_TOTALVOTES, $total);
             $totalVoters = sprintf(_MD_XOOPSPOLL_TOTALVOTERS, $this->pollObj->getVar('voters'));
         } else {
             $totalVotes = $totalVoters = "";
         }
 
-        $tpl->assign('poll', array('question' => $myts->htmlSpecialChars($this->pollObj->getVar('question')),
-                                   'end_text' => $xuEndFormatted,
-                                 'start_text' => $xuStartFormatted,
-                                 'totalVotes' => $totalVotes,
-                                'totalVoters' => $totalVoters,
-                                       'vote' => $vote,
-                                    'options' => $options,
-                                'description' => $this->pollObj->getVar('description') //allow html
-                             )
-        );
+        $tpl->assign('poll', array(
+            'question'    => $myts->htmlSpecialChars($this->pollObj->getVar('question')),
+            'end_text'    => $xuEndFormatted,
+            'start_text'  => $xuStartFormatted,
+            'totalVotes'  => $totalVotes,
+            'totalVoters' => $totalVoters,
+            'vote'        => $vote,
+            'options'     => $options,
+            'description' => $this->pollObj->getVar('description') //allow html
+        ));
     }
 }
