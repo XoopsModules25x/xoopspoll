@@ -12,11 +12,11 @@
  * Xoopspoll install functions.php
  *
  * @copyright:: {@link http://sourceforge.net/projects/xoops/ The XOOPS Project}
- * @license::   {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package::   xoopspoll
- * @since::     1.40
- * @author::    zyspec <owners@zyspec.com>
- * @version::   $Id: $
+ * @license  ::   {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
+ * @package  ::   xoopspoll
+ * @since    ::     1.40
+ * @author   ::    zyspec <owners@zyspec.com>
+ * @version  ::   $Id: $
  */
 // defined('XOOPS_ROOT_PATH') || die('XOOPS Root Path not defined');
 xoops_load('pollUtility', 'xoopspoll');
@@ -30,17 +30,17 @@ xoops_load('pollUtility', 'xoopspoll');
 function xoopspollChangeTableName(&$db, $fromTable, $toTable)
 {
     $fromTable = addslashes($fromTable);
-    $toTable = addslashes($toTable);
-/*
-    $fromThisTable = $db->prefix("{$fromTable}");
-    $toThisTable = $db->prefix("{$toTable}");
-*/
+    $toTable   = addslashes($toTable);
+    /*
+        $fromThisTable = $db->prefix("{$fromTable}");
+        $toThisTable = $db->prefix("{$toTable}");
+    */
     $success = false;
     if (XoopspollPollUtility::dbTableExists($db, $fromTable) && !XoopspollPollUtility::dbTableExists($db, $toTable)) {
-        $sql = sprintf("ALTER TABLE " . $db->prefix("{$fromTable}") . " RENAME " . $db->prefix("{$toTable}"));
+        $sql     = sprintf("ALTER TABLE " . $db->prefix("{$fromTable}") . " RENAME " . $db->prefix("{$toTable}"));
         $success = $db->queryF($sql);
         if (!$success) {
-            $modHandler =& xoops_getmodulehandler("module");
+            $modHandler      =& xoops_getmodulehandler("module");
             $xoopspollModule =& $modHandler->getByDirname("xoopspoll");
             $xoopspollModule->setErrors(sprintf(_AM_XOOPSPOLL_UPGRADE_FAILED, $fromTable));
         }
@@ -58,20 +58,20 @@ function xoops_module_update_xoopspoll(&$module, &$prev_version)
 {
     // referer check
     $success = false;
-    $ref = xoops_getenv('HTTP_REFERER');
-    if (('' == $ref) || 0 === mb_strpos($ref , $GLOBALS['xoops']->url('modules/system/admin.php'))) {
+    $ref     = xoops_getenv('HTTP_REFERER');
+    if (('' == $ref) || 0 === mb_strpos($ref, $GLOBALS['xoops']->url('modules/system/admin.php'))) {
         /* module specific part */
         require_once $GLOBALS['xoops']->path("modules/xoopspoll/include/oninstall.inc.php");
 
-        $installedVersion = intval($prev_version);
+        $installedVersion = (int)($prev_version);
         xoops_loadLanguage('admin', 'xoopspoll');
-        $db =& XoopsDatabaseFactory::getDatabaseConnection();
+        $db      =& XoopsDatabaseFactory::getDatabaseConnection();
         $success = true;
         if ($installedVersion < 140) {
             /* add column for poll anonymous which was created in versions prior
              * to 1.40 of xoopspoll but not automatically created
              */
-            $result = $db->queryF("SHOW COLUMNS FROM " . $db->prefix('xoopspoll_desc') . " LIKE 'anonymous'");
+            $result    = $db->queryF("SHOW COLUMNS FROM " . $db->prefix('xoopspoll_desc') . " LIKE 'anonymous'");
             $foundAnon = $db->getRowsNum($result);
             if (empty($foundAnon)) {
                 // column doesn't exist, so try and add it
@@ -101,7 +101,7 @@ function xoops_module_update_xoopspoll(&$module, &$prev_version)
                 }
             }
             if ($success) {
-                $result = $db->queryF("SHOW COLUMNS FROM " . $db->prefix('xoopspoll_desc') . " LIKE 'visibility'");
+                $result   = $db->queryF("SHOW COLUMNS FROM " . $db->prefix('xoopspoll_desc') . " LIKE 'visibility'");
                 $foundCol = $db->getRowsNum($result);
                 if (empty($foundCol)) {
                     // column doesn't exist, so try and add it
@@ -111,14 +111,14 @@ function xoops_module_update_xoopspoll(&$module, &$prev_version)
                     }
                 }
             }
+        }
 
-            if ($success) {
-                /* now update table names to xoops pseudo standard */
-                $s1 = xoopspollChangeTableName($db, "xoopspoll_option", "xoopspoll_option");
-                $s2 = xoopspollChangeTableName($db, "xoopspoll_desc", "xoopspoll_desc");
-                $s3 = xoopspollChangeTableName($db, "xoopspoll_log", "xoopspoll_log");
-                $success = ($s1 && $s2 && $s3) ? true : false;
-            }
+        if ($success) {
+            /* now reverse table names changes from 1.40 Beta  */
+            $s1      = xoopspollChangeTableName($db, "mod_xoopspoll_option", "xoopspoll_option");
+            $s2      = xoopspollChangeTableName($db, "mod_xoopspoll_desc", "xoopspoll_desc");
+            $s3      = xoopspollChangeTableName($db, "mod_xoopspoll_log", "xoopspoll_log");
+            $success = ($s1 && $s2 && $s3) ? true : false;
         }
     }
 
