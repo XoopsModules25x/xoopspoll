@@ -13,13 +13,13 @@
  * Description: XoopsPollOption thunking class for backward compatibility.  This class should not be used
  * except by legacy modules (for example CBB(newbb) or xForum.
  *
- * @copyright::  {@link http://sourceforge.net/projects/xoops/ The XOOPS Project}
- * @license::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package::    xoopspoll
+ * @copyright ::  {@link http://xoops.org/ The XOOPS Project}
+ * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
+ * @package   ::    xoopspoll
  * @subpackage:: class
- * @since::		 1.40
- * @author::     zyspec <owners@zyspec.com>
- * @version::    $Id: $
+ * @since     ::         1.40
+ * @author    ::     zyspec <owners@zyspec.com>
+ * @version   ::    $Id: $
  */
 
 $GLOBALS['xoopsLogger']->addDeprecated('Usage of ./xoopspoll/class/xoopspolloption.php file is deprecated since Xoopspoll 1.40, please use XoopspollOption and XoopspollOptionHandler classes instead.');

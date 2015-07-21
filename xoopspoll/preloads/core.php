@@ -22,18 +22,18 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
+
 /**
  *  XOOPS Poll Module results mailer preload
  *
- * @copyright::  {@link http://xoops.org The XOOPS Project}
- * @license::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package::    xoopspoll
+ * @copyright ::  {@link http://xoops.org The XOOPS Project}
+ * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
+ * @package   ::    xoopspoll
  * @subpackage:: preloads
- * @since::      1.4
- * @author::     zyspec <owners@zyspec.com>
- * @version::    $Id: $
+ * @since     ::      1.4
+ * @author    ::     zyspec <owners@zyspec.com>
+ * @version   ::    $Id: $
  **/
-
 class XoopspollCorePreload extends XoopsPreloadItem
 {
     /**

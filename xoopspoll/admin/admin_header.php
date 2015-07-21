@@ -10,20 +10,20 @@
 /**
  * XOOPS Poll module
  *
- * @copyright::  {@link http://sourceforge.net/projects/xoops/ The XOOPS Project}
- * @license::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package::    xoopspoll
+ * @copyright ::  {@link http://xoops.org/ The XOOPS Project}
+ * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
+ * @package   ::    xoopspoll
  * @subpackage:: admin
- * @since::		 1.32
- * @author::     XOOPS Module Team
- * @version::    $Id $
+ * @since     ::         1.32
+ * @author    ::     XOOPS Module Team
+ * @version   ::    $Id $
  *
- * @uses $GLOBALS['xoops']::path read folder information about XOOPS
- * @uses $GLOBALS['xoopsModule'] reads module specific information
- * @uses xoops_load() method to dynamically load class for use
- * @uses xoops_gethandler() function to load the module handler
- * @uses xoops_loadLanguage() loads the module language defines
- * @uses MyTextSanitizer
+ * @uses      $GLOBALS['xoops']::path read folder information about XOOPS
+ * @uses      $GLOBALS['xoopsModule'] reads module specific information
+ * @uses      xoops_load() method to dynamically load class for use
+ * @uses      xoops_gethandler() function to load the module handler
+ * @uses      xoops_loadLanguage() loads the module language defines
+ * @uses      MyTextSanitizer
  */
 
 /** {@internal the following 2 file includes aren't
@@ -34,7 +34,8 @@ $path = dirname(dirname(dirname(__DIR__)));
 require_once $path . '/include/cp_header.php';
 
 /** Load language files
- * {@internal the following load is not needed, it's done in ./include/cp_header.php} */
+ * {@internal the following load is not needed, it's done in ./include/cp_header.php}
+ */
 //xoops_loadLanguage('admin', 'xoopspoll');
 xoops_loadLanguage('modinfo', 'xoopspoll');
 xoops_loadLanguage('main', 'xoopspoll');

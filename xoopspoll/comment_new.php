@@ -25,14 +25,14 @@
 /**
  * Add New Comments for the XoopsPoll Module
  *
- * @copyright::  {@link http://sourceforge.net/projects/xoops/ The XOOPS Project}
- * @license::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package::    xoopspoll
- * @since::		 1.0
- * @author::     XOOPS Module Dev Team
- * @version::    $Id: $
+ * @copyright::  {@link http://xoops.org/ The XOOPS Project}
+ * @license  ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
+ * @package  ::    xoopspoll
+ * @since    ::         1.0
+ * @author   ::     XOOPS Module Dev Team
+ * @version  ::    $Id: $
  *
- * @uses $GLOBALS['xoops']::path gets XOOPS directory information
+ * @uses     $GLOBALS['xoops']::path gets XOOPS directory information
  */
 include_once dirname(dirname(__DIR__)) . '/mainfile.php';
 include $GLOBALS['xoops']->path('include/comment_new.php');

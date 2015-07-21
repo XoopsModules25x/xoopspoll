@@ -14,15 +14,16 @@
  * Description: XoopsPoll thunking class for backward compatibility.  This class should not be used
  * except by legacy modules (for example CBB(newbb) and xForum.
  *
- * @copyright::  {@link http://sourceforge.net/projects/xoops/ The XOOPS Project}
- * @license::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package::    xoopspoll
+ * @copyright ::  {@link http://xoops.org/ The XOOPS Project}
+ * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
+ * @package   ::    xoopspoll
  * @subpackage:: class
- * @since::		 1.40
- * @author::     zyspec <owners@zyspec.com>
- * @version::    $Id: $
+ * @since     ::         1.40
+ * @author    ::     zyspec <owners@zyspec.com>
+ * @version   ::    $Id: $
  */
 xoops_load('poll', 'xoopspoll');
+
 /**
  * @deprecated
  */
@@ -32,7 +33,7 @@ class Xoopspoll extends XoopspollPoll
      * @deprecated
      * @param null $id
      */
-    function __construct(&$id=null)
+    function __construct(&$id = null)
     {
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . "::" . __CLASS__ . " is deprecated since Xoopspoll 1.40, please use XoopspollPoll and XoopspollPollHandler classes instead.");
         parent::__construct($id);
@@ -42,7 +43,7 @@ class Xoopspoll extends XoopspollPoll
      * @deprecated
      * @param null $id
      */
-    public function XoopsPoll(&$id=null)
+    public function XoopsPoll(&$id = null)
     {
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . "::" . __CLASS__ . " is deprecated since Xoopspoll 1.40, please use XoopspollPoll and XoopspollPollHandler classes instead.");
         $this->__construct($id);

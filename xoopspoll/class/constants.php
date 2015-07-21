@@ -32,21 +32,20 @@
  * the value(s) before module installation. Additionally the module may not
  * work correctly if trying to upgrade if these values have been changed.
  *
- * @copyright::  {@link http://sourceforge.net/projects/xoops/ The XOOPS Project}
- * @license::    {@link http://www.gnu.org/licenses/gpl-2.0.html GNU Public License}
- * @author::     zyspec <owners@zyspec.com>
- * @package::    xoopspoll
- * @since::      1.40
- * @version::    $Id: $
+ * @copyright::  {@link http://xoops.org/ The XOOPS Project}
+ * @license  ::    {@link http://www.gnu.org/licenses/gpl-2.0.html GNU Public License}
+ * @author   ::     zyspec <owners@zyspec.com>
+ * @package  ::    xoopspoll
+ * @since    ::      1.40
+ * @version  ::    $Id: $
  **/
-
 // defined('XOOPS_ROOT_PATH') || die('XOOPS Root Path not defined');
 
 interface XoopspollConstants
 {
-/**#@+
- * Constant definition
- */
+    /**#@+
+     * Constant definition
+     */
     /**
      *  indicates a poll has not been emailed
      */
@@ -106,7 +105,7 @@ interface XoopspollConstants
     /**
      * additional blank poll options to be added in form
      */
-    const NUM_ADDTL_OPTIONS =  5;
+    const NUM_ADDTL_OPTIONS = 5;
     /**
      * poll results visibility option
      * {@internal Do NOT change these after module is installed}
@@ -183,5 +182,5 @@ interface XoopspollConstants
      * confirm ok to take action
      */
     const CONFIRM_OK = 1;
-/**#@-*/
+    /**#@-*/
 }
