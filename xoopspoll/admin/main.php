@@ -2,7 +2,7 @@
 /*
                XOOPS - PHP Content Management System
                    Copyright (c) 2000 XOOPS.org
-                      <http://www.xoops.org/>
+                      <http://xoops.org/>
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation; either version 2 of the License, or
@@ -27,7 +27,7 @@
  * XOOPS Poll Administration
  * Routines to manage administration of CRUD and display of polls
  *
- * @copyright ::  {@link http://xoops.org/ The XOOPS Project}
+ * @copyright::  {@link http://xoops.org/ XOOPS Project}
  * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
  * @package   ::    xoopspoll
  * @subpackage::    admin

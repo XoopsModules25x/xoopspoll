@@ -2,7 +2,7 @@
 /*
                XOOPS - PHP Content Management System
                    Copyright (c) 2000 XOOPS.org
-                      <http://www.xoops.org/>
+                      <http://xoops.org/>
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation; either version 2 of the License, or
@@ -25,13 +25,13 @@
 /**
  * Administration menu for the XoopsPoll Module
  *
- * @copyright ::  {@link http://xoops.org/ The XOOPS Project}
- * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package   ::    xoopspoll
+ * @copyright::  {@link http://xoops.org/ XOOPS Project}
+ * @license   :: {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
+ * @package   :: xoopspoll
  * @subpackage:: admin
- * @since     ::         1.40
- * @author    ::     XOOPS Module Team
- * @version   ::    $Id: $
+ * @since     :: 1.40
+ * @author    :: XOOPS Module Team
+ * @version   :: $Id: $
  */
 
 require_once __DIR__ . '/admin_header.php';

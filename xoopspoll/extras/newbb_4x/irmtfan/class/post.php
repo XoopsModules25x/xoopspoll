@@ -3,7 +3,7 @@
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
 //                    Copyright (c) 2000 XOOPS.org                           //
-//                       <http://www.xoops.org/>                             //
+//                       <http://xoops.org/>                             //
 //  ------------------------------------------------------------------------ //
 //  This program is free software; you can redistribute it and/or modify     //
 //  it under the terms of the GNU General Public License as published by     //
@@ -29,7 +29,7 @@
 //  Project: Article Project                                                 //
 //  ------------------------------------------------------------------------ //
 
-// defined("XOOPS_ROOT_PATH") || exit("XOOPS root path not defined");
+// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 defined("NEWBB_FUNCTIONS_INI") || include XOOPS_ROOT_PATH . '/modules/newbb/include/functions.ini.php';
 newbb_load_object();
@@ -40,9 +40,9 @@ newbb_load_object();
 class Post extends ArtObject
 {
     //class Post extends XoopsObject {
-    var $attachment_array = array();
+    public $attachment_array = array();
 
-    function Post()
+    public function Post()
     {
         $this->ArtObject("bb_posts");
         //$this->XoopsObject();
@@ -75,7 +75,7 @@ class Post extends ArtObject
     /**
      * @return array|mixed|null
      */
-    function getAttachment()
+    public function getAttachment()
     {
         if (count($this->attachment_array)) {
             return $this->attachment_array;
@@ -94,7 +94,7 @@ class Post extends ArtObject
      * @param $attach_key
      * @return bool
      */
-    function incrementDownload($attach_key)
+    public function incrementDownload($attach_key)
     {
         if (!$attach_key) {
             return false;
@@ -107,7 +107,7 @@ class Post extends ArtObject
     /**
      * @return bool
      */
-    function saveAttachment()
+    public function saveAttachment()
     {
         if (is_array($this->attachment_array) && count($this->attachment_array) > 0) {
             $attachment_save = base64_encode(serialize($this->attachment_array));
@@ -128,7 +128,7 @@ class Post extends ArtObject
      * @param  null $attach_array
      * @return bool
      */
-    function deleteAttachment($attach_array = null)
+    public function deleteAttachment($attach_array = null)
     {
         $attach_old = $this->getAttachment();
         if (!is_array($attach_old) || count($attach_old) < 1) {
@@ -168,7 +168,7 @@ class Post extends ArtObject
      * @param  int    $num_download
      * @return bool
      */
-    function setAttachment($name_saved = '', $name_display = '', $mimetype = '', $num_download = 0)
+    public function setAttachment($name_saved = '', $name_display = '', $mimetype = '', $num_download = 0)
     {
         static $counter = 0;
         $this->attachment_array = $this->getAttachment();
@@ -195,7 +195,7 @@ class Post extends ArtObject
      * @param  bool $asSource
      * @return string
      */
-    function displayAttachment($asSource = false)
+    public function displayAttachment($asSource = false)
     {
         $post_attachment = '';
         $attachments     = $this->getAttachment();
@@ -244,7 +244,7 @@ class Post extends ArtObject
      * @param  string $post_editmsg
      * @return bool
      */
-    function setPostEdit($poster_name = '', $post_editmsg = '')
+    public function setPostEdit($poster_name = '', $post_editmsg = '')
     {
         if (empty($GLOBALS['xoopsModuleConfig']['recordedit_timelimit']) || (time() - $this->getVar('post_time')) < $GLOBALS['xoopsModuleConfig']['recordedit_timelimit'] * 60 || $this->getVar('approved') < 1) {
             return true;
@@ -279,7 +279,7 @@ class Post extends ArtObject
     /**
      * @return bool|string
      */
-    function displayPostEdit()
+    public function displayPostEdit()
     {
         global $myts;
 
@@ -322,7 +322,7 @@ class Post extends ArtObject
     /**
      * @return array
      */
-    function &getPostBody()
+    public function &getPostBody()
     {
         global $myts;
         $GLOBALS['xoopsModuleConfig'] = newbb_load_config(); // irmtfan  load all newbb configs - newbb config in blocks activated in some modules like profile
@@ -367,7 +367,7 @@ class Post extends ArtObject
     /**
      * @return bool
      */
-    function isTopic()
+    public function isTopic()
     {
         return !$this->getVar('pid');
     }
@@ -376,7 +376,7 @@ class Post extends ArtObject
      * @param  string $action_tag
      * @return bool
      */
-    function checkTimelimit($action_tag = 'edit_timelimit')
+    public function checkTimelimit($action_tag = 'edit_timelimit')
     {
         $newbb_config = newbb_load_config();
         if (empty($newbb_config["edit_timelimit"])) {
@@ -390,7 +390,7 @@ class Post extends ArtObject
      * @param  int $uid
      * @return bool
      */
-    function checkIdentity($uid = -1)
+    public function checkIdentity($uid = -1)
     {
         $uid = ($uid > -1) ? $uid : (($GLOBALS['xoopsUser'] instanceof XoopsUser) ? $GLOBALS['xoopsUser']->getVar('uid') : 0);
         if ($this->getVar('uid') > 0) {
@@ -411,7 +411,7 @@ class Post extends ArtObject
      * @param $isadmin
      * @return array
      */
-    function showPost($isadmin)
+    public function showPost($isadmin)
     {
         global $myts;
         global $forumUrl, $forumImage;
@@ -658,7 +658,7 @@ class NewbbPostHandler extends ArtObjectHandler //class NewbbPostHandler extends
     /**
      * @param object $db
      */
-    function __construct(&$db)
+    public function __construct(&$db)
     {
         parent::__construct($db, 'bb_posts', 'Post', 'post_id', 'subject');
     }
@@ -666,7 +666,7 @@ class NewbbPostHandler extends ArtObjectHandler //class NewbbPostHandler extends
     /**
      * @param $db
      */
-    function NewbbPostHandler(&$db)
+    public function NewbbPostHandler(&$db)
     {
         $this->__construct($db);
     }
@@ -675,7 +675,7 @@ class NewbbPostHandler extends ArtObjectHandler //class NewbbPostHandler extends
      * @param  mixed|null $id
      * @return null|object
      */
-    function &get($id)
+    public function &get($id)
     {
         $id   = (int)($id);
         $post = null;
@@ -694,7 +694,7 @@ class NewbbPostHandler extends ArtObjectHandler //class NewbbPostHandler extends
      * @param  int $approved
      * @return array
      */
-    function &getByLimit($topic_id, $limit, $approved = 1)
+    public function &getByLimit($topic_id, $limit, $approved = 1)
     {
         $sql    = 'SELECT p.*, t.*, tp.topic_status FROM ' . $this->db->prefix('bb_posts') . ' p LEFT JOIN ' . $this->db->prefix('bb_posts_text') . ' t ON p.post_id=t.post_id LEFT JOIN ' . $this->db->prefix('bb_topics') . ' tp ON tp.topic_id=p.topic_id WHERE p.topic_id=' . $topic_id . ' AND p.approved =' . $approved . ' ORDER BY p.post_time DESC';
         $result = $this->db->query($sql, $limit, 0);
@@ -714,7 +714,7 @@ class NewbbPostHandler extends ArtObjectHandler //class NewbbPostHandler extends
      * @param $post
      * @return mixed
      */
-    function getPostForPDF(&$post)
+    public function getPostForPDF(&$post)
     {
         return $post->getPostBody(true);
     }
@@ -723,7 +723,7 @@ class NewbbPostHandler extends ArtObjectHandler //class NewbbPostHandler extends
      * @param $post
      * @return mixed
      */
-    function getPostForPrint(&$post)
+    public function getPostForPrint(&$post)
     {
         return $post->getPostBody();
     }
@@ -733,7 +733,7 @@ class NewbbPostHandler extends ArtObjectHandler //class NewbbPostHandler extends
      * @param  bool $force
      * @return bool
      */
-    function approve(&$post, $force = false)
+    public function approve(&$post, $force = false)
     {
         if (empty($post)) {
             return false;
@@ -800,7 +800,7 @@ class NewbbPostHandler extends ArtObjectHandler //class NewbbPostHandler extends
      * @param  bool   $force
      * @return bool
      */
-    function insert(&$post, $force = true)
+    public function insert(&$post, $force = true)
     {
         // Set the post time
         // The time should be "publish" time. To be adjusted later
@@ -915,7 +915,7 @@ class NewbbPostHandler extends ArtObjectHandler //class NewbbPostHandler extends
      * @param  bool   $force
      * @return bool
      */
-    function delete(&$post, $isDeleteOne = true, $force = false)
+    public function delete(&$post, $isDeleteOne = true, $force = false)
     {
         $retVal = false;
         if (($post instanceof Post) && ($post->getVar('post_id') > 0)) {
@@ -968,7 +968,7 @@ class NewbbPostHandler extends ArtObjectHandler //class NewbbPostHandler extends
      * @param  bool $force
      * @return bool
      */
-    function _delete(&$post, $force = false)
+    public function _delete(&$post, $force = false)
     {
         if ((!$post instanceof Post) || (0 == $post->getVar('post_id'))) {
             return false;
@@ -1090,7 +1090,7 @@ class NewbbPostHandler extends ArtObjectHandler //class NewbbPostHandler extends
      * @param  null $join
      * @return int|null
      */
-    function getPostCount($criteria = null, $join = null)
+    public function getPostCount($criteria = null, $join = null)
     {
         // If not join get the count from XOOPS/class/model/stats as before
         if (empty($join)) {
@@ -1125,7 +1125,7 @@ class NewbbPostHandler extends ArtObjectHandler //class NewbbPostHandler extends
      * @param  null $join
      * @return array
      */
-    function &getPostsByLimit($criteria = null, $limit = 1, $start = 0, $join = null)
+    public function &getPostsByLimit($criteria = null, $limit = 1, $start = 0, $join = null)
     {
         $ret = array();
         $sql = "SELECT p.*, t.* " . "FROM " . $this->db->prefix('bb_posts') . " AS p " . "LEFT JOIN " . $this->db->prefix('bb_posts_text') . " AS t ON t.post_id = p.post_id";
@@ -1156,7 +1156,7 @@ class NewbbPostHandler extends ArtObjectHandler //class NewbbPostHandler extends
     /**
      * @return bool
      */
-    function synchronization()
+    public function synchronization()
     {
         //      $this->cleanOrphan();
         return true;
@@ -1167,7 +1167,7 @@ class NewbbPostHandler extends ArtObjectHandler //class NewbbPostHandler extends
      *
      * @return bool true on success
      */
-    function cleanOrphan()
+    public function cleanOrphan()
     {
         $this->deleteAll(new Criteria("post_time", 0), true, true);
         parent::cleanOrphan($this->db->prefix("bb_topics"), "topic_id");
@@ -1200,7 +1200,7 @@ class NewbbPostHandler extends ArtObjectHandler //class NewbbPostHandler extends
      * @param  int $expire time limit for expiration
      * @return bool true on success
      */
-    function cleanExpires($expire = 0)
+    public function cleanExpires($expire = 0)
     {
         // irmtfan if 0 no cleanup look include/plugin.php
         if (!func_num_args()) {

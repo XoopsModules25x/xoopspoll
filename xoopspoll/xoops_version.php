@@ -7,7 +7,7 @@
  *  ------------------------------------------------------------------------
  *                XOOPS - PHP Content Management System
  *                    Copyright (c) 2000 XOOPS.org
- *                       <http://www.xoops.org/>
+ *                       <http://xoops.org/>
  *  ------------------------------------------------------------------------
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -30,21 +30,21 @@
  *  ------------------------------------------------------------------------
  */
 /**
- * @copyright::  {@link http://xoops.org/ The XOOPS Project}
- * @license  ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package  ::    xoopspoll
- * @since    ::         1.0
- * @author   ::     {@link http://www.myweb.ne.jp Kazumi Ono}
- * @version  ::    $Id: xoops_version.php 11593 2013-05-27 22:28:05Z zyspec $
+ * @copyright::  {@link http://xoops.org/ XOOPS Project}
+ * @license  ::  {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
+ * @package  ::  xoopspoll
+ * @since    ::  1.0
+ * @author   ::  {@link http://www.myweb.ne.jp Kazumi Ono}
+ * @version  ::  $Id: xoops_version.php 11593 2013-05-27 22:28:05Z zyspec $
  **/
 
-defined('XOOPS_ROOT_PATH') || die('Restricted access');
+defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 $modversion['name']           = _MI_XOOPSPOLL_NAME;
 $modversion['description']    = _MI_XOOPSPOLL_DESC;
 $modversion['version']        = 1.40;
 $modversion['author']         = 'Kazumi Ono, modified by Mazarin';
-$modversion['credits']        = 'The XOOPS Project, Mamba, ZySpec';
+$modversion['credits']        = 'XOOPS Project, Mamba, ZySpec';
 $modversion['help']           = 'page=help';
 $modversion['license']        = 'GNU GPL 2.0';
 $modversion['license_url']    = 'www.gnu.org/licenses/gpl-2.0.html';

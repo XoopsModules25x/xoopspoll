@@ -2,7 +2,7 @@
 /*
                XOOPS - PHP Content Management System
                    Copyright (c) 2000 XOOPS.org
-                      <http://www.xoops.org/>
+                      <http://xoops.org/>
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation; either version 2 of the License, or
@@ -25,15 +25,15 @@
 /**
  * Poll Option class for the XoopsPoll Module
  *
- * @copyright ::  {@link http://xoops.org/ The XOOPS Project}
- * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package   ::    xoopspoll
- * @subpackage:: class
- * @since     ::         1.0
- * @author    ::     {@link http://www.myweb.ne.jp/ Kazumi Ono (AKA onokazu)}
- * @version   ::    $Id: $
+ * @copyright ::  {@link http://xoops.org/ XOOPS Project}
+ * @license   ::  {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
+ * @package   ::  xoopspoll
+ * @subpackage::  class
+ * @since     ::  1.0
+ * @author    ::  {@link http://www.myweb.ne.jp/ Kazumi Ono (AKA onokazu)}
+ * @version   ::  $Id: $
  */
-// defined('XOOPS_ROOT_PATH') || die('XOOPS Root Path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 class XoopspollOption extends XoopsObject
 {

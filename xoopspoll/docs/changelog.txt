@@ -8,6 +8,7 @@
 - updated strval() with (string) (mamba)
 - code cleaning (mamba)
 - updated URL link to XOOPS (mamba)
+- fix error if no poll options in NewBB (cesag/mamba)
 
 
 1.40 BETA 2          2014-04-23

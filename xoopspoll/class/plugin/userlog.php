@@ -11,15 +11,16 @@
 /**
  *  userlog module
  *
- * @copyright       The XOOPS Project http://xoops.org/
+ * @copyright       XOOPS Project (http://xoops.org)
  * @license         GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
  * @package         newbb class plugin
  * @since           4.31
  * @author          irmtfan (irmtfan@yahoo.com)
- * @author          The XOOPS Project <www.xoops.org> <www.xoops.ir>
+ * @author          XOOPS Project <www.xoops.org> <www.xoops.ir>
  * @version         $Id: userlog.php 4.31 2013/05/08 16:25:04Z irmtfan $
  */
-// defined('XOOPS_ROOT_PATH') || die('XOOPS Root Path not defined');
+
+// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 class XoopspollUserlogPlugin extends Userlog_Module_Plugin_Abstract implements UserlogPluginInterface
 {

@@ -13,7 +13,7 @@
 /**
  * Poll handling for Newbb
  *
- * @copyright       {@link http://xoops.org/ The XOOPS Project}
+ * @copyright       {@link http://xoops.org/ XOOPS Project}
  * @license         {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
  * @package         newbb
  * @since           4.0

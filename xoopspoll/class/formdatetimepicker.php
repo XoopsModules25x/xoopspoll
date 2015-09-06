@@ -9,7 +9,7 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * @copyright ::   &copy; {@link http://xoops.org/ The XOOPS Project}
+ * @copyright ::   &copy; {@link http://xoops.org/ XOOPS Project}
  * @license   ::     {@link http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU GPL 2}
  * @package   ::     xoopspoll
  * @subpackage::  class
@@ -20,7 +20,7 @@
  * @version   ::     $Id: $
  */
 
-// defined('XOOPS_ROOT_PATH') || die("Restricted access");
+// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
  * Creates a text field with jquery ui calendar & time select popup
