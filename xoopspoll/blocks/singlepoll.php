@@ -11,12 +11,12 @@
 /**
  * XoopsPoll Single Poll Block Definition (clonable)
  *
- * @copyright ::  {@link http://xoops.org/ The XOOPS Project}
- * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package   ::    xoopspoll
+ * @copyright::  {@link http://xoops.org/ XOOPS Project}
+ * @license   :: {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
+ * @package   :: xoopspoll
  * @subpackage:: blocks
- * @since     ::         1.40
- * @version   ::    $Id: $
+ * @since     :: 1.40
+ * @version   :: $Id: $
  */
 
 xoops_loadLanguage('main', 'xoopspoll');

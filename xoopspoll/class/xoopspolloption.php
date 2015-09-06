@@ -13,7 +13,7 @@
  * Description: XoopsPollOption thunking class for backward compatibility.  This class should not be used
  * except by legacy modules (for example CBB(newbb) or xForum.
  *
- * @copyright ::  {@link http://xoops.org/ The XOOPS Project}
+ * @copyright ::  {@link http://xoops.org/ XOOPS Project}
  * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
  * @package   ::    xoopspoll
  * @subpackage:: class

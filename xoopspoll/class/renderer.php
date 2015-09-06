@@ -2,7 +2,7 @@
 /*
                XOOPS - PHP Content Management System
                    Copyright (c) 2000 XOOPS.org
-                      <http://www.xoops.org/>
+                      <http://xoops.org/>
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation; either version 2 of the License, or
@@ -26,13 +26,13 @@
 /**
  * Poll Renderer class for the XoopsPoll Module
  *
- * @copyright ::  {@link http://xoops.org/ The XOOPS Project}
- * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package   ::    xoopspoll
- * @subpackage:: admin
- * @since     ::         1.0
- * @author    ::     {@link http://www.myweb.ne.jp/ Kazumi Ono (AKA onokazu)}
- * @version   ::    $Id: $
+ * @copyright ::  {@link http://xoops.org/ XOOPS Project}
+ * @license   ::  {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
+ * @package   ::  xoopspoll
+ * @subpackage::  admin
+ * @since     ::  1.0
+ * @author    ::  {@link http://www.myweb.ne.jp/ Kazumi Ono (AKA onokazu)}
+ * @version   ::  $Id: $
  */
 
 xoops_loadLanguage('main', 'xoopspoll');
@@ -104,6 +104,11 @@ class XoopspollRenderer
         $myts       =& MyTextSanitizer::getInstance();
         $optionObjs = $this->oHandler->getAllByPollId($this->pollObj->getVar('poll_id'));
 
+        if (empty($optionObjs)) {
+            /* there was a problem with missing Options */
+            redirect_header($_SERVER['HTTP_REFERER'], XoopspollConstants::REDIRECT_DELAY_MEDIUM, _MD_XOOPSPOLL_ERROR_OPTIONS_MISSING);
+        }
+
         if (XoopspollConstants::MULTIPLE_SELECT_POLL == $this->pollObj->getVar('multiple')) {
             $optionType = 'checkbox';
             $optionName = 'option_id[]';
@@ -136,7 +141,7 @@ class XoopspollRenderer
                              'question'    => $myts->htmlSpecialChars($this->pollObj->getVar('question')),
                              'pollId'      => $this->pollObj->getVar('poll_id'),
                              'viewresults' => $GLOBALS['xoops']->url("modules/xoopspoll/pollresults.php") . "?poll_id=" . $this->pollObj->getVar('poll_id'),
-                             'options'     => $options,
+                             'options'      => isset($options) ?: '',
                              'description' => $myts->displayTarea($myts->undoHtmlSpecialChars($this->pollObj->getVar('description')), 1)),
                          'can_vote'     => $can_vote,
                          'action'       => $GLOBALS['xoops']->url("modules/xoopspoll/index.php"),

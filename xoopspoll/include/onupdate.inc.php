@@ -11,14 +11,14 @@
 /**
  * Xoopspoll install functions.php
  *
- * @copyright:: {@link http://xoops.org/ The XOOPS Project}
+ * @copyright:: {@link http://xoops.org/ XOOPS Project}
  * @license  ::   {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
  * @package  ::   xoopspoll
  * @since    ::     1.40
  * @author   ::    zyspec <owners@zyspec.com>
  * @version  ::   $Id: $
  */
-// defined('XOOPS_ROOT_PATH') || die('XOOPS Root Path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 xoops_load('pollUtility', 'xoopspoll');
 
 /**

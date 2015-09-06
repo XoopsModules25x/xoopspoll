@@ -11,7 +11,7 @@
 /**
  * XOOPS Poll Class Definitions
  *
- * @copyright ::  {@link http://xoops.org/ The XOOPS Project}
+ * @copyright ::  {@link http://xoops.org/ XOOPS Project}
  * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
  * @package   ::    xoopspoll
  * @subpackage:: class
@@ -19,7 +19,7 @@
  * @author    ::     zyspec <owners@zyspec.com>
  * @version   ::    $Id: $
  */
-// defined('XOOPS_ROOT_PATH') || die('XOOPS Root Path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 class XoopspollPoll extends XoopsObject
 {
@@ -135,7 +135,8 @@ class XoopspollPoll extends XoopsObject
      * @param  int    $optionId
      * @param  string $ip ip address of voter
      * @param         $time
-     * @return bool   true vote entered, false voting failed* @internal param int $uid
+     * @return bool   true vote entered, false voting failed
+     * @internal param int $uid
      */
     public function vote($optionId, $ip, $time)
     {

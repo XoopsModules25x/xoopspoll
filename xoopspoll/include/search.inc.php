@@ -12,7 +12,7 @@
 /**
  * Description: Search function for the XoopsPoll Module
  *
- * @copyright ::  {@link http://xoops.org/ The XOOPS Project}
+ * @copyright ::  {@link http://xoops.org/ XOOPS Project}
  * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
  * @package   ::    xoopspoll
  * @subpackage:: search
@@ -20,7 +20,7 @@
  * @author    ::     John Neill, zyspec <owners@zyspec.com>
  * @version   ::    $Id: $
  */
-// defined('XOOPS_ROOT_PATH') || die('XOOPS Root Path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 /**
  * xoopspoll_search()

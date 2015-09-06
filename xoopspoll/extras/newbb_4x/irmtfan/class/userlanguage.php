@@ -19,7 +19,7 @@ class User_language extends User
     /**
      * @param $user
      */
-    function User_language(&$user)
+    public function User_language(&$user)
     {
         $this->User($user);
     }
@@ -27,7 +27,7 @@ class User_language extends User
     /**
      * @return array|null
      */
-    function &getUserbar()
+    public function &getUserbar()
     {
         global $xoopsModuleConfig, $xoopsUser, $isadmin;
         if (empty($GLOBALS['xoopsModuleConfig']['userbar_enabled'])) {

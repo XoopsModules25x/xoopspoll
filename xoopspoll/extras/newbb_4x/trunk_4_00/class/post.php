@@ -9,20 +9,20 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * @copyright       The XOOPS Project http://xoops.org/
+ * @copyright       XOOPS Project (http://xoops.org)
  * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
  * @package         newbb
  * @since           4.0
  * @author          Taiwen Jiang <phppp@users.sourceforge.net>
  * @version         $Id: post.php 8115 2011-11-06 14:37:18Z beckmi $
  */
-// defined("XOOPS_ROOT_PATH") || exit("XOOPS root path not defined");
+// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 class Post extends XoopsObject
 {
-    var $attachment_array = array();
+    public $attachment_array = array();
 
-    function Post()
+    public function Post()
     {
         //$this->ArtObject("bb_posts");
         $this->initVar('post_id', XOBJ_DTYPE_INT);
@@ -54,7 +54,7 @@ class Post extends XoopsObject
     /**
      * @return array|mixed|null
      */
-    function getAttachment()
+    public function getAttachment()
     {
         if (count($this->attachment_array)) {
             return $this->attachment_array;
@@ -73,7 +73,7 @@ class Post extends XoopsObject
      * @param $attach_key
      * @return bool
      */
-    function incrementDownload($attach_key)
+    public function incrementDownload($attach_key)
     {
         if (!$attach_key) {
             return false;
@@ -86,7 +86,7 @@ class Post extends XoopsObject
     /**
      * @return bool
      */
-    function saveAttachment()
+    public function saveAttachment()
     {
         if (is_array($this->attachment_array) && count($this->attachment_array) > 0) {
             $attachment_save = base64_encode(serialize($this->attachment_array));
@@ -94,9 +94,9 @@ class Post extends XoopsObject
             $attachment_save = '';
         }
         $this->setVar('attachment', $attachment_save);
-        $sql = "UPDATE " . $GLOBALS["xoopsDB"]->prefix("bb_posts") . " SET attachment=" . $GLOBALS["xoopsDB"]->quoteString($attachment_save) . " WHERE post_id = " . $this->getVar('post_id');
-        if (!$result = $GLOBALS["xoopsDB"]->queryF($sql)) {
-            //xoops_error($GLOBALS["xoopsDB"]->error());
+        $sql = "UPDATE " . $GLOBALS['xoopsDB']->prefix("bb_posts") . " SET attachment=" . $GLOBALS['xoopsDB']->quoteString($attachment_save) . " WHERE post_id = " . $this->getVar('post_id');
+        if (!$result = $GLOBALS['xoopsDB']->queryF($sql)) {
+            //xoops_error($GLOBALS['xoopsDB']->error());
             return false;
         }
 
@@ -107,7 +107,7 @@ class Post extends XoopsObject
      * @param  null $attach_array
      * @return bool
      */
-    function deleteAttachment($attach_array = null)
+    public function deleteAttachment($attach_array = null)
     {
         global $xoopsModuleConfig;
 
@@ -149,7 +149,7 @@ class Post extends XoopsObject
      * @param  int    $num_download
      * @return bool
      */
-    function setAttachment($name_saved = '', $name_display = '', $mimetype = '', $num_download = 0)
+    public function setAttachment($name_saved = '', $name_display = '', $mimetype = '', $num_download = 0)
     {
         static $counter = 0;
         $this->attachment_array = $this->getAttachment();
@@ -176,7 +176,7 @@ class Post extends XoopsObject
      * @param  bool $asSource
      * @return string
      */
-    function displayAttachment($asSource = false)
+    public function displayAttachment($asSource = false)
     {
         global $xoopsModule, $xoopsModuleConfig;
 
@@ -219,7 +219,7 @@ class Post extends XoopsObject
      * @param  string $poster_name
      * @return bool
      */
-    function setPostEdit($poster_name = '')
+    public function setPostEdit($poster_name = '')
     {
         global $xoopsModuleConfig, $xoopsUser;
 
@@ -255,7 +255,7 @@ class Post extends XoopsObject
     /**
      * @return bool|string
      */
-    function displayPostEdit()
+    public function displayPostEdit()
     {
         global $myts, $xoopsModuleConfig;
 
@@ -285,7 +285,7 @@ class Post extends XoopsObject
     /**
      * @return array
      */
-    function &getPostBody()
+    public function &getPostBody()
     {
         global $xoopsConfig, $xoopsModuleConfig, $xoopsUser, $myts;
         require_once XOOPS_ROOT_PATH . "/modules/newbb/include/functions.user.php";
@@ -330,7 +330,7 @@ class Post extends XoopsObject
     /**
      * @return bool
      */
-    function isTopic()
+    public function isTopic()
     {
         return !$this->getVar('pid');
     }
@@ -339,7 +339,7 @@ class Post extends XoopsObject
      * @param  string $action_tag
      * @return bool
      */
-    function checkTimelimit($action_tag = 'edit_timelimit')
+    public function checkTimelimit($action_tag = 'edit_timelimit')
     {
         require_once XOOPS_ROOT_PATH . "/modules/newbb/include/functions.config.php";
         $newbb_config = newbb_loadConfig();
@@ -354,7 +354,7 @@ class Post extends XoopsObject
      * @param  int $uid
      * @return bool
      */
-    function checkIdentity($uid = -1)
+    public function checkIdentity($uid = -1)
     {
         global $xoopsUser;
 
@@ -377,7 +377,7 @@ class Post extends XoopsObject
      * @param $isadmin
      * @return array
      */
-    function showPost($isadmin)
+    public function showPost($isadmin)
     {
         global $xoopsConfig, $xoopsModule, $xoopsModuleConfig, $xoopsUser, $myts;
         global $forumUrl, $forumImage;
@@ -534,7 +534,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
     /**
      * @param $db
      */
-    function NewbbPostHandler(&$db)
+    public function NewbbPostHandler(&$db)
     {
         $this->XoopsPersistableObjectHandler($db, 'bb_posts', 'Post', 'post_id', 'subject');
     }
@@ -543,7 +543,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
      * @param  mixed|null $id
      * @return null|object
      */
-    function &get($id)
+    public function &get($id)
     {
         $id   = (int)($id);
         $post = null;
@@ -562,7 +562,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
      * @param  int $approved
      * @return array
      */
-    function &getByLimit($topic_id, $limit, $approved = 1)
+    public function &getByLimit($topic_id, $limit, $approved = 1)
     {
         $sql    = 'SELECT p.*, t.*, tp.topic_status FROM ' . $this->db->prefix('bb_posts') . ' p LEFT JOIN ' . $this->db->prefix('bb_posts_text') . ' t ON p.post_id=t.post_id LEFT JOIN ' . $this->db->prefix('bb_topics') . ' tp ON tp.topic_id=p.topic_id WHERE p.topic_id=' . $topic_id . ' AND p.approved =' . $approved . ' ORDER BY p.post_time DESC';
         $result = $this->db->query($sql, $limit, 0);
@@ -582,7 +582,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
      * @param $post
      * @return mixed
      */
-    function getPostForPDF(&$post)
+    public function getPostForPDF(&$post)
     {
         return $post->getPostBody(true);
     }
@@ -591,7 +591,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
      * @param $post
      * @return mixed
      */
-    function getPostForPrint(&$post)
+    public function getPostForPrint(&$post)
     {
         return $post->getPostBody();
     }
@@ -601,7 +601,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
      * @param  bool $force
      * @return bool
      */
-    function approve(&$post, $force = false)
+    public function approve(&$post, $force = false)
     {
         if (empty($post)) {
             return false;
@@ -668,7 +668,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
      * @param  bool   $force
      * @return bool
      */
-    function insert(&$post, $force = true)
+    public function insert(&$post, $force = true)
     {
         global $xoopsUser;
 
@@ -778,7 +778,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
      * @param  bool   $force
      * @return bool
      */
-    function delete(&$post, $isDeleteOne = true, $force = false)
+    public function delete(&$post, $isDeleteOne = true, $force = false)
     {
         if (!is_object($post) || $post->getVar('post_id') == 0) {
             return false;
@@ -815,7 +815,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
      * @param  bool $force
      * @return bool
      */
-    function _delete(&$post, $force = false)
+    public function _delete(&$post, $force = false)
     {
         global $xoopsModule;
 
@@ -923,7 +923,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
      * @param  null $criteria
      * @return int
      */
-    function getPostCount($criteria = null)
+    public function getPostCount($criteria = null)
     {
         return parent::getCount($criteria);
     }
@@ -938,7 +938,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
      * @param  null $join
      * @return array
      */
-    function &getPostsByLimit($criteria = null, $limit = 1, $start = 0, $join = null)
+    public function &getPostsByLimit($criteria = null, $limit = 1, $start = 0, $join = null)
     {
         $ret = array();
         $sql = 'SELECT p.*, t.* ' . ' FROM ' . $this->db->prefix('bb_posts') . ' AS p' . ' LEFT JOIN ' . $this->db->prefix('bb_posts_text') . " AS t ON t.post_id = p.post_id";
@@ -971,7 +971,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
      *
      * @return bool true on success
      */
-    function cleanOrphan()
+    public function cleanOrphan()
     {
         $this->deleteAll(new Criteria("post_time", 0), true, true);
         parent::cleanOrphan($this->db->prefix("bb_topics"), "topic_id");
@@ -1006,7 +1006,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
      * @param  int $expire time limit for expiration
      * @return bool true on success
      */
-    function cleanExpires($expire = 0)
+    public function cleanExpires($expire = 0)
     {
         $crit_expire =& new CriteriaCompo(new Criteria("approved", 0, "<="));
         //if (!empty($expire)) {

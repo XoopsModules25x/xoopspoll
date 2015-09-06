@@ -32,14 +32,14 @@
  * the value(s) before module installation. Additionally the module may not
  * work correctly if trying to upgrade if these values have been changed.
  *
- * @copyright::  {@link http://xoops.org/ The XOOPS Project}
- * @license  ::    {@link http://www.gnu.org/licenses/gpl-2.0.html GNU Public License}
- * @author   ::     zyspec <owners@zyspec.com>
- * @package  ::    xoopspoll
- * @since    ::      1.40
- * @version  ::    $Id: $
+ * @copyright::  {@link http://xoops.org/ XOOPS Project}
+ * @license  ::  {@link http://www.gnu.org/licenses/gpl-2.0.html GNU Public License}
+ * @author   ::  zyspec <owners@zyspec.com>
+ * @package  ::  xoopspoll
+ * @since    ::  1.40
+ * @version  ::  $Id: $
  **/
-// defined('XOOPS_ROOT_PATH') || die('XOOPS Root Path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 interface XoopspollConstants
 {

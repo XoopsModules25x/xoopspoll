@@ -11,17 +11,17 @@
  * XOOPS Poll module
  * Display module 'About' page in administration interface
  *
- * @copyright ::  {@link http://xoops.org/ The XOOPS Project}
- * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package   ::    xoopspoll
+ * @copyright::  {@link http://xoops.org/ XOOPS Project}
+ * @license::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
+ * @package::    xoopspoll
  * @subpackage:: admin
- * @since     ::      1.40
- * @author    ::     Mage, Mamba
- * @version   ::    $Id: $
+ * @since::      1.40
+ * @author::     Mage, Mamba
+ * @version::    $Id: $
  *
- * @uses      ModuleAdmin
- * @uses      ModuleAdmin::addNavigation to set the display page
- * @uses      ModuleAdmin::renderAbout to display the page passing PAYPAL key to method
+ * @uses ModuleAdmin
+ * @uses ModuleAdmin::addNavigation to set the display page
+ * @uses ModuleAdmin::renderAbout to display the page passing PAYPAL key to method
  */
 require_once __DIR__ . '/admin_header.php';
 xoops_cp_header();

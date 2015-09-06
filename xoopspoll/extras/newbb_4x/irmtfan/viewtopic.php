@@ -2,7 +2,7 @@
 /*------------------------------------------------------------------------
                 XOOPS - PHP Content Management System
                     Copyright (c) 2000 XOOPS.org
-                       <http://www.xoops.org/>
+                       <http://xoops.org/>
   ------------------------------------------------------------------------
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@
 /**
  * View Forum Topic with poll support
  *
- * @copyright::  {@link http://xoops.org/ The XOOPS Project}
+ * @copyright::  {@link http://xoops.org/ XOOPS Project}
  * @license  ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
  * @package  ::    newbb
  * @author   ::     phppp (D.J.) <infomax@gmail.com>
