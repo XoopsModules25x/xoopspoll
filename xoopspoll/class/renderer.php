@@ -106,7 +106,8 @@ class XoopspollRenderer
 
         if (empty($optionObjs)) {
             /* there was a problem with missing Options */
-            redirect_header($_SERVER['HTTP_REFERER'], XoopspollConstants::REDIRECT_DELAY_MEDIUM, _MD_XOOPSPOLL_ERROR_OPTIONS_MISSING);
+//            redirect_header($_SERVER['HTTP_REFERER'], XoopspollConstants::REDIRECT_DELAY_MEDIUM, _MD_XOOPSPOLL_ERROR_OPTIONS_MISSING);
+
         }
 
         if (XoopspollConstants::MULTIPLE_SELECT_POLL == $this->pollObj->getVar('multiple')) {
