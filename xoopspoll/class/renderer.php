@@ -141,7 +141,7 @@ class XoopspollRenderer
                              'question'    => $myts->htmlSpecialChars($this->pollObj->getVar('question')),
                              'pollId'      => $this->pollObj->getVar('poll_id'),
                              'viewresults' => $GLOBALS['xoops']->url("modules/xoopspoll/pollresults.php") . "?poll_id=" . $this->pollObj->getVar('poll_id'),
-                             'options'      => isset($options) ?: '',
+                             'options'      => isset($options) ? $options : '',
                              'description' => $myts->displayTarea($myts->undoHtmlSpecialChars($this->pollObj->getVar('description')), 1)),
                          'can_vote'     => $can_vote,
                          'action'       => $GLOBALS['xoops']->url("modules/xoopspoll/index.php"),
