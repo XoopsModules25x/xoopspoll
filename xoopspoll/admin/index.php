@@ -52,10 +52,10 @@ $totalWaitingPolls = $pollHandler->getCount($criteria);
 $totalExpiredPolls = $totalPolls - $totalActivePolls - $totalWaitingPolls;
 
 $admin_class->addInfoBox(_MD_XOOPSPOLL_DASHBOARD) ;
-$admin_class->addInfoBoxLine(_MD_XOOPSPOLL_DASHBOARD, "<span class='infolabel'>" ._MD_XOOPSPOLL_TOTALACTIVE. "</span>", $totalActivePolls, 'Green') ;
-$admin_class->addInfoBoxLine(_MD_XOOPSPOLL_DASHBOARD, "<span class='infolabel'>" ._MD_XOOPSPOLL_TOTALWAITING. "</span>", $totalWaitingPolls, 'Green') ;
-$admin_class->addInfoBoxLine(_MD_XOOPSPOLL_DASHBOARD, "<span class='infolabel'>" ._MD_XOOPSPOLL_TOTALEXPIRED. "</span>", $totalExpiredPolls, 'Red') ;
-$admin_class->addInfoBoxLine(_MD_XOOPSPOLL_DASHBOARD, "<span class='infolabel'>" ._MD_XOOPSPOLL_TOTALPOLLS."</span><span class='infotext'>", $totalPolls."</span>") ;
+$admin_class->addInfoBoxLine(_MD_XOOPSPOLL_DASHBOARD, "<span class='infolabel'>" ._MD_XOOPSPOLL_TOTALACTIVE . '</span>', $totalActivePolls, 'Green') ;
+$admin_class->addInfoBoxLine(_MD_XOOPSPOLL_DASHBOARD, "<span class='infolabel'>" ._MD_XOOPSPOLL_TOTALWAITING . '</span>', $totalWaitingPolls, 'Green') ;
+$admin_class->addInfoBoxLine(_MD_XOOPSPOLL_DASHBOARD, "<span class='infolabel'>" ._MD_XOOPSPOLL_TOTALEXPIRED . '</span>', $totalExpiredPolls, 'Red') ;
+$admin_class->addInfoBoxLine(_MD_XOOPSPOLL_DASHBOARD, "<span class='infolabel'>" ._MD_XOOPSPOLL_TOTALPOLLS."</span><span class='infotext'>", $totalPolls . '</span>') ;
 
 /* use templates just in case we want to easily modify display in the future */
 $GLOBALS['xoopsTpl']->assign('navigation', $admin_class->addNavigation('index.php'));

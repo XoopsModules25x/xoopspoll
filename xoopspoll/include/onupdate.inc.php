@@ -37,11 +37,11 @@ function xoopspollChangeTableName(&$db, $fromTable, $toTable)
     */
     $success = false;
     if (XoopspollPollUtility::dbTableExists($db, $fromTable) && !XoopspollPollUtility::dbTableExists($db, $toTable)) {
-        $sql     = sprintf("ALTER TABLE " . $db->prefix("{$fromTable}") . " RENAME " . $db->prefix("{$toTable}"));
+        $sql     = sprintf('ALTER TABLE ' . $db->prefix("{$fromTable}") . ' RENAME ' . $db->prefix('{$toTable}'));
         $success = $db->queryF($sql);
         if (!$success) {
-            $modHandler      =& xoops_getmodulehandler("module");
-            $xoopspollModule =& $modHandler->getByDirname("xoopspoll");
+            $modHandler      =& xoops_getmodulehandler('module');
+            $xoopspollModule =& $modHandler->getByDirname('xoopspoll');
             $xoopspollModule->setErrors(sprintf(_AM_XOOPSPOLL_UPGRADE_FAILED, $fromTable));
         }
     }
@@ -59,9 +59,9 @@ function xoops_module_update_xoopspoll(&$module, &$prev_version)
     // referer check
     $success = false;
     $ref     = xoops_getenv('HTTP_REFERER');
-    if (('' == $ref) || 0 === mb_strpos($ref, $GLOBALS['xoops']->url('modules/system/admin.php'))) {
+    if (('' === $ref) || 0 === mb_strpos($ref, $GLOBALS['xoops']->url('modules/system/admin.php'))) {
         /* module specific part */
-        require_once $GLOBALS['xoops']->path("modules/xoopspoll/include/oninstall.inc.php");
+        require_once $GLOBALS['xoops']->path('modules/xoopspoll/include/oninstall.inc.php');
 
         $installedVersion = (int)($prev_version);
         xoops_loadLanguage('admin', 'xoopspoll');
@@ -71,41 +71,41 @@ function xoops_module_update_xoopspoll(&$module, &$prev_version)
             /* add column for poll anonymous which was created in versions prior
              * to 1.40 of xoopspoll but not automatically created
              */
-            $result    = $db->queryF("SHOW COLUMNS FROM " . $db->prefix('xoopspoll_desc') . " LIKE 'anonymous'");
+            $result    = $db->queryF('SHOW COLUMNS FROM ' . $db->prefix('xoopspoll_desc') . " LIKE 'anonymous'");
             $foundAnon = $db->getRowsNum($result);
             if (empty($foundAnon)) {
                 // column doesn't exist, so try and add it
-                $success = $db->queryF("ALTER TABLE " . $db->prefix('xoopspoll_desc') . " ADD anonymous TINYINT( 1 ) DEFAULT 0 NOT null AFTER multiple");
+                $success = $db->queryF('ALTER TABLE ' . $db->prefix('xoopspoll_desc') . ' ADD anonymous TINYINT( 1 ) DEFAULT 0 NOT null AFTER multiple');
                 if (!$success) {
                     $module->setErrors(_AM_XOOPSPOLL_ERROR_COLUMN . 'anonymous');
                 }
             }
             /* change description to TINYTEXT */
             if ($success) {
-                $success = $db->queryF("ALTER TABLE " . $db->prefix('xoopspoll_desc') . " MODIFY description TINYTEXT NOT NULL");
+                $success = $db->queryF('ALTER TABLE ' . $db->prefix('xoopspoll_desc') . ' MODIFY description TINYTEXT NOT NULL');
                 if (!$success) {
                     $module->setErrors(_AM_XOOPSPOLL_ERROR_COLUMN . 'description');
                 }
             }
             /* */
             if ($success) {
-                $success = $db->queryF("ALTER TABLE " . $db->prefix('xoopspoll_desc') . " ADD multilimit TINYINT( 63 ) UNSIGNED DEFAULT '0' NOT null AFTER multiple");
+                $success = $db->queryF('ALTER TABLE ' . $db->prefix('xoopspoll_desc') . " ADD multilimit TINYINT( 63 ) UNSIGNED DEFAULT '0' NOT null AFTER multiple");
                 if (!$success) {
                     $module->setErrors(_AM_XOOPSPOLL_ERROR_COLUMN . 'multilimit');
                 }
             }
             if ($success) {
-                $success = $db->queryF("ALTER TABLE " . $db->prefix('xoopspoll_desc') . " ADD mail_voter TINYINT( 1 ) UNSIGNED DEFAULT '0' NOT null AFTER mail_status");
+                $success = $db->queryF('ALTER TABLE ' . $db->prefix('xoopspoll_desc') . " ADD mail_voter TINYINT( 1 ) UNSIGNED DEFAULT '0' NOT null AFTER mail_status");
                 if (!$success) {
                     $module->setErrors(_AM_XOOPSPOLL_ERROR_COLUMN . 'mail_voter');
                 }
             }
             if ($success) {
-                $result   = $db->queryF("SHOW COLUMNS FROM " . $db->prefix('xoopspoll_desc') . " LIKE 'visibility'");
+                $result   = $db->queryF('SHOW COLUMNS FROM ' . $db->prefix('xoopspoll_desc') . " LIKE 'visibility'");
                 $foundCol = $db->getRowsNum($result);
                 if (empty($foundCol)) {
                     // column doesn't exist, so try and add it
-                    $success = $db->queryF("ALTER TABLE " . $db->prefix('xoopspoll_desc') . " ADD visibility INT( 3 ) DEFAULT '0' NOT null AFTER display");
+                    $success = $db->queryF('ALTER TABLE ' . $db->prefix('xoopspoll_desc') . " ADD visibility INT( 3 ) DEFAULT '0' NOT null AFTER display");
                     if (!$success) {
                         $module->setErrors(_AM_XOOPSPOLL_ERROR_COLUMN . 'visibility');
                     }
@@ -115,9 +115,9 @@ function xoops_module_update_xoopspoll(&$module, &$prev_version)
 
         if ($success) {
             /* now reverse table names changes from 1.40 Beta  */
-            $s1      = xoopspollChangeTableName($db, "mod_xoopspoll_option", "xoopspoll_option");
-            $s2      = xoopspollChangeTableName($db, "mod_xoopspoll_desc", "xoopspoll_desc");
-            $s3      = xoopspollChangeTableName($db, "mod_xoopspoll_log", "xoopspoll_log");
+            $s1      = xoopspollChangeTableName($db, 'mod_xoopspoll_option', 'xoopspoll_option');
+            $s2      = xoopspollChangeTableName($db, 'mod_xoopspoll_desc', 'xoopspoll_desc');
+            $s3      = xoopspollChangeTableName($db, 'mod_xoopspoll_log', 'xoopspoll_log');
             $success = ($s1 && $s2 && $s3) ? true : false;
         }
     }

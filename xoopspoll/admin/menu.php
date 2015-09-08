@@ -37,7 +37,7 @@
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 $moduleHandler  =& xoops_gethandler('module');
-$xoopsModule    =& XoopsModule::getByDirname('xoopspoll');
+$xoopsModule    =& XoopsModule::getByDirName('xoopspoll');
 $moduleInfo     =& $moduleHandler->get($xoopsModule->getVar('mid'));
 $pathImageAdmin = $moduleInfo->getInfo('icons32');
 
@@ -49,24 +49,24 @@ $adminmenu     = array();
 $i             = 1;
 $adminmenu[$i] = array(
     'title' => _MI_XOOPSPOLL_HOME,
-    'link'  => "admin/index.php",
+    'link'  => 'admin/index.php',
     'desc'  => _MI_XOOPSPOLL_HOMEDSC,
-    'icon'  => "{$pathImageAdmin}" . "/home.png");
+    'icon'  => "{$pathImageAdmin}" . '/home.png');
 ++$i;
 $adminmenu[$i] = array(
     'title' => _MI_XOOPSPOLL_ADMENU1,
-    'link'  => "admin/main.php",
+    'link'  => 'admin/main.php',
     'desc'  => _MI_XOOPSPOLL_ADMENU1DSC,
-    'icon'  => "{$pathImageAdmin}" . "/poll.png");
+    'icon'  => "{$pathImageAdmin}" . '/poll.png');
 ++$i;
 $adminmenu[$i] = array(
     'title' => _MI_XOOPSPOLL_ADMENU2,
-    'link'  => "admin/utility.php",
+    'link'  => 'admin/utility.php',
     'desc'  => _MI_XOOPSPOLL_ADMENU2DSC,
-    'icon'  => "{$pathImageAdmin}" . "/wizard.png");
+    'icon'  => "{$pathImageAdmin}" . '/wizard.png');
 ++$i;
 $adminmenu[$i] = array(
     'title' => _MI_XOOPSPOLL_ADABOUT,
-    'link'  => "admin/about.php",
+    'link'  => 'admin/about.php',
     'desc'  => _MI_XOOPSPOLL_ADABOUTDSC,
-    'icon'  => "{$pathImageAdmin}" . "/about.png");
+    'icon'  => "{$pathImageAdmin}" . '/about.png');

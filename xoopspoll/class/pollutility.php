@@ -41,7 +41,7 @@ class XoopspollPollUtility
                 $retVal = $ipArray[$ipAddr];
             } else {
                 $hostAddr = gethostbyaddr($ipAddr);
-                if ($hostAddr == $ipAddr) {
+                if ($hostAddr === $ipAddr) {
                     $retVal = $ipAddr;
                 } else {
                     $ipArray[$ipAddr] = htmlspecialchars($hostAddr);
@@ -107,7 +107,7 @@ class XoopspollPollUtility
     public static function getVoteCookie($cookieBaseName = 'voted_polls')
     {
         $pollDir = basename(dirname(__DIR__));
-        if ("xoopspoll" == $pollDir) {
+        if ('xoopspoll' === $pollDir) {
             $pollCookie = (!empty($_COOKIE[$cookieBaseName])) ? $_COOKIE[$cookieBaseName] : array();
         } else {
             $pollCookie = (!empty($_COOKIE["{$pollDir}_{$cookieBaseName}"])) ? $_COOKIE["{$pollDir}_{$cookieBaseName}"] : array();
@@ -135,21 +135,21 @@ class XoopspollPollUtility
         $success = false;
         // do a little sanity check on $index and $cookieBaseName
         if (!is_bool($index) && !empty($cookieBaseName)) {
-            if ("xoopspoll" == $pollDir) {
+            if ('xoopspoll' === $pollDir) {
                 $cookieName = $cookieBaseName;
             } else {
-                $cookieName = $pollDir . "_" . $cookieBaseName;
+                $cookieName = $pollDir . '_' . $cookieBaseName;
             }
             $iVal = (string)($index);
             if (!empty($iVal)) {
                 if ($success = setcookie($cookieName[$index], $value, (int)($expires))) {
                     $clientCookie = self::getVoteCookie();
-                    if (!array_key_exists($index, $clientCookie) || $clientCookie[$index] != $value) {
+                    if (!array_key_exists($index, $clientCookie) || $clientCookie[$index] !== $value) {
                         $success = false;
                     }
                 }
             } else {  //clear the cookie
-                if ($success = setcookie($cookieName, "", (int)($expires))) {
+                if ($success = setcookie($cookieName, '', (int)($expires))) {
                     $clientCookie = self::getVoteCookie();
                     if (!empty($clientCookie)) {
                         $success = false;

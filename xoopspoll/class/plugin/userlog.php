@@ -41,9 +41,9 @@ class XoopspollUserlogPlugin extends Userlog_Module_Plugin_Abstract implements U
         xoops_load('XoopsRequest');
         $poll_id = XoopsRequest::getInt('poll_id', 0);
         switch ($subscribe_from) {
-            case "index.php":
-            case "pollresults.php":
-                return array("item_name" => "poll_id", "item_id" => $poll_id);
+            case 'index.php':
+            case 'pollresults.php':
+                return array('item_name' => 'poll_id', 'item_id' => $poll_id);
                 break;
         }
 

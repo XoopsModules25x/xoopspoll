@@ -21,15 +21,15 @@
  * @version         $Id: $
  */
 
-include_once $GLOBALS['xoops']->path("header.php");
+include_once $GLOBALS['xoops']->path('header.php');
 
-include_once $GLOBALS['xoops']->path("class/xoopsformloader.php");
-include_once $GLOBALS['xoops']->path("class/xoopslists.php");
-include_once $GLOBALS['xoops']->path("class/xoopsblock.php");
+include_once $GLOBALS['xoops']->path('class/xoopsformloader.php');
+include_once $GLOBALS['xoops']->path('class/xoopslists.php');
+include_once $GLOBALS['xoops']->path('class/xoopsblock.php');
 xoops_load('XoopsRequest');
 
 // irmtfan correct the way and typo=addmor -> addmore
-$op      = "add";
+$op      = 'add';
 $goodOps = array(
     'add',
     'save',
@@ -43,7 +43,7 @@ $goodOps = array(
     'restart_ok',
     'log');
 $op      = XoopsRequest::getString('op', 'add');
-$op      = (!in_array($op, $goodOps)) ? "add" : $op;
+$op      = (!in_array($op, $goodOps)) ? 'add' : $op;
 
 //$poll_id  = (isset($_GET['poll_id']))   ? (int)($_GET['poll_id'])   : 0;
 //$poll_id  = (isset($_POST['poll_id']))  ? (int)($_POST['poll_id'])  : $poll_id;
@@ -69,17 +69,17 @@ $topic_obj     =& $topic_handler->get($topic_id);
 if ($topic_obj instanceof Topic) {
     $forum_id = $topic_obj->getVar('forum_id');
 } else {
-    redirect_header("index.php", 2, _MD_POLLMODULE_ERROR . ": " . _MD_FORUMNOEXIST);
+    redirect_header('index.php', 2, _MD_POLLMODULE_ERROR . ': ' . _MD_FORUMNOEXIST);
 }
 
 $forum_handler =& xoops_getmodulehandler('forum', 'newbb');
 $forum_obj     =& $forum_handler->get($forum_id);
 if (!$forum_handler->getPermission($forum_obj)) {
-    redirect_header("index.php", 2, _MD_NORIGHTTOACCESS);
+    redirect_header('index.php', 2, _MD_NORIGHTTOACCESS);
 }
 
-if (!$topic_handler->getPermission($forum_obj, $topic_obj->getVar('topic_status'), "view")) {
-    redirect_header("viewforum.php?forum=" . $forum_obj->getVar('forum_id'), 2, _MD_NORIGHTTOVIEW);
+if (!$topic_handler->getPermission($forum_obj, $topic_obj->getVar('topic_status'), 'view')) {
+    redirect_header('viewforum.php?forum=' . $forum_obj->getVar('forum_id'), 2, _MD_NORIGHTTOVIEW);
 }
 
 if (!newbb_isAdmin($forum_obj)) {
@@ -87,11 +87,11 @@ if (!newbb_isAdmin($forum_obj)) {
     if ($topic_handler->getPermission($forum_obj, $topic_obj->getVar('topic_status'), 'addpoll')
         //&& $forum_obj->getVar('allow_polls') == 1 {
     ) {
-        if (('add' == $op || 'save' == $op || 'update' == $op) && !$topic_obj->getVar('topic_haspoll') && ($GLOBALS['xoopsUser'] instanceof XoopsUser) && ($GLOBALS['xoopsUser']->getVar('uid') == $topic_obj->getVar('topic_poster'))) {
+        if (('add' === $op || 'save' === $op || 'update' === $op) && !$topic_obj->getVar('topic_haspoll') && ($GLOBALS['xoopsUser'] instanceof XoopsUser) && ($GLOBALS['xoopsUser']->getVar('uid') === $topic_obj->getVar('topic_poster'))) {
             $perm = true;
         } elseif (!empty($poll_id) && ($GLOBALS['xoopsUser'] instanceof XoopsUser)) {
             $poll_obj = $xpPollHandler->get($poll_id);
-            if (($GLOBALS['xoopsUser']->getVar('uid') == $poll_obj->getVar('user_id'))) {
+            if (($GLOBALS['xoopsUser']->getVar('uid') === $poll_obj->getVar('user_id'))) {
                 $perm = true;
             }
             unset($poll_obj);
@@ -103,23 +103,23 @@ if (!newbb_isAdmin($forum_obj)) {
 }
 
 switch ($op) {
-    case "add":
-    case "edit":
-        echo "<h4>" . _MD_POLL_EDITPOLL . "</h4>\n";
+    case 'add':
+    case 'edit':
+        echo '<h4>' . _MD_POLL_EDITPOLL . '</h4>\n';
         $poll_obj = $xpPollHandler->get($poll_id); // will create poll if poll_id = 0 exist
-        $poll_obj->renderForm($_SERVER['PHP_SELF'], 'post', array("topic_id" => $topic_id));
+        $poll_obj->renderForm($_SERVER['PHP_SELF'], 'post', array('topic_id' => $topic_id));
         break;
 
-    case "save":
-    case "update":
+    case 'save':
+    case 'update':
         // check security token
         if (!$GLOBALS['xoopsSecurity']->check()) {
             redirect_header($_SERVER['PHP_SELF'], 2, implode('<br />', $GLOBALS['xoopsSecurity']->getErrors()));
         }
 
         /* make sure there's at least one option */
-        $option_text   = isset($_POST['option_text']) ? $_POST['option_text'] : "";
-        $option_string = is_array($option_text) ? implode("", $option_text) : $option_text;
+        $option_text   = isset($_POST['option_text']) ? $_POST['option_text'] : '';
+        $option_string = is_array($option_text) ? implode('', $option_text) : $option_text;
         $option_string = trim($option_string);
         if (empty($option_string)) {
             // irmtfan - issue with javascript:history.go(-1)
@@ -147,7 +147,7 @@ switch ($op) {
             'user_id'     => XoopsRequest::getInt('user_id', $GLOBALS['xoopsUser']->uid(), 'POST'),
             'question'    => XoopsRequest::getString('question', null, 'POST'),
             'description' => XoopsRequest::getText('description', null, 'POST'),
-            'mail_status' => (XoopspollConstants::NOTIFICATION_ENABLED == $notify) ? XoopspollConstants::POLL_NOT_MAILED : XoopspollConstants::POLL_MAILED,
+            'mail_status' => (XoopspollConstants::NOTIFICATION_ENABLED === $notify) ? XoopspollConstants::POLL_NOT_MAILED : XoopspollConstants::POLL_MAILED,
             'mail_voter'  => XoopsRequest::getInt('mail_voter', XoopspollConstants::NOT_MAIL_POLL_TO_VOTER, 'POST'),
             'start_time'  => $startTimestamp,
             'end_time'    => $endTimestamp,
@@ -174,7 +174,7 @@ switch ($op) {
             if (!empty($oId) && ($option_obj = $xpOptHandler->get($oId))) {
                 // existing option object so need to update it
                 $optionTextArray[$key] = trim($optionTextArray[$key]);
-                if ('' == $optionTextArray[$key]) {
+                if ('' === $optionTextArray[$key]) {
                     // want to delete this option
                     if (false !== $xpOptHandler->delete($option_obj)) {
                         // now remove it from the log
@@ -206,7 +206,7 @@ switch ($op) {
         }
 
         // clear the template cache so changes take effect immediately
-        include_once $GLOBALS['xoops']->path("class/template.php");
+        include_once $GLOBALS['xoops']->path('class/template.php');
         xoops_template_clear_module_cache($GLOBALS['xoopsModule']->getVar('mid'));
         xoops_template_clear_module_cache($xoopspoll->getVar('mid'));
 
@@ -221,32 +221,32 @@ switch ($op) {
         }
         break;
 
-    case "addmore":
+    case 'addmore':
         $poll_obj     = $xpPollHandler->get($poll_id);
         $xpOptHandler =& xoops_getmodulehandler('option', 'xoopspoll');
-        $question     = $poll_obj->getVar("question");
+        $question     = $poll_obj->getVar('question');
         unset($poll_obj);
-        $poll_form = new XoopsThemeForm(_MD_POLL_ADDMORE, "poll_form", "polls.php", "post", true);
+        $poll_form = new XoopsThemeForm(_MD_POLL_ADDMORE, 'poll_form', 'polls.php', 'post', true);
         $poll_form->addElement(new XoopsFormLabel(_MD_POLL_POLLQUESTION, $question));
         $option_tray = $xpOptHandler->renderOptionFormTray($poll_id);
         $poll_form->addElement($option_tray);
-        $poll_form->addElement(new XoopsFormButtonTray("poll_submit", _SUBMIT, "submit"));
-        $poll_form->addElement(new XoopsFormHidden("op", "savemore"));
-        $poll_form->addElement(new XoopsFormHidden("topic_id", $topic_id));
-        $poll_form->addElement(new XoopsFormHidden("poll_id", $poll_id));
+        $poll_form->addElement(new XoopsFormButtonTray('poll_submit', _SUBMIT, 'submit'));
+        $poll_form->addElement(new XoopsFormHidden('op', 'savemore'));
+        $poll_form->addElement(new XoopsFormHidden('topic_id', $topic_id));
+        $poll_form->addElement(new XoopsFormHidden('poll_id', $poll_id));
 
-        echo "<h4>" . _MD_POLL_POLLCONF . "</h4>\n";
+        echo '<h4>' . _MD_POLL_POLLCONF . '</h4>\n';
         $poll_form->display();
         break;
 
-    case "savemore":
+    case 'savemore':
         // check security token
         if (!$GLOBALS['xoopsSecurity']->check()) {
             redirect_header($_SERVER['PHP_SELF'], 2, implode('<br />', $GLOBALS['xoopsSecurity']->getErrors()));
         }
 
-        $option_text   = isset($_POST['option_text']) ? $_POST['option_text'] : "";
-        $option_string = is_array($option_text) ? implode("", $option_text) : $option_text;
+        $option_text   = isset($_POST['option_text']) ? $_POST['option_text'] : '';
+        $option_string = is_array($option_text) ? implode('', $option_text) : $option_text;
         $option_string = trim($option_string);
         if (empty($option_string)) {
             // irmtfan - issue with javascript:history.go(-1)
@@ -258,29 +258,29 @@ switch ($op) {
         $option_color = (empty($_POST['option_color'])) ? null : $_POST['option_color'];
         foreach ($option_text as $optxt) {
             $optxt = trim($optxt);
-            if ("" != $optxt) {
+            if ('' !== $optxt) {
                 $option_obj = $xpOptHandler->create();
-                $option_obj->setVar("option_text", $optxt);
-                $option_obj->setVar("poll_id", $poll_id);
-                $option_obj->setVar("option_color", $option_color[$i]);
+                $option_obj->setVar('option_text', $optxt);
+                $option_obj->setVar('poll_id', $poll_id);
+                $option_obj->setVar('option_color', $option_color[$i]);
                 $xpOptHandler->insert($option_obj);
                 unset($option_obj);
             }
             ++$i;
         }
-        include_once $GLOBALS['xoops']->path("class/template.php");
+        include_once $GLOBALS['xoops']->path('class/template.php');
         xoops_template_clear_module_cache($GLOBALS['xoopsModule']->getVar('mid'));
         xoops_template_clear_module_cache($xoopspoll->getVar('mid'));
         redirect_header("polls.php?op=edit&amp;poll_id={$poll_id}&amp;topic_id={$topic_id}", 2, _MD_POLL_DBUPDATED);
         break;
 
-    case "delete":
-        echo "<h4>" . _MD_POLL_POLLCONF . "</h4>\n";
+    case 'delete':
+        echo '<h4>' . _MD_POLL_POLLCONF . '</h4>\n';
         $poll_obj = $xpPollHandler->get($poll_id);
-        xoops_confirm(array('op' => 'delete_ok', 'topic_id' => $topic_id, 'poll_id' => $poll_id), 'polls.php', sprintf(_MD_POLL_RUSUREDEL, $poll_obj->getVar("question")));
+        xoops_confirm(array('op' => 'delete_ok', 'topic_id' => $topic_id, 'poll_id' => $poll_id), 'polls.php', sprintf(_MD_POLL_RUSUREDEL, $poll_obj->getVar('question')));
         break;
 
-    case "delete_ok":
+    case 'delete_ok':
         // check security token
         if (!$GLOBALS['xoopsSecurity']->check()) {
             redirect_header($_SERVER['PHP_SELF'], 2, implode('<br />', $GLOBALS['xoopsSecurity']->getErrors()));
@@ -297,7 +297,7 @@ switch ($op) {
             $msg = $xpPollHandler->getHtmlErrors();
         }
         if (false !== $status) {
-            include_once $GLOBALS['xoops']->path("class/template.php");
+            include_once $GLOBALS['xoops']->path('class/template.php');
             xoops_template_clear_module_cache($xoopsModule->getVar('mid'));
             xoops_template_clear_module_cache($xoopspoll->getVar('mid'));
             // delete comments for this poll
@@ -318,24 +318,24 @@ switch ($op) {
         redirect_header("viewtopic.php?topic_id={$topic_id}", 1, _MD_POLL_DBUPDATED);
         break;
 
-    case "restart":
+    case 'restart':
         $default_poll_duration = XoopspollConstants::DEFAULT_POLL_DURATION;
-        $poll_form             = new XoopsThemeForm(_MD_POLL_RESTARTPOLL, "poll_form", "polls.php", "post", true);
-        $expire_text           = new XoopsFormText(_MD_POLL_EXPIRATION . "<br /><small>" . _MD_POLL_FORMAT . "<br />" . sprintf(_MD_POLL_CURRENTTIME, formatTimestamp(time(), _DATESTRING)) . "</small>", "end_time", 20, 19, formatTimestamp(time() + $default_poll_duration, _DATESTRING));
+        $poll_form             = new XoopsThemeForm(_MD_POLL_RESTARTPOLL, 'poll_form', 'polls.php', 'post', true);
+        $expire_text           = new XoopsFormText(_MD_POLL_EXPIRATION . '<br /><small>' . _MD_POLL_FORMAT . '<br />' . sprintf(_MD_POLL_CURRENTTIME, formatTimestamp(time(), _DATESTRING)) . '</small>', 'end_time', 20, 19, formatTimestamp(time() + $default_poll_duration, _DATESTRING));
         $poll_form->addElement($expire_text);
-        $poll_form->addElement(new XoopsFormRadioYN(_MD_POLL_NOTIFY, "notify", 1));
-        $poll_form->addElement(new XoopsFormRadioYN(_MD_POLL_RESET, "reset", 0));
-        $poll_form->addElement(new XoopsFormHidden("op", "restart_ok"));
-        $poll_form->addElement(new XoopsFormHidden("topic_id", $topic_id));
-        $poll_form->addElement(new XoopsFormHidden("poll_id", $poll_id));
-        $poll_form->addElement(new XoopsFormButton("", "poll_submit", _MD_POLL_RESTART, "submit"));
+        $poll_form->addElement(new XoopsFormRadioYN(_MD_POLL_NOTIFY, 'notify', 1));
+        $poll_form->addElement(new XoopsFormRadioYN(_MD_POLL_RESET, 'reset', 0));
+        $poll_form->addElement(new XoopsFormHidden('op', 'restart_ok'));
+        $poll_form->addElement(new XoopsFormHidden('topic_id', $topic_id));
+        $poll_form->addElement(new XoopsFormHidden('poll_id', $poll_id));
+        $poll_form->addElement(new XoopsFormButton('', 'poll_submit', _MD_POLL_RESTART, 'submit'));
 
-        echo "<h4>" . _MD_POLL_POLLCONF . "</h4>\n";
+        echo '<h4>' . _MD_POLL_POLLCONF . "</h4>\n";
         $poll_form->display();
 
         break;
 
-    case "restart_ok":
+    case 'restart_ok':
         // check security token
         if (!$GLOBALS['xoopsSecurity']->check()) {
             redirect_header($_SERVER['PHP_SELF'], 2, implode('<br />', $GLOBALS['xoopsSecurity']->getErrors()));
@@ -348,26 +348,26 @@ switch ($op) {
 
         $end_time = (empty($_POST['end_time'])) ? 0 : (int)($_POST['end_time']);
         if (!empty($end_time)) {
-            $timezone = ($GLOBALS['xoopsUser'] instanceof XoopsUser) ? $GLOBALS['xoopsUser']->getVar("timezone") : null;
+            $timezone = ($GLOBALS['xoopsUser'] instanceof XoopsUser) ? $GLOBALS['xoopsUser']->getVar('timezone') : null;
             //        $poll_obj->setVar("end_time", userTimeToServerTime(strtotime($end_time), $timezone));
             //Hack by irmtfan
-            $poll_obj->setVar("end_time", userTimeToServerTime(method_exists('XoopsLocal', 'strtotime') ? XoopsLocal::strtotime($end_time) : strtotime($end_time), $timezone));
+            $poll_obj->setVar('end_time', userTimeToServerTime(method_exists('XoopsLocal', 'strtotime') ? XoopsLocal::strtotime($end_time) : strtotime($end_time), $timezone));
         } else {
-            $poll_obj->setVar("end_time", time() + $default_poll_duration);
+            $poll_obj->setVar('end_time', time() + $default_poll_duration);
         }
-        if (!empty($_POST["notify"]) && ($end_time > time())) {
+        if (!empty($_POST['notify']) && ($end_time > time())) {
             // if notify, set mail status to "not mailed"
-            $poll_obj->setVar("mail_status", $poll_not_mailed);
+            $poll_obj->setVar('mail_status', $poll_not_mailed);
         } else {
             // if not notify, set mail status to already "mailed"
-            $poll_obj->setVar("mail_status", $poll_mailed);
+            $poll_obj->setVar('mail_status', $poll_mailed);
         }
 
         if (!$xpPollHandler->insert($poll_obj)) {  // update the poll
             xoops_error($poll_obj->getHtmlErrors());
             exit();
         }
-        if (!empty($_POST["reset"])) { // reset all vote/voter counters
+        if (!empty($_POST['reset'])) { // reset all vote/voter counters
             $xpLogHandler =& xoops_getmodulehandler('log', 'xoopspoll');
             $xpLogHandler->deleteByPollId($poll_id);
             $xpOptHandler =& xoops_getmodulehandler('option', 'xoopspoll');
@@ -376,15 +376,15 @@ switch ($op) {
         }
 
         // clear the topic votes
-        include_once $GLOBALS['xoops']->path("class/template.php");
+        include_once $GLOBALS['xoops']->path('class/template.php');
         xoops_template_clear_module_cache($xoopsModule->getVar('mid'));
         xoops_template_clear_module_cache($xoopspoll->getVar('mid'));
         redirect_header("viewtopic.php?topic_id={$topic_id}", 1, _MD_POLL_DBUPDATED);
         break;
 
-    case "log":
+    case 'log':
         redirect_header($GLOBALS['xoops']->url("modules/xoopspoll/admin/main.php?op=log&amp;poll_id={$poll_id}"), 2, _MD_LOG_XOOPSPOLL_ADMIN_REDIRECT);
         break;
 }
 
-include $GLOBALS['xoops']->path("footer.php");
+include $GLOBALS['xoops']->path('footer.php');

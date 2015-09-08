@@ -17,7 +17,7 @@
     <td class='width30 left'><{$option.text}></td>
     <td class='left' style='margin-left: 1em;'>
     <{$option.percent}><{if $block.dispVotes}> (<{$option.count}>)<{/if}><br />
-    <div class='width90'><img src='<{$xoops_url}>/modules/xoopspoll/assets/images/colorbars/<{$option.color}>' style='height: 14px; width: <{$option.percent}>' alt='' /></div>
+    <div class='width90'><img src='<{$xoops_url}>/modules/xoopspoll/assets/images/colorbars/<{$option.color}>' style='height: 14px; width: <{$option.percent}>;' alt='' /></div>
     </td>
   </tr>
 <{/foreach}>

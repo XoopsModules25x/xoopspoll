@@ -23,9 +23,9 @@ xoops_loadLanguage('main', 'xoopspoll');
 xoops_load('pollUtility', 'xoopspoll');
 /*
 include_once $GLOBALS['xoops']->path( "modules"
-                                    . DIRECTORY_SEPARATOR . "xoopspoll"
-                                    . DIRECTORY_SEPARATOR . "class"
-                                    . DIRECTORY_SEPARATOR . "pollutility.php"
+                                    . "/xoopspoll"
+                                    . "/class"
+                                    . "/pollutility.php"
 );
 */
 /**
@@ -54,7 +54,7 @@ function xoopspollBlockSinglepollShow($options)
     /* if admin hasn't initialized block then we'll pick a poll for them
      * provided that one exists in the database
      */
-    if (0 == $options[1]) {
+    if (0 === $options[1]) {
         $criteria = null;
         /**
          * check to see if we want to include polls created with forum (newbb)
@@ -62,7 +62,7 @@ function xoopspollBlockSinglepollShow($options)
         if (($thisModule instanceof XoopsModule) && $thisModule->isactive() && $this_module_config['hide_forum_polls']) {
             $newbbModule =& $moduleHandler->getByDirname('newbb');
             if ($newbbModule instanceof XoopsModule && $newbbModule->isactive()) {
-                $topic_handler = xoops_getmodulehandler('topic', 'newbb');
+                $topic_handler = & xoops_getmodulehandler('topic', 'newbb');
                 $tFields       = array('topic_id', 'poll_id');
                 $tArray        = $topic_handler->getAll(new Criteria('topic_haspoll', 0, '>'), $tFields, false);
                 if (!empty($tArray)) {
@@ -71,8 +71,8 @@ function xoopspollBlockSinglepollShow($options)
                         $tcriteria[] = $t['poll_id'];
                     }
                     if (!empty($tcriteria)) {
-                        $tstring  = "(" . implode(',', $tcriteria) . ")";
-                        $criteria = new Criteria('poll_id', $tstring, "NOT IN");
+                        $tstring  = '(' . implode(',', $tcriteria) . ')';
+                        $criteria = new Criteria('poll_id', $tstring, 'NOT IN');
                     }
                 }
                 unset($topic_handler, $tFields, $tArray);
@@ -92,7 +92,7 @@ function xoopspollBlockSinglepollShow($options)
     }
 
     if ($pollObj instanceof XoopspollPoll) {
-        if (((!$pollObj->hasExpired() || (1 == $options[0])))) {
+        if (((!$pollObj->hasExpired() || (1 === $options[0])))) {
             $block['langVote']        = _MD_XOOPSPOLL_VOTE;
             $block['langResults']     = _MD_XOOPSPOLL_RESULTS;
             $block['langExpires']     = _MB_XOOPSPOLL_WILLEXPIRE;
@@ -102,7 +102,7 @@ function xoopspollBlockSinglepollShow($options)
             $block['showResultsLink'] = $options[2];
             $block['asList']          = $options[3];
             $block['thisModuleDir']   = 'xoopspoll';
-            $block['url']             = "http" . ((!empty($_SERVER['HTTPS'])) ? "s" : "") . "://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+            $block['url']             = 'http' . ((!empty($_SERVER['HTTPS'])) ? 's' : '') . '://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
             $block['dispVotes']       = $this_module_config['disp_vote_nums'];
 
             $optHandler =& xoops_getmodulehandler('option', 'xoopspoll');
@@ -114,7 +114,7 @@ function xoopspollBlockSinglepollShow($options)
             $optionsObjArray = $optHandler->getAll($criteria);
             //            $optionsObjArray = $optHandler->getAll($criteria, null, false);
 
-            if (XoopspollConstants::MULTIPLE_SELECT_POLL == $pollVars['multiple']) {
+            if (XoopspollConstants::MULTIPLE_SELECT_POLL === $pollVars['multiple']) {
                 $pollOptionType = 'checkbox';
                 $pollOptionName = 'option_id[]';
             } else {
@@ -147,7 +147,7 @@ function xoopspollBlockSinglepollShow($options)
                     'id'      => $optionObj->getVar('option_id'),
                     'text'    => $optionObj->getVar('option_text'),
                     'count'   => $optionObj->getVar('option_count'),
-                    'percent' => sprintf(" %01.1f%%", $percent),
+                    'percent' => sprintf(' %01.1f%%', $percent),
                     'color'   => $optionObj->getVar('option_color'));
             }
 
@@ -161,7 +161,7 @@ function xoopspollBlockSinglepollShow($options)
             if ($multiple && ($multiLimit > 0)) {
                 $lang_multi = sprintf(_MB_XOOPSPOLL_MULTITEXT, $multiLimit);
             } else {
-                $lang_multi = "";
+                $lang_multi = '';
             }
 
             $block['id']          = $pollVars['poll_id'];
@@ -212,14 +212,14 @@ function xoopspollBlockSinglepollEdit($options)
 
     // find out if want to show expired polls in block
     // (otherwise it will hide block once it expires)
-    if (0 == $options[0]) {
+    if (0 === $options[0]) {
         $chk0no  = " checked='checked'";
-        $chk0yes = "";
+        $chk0yes = '';
     } else {
-        $chk0no  = "";
+        $chk0no  = '';
         $chk0yes = " checked='checked'";
     }
-    $form = "<table><tr><td class='width25 middle'>" . _MB_XOOPSPOLL_SHOW_EXP . ":</td><td>" . "<label class='middle' for='yes'>" . _YES . "</label>\n" . "<input type='radio' name='options[0]' value='1'{$chk0yes} id='yes' />\n" . "<label class='middle' style='margin-left: 2em;' for='no'>&nbsp;&nbsp;&nbsp;" . _NO . "</label>\n" . "<input type='radio' name='options[0]' value='0'{$chk0no} id='no' />\n" . "</td></tr>\n";
+    $form = "<table><tr><td class='width25 middle'>" . _MB_XOOPSPOLL_SHOW_EXP . ':</td><td>' . "<label class='middle' for='yes'>" . _YES . "</label>\n" . "<input type='radio' name='options[0]' value='1'{$chk0yes} id='yes' />\n" . "<label class='middle' style='margin-left: 2em;' for='no'>&nbsp;&nbsp;&nbsp;" . _NO . '</label>\n' . "<input type='radio' name='options[0]' value='0'{$chk0no} id='no' />\n" . "</td></tr>\n";
 
     $pollHandler =& xoops_getmodulehandler('poll', 'xoopspoll');
     $pollFields  = array('poll_id', 'start_time', 'end_time', 'question', 'weight');
@@ -244,7 +244,7 @@ function xoopspollBlockSinglepollEdit($options)
     if (($thisModule instanceof XoopsModule) && $thisModule->isactive() && $this_module_config['hide_forum_polls']) {
         $newbbModule =& $moduleHandler->getByDirname('newbb');
         if ($newbbModule instanceof XoopsModule && $newbbModule->isactive()) {
-            $topic_handler = xoops_getmodulehandler('topic', 'newbb');
+            $topic_handler = & xoops_getmodulehandler('topic', 'newbb');
             $tFields       = array('topic_id', 'poll_id');
             $tArray        = $topic_handler->getAll(new Criteria('topic_haspoll', 0, '>'), $tFields, false);
             if (!empty($tArray)) {
@@ -253,8 +253,8 @@ function xoopspollBlockSinglepollEdit($options)
                     $tcriteria[] = $t['poll_id'];
                 }
                 if (!empty($tcriteria)) {
-                    $tstring = "(" . implode(',', $tcriteria) . ")";
-                    $criteria->add(new Criteria('poll_id', $tstring, "NOT IN"));
+                    $tstring = '(' . implode(',', $tcriteria) . ')';
+                    $criteria->add(new Criteria('poll_id', $tstring, 'NOT IN'));
                 }
             }
             unset($topic_handler, $tFields, $tArray);
@@ -265,36 +265,36 @@ function xoopspollBlockSinglepollEdit($options)
     $allPollsArray = $pollHandler->getAll($criteria, $pollFields, false);
 
     // next get a list of all available polls for select box
-    $form .= "<tr><td>" . _MB_XOOPSPOLL_POLLS . ":</td><td style='text-align: left; left-margin: 1em;'>\n";
+    $form .= '<tr><td>' . _MB_XOOPSPOLL_POLLS . ":</td><td style='text-align: left; left-margin: 1em;'>\n";
     if (empty($allPollsArray)) {
-        $form .= "<span class='errorMsg'>" . _MB_XOOPSPOLL_NONE_ACTIVE . "</span>";
+        $form .= "<span class='errorMsg'>" . _MB_XOOPSPOLL_NONE_ACTIVE . '</span>';
     } else {
         $form .= "<select name='options[1]'>\n";
         foreach ($allPollsArray as $thisPoll) {
-            $selected       = ($thisPoll['poll_id'] == $options[1]) ? " selected='selected'" : "";
+            $selected       = ($thisPoll['poll_id'] === $options[1]) ? " selected='selected'" : '';
             $taggedQuestion = ($thisPoll['end_time'] < time()) ? $thisPoll['question'] . '**' : $thisPoll['question'];
             $form .= "  <option value='" . $thisPoll['poll_id'] . "'{$selected}>" . $taggedQuestion . "</option>\n";
         }
-        $form .= "</select>\n" . "&nbsp;** - " . _MB_XOOPSPOLL_EXPIRED_INDICATOR . "\n";
+        $form .= "</select>\n" . '&nbsp;** - ' . _MB_XOOPSPOLL_EXPIRED_INDICATOR . "\n";
     }
-    if (0 == $options[2]) {
+    if (0 === $options[2]) {
         $chk2no  = " checked='checked'";
-        $chk2yes = "";
+        $chk2yes = '';
     } else {
-        $chk2no  = "";
+        $chk2no  = '';
         $chk2yes = " checked='checked'";
     }
-    $form .= "</td></tr>\n" . "<tr><td class='width25 middle'>" . _MB_XOOPSPOLL_SHOW_RESULT_LINK . ":</td><td>" . "<label class='middle' for='yesr'>" . _YES . "</label>\n" . "<input type='radio' name='options[2]' value='1'{$chk2yes} id='yesr' />\n" . "<label class='middle' style='margin-left: 2em;' for='nor'>&nbsp;&nbsp;&nbsp;" . _NO . "</label>\n" . "<input type='radio' name='options[2]' value='0'{$chk2no} id='nor' />\n" . "</td></tr>\n";
+    $form .= "</td></tr>\n" . "<tr><td class='width25 middle'>" . _MB_XOOPSPOLL_SHOW_RESULT_LINK . ':</td><td>' . "<label class='middle' for='yesr'>" . _YES . "</label>\n" . "<input type='radio' name='options[2]' value='1'{$chk2yes} id='yesr' />\n" . "<label class='middle' style='margin-left: 2em;' for='nor'>&nbsp;&nbsp;&nbsp;" . _NO . "</label>\n" . "<input type='radio' name='options[2]' value='0'{$chk2no} id='nor' />\n" . "</td></tr>\n";
 
     /* find out if want to show options as a list or as a select box */
-    if (XoopspollConstants::POLL_OPTIONS_SELECT == $options[3]) {
+    if (XoopspollConstants::POLL_OPTIONS_SELECT === $options[3]) {
         $chk3select = " checked='checked'";
-        $chk3list   = "";
+        $chk3list   = '';
     } else {
-        $chk3select = "";
+        $chk3select = '';
         $chk3list   = " checked='checked'";
     }
-    $form .= "<table><tr><td class='width25 middle'>" . _MB_XOOPSPOLL_SHOW_OPTIONS . ":</td><td>" . "<label class='middle' for='list'>" . _MB_XOOPSPOLL_LIST . "</label>\n" . "<input type='radio' name='options[3]' value='" . XoopspollConstants::POLL_OPTIONS_LIST . "'{$chk3list} id='list' />\n" . "<label class='middle' style='margin-left: 2em;' for='select'>&nbsp;&nbsp;&nbsp;" . _MB_XOOPSPOLL_SELECT . "</label>\n" . "<input type='radio' name='options[3]' value='" . XoopspollConstants::POLL_OPTIONS_SELECT . "'{$chk3select} id='select' />\n" . "</td></tr>\n" . "</table>\n";
+    $form .= "<table><tr><td class='width25 middle'>" . _MB_XOOPSPOLL_SHOW_OPTIONS . ':</td><td>' . "<label class='middle' for='list'>" . _MB_XOOPSPOLL_LIST . "</label>\n" . "<input type='radio' name='options[3]' value='" . XoopspollConstants::POLL_OPTIONS_LIST . "'{$chk3list} id='list' />\n" . "<label class='middle' style='margin-left: 2em;' for='select'>&nbsp;&nbsp;&nbsp;" . _MB_XOOPSPOLL_SELECT . "</label>\n" . "<input type='radio' name='options[3]' value='" . XoopspollConstants::POLL_OPTIONS_SELECT . "'{$chk3select} id='select' />\n" . "</td></tr>\n" . "</table>\n";
 
     return $form;
 }

@@ -57,7 +57,7 @@ class XoopspollOption extends XoopsObject
     /**
      * @param null $id
      */
-    function __construct(&$id = null)
+    public function __construct(&$id = null)
     {
         parent::__construct();
         xoops_load('constants', 'xoopspoll');
@@ -74,10 +74,10 @@ class XoopspollOption extends XoopsObject
         $this->optHandler = self::getStaticOptHandler();
         if (!empty($id)) {
             if (is_array($id)) {
-                $this->option = $this->optHandler->create();
+                $this->option = & $this->optHandler->create();
                 $this->option->assignVars($id);
             } else {
-                $this->option = $this->optHandler->get($id);
+                $this->option = & $this->optHandler->get($id);
             }
         }
     }
@@ -101,7 +101,7 @@ class XoopspollOption extends XoopsObject
      */
     public function store()
     {
-        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . "::" . __METHOD__ . " is deprecated since Xoopspoll 1.40, please use XoopspollPoll and XoopspollPollHandler classes instead.");
+        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use XoopspollPoll and XoopspollPollHandler classes instead.');
         $soptHandler = self::getStaticOptHandler();
 
         return $soptHandler->insert($this->option);
@@ -116,7 +116,7 @@ class XoopspollOption extends XoopsObject
      */
     public function deleteByPollId(&$pid)
     {
-        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . "::" . __METHOD__ . " is deprecated since Xoopspoll 1.40, please use XoopspollPollHandler::" . __METHOD__ . " instead.");
+        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use XoopspollPollHandler::' . __METHOD__ . ' instead.');
         $soptHandler = self::getStaticOptHandler();
         $criteria    = new Criteria('poll_id', (int)$pid, '=');
 
@@ -132,7 +132,7 @@ class XoopspollOption extends XoopsObject
      */
     public function getAllByPollId(&$pid)
     {
-        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . "::" . __METHOD__ . " is deprecated since Xoopspoll 1.40, please use XoopspollPollHandler::" . __METHOD__ . " instead.");
+        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use XoopspollPollHandler::' . __METHOD__ . ' instead.');
         $soptHandler = self::getStaticOptHandler();
         $criteria    = new Criteria('poll_id', (int)$pid, '=');
 
@@ -148,7 +148,7 @@ class XoopspollOption extends XoopsObject
      */
     public function resetCountByPollId(&$pid)
     {
-        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . "::" . __METHOD__ . " is deprecated since Xoopspoll 1.40, please use XoopspollPollHandler::" . __METHOD__ . " instead.");
+        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use XoopspollPollHandler::' . __METHOD__ . ' instead.');
         $soptHandler = self::getStaticOptHandler();
         $criteria    = new Criteria('poll_id', (int)$pid, '=');
 
@@ -184,7 +184,7 @@ class XoopspollOptionHandler extends XoopsPersistableObjectHandler
      *
      * @param mixed $db
      **/
-    function __construct(&$db)
+    public function __construct(&$db)
     {
         xoops_load('constants', 'xoopspoll');
         parent::__construct($db, 'xoopspoll_option', 'XoopspollOption', 'option_id', 'option_text');
@@ -195,7 +195,7 @@ class XoopspollOptionHandler extends XoopsPersistableObjectHandler
      *
      * @param mixed $db
      **/
-    function XoopspollOptionHandler(&$db)
+    public function XoopspollOptionHandler(&$db)
     {
         $this->__construct($db);
     }
@@ -246,7 +246,7 @@ class XoopspollOptionHandler extends XoopsPersistableObjectHandler
         if (!empty($orderby)) {
             $criteria->setOrder($orderby);
         }
-        $optionObjs = $this->getAll($criteria);
+        $optionObjs = & $this->getAll($criteria);
         if (empty($optionObjs)) {
             $optionObjs = array();
         }
@@ -296,12 +296,12 @@ class XoopspollOptionHandler extends XoopsPersistableObjectHandler
     {
         xoops_load('xoopsformloader');
         $pid            = (int)($pid);
-        $barcolor_array =& XoopsLists::getImgListAsArray($GLOBALS['xoops']->path("modules/xoopspoll/assets/images/colorbars/"));
+        $barcolor_array =& XoopsLists::getImgListAsArray($GLOBALS['xoops']->path('modules/xoopspoll/assets/images/colorbars/'));
 
         /**
          * get all the options for this poll & add some blank options to allow adding more
          */
-        if (0 == $pid) {
+        if (0 === $pid) {
             $newOpts = (2 * XoopspollConstants::NUM_ADDTL_OPTIONS);
         } else {
             $optionObjs = self::getAllByPollId($pid);
@@ -330,7 +330,7 @@ class XoopspollOptionHandler extends XoopsPersistableObjectHandler
             $colorSelect = new XoopsFormSelect('', "option_color[{$i}]", $optObj->getVar('option_color'));
             $colorSelect->addOptionArray($barcolor_array);
             $colorSelect->setExtra("onchange='showImgSelected(\"option_color_image[{$i}]\", \"option_color[{$i}]\", \"modules/xoopspoll/assets/images/colorbars\", \"\", \"" . $GLOBALS['xoops']->url('') . "\")'");
-            $colorLabel = new XoopsFormLabel('', "<img src='" . $GLOBALS['xoops']->url("modules/xoopspoll" . "/assets/images/colorbars/" . $optObj->getVar('option_color')) . "'" . " name='option_color_image[{$i}]'" . " id='option_color_image[{$i}]'" . " style='width: 30px; height: 15px;'" . " class='alignmiddle'" . " alt='' /><br />");
+            $colorLabel = new XoopsFormLabel('', "<img src='" . $GLOBALS['xoops']->url('modules/xoopspoll' . '/assets/images/colorbars/' . $optObj->getVar('option_color')) . "'" . " name='option_color_image[{$i}]'" . " id='option_color_image[{$i}]'" . " style='width: 30px; height: 15px;'" . " class='alignmiddle'" . " alt='' /><br />");
 
             $optionTray->addElement(new XoopsFormText('', "option_text[{$i}]", 50, 255, $optObj->getVar('option_text')));
             $optionTray->addElement(new XoopsFormHidden("option_id[{$i}]", $optObj->getVar('option_id')));

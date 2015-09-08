@@ -83,9 +83,9 @@ switch ($op) {
                     }
 
                     //setup poll objects for both umfrage and xoopspoll
-                    require_once $GLOBALS['xoops']->path("modules/umfrage/class/umfrage.php");
-                    require_once $GLOBALS['xoops']->path("modules/umfrage/class/umfrageoption.php");
-                    require_once $GLOBALS['xoops']->path("modules/umfrage/class/umfragelog.php");
+                    require_once $GLOBALS['xoops']->path('modules/umfrage/class/umfrage.php');
+                    require_once $GLOBALS['xoops']->path('modules/umfrage/class/umfrageoption.php');
+                    require_once $GLOBALS['xoops']->path('modules/umfrage/class/umfragelog.php');
 
                     $xpHandler    =& xoops_getmodulehandler('poll', 'xoopspoll');
                     $xpOptHandler =& xoops_getmodulehandler('option', 'xoopspoll');
@@ -108,7 +108,7 @@ switch ($op) {
                         $criteria->add(new Criteria('question', trim($umPollObj->getVar('question')), '='));
                         $criteria->setLimit(1);
                         $pollExists = $xpHandler->getCount($criteria);
-                        if (0 == $pollExists) {
+                        if (0 === $pollExists) {
                             // set the visibility for the poll
                             if (array_key_exists((int)($umPollObj->getVar('polltype')), $typeToVisMap)) {
                                 $visibility = $typeToVisMap[$umPollObj->getVar('polltype')];
@@ -140,7 +140,7 @@ switch ($op) {
                                 /* get the options for this poll and insert them */
                                 $umOptObjs = $umOptContainer->getAllByPollId($umPollObj->getVar('poll_id'));
                                 if (!$umOptObjs) {
-                                    throw new Exception("Could not find options for the " . $umPollObj->getVar('question') . " poll.");
+                                    throw new Exception('Could not find options for the ' . $umPollObj->getVar('question') . ' poll.');
                                 }
                                 foreach ($umOptObjs as $umOptObj) {
                                     $optValues = array(
@@ -157,7 +157,7 @@ switch ($op) {
                                         $oldOptId               = $umOptObj->getVar('option_id');
                                         $optionIdMap[$oldOptId] = $newOptId;
                                     } else {
-                                        throw new Exception(sprintf(_AM_XOOPSPOLL_OPTION_FAILED, $umOptObj->getVar('option_text'), $umPollObj->getVar('question'), "<br />" . $xpOptObj->getHtmlErrors()));
+                                        throw new Exception(sprintf(_AM_XOOPSPOLL_OPTION_FAILED, $umOptObj->getVar('option_text'), $umPollObj->getVar('question'), '<br />' . $xpOptObj->getHtmlErrors()));
                                     }
                                 }
                                 // now update the log for this poll
@@ -173,15 +173,15 @@ switch ($op) {
                                     $xpLogObj->setVars($logValues);
                                     $newLogId = $xpLogHandler->insert($xpLogObj);
                                     if (!$newLogId) {
-                                        throw new Exception(sprintf(_AM_XOOPSPOLL_LOG_FAILED, $umPollObj->getVar('question') . "<br />" . $xpLogObj->getHtmlErrors()));
+                                        throw new Exception(sprintf(_AM_XOOPSPOLL_LOG_FAILED, $umPollObj->getVar('question') . '<br />' . $xpLogObj->getHtmlErrors()));
                                     }
                                 }
                                 unset($optionIdMap, $umOptObjs, $allUmfrageLogObjs);
                             } else {
-                                throw new Exception(sprintf(_AM_XOOPSPOLL_QUESTION_FAILED, $umPollObj->getVar('question'), "<br />" . $xpObj->getHtmlErrors()));
+                                throw new Exception(sprintf(_AM_XOOPSPOLL_QUESTION_FAILED, $umPollObj->getVar('question'), '<br />' . $xpObj->getHtmlErrors()));
                             }
                         } else {
-                            throw new Exception(sprintf(_AM_XOOPSPOLL_QUESTION_IMPORT_FAILED, $umPollObj->getVar('question'), "<br />" . $umPollObj->getHtmlErrors()));
+                            throw new Exception(sprintf(_AM_XOOPSPOLL_QUESTION_IMPORT_FAILED, $umPollObj->getVar('question'), '<br />' . $umPollObj->getHtmlErrors()));
                         }
                         unset($criteria, $umOptObjs);
                     }

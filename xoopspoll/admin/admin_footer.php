@@ -25,7 +25,7 @@
  */
 
 if (!isset($GLOBALS['xoopsModule']) || !($GLOBALS['xoopsModule'] instanceof XoopsModule)) {
-    $GLOBALS['xoopsModule'] =& XoopsModule::getByDirname('xoopspoll');
+    $GLOBALS['xoopsModule'] =& XoopsModule::getByDirName('xoopspoll');
 }
 
 $moduleHandler =& xoops_gethandler('module');
@@ -38,9 +38,9 @@ echo "<div class='adminfooter'>\n"
    . "    <a href='" . $moduleInfo->getInfo('author_website_url') . "' target='_blank'><img src='{$pathImageAdmin}" . "/xoopsmicrobutton.gif' alt='" . $xoopsModule->getInfo('author_website_name') . "' title='" . $moduleInfo->getInfo('author_website_name') . "' /></a>\n"
    . "  </div>\n"
    . "  <div class='center smallsmall italic pad5'>\n"
-   . "    " . _AM_XOOPSPOLL_MAINTAINED_BY
+   . '    ' . _AM_XOOPSPOLL_MAINTAINED_BY
    . " <a class='tooltip' rel='external' href='http://" . $GLOBALS['xoopsModule']->getInfo('module_website_url') . "' "
    . "title='" . _AM_XOOPSPOLL_MAINTAINTED_TITLE . "'>" . _AM_XOOPSPOLL_MAINTAINTED_TEXT . "</a>\n"
    . "  </div>\n"
-   . "</div>";
+   . '</div>';
 xoops_cp_footer();

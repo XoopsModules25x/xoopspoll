@@ -54,7 +54,7 @@ if ($GLOBALS['xoopsModuleConfig']['hide_forum_polls']) {
     $module_handler =& xoops_gethandler('module');
     $newbbModule    =& $module_handler->getByDirname('newbb');
     if ($newbbModule instanceof XoopsModule && $newbbModule->isactive()) {
-        $topic_handler = xoops_getmodulehandler('topic', 'newbb');
+        $topic_handler = & xoops_getmodulehandler('topic', 'newbb');
         $tCount        = $topic_handler->getCount(new Criteria('poll_id', $pollId, '='));
         if (!empty($tCount)) {
             $pollId = 0; // treat it as if no poll requested
@@ -66,7 +66,7 @@ if (empty($pollId)) {
     redirect_header('index.php', XoopspollConstants::REDIRECT_DELAY_NONE);
 }
 $GLOBALS['xoopsOption']['template_main'] = 'xoopspoll_results.tpl';
-include $GLOBALS['xoops']->path("header.php");
+include $GLOBALS['xoops']->path('header.php');
 
 $pollHandler =& xoops_getmodulehandler('poll', 'xoopspoll');
 $pollObj     = $pollHandler->get($pollId);
@@ -82,13 +82,13 @@ if ((!empty($pollObj)) && ($pollObj instanceof XoopspollPoll)) {
 
     $visReturn  = $pollObj->isResultVisible();
     $isVisible  = (true === $visReturn) ? true : false;
-    $visibleMsg = ($isVisible) ? "" : $visReturn;
+    $visibleMsg = ($isVisible) ? '' : $visReturn;
 
     $GLOBALS['xoopsTpl']->assign(array(
                                      'visible_msg'    => $visibleMsg,
                                      'disp_votes'     => $GLOBALS['xoopsModuleConfig']['disp_vote_nums'],
-                                     'back_link_icon' => $GLOBALS['xoopsModule']->getInfo('icons16') . "/back.png",
-                                     'back_link'      => $GLOBALS['xoops']->url("modules/xoopspoll/index.php"),
+                                     'back_link_icon' => $GLOBALS['xoopsModule']->getInfo('icons16') . '/back.png',
+                                     'back_link'      => $GLOBALS['xoops']->url('modules/xoopspoll/index.php'),
                                      'back_text'      => _BACK));
 } else {
     redirect_header('index.php', XoopspollConstants::REDIRECT_DELAY_MEDIUM, _MD_XOOPSPOLL_ERROR_INVALID_POLLID);

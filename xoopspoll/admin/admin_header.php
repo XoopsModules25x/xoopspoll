@@ -45,8 +45,8 @@ $pathIcon32      = '../' . $GLOBALS['xoopsModule']->getInfo('icons32');
 $pathModuleAdmin = $GLOBALS['xoopsModule']->getInfo('dirmoduleadmin');
 
 // technically this isn't needed if only supporting XOOPS >= 2.5.5+
-//if (file_exists($GLOBALS['xoops']->path($pathModuleAdmin . DIRECTORY_SEPARATOR . "moduleadmin.php"))) {
-include_once $GLOBALS['xoops']->path($pathModuleAdmin . DIRECTORY_SEPARATOR . "moduleadmin.php");
+//if (file_exists($GLOBALS['xoops']->path($pathModuleAdmin . "/moduleadmin.php"))) {
+include_once $GLOBALS['xoops']->path($pathModuleAdmin . '/moduleadmin.php');
 //} else {
 //    redirect_header($GLOBALS['xoops']->path('admin.php'), XoopspollConstants::REDIRECT_DELAY_LONG, _AM_XOOPSPOLL_ADMIN_MISSING, false);
 //}
@@ -55,7 +55,7 @@ $myts =& MyTextSanitizer::getInstance();
 
 /*
 if (!isset($GLOBALS['xoopsTpl']) || !$GLOBALS['xoopsTpl'] instanceof XoopsTpl) {
-    include_once $GLOBALS['xoops']->path("class" . DIRECTORY_SEPARATOR . "template.php");
+    include_once $GLOBALS['xoops']->path("class" . "/template.php");
     $GLOBALS['xoopsTpl'] = new XoopsTpl();
 }
 */

@@ -17,7 +17,7 @@
  * @version         $Id: votepolls.php 9326 2012-04-14 21:53:58Z beckmi $
  */
 
-require_once __DIR__ . "/header.php";
+require_once __DIR__ . '/header.php';
 
 $poll_id  = (isset($_GET['poll_id'])) ? (int)($_GET['poll_id']) : 0;
 $poll_id  = (isset($_POST['poll_id'])) ? (int)($_POST['poll_id']) : $poll_id;
@@ -28,7 +28,7 @@ $forum    = (isset($_POST['forum'])) ? (int)($_POST['forum']) : $forum;
 
 $topic_handler =& xoops_getmodulehandler('topic', 'newbb');
 $topic_obj     =& $topic_handler->get($topic_id);
-if (!$topic_handler->getPermission($topic_obj->getVar("forum_id"), $topic_obj->getVar('topic_status'), "vote")) {
+if (!$topic_handler->getPermission($topic_obj->getVar('forum_id'), $topic_obj->getVar('topic_status'), 'vote')) {
     // irmtfan - issue with javascript:history.go(-1)
     redirect_header($_SERVER['HTTP_REFERER'], 2, _NOPERM);
 }
@@ -87,7 +87,7 @@ if ($pollObj instanceof XoopspollPoll) {
             }
             /* set anon user vote (and the time they voted) */
             if (!$GLOBALS['xoopsUser'] instanceof XoopsUser) {
-                xoops_load("pollUtility", 'xoopspoll');
+                xoops_load('pollUtility', 'xoopspoll');
                 XoopspollPollUtility::setVoteCookie($poll_id, $voteTime, 0);
             }
         } else {
@@ -100,10 +100,10 @@ if ($pollObj instanceof XoopspollPoll) {
 } else {
     $msg = _MD_XOOPSPOLL_ERROR_INVALID_POLLID;
 }
-if (null != $url) {
+if (null !== $url) {
     redirect_header($url, XoopspollConstants::REDIRECT_DELAY_MEDIUM, $msg);
 } else {
-    redirect_header($GLOBALS['xoops']->buildUrl("viewtopic.php", array('topic_id' => $topic_id)), XoopspollConstants::REDIRECT_DELAY_MEDIUM, $msg);
+    redirect_header($GLOBALS['xoops']->buildUrl('viewtopic.php', array('topic_id' => $topic_id)), XoopspollConstants::REDIRECT_DELAY_MEDIUM, $msg);
 }
 // irmtfan - simple url
 redirect_header("viewtopic.php?topic_id={$topic_id}", 1, $msg);

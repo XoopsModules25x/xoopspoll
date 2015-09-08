@@ -54,12 +54,12 @@ class XoopspollRenderer
     /**
      * @param null $poll
      */
-    function __construct(&$poll = null)
+    public function __construct(&$poll = null)
     {
         // setup handlers
-        $this->pHandler = xoops_getmodulehandler('poll', 'xoopspoll');
-        $this->oHandler = xoops_getmodulehandler('option', 'xoopspoll');
-        $this->lHandler = xoops_getmodulehandler('log', 'xoopspoll');
+        $this->pHandler = & xoops_getmodulehandler('poll', 'xoopspoll');
+        $this->oHandler = & xoops_getmodulehandler('option', 'xoopspoll');
+        $this->lHandler = & xoops_getmodulehandler('log', 'xoopspoll');
 
         if ($poll instanceof XoopspollPoll) {
             $this->pollObj = $poll;
@@ -110,7 +110,7 @@ class XoopspollRenderer
 
         }
 
-        if (XoopspollConstants::MULTIPLE_SELECT_POLL == $this->pollObj->getVar('multiple')) {
+        if (XoopspollConstants::MULTIPLE_SELECT_POLL === $this->pollObj->getVar('multiple')) {
             $optionType = 'checkbox';
             $optionName = 'option_id[]';
         } else {
@@ -141,11 +141,11 @@ class XoopspollRenderer
                          'poll'         => array(
                              'question'    => $myts->htmlSpecialChars($this->pollObj->getVar('question')),
                              'pollId'      => $this->pollObj->getVar('poll_id'),
-                             'viewresults' => $GLOBALS['xoops']->url("modules/xoopspoll/pollresults.php") . "?poll_id=" . $this->pollObj->getVar('poll_id'),
+                             'viewresults' => $GLOBALS['xoops']->url('modules/xoopspoll/pollresults.php') . '?poll_id=' . $this->pollObj->getVar('poll_id'),
                              'options'      => isset($options) ? $options : '',
                              'description' => $myts->displayTarea($myts->undoHtmlSpecialChars($this->pollObj->getVar('description')), 1)),
                          'can_vote'     => $can_vote,
-                         'action'       => $GLOBALS['xoops']->url("modules/xoopspoll/index.php"),
+                         'action'       => $GLOBALS['xoops']->url('modules/xoopspoll/index.php'),
                          'lang_vote'    => _MD_XOOPSPOLL_VOTE,
                          'lang_results' => _MD_XOOPSPOLL_RESULTS));
     }
@@ -193,20 +193,20 @@ class XoopspollRenderer
                 $width                = (int)($percent * 2);
                 $options[$i]['image'] = "<img src='" . $GLOBALS['xoops']->url("modules/xoopspoll/assets/images/colorbars/{$optionVars['option_color']}'") . " style='height: 14px; width: {$width}px; vertical-align: middle;' alt='" . (int)($percent) . "%' />";
             } else {
-                $options[$i]['image'] = "";
+                $options[$i]['image'] = '';
             }
 
             /* setup module config handler - required since this is called by newbb too */
-            $module_handler =& xoops_gethandler("module");
-            $config_handler =& xoops_gethandler("config");
-            $xp_module      =& $module_handler->getByDirname("xoopspoll");
-            $module_id      = $xp_module->getVar("mid");
+            $module_handler =& xoops_gethandler('module');
+            $config_handler =& xoops_gethandler('config');
+            $xp_module      =& $module_handler->getByDirname('xoopspoll');
+            $module_id      = $xp_module->getVar('mid');
             $xp_config      =& $config_handler->getConfigsByCat(0, $module_id);
 
             if ($xp_config['disp_vote_nums']) {
-                $options[$i]['percent'] = sprintf(" %01.1f%% (%d)", $percent, $optionVars['option_count']);
+                $options[$i]['percent'] = sprintf(' %01.1f%% (%d)', $percent, $optionVars['option_count']);
             } else {
-                $options[$i]['percent'] = sprintf(" %01.1f%%", $percent);
+                $options[$i]['percent'] = sprintf(' %01.1f%%', $percent);
             }
             $options[$i]['text']  = $optionVars['option_text'];
             $options[$i]['total'] = $optionVars['option_count'];
@@ -215,7 +215,7 @@ class XoopspollRenderer
         }
         $uid = (isset($GLOBALS['xoopsUser']) && is_object($GLOBALS['xoopsUser'])) ? $GLOBALS['xoopsUser']->getVar('uid') : 0;
         if (!$this->pollObj->hasExpired() && $this->pollObj->isAllowedToVote() && !$this->lHandler->hasVoted($this->pollObj->getVar('poll_id'), xoops_getenv('REMOTE_ADDR'), $uid)) {
-            $vote = "<a href='" . $GLOBALS['xoops']->url("modules/xoopspoll/index.php") . "?poll_id=" . $this->pollObj->getVar('poll_id') . "'>" . _MD_XOOPSPOLL_VOTE_NOW . "</a>";
+            $vote = "<a href='" . $GLOBALS['xoops']->url('modules/xoopspoll/index.php') . '?poll_id=' . $this->pollObj->getVar('poll_id') . "'>" . _MD_XOOPSPOLL_VOTE_NOW . '</a>';
         } else {
             $vote = null;
         }
@@ -223,7 +223,7 @@ class XoopspollRenderer
             $totalVotes  = sprintf(_MD_XOOPSPOLL_TOTALVOTES, $total);
             $totalVoters = sprintf(_MD_XOOPSPOLL_TOTALVOTERS, $this->pollObj->getVar('voters'));
         } else {
-            $totalVotes = $totalVoters = "";
+            $totalVotes = $totalVoters = '';
         }
 
         $tpl->assign('poll', array(
