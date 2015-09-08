@@ -37,7 +37,7 @@
 function xoopspoll_search($queryArray, $andor, $limit, $offset, $uid)
 {
     $ret = array();
-    if (0 == (int)($uid)) {
+    if (0 === (int)($uid)) {
         xoops_load('pollUtility', 'xoopspoll');
         $pollHandler =& xoops_getmodulehandler('poll', 'xoopspoll');
         $pollFields  = array('poll_id', 'user_id', 'question', 'start_time');
@@ -60,7 +60,7 @@ function xoopspoll_search($queryArray, $andor, $limit, $offset, $uid)
         if (($thisModule instanceof XoopsModule) && $thisModule->isactive() && $this_module_config['hide_forum_polls']) {
             $newbbModule =& $moduleHandler->getByDirname('newbb');
             if ($newbbModule instanceof XoopsModule && $newbbModule->isactive()) {
-                $topic_handler = xoops_getmodulehandler('topic', 'newbb');
+                $topic_handler = & xoops_getmodulehandler('topic', 'newbb');
                 $tFields       = array('topic_id', 'poll_id');
                 $tArray        = $topic_handler->getAll(new Criteria('topic_haspoll', 0, '>'), $tFields, false);
                 foreach ($tArray as $t) {

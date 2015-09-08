@@ -69,8 +69,8 @@ if (empty($pollId)) {
                                      'lang_results'        => _MD_XOOPSPOLL_RESULTS,
                                      'lang_mustlogin'      => _MD_XOOPSPOLL_MUSTLOGIN,
                                      'disp_votes'          => $GLOBALS['xoopsModuleConfig']['disp_vote_nums'],
-                                     'results_link_icon'   => $GLOBALS['xoopsModule']->getInfo('icons16') . "/open12.gif",
-                                     'obscured_icon'       => $GLOBALS['xoops']->url("modules/xoopspoll/assets/images/icons/obscured.png"),
+                                     'results_link_icon'   => $GLOBALS['xoopsModule']->getInfo('icons16') . '/open12.gif',
+                                     'obscured_icon'       => $GLOBALS['xoops']->url('modules/xoopspoll/assets/images/icons/obscured.png'),
                                      'lang_obscured_alt'   => _MD_XOOPSPOLL_OBSCURED,
                                      'lang_obscured_title' => _MD_XOOPSPOLL_OBSCURED));
 
@@ -87,7 +87,7 @@ if (empty($pollId)) {
         $module_handler =& xoops_gethandler('module');
         $newbbModule    =& $module_handler->getByDirname('newbb');
         if ($newbbModule instanceof XoopsModule && $newbbModule->isactive()) {
-            $topic_handler = xoops_getmodulehandler('topic', 'newbb');
+            $topic_handler = & xoops_getmodulehandler('topic', 'newbb');
             $tFields       = array('topic_id', 'poll_id');
             $tArray        = $topic_handler->getAll(new Criteria('topic_haspoll', 0, '>'), $tFields, false);
             if (!empty($tArray)) {
@@ -96,8 +96,8 @@ if (empty($pollId)) {
                     $tcriteria[] = $t['poll_id'];
                 }
                 if (!empty($tcriteria)) {
-                    $tstring = "(" . implode(',', $tcriteria) . ")";
-                    $criteria->add(new Criteria('poll_id', $tstring, "NOT IN"));
+                    $tstring = '(' . implode(',', $tcriteria) . ')';
+                    $criteria->add(new Criteria('poll_id', $tstring, 'NOT IN'));
                 }
             }
             unset($topic_handler, $tFields, $tArray);
@@ -189,7 +189,7 @@ if (empty($pollId)) {
                 }
                 /* set anon user vote (and the time they voted) */
                 if (!$GLOBALS['xoopsUser'] instanceof XoopsUser) {
-                    xoops_load("pollUtility", 'xoopspoll');
+                    xoops_load('pollUtility', 'xoopspoll');
                     XoopspollPollUtility::setVoteCookie($pollId, $voteTime, 0);
                 }
             } else {
@@ -202,15 +202,15 @@ if (empty($pollId)) {
     } else {
         $msg = _MD_XOOPSPOLL_ERROR_INVALID_POLLID;
     }
-    if (null != $url) {
+    if ('' !== $url) {
         redirect_header($url, XoopspollConstants::REDIRECT_DELAY_MEDIUM, $msg);
     } else {
-        redirect_header($GLOBALS['xoops']->buildUrl("pollresults.php", array('poll_id' => $pollId)), XoopspollConstants::REDIRECT_DELAY_MEDIUM, $msg);
+        redirect_header($GLOBALS['xoops']->buildUrl('pollresults.php', array('poll_id' => $pollId)), XoopspollConstants::REDIRECT_DELAY_MEDIUM, $msg);
     }
 } else {
     $pollObj = $pollHandler->get($pollId);
     if ($pollObj->hasExpired()) {
-        redirect_header($GLOBALS['xoops']->buildUrl("pollresults.php", array('poll_id' => $pollId)), XoopspollConstants::REDIRECT_DELAY_SHORT, _MD_XOOPSPOLL_SORRYEXPIRED);
+        redirect_header($GLOBALS['xoops']->buildUrl('pollresults.php', array('poll_id' => $pollId)), XoopspollConstants::REDIRECT_DELAY_SHORT, _MD_XOOPSPOLL_SORRYEXPIRED);
     }
     $GLOBALS['xoopsOption']['template_main'] = 'xoopspoll_view.tpl';
     include $GLOBALS['xoops']->path('header.php');

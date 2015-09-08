@@ -62,15 +62,15 @@ $modversion['onUninstall'] = 'include/onuninstall.inc.php';
 /**
  * About
  */
-$modversion['module_status']       = 'RC 1';
-$modversion['release_date']        = "2014/04/23";
+$modversion['module_status']       = 'RC 2';
+$modversion['release_date']        = '2015/09/03';
 $modversion['demo_site_url']       = '';
 $modversion['demo_site_name']      = '';
 $modversion['module_website_url']  = 'xoops.org';
 $modversion['module_website_name'] = 'XOOPS';
-$modversion['release_file']        = XOOPS_URL . "/modules/" . $modversion['dirname'] . "/docs/changelog.txt";
-$modversion["author_website_url"]  = 'http://www.myweb.ne.jp';
-$modversion["author_website_name"] = 'Kazumi Ono';
+$modversion['release_file']        = XOOPS_URL . '/modules/' . $modversion['dirname'] . '/docs/changelog.txt';
+$modversion['author_website_url']  = 'http://www.myweb.ne.jp';
+$modversion['author_website_name'] = 'Kazumi Ono';
 $modversion['min_php']             = '5.3.7';
 $modversion['min_xoops']           = '2.5.7';
 $modversion['min_admin']           = '1.1';
@@ -84,7 +84,7 @@ $modversion['min_db']              = array(
 $modversion['sqlfile']['mysql'] = 'sql/mysql.sql';
 /*
 $modversion['sqlfile']['postgresql'] = 'sql'
-                                     . DIRECTORY_SEPARATOR . 'pgsql.sql';
+                                     . '/pgsql.sql';
 */
 
 /**

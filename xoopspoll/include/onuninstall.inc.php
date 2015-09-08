@@ -29,7 +29,7 @@ function xoops_module_pre_uninstall_xoopspoll(&$module)
     $newbbModule    = &$module_handler->getByDirname('newbb');
     $success        = true;
     if (is_object($newbbModule) && $newbbModule->getVar('isactive')) {
-        $topic_handler = xoops_getmodulehandler('topic', 'newbb');
+        $topic_handler = & xoops_getmodulehandler('topic', 'newbb');
         $criteria      = new Criteria('topic_haspoll', 0, '>');
         $s1            = $topic_handler->updateAll('poll_id', 0, $criteria);  // clear any polls associated with forum topic
         $s2            = $topic_handler->updateAll('topic_haspoll', 0, $criteria); // clear haspoll indicator in forum
@@ -47,7 +47,7 @@ function xoops_module_uninstall_xoopspoll(&$module)
 {
     /* clear the voted cookie(s) for the admin user's machine when module is uninstalled */
     xoops_load('pollUtility', 'xoopspoll');
-    $success = XoopspollPollUtility::setVoteCookie("", null, (time() - 3600));
+    $success = XoopspollPollUtility::setVoteCookie('', null, (time() - 3600));
 
     return $success;
 }

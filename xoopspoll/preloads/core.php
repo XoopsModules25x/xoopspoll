@@ -45,7 +45,7 @@ class XoopspollCorePreload extends XoopsPreloadItem
     {
         // check once per user session if expired poll email has been sent
         if (empty($_SESSION['pollChecked'])) {
-            $pollHandler = xoops_getmodulehandler('poll', 'xoopspoll');
+            $pollHandler = & xoops_getmodulehandler('poll', 'xoopspoll');
             $pollHandler->mailResults();  //send the results of any polls that have ended
             unset($pollHandler);
             $_SESSION['pollChecked'] = 1;

@@ -35,7 +35,7 @@ class Xoopspoll extends XoopspollPoll
      */
     public function __construct(&$id = null)
     {
-        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . "::" . __CLASS__ . " is deprecated since Xoopspoll 1.40, please use XoopspollPoll and XoopspollPollHandler classes instead.");
+        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __CLASS__ . ' is deprecated since Xoopspoll 1.40, please use XoopspollPoll and XoopspollPollHandler classes instead.');
         parent::__construct($id);
     }
 
@@ -45,7 +45,7 @@ class Xoopspoll extends XoopspollPoll
      */
     public function XoopsPoll(&$id = null)
     {
-        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . "::" . __CLASS__ . " is deprecated since Xoopspoll 1.40, please use XoopspollPoll and XoopspollPollHandler classes instead.");
+        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __CLASS__ . ' is deprecated since Xoopspoll 1.40, please use XoopspollPoll and XoopspollPollHandler classes instead.');
         $this->__construct($id);
     }
 }
@@ -61,7 +61,7 @@ class XoopsPollHandler extends XoopspollPollHandler
      */
     public function __construct(&$db)
     {
-        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . "::" . __CLASS__ . " is deprecated since Xoopspoll 1.40, please use XoopspollPoll and XoopspollPollHandler classes instead.");
+        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __CLASS__ . ' is deprecated since Xoopspoll 1.40, please use XoopspollPoll and XoopspollPollHandler classes instead.');
         parent::__construct($db);
     }
 
@@ -71,7 +71,7 @@ class XoopsPollHandler extends XoopspollPollHandler
      */
     public function XoopsPollHandler(&$db)
     {
-        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . "::" . __CLASS__ . " is deprecated since Xoopspoll 1.40, please use XoopspollPoll and XoopspollPollHandler classes instead.");
+        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __CLASS__ . ' is deprecated since Xoopspoll 1.40, please use XoopspollPoll and XoopspollPollHandler classes instead.');
         $this->__construct($db);
     }
 }

@@ -38,9 +38,9 @@
 xoops_loadLanguage('main', 'xoopspoll');
 /*
 include_once $GLOBALS['xoops']->path( "modules"
-                                    . DIRECTORY_SEPARATOR . "xoopspoll"
-                                    . DIRECTORY_SEPARATOR . "class"
-                                    . DIRECTORY_SEPARATOR . "pollutility.php"
+                                    . "/xoopspoll"
+                                    . "/class"
+                                    . "/pollutility.php"
 );
 */
 xoops_load('pollUtility', 'xoopspoll');
@@ -70,7 +70,7 @@ function xoopspollBlockMultiShow($options)
     $criteria    = new CriteriaCompo();
     $criteria->add(new Criteria('display', XoopspollConstants::DISPLAY_POLL_IN_BLOCK, '='));
     $criteria->add(new Criteria('start_time', time(), '<='));
-    if (0 == $options[1]) {
+    if (0 === $options[1]) {
         $criteria->add(new Criteria('end_time', time(), '>='));
     }
 
@@ -80,7 +80,7 @@ function xoopspollBlockMultiShow($options)
     if (($thisModule instanceof XoopsModule) && $thisModule->isactive() && $this_module_config['hide_forum_polls']) {
         $newbbModule =& $moduleHandler->getByDirname('newbb');
         if ($newbbModule instanceof XoopsModule && $newbbModule->isactive()) {
-            $topic_handler = xoops_getmodulehandler('topic', 'newbb');
+            $topic_handler = & xoops_getmodulehandler('topic', 'newbb');
             $tFields       = array('topic_id', 'poll_id');
             $tArray        = $topic_handler->getAll(new Criteria('topic_haspoll', 0, '>'), $tFields, false);
             if (!empty($tArray)) {
@@ -89,8 +89,8 @@ function xoopspollBlockMultiShow($options)
                     $tcriteria[] = $t['poll_id'];
                 }
                 if (!empty($tcriteria)) {
-                    $tstring = "(" . implode(',', $tcriteria) . ")";
-                    $criteria->add(new Criteria('poll_id', $tstring, "NOT IN"));
+                    $tstring = '(' . implode(',', $tcriteria) . ')';
+                    $criteria->add(new Criteria('poll_id', $tstring, 'NOT IN'));
                 }
             }
             unset($topic_handler, $tFields, $tArray);
@@ -109,7 +109,7 @@ function xoopspollBlockMultiShow($options)
         $block['langExpired']   = _MB_XOOPSPOLL_HASEXPIRED;
         $block['langComments']  = _MB_XOOPSPOLL_COMMENTS;
         $block['langComment']   = _MB_XOOPSPOLL_COMMENT;
-        $block['url']           = "http" . ((!empty($_SERVER['HTTPS'])) ? "s" : "") . "://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+        $block['url']           = 'http' . ((!empty($_SERVER['HTTPS'])) ? 's' : '') . '://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
         $block['dispVotes']     = $this_module_config['disp_vote_nums'];
         $block['thisModuleDir'] = 'xoopspoll';
         $block['asList']        = $options[0];
@@ -123,7 +123,7 @@ function xoopspollBlockMultiShow($options)
             $criteria->add(new Criteria('poll_id', $pollVars['poll_id'], '='));
             $criteria->setSort('option_id');
             $pollOptionObjs = $optHandler->getAll($criteria);
-            if (XoopspollConstants::MULTIPLE_SELECT_POLL == $pollVars['multiple']) {
+            if (XoopspollConstants::MULTIPLE_SELECT_POLL === $pollVars['multiple']) {
                 $pollOptionType = 'checkbox';
                 $pollOptionName = 'option_id[]';
             } else {
@@ -148,7 +148,7 @@ function xoopspollBlockMultiShow($options)
                     'id'      => $optionObjVars['option_id'],
                     'text'    => $optionObjVars['option_text'],
                     'count'   => $optionObjVars['option_count'],
-                    'percent' => sprintf(" %01.1f%%", $percent),
+                    'percent' => sprintf(' %01.1f%%', $percent),
                     'color'   => $optionObjVars['option_color']);
             }
             unset($pollOptionObjs, $optionObjVars);
@@ -161,7 +161,7 @@ function xoopspollBlockMultiShow($options)
             if ($multiple && ($multiLimit > 0)) {
                 $lang_multi = sprintf(_MB_XOOPSPOLL_MULTITEXT, $multiLimit);
             } else {
-                $lang_multi = "";
+                $lang_multi = '';
             }
 
             $poll             = array(
@@ -210,21 +210,21 @@ function xoopspollBlockMultiEdit($options)
 
     // find out if want to show expired polls in block
     // (otherwise it will hide block once it expires)
-    if (0 == $options[1]) {
+    if (0 === $options[1]) {
         $chk0no  = " checked='checked'";
-        $chk0yes = "";
+        $chk0yes = '';
     } else {
-        $chk0no  = "";
+        $chk0no  = '';
         $chk0yes = " checked='checked'";
     }
     $form = "<table>\n" . "  <tr>\n" . "    <td class='width25 middle'>" . _MB_XOOPSPOLL_SHOW_EXP . ":</td>\n" . "    <td>\n" . "      <label class='middle' for='yes'>" . _YES . "</label>\n" . "      <input type='radio' name='options[1]' value='1'{$chk0yes} id='yes' />\n" . "      <label class='middle' style='margin-left: 2em;' for='no'>&nbsp;&nbsp;&nbsp;" . _NO . "</label>\n" . "      <input type='radio' name='options[1]' value='0'{$chk0no} id='no' />\n" . "    </td>\n" . "  </tr>\n";
 
     // find out if want to show options as a lists or as a select boxes
-    if (XoopspollConstants::POLL_OPTIONS_SELECT == $options[0]) {
+    if (XoopspollConstants::POLL_OPTIONS_SELECT === $options[0]) {
         $chk0select = " checked='checked'";
-        $chk0list   = "";
+        $chk0list   = '';
     } else {
-        $chk0select = "";
+        $chk0select = '';
         $chk0list   = " checked='checked'";
     }
     $form .= "  <tr>\n" . "    <td class='width25 middle'>" . _MB_XOOPSPOLL_SHOW_OPTIONS . ":</td>\n" . "    <td>\n" . "      <label class='middle' for='list'>" . _MB_XOOPSPOLL_LIST . "</label>\n" . "      <input type='radio' name='options[0]' value='" . XoopspollConstants::POLL_OPTIONS_LIST . "'{$chk0list} id='list' />\n" . "      <label class='middle' style='margin-left: 2em;' for='select'>&nbsp;&nbsp;&nbsp;" . _MB_XOOPSPOLL_SELECT . "</label>\n" . "      <input type='radio' name='options[0]' value='" . XoopspollConstants::POLL_OPTIONS_SELECT . "'{$chk0select} id='select' />\n" . "    </td>\n" . "  </tr>\n" . "</table>\n";

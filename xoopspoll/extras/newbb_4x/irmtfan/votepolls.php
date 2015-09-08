@@ -25,7 +25,7 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 //  ------------------------------------------------------------------------ //
 
-require_once __DIR__ . "/header.php";
+require_once __DIR__ . '/header.php';
 xoops_load('XoopsRequest');
 
 $poll_id  = (isset($_GET['poll_id'])) ? (int)($_GET['poll_id']) : 0;
@@ -37,7 +37,7 @@ $forum    = (isset($_POST['forum'])) ? (int)($_POST['forum']) : $forum;
 
 $topic_handler =& xoops_getmodulehandler('topic', 'newbb');
 $topic_obj     =& $topic_handler->get($topic_id);
-if (!$topic_handler->getPermission($topic_obj->getVar("forum_id"), $topic_obj->getVar('topic_status'), "vote")) {
+if (!$topic_handler->getPermission($topic_obj->getVar('forum_id'), $topic_obj->getVar('topic_status'), 'vote')) {
     // irmtfan - issue with javascript:history.go(-1)
     redirect_header($_SERVER['HTTP_REFERER'], 2, _NOPERM);
 }
@@ -48,7 +48,7 @@ if (empty($_POST['option_id'])) {
 }
 
 if (($xoopspoll instanceof XoopsModule) && $xoopspoll->isactive()) {
-    if ("xoopspoll" == $pollmodules) {
+    if ('xoopspoll' === $pollmodules) {
         /* xoopspoll module installed & active */
         $pollmodul = 'xoopspoll';
         xoops_load('constants', 'xoopspoll');
@@ -57,11 +57,11 @@ if (($xoopspoll instanceof XoopsModule) && $xoopspoll->isactive()) {
         $xpLogHandler  =& xoops_getmodulehandler('log', 'xoopspoll');
     } else { // Umfrage
         $pollmodul = 'umfrage';
-        include_once XOOPS_ROOT_PATH . "/modules/umfrage/include/constants.php";
-        include_once XOOPS_ROOT_PATH . "/modules/umfrage/class/umfrage.php";
-        include_once XOOPS_ROOT_PATH . "/modules/umfrage/class/umfrageoption.php";
-        include_once XOOPS_ROOT_PATH . "/modules/umfrage/class/umfragelog.php";
-        include_once XOOPS_ROOT_PATH . "/modules/umfrage/class/umfragerenderer.php";
+        include_once XOOPS_ROOT_PATH . '/modules/umfrage/include/constants.php';
+        include_once XOOPS_ROOT_PATH . '/modules/umfrage/class/umfrage.php';
+        include_once XOOPS_ROOT_PATH . '/modules/umfrage/class/umfrageoption.php';
+        include_once XOOPS_ROOT_PATH . '/modules/umfrage/class/umfragelog.php';
+        include_once XOOPS_ROOT_PATH . '/modules/umfrage/class/umfragerenderer.php';
     }
 } else {
     //no active poll module found
@@ -69,7 +69,7 @@ if (($xoopspoll instanceof XoopsModule) && $xoopspoll->isactive()) {
 }
 
 $mail_author = false;
-if ("xoopspoll" == $pollmodules) {
+if ('xoopspoll' === $pollmodules) {
     $pollObj = $xpPollHandler->get($poll_id);
     if ($pollObj instanceof XoopspollPoll) {
         if ($pollObj->getVar('multiple')) {
@@ -104,7 +104,7 @@ if ("xoopspoll" == $pollmodules) {
                 }
                 /* set anon user vote (and the time they voted) */
                 if (!$GLOBALS['xoopsUser'] instanceof XoopsUser) {
-                    xoops_load("pollUtility", 'xoopspoll');
+                    xoops_load('pollUtility', 'xoopspoll');
                     XoopspollPollUtility::setVoteCookie($poll_id, $voteTime, 0);
                 }
             } else {
@@ -117,7 +117,7 @@ if ("xoopspoll" == $pollmodules) {
     } else {
         $msg = _MD_XOOPSPOLL_ERROR_INVALID_POLLID;
     }
-    if (null != $url) {
+    if (null !== $url) {
         redirect_header($url, XoopspollConstants::REDIRECT_DELAY_MEDIUM, $msg);
     } else {
         /*
@@ -125,17 +125,17 @@ if ("xoopspoll" == $pollmodules) {
                                                        XoopspollConstants::REDIRECT_DELAY_MEDIUM,
                                                        $msg);
         */
-        redirect_header($GLOBALS['xoops']->buildUrl("viewtopic.php", array('topic_id' => $topic_id)), XoopspollConstants::REDIRECT_DELAY_MEDIUM, $msg);
+        redirect_header($GLOBALS['xoops']->buildUrl('viewtopic.php', array('topic_id' => $topic_id)), XoopspollConstants::REDIRECT_DELAY_MEDIUM, $msg);
     }
 } else { //Umfrage
     $poll = new Umfrage($poll_id);
     if (is_object($xoopsUser)) {
-        if (UmfrageLog::hasVoted($poll_id, $_SERVER['REMOTE_ADDR'], $xoopsUser->getVar("uid"))) {
+        if (UmfrageLog::hasVoted($poll_id, $_SERVER['REMOTE_ADDR'], $xoopsUser->getVar('uid'))) {
             $msg = _PL_ALREADYVOTED;
             setcookie("bb_polls[$poll_id]", 1);
         } else {
             // irmtfan save ip to db
-            $poll->vote($_POST['option_id'], $_SERVER['REMOTE_ADDR'], $xoopsUser->getVar("uid"));
+            $poll->vote($_POST['option_id'], $_SERVER['REMOTE_ADDR'], $xoopsUser->getVar('uid'));
             $poll->updateCount();
             $msg = _PL_THANKSFORVOTE;
             setcookie("bb_polls[$poll_id]", 1);
