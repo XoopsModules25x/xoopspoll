@@ -219,7 +219,7 @@ function xoopspollBlockSinglepollEdit($options)
         $chk0no  = '';
         $chk0yes = " checked='checked'";
     }
-    $form = "<table><tr><td class='width25 middle'>" . _MB_XOOPSPOLL_SHOW_EXP . ':</td><td>' . "<label class='middle' for='yes'>" . _YES . "</label>\n" . "<input type='radio' name='options[0]' value='1'{$chk0yes} id='yes' />\n" . "<label class='middle' style='margin-left: 2em;' for='no'>&nbsp;&nbsp;&nbsp;" . _NO . '</label>\n' . "<input type='radio' name='options[0]' value='0'{$chk0no} id='no' />\n" . "</td></tr>\n";
+    $form = "<table><tr><td class='width25 middle'>" . _MB_XOOPSPOLL_SHOW_EXP . ':</td><td>' . "<label class='middle' for='yes'>" . _YES . "</label>\n" . "<input type='radio' name='options[0]' value='1'{$chk0yes} id='yes' />\n" . "<label class='middle' style='margin-left: 2em;' for='no'>&nbsp;&nbsp;&nbsp;" . _NO . "</label>\n" . "<input type='radio' name='options[0]' value='0'{$chk0no} id='no' />\n" . "</td></tr>\n";
 
     $pollHandler =& xoops_getmodulehandler('poll', 'xoopspoll');
     $pollFields  = array('poll_id', 'start_time', 'end_time', 'question', 'weight');

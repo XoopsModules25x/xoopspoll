@@ -105,7 +105,7 @@ if (!newbb_isAdmin($forum_obj)) {
 switch ($op) {
     case 'add':
     case 'edit':
-        echo '<h4>' . _MD_POLL_EDITPOLL . '</h4>\n';
+        echo '<h4>' . _MD_POLL_EDITPOLL . "</h4>\n";
         $poll_obj = $xpPollHandler->get($poll_id); // will create poll if poll_id = 0 exist
         $poll_obj->renderForm($_SERVER['PHP_SELF'], 'post', array('topic_id' => $topic_id));
         break;
@@ -235,7 +235,7 @@ switch ($op) {
         $poll_form->addElement(new XoopsFormHidden('topic_id', $topic_id));
         $poll_form->addElement(new XoopsFormHidden('poll_id', $poll_id));
 
-        echo '<h4>' . _MD_POLL_POLLCONF . '</h4>\n';
+        echo '<h4>' . _MD_POLL_POLLCONF . "</h4>\n";
         $poll_form->display();
         break;
 
@@ -275,7 +275,7 @@ switch ($op) {
         break;
 
     case 'delete':
-        echo '<h4>' . _MD_POLL_POLLCONF . '</h4>\n';
+        echo '<h4>' . _MD_POLL_POLLCONF . "</h4>\n";
         $poll_obj = $xpPollHandler->get($poll_id);
         xoops_confirm(array('op' => 'delete_ok', 'topic_id' => $topic_id, 'poll_id' => $poll_id), 'polls.php', sprintf(_MD_POLL_RUSUREDEL, $poll_obj->getVar('question')));
         break;
