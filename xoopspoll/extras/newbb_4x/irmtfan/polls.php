@@ -298,7 +298,7 @@ switch ($op) {
     case 'add':
     case 'edit':
         if ('xoopspoll' === $pollmodules) {
-            echo '<h4>' . _MD_POLL_EDITPOLL . '</h4>\n';
+            echo '<h4>' . _MD_POLL_EDITPOLL . "</h4>\n";
             $poll_obj = $xpPollHandler->get($poll_id); // will create poll if poll_id = 0 exist
             $poll_obj->renderForm($_SERVER['PHP_SELF'], 'post', array('topic_id' => $topic_id));
         } else { // Umfrage
@@ -360,7 +360,7 @@ switch ($op) {
             //        $poll_form->addElement(new XoopsFormButton("", "poll_submit", _SUBMIT, "submit"));
             $poll_form->addElement(new XoopsFormButtonTray('poll_submit', _SUBMIT, 'submit'));
 
-            echo '<h4>' . _MD_POLL_POLLCONF . '</h4>\n';
+            echo '<h4>' . _MD_POLL_POLLCONF . "</h4>\n";
             $poll_form->display();
         }
         break;
@@ -571,7 +571,7 @@ switch ($op) {
         $poll_form->addElement(new XoopsFormHidden('topic_id', $topic_id));
         $poll_form->addElement(new XoopsFormHidden('poll_id', $poll_id));
 
-        echo '<h4>' . _MD_POLL_POLLCONF . '</h4>\n';
+        echo '<h4>' . _MD_POLL_POLLCONF . "</h4>\n";
         $poll_form->display();
         break;
 
@@ -621,7 +621,7 @@ switch ($op) {
         break;
 
     case 'delete':
-        echo '<h4>' . _MD_POLL_POLLCONF . '</h4>\n';
+        echo '<h4>' . _MD_POLL_POLLCONF . "</h4>\n";
         if ('xoopspoll' === $pollmodules) {
             $poll_obj = $xpPollHandler->get($poll_id);
         } else {
@@ -702,7 +702,7 @@ switch ($op) {
         $poll_form->addElement(new XoopsFormHidden('poll_id', $poll_id));
         $poll_form->addElement(new XoopsFormButton('', 'poll_submit', _MD_POLL_RESTART, 'submit'));
 
-        echo '<h4>' . _MD_POLL_POLLCONF . '</h4>\n';
+        echo '<h4>' . _MD_POLL_POLLCONF . "</h4>\n";
         $poll_form->display();
 
         break;
@@ -785,7 +785,7 @@ switch ($op) {
         if ('xoopspoll' === $pollmodules) {
             redirect_header($GLOBALS['xoops']->url("modules/xoopspoll/admin/main.php?op=log&amp;poll_id={$poll_id}"), 2, _MD_LOG_XOOPSPOLL_ADMIN_REDIRECT);
         } else {
-            echo '<h4>' . _MD_POLL_POLLCONF . '</h4>\n' . '<br />' . _MD_VIEW_LOG . '\n' . '<br />' . _MD_LOG_NOT_IMPLEMENTED . '\n';
+            echo '<h4>' . _MD_POLL_POLLCONF . "</h4>\n" . '<br />' . _MD_VIEW_LOG . "\n" . '<br />' . _MD_LOG_NOT_IMPLEMENTED . "\n";
         }
         break;
 }
