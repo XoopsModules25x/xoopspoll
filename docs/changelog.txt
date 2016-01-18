@@ -1,0 +1,113 @@
+1.40 RC1            NOT RELEASED
+=================================
+- reversed adding "mod_" to tables names (mamba)
+- replaced XoopspollRequest with XoopsRequest (mamba)
+- fix bug #6: wrong check on $_POST variable (slider84/mamba)
+- fix bug #4: missing routine for table update (slider84/mamba)
+- updated intval() with (int) (mamba)
+- updated strval() with (string) (mamba)
+- code cleaning (mamba)
+- updated URL link to XOOPS (mamba)
+- fix error if no poll options in NewBB (cesagonchu/mamba)
+
+
+1.40 BETA 2          2014-04-23
+=================================
++ moved /css and /images to /assets (mamba)
++ renamed template extensions from .html to .tpl (mamba)
+
+1.40 BETA (ZySpec) 2013/05/27
+=================================
++ added ability to change poll results visibility
+++ results always visible
+++ only see results after voted
+++ only see results after poll ends
+++ never show users the results
++ added ability to import polls from umfrage module
++ added ability to set poll start date to schedule future poll
++ added block to display a specific poll
++ added XOOPS search for question and answer fields
++ added support for SmartClone module (see extras folder)
++ added module preference (config) to show/hide vote/voter count
++ added ability for admin to clone a poll
++ added summary of results on admin log display
++ added ability for admin to PM voter in poll administration
++ added black option color graphic (./assets/images/optioncolorbars/black.gif)
++ added handler to poll, option and log objects/classes
++ added 'min_db' to moduleconfig array
++ added updated plugin for XOOPS marquee module in extras folder
++ added ability to mail notification to poll voter (XoopsUsers only)
++ added ability to set maximum number of options for multi-select poll
++ added use of XoopsEditors to enable HTML in poll descriptions (selected via XOOPS Preferences)
++ added ability to hide polls created with forum (newbb) from frontside of polls module
++ added obscured graphic to hide votes/voters polls that don't have visible results
++ added Userlog plugin for poll_id from pollresults.php and index.php
++ fixed sorting bug when displaying log in admin
++ fixed bug where users could vote on expired polls
++ fixed bug where 'anonymous' table column wasn't created on module update
++ changed loading method for poll & option classes
++ changed admin form display to use methods in classes
++ changed admin to use XoopsPageNav instead of custom code
++ changed poll admin to allow adding more than 10 options
++ changed defines to use more standard naming nomenclature
++ changed date selection in admin to use jquery calendar
++ changed determination of when to send result email (use XOOPS preload)
++ changed minimum system requirements to XOOPS 2.5.5, PHP 5.3
++ changed name of ./admin/xoopspoll.php to ./admin/main.php
++ changed poll description from varchar to tinytext to allow longer descriptions
++ changed description to contain html
++ changed some database keys to improve indexing performance
++ improved integration with newbb (forum) module
++ improved HTML rendering
++ general code cleanup
+
+1.33 (Mamba) 2011/12/12
+=================================
++ removed all icons files and point them to /Frameworks/moduleclasses
++ updated to the latest ModuleAdmin Class
+
+1.32 (Mamba) 2011/04/17 (Internal version)
+=================================
++ converted table views to use standard views
++ added Dashboard
++ changed GUI to standard XOOPS Module GUI
++ included ModuleAdmin class from Mage
+
+1.31 (Mazarin)
+=================================
+Further update of the original XoopsPoll module.
+
+Added features:
++ Log of votes fore each poll available in admin section
++ No. of comments incl. link to them available in block (if comments enabled)
++ No. of total votes available in block
++ Poll description on the voting and results pages
++ Redirect back to original page after vote if voting from block, otherwise redirect to results page
+
+Changes/bugfixes:
++ Removal of links to vote on index and results pages if a user has already voted
+
+Install:
+If upgrading from 1.3, just copy over original files and update module.
+If upgrading from version 1.2 or earlier, please uninstall original version of Xoopspoll and make a fresh install.
+
+1.30 (Mazarin)
+=================================
+
+Small update of the original XoopsPoll module.
+
+Added features:
++ Possibility to choose whether to allow anonymous voting (by poll)
++ Block display of results after expiration or if user has already voted
++ Block display of end time of poll
+
+Changes/bugfixes:
+- Logic for checking if user has already voted updated/changed
+
+Install:
+Due to database changes, please uninstall your old version of XoopsPoll before installing this one (i.e. no update)
+
+
+1.0 (Onokazu)
+=================================
+- Original Release
