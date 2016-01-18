@@ -42,10 +42,9 @@ class Post extends ArtObject
     //class Post extends XoopsObject {
     public $attachment_array = array();
 
-    public function Post()
+    public function __construct()
     {
-        $this->ArtObject('bb_posts');
-        //$this->XoopsObject();
+        parent::__construct('bb_posts');
         $this->initVar('post_id', XOBJ_DTYPE_INT);
         $this->initVar('topic_id', XOBJ_DTYPE_INT, 0, true);
         $this->initVar('forum_id', XOBJ_DTYPE_INT, 0, true);
