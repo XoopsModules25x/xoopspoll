@@ -210,6 +210,7 @@ class XoopspollRenderer
             }
             $options[$i]['text']  = $optionVars['option_text'];
             $options[$i]['total'] = $optionVars['option_count'];
+            $options[$i]['value'] = (int) $percent;
             ++$i;
             unset($optionVars);
         }
