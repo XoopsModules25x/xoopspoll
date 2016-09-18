@@ -36,9 +36,9 @@
 
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-$moduleHandler  =& xoops_gethandler('module');
-$xoopsModule    =& XoopsModule::getByDirName('xoopspoll');
-$moduleInfo     =& $moduleHandler->get($xoopsModule->getVar('mid'));
+$moduleHandler  = xoops_gethandler('module');
+$xoopsModule    = XoopsModule::getByDirName('xoopspoll');
+$moduleInfo     = $moduleHandler->get($xoopsModule->getVar('mid'));
 $pathImageAdmin = $moduleInfo->getInfo('icons32');
 
 /**
