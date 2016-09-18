@@ -51,7 +51,7 @@ class XoopspollLog extends XoopsObject
      * Constructor
      * @param null $id
      */
-    public function __construct(&$id = null)
+    public function __construct($id = null)
     {
         parent::__construct();
         $this->initVar('log_id', XOBJ_DTYPE_INT, 0);
@@ -68,7 +68,7 @@ class XoopspollLog extends XoopsObject
     /**
      * @param null $id
      */
-    public function XoopspollLog(&$id = null)
+    public function XoopspollLog($id = null)
     {
         $this->__construct($id);
     }
@@ -79,7 +79,7 @@ class XoopspollLog extends XoopsObject
      * @param $pid
      * @return
      */
-    public static function deleteByPollId(&$pid)
+    public static function deleteByPollId($pid)
     {
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __FUNCTION__ . ' is deprecated since Xoopspoll 1.40, please use XoopspollLog and XoopspollLogHandler methods instead.');
         $slogHandler = self::getStaticLogHandler();
@@ -92,7 +92,7 @@ class XoopspollLog extends XoopsObject
      * @param $opt_id
      * @return mixed
      */
-    public static function deleteByOptionId(&$opt_id)
+    public static function deleteByOptionId($opt_id)
     {
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __FUNCTION__ . ' is deprecated since Xoopspoll 1.40, please use XoopspollLog and XoopspollLogHandler methods instead.');
         $slogHandler = self::getStaticLogHandler();
@@ -107,7 +107,7 @@ class XoopspollLog extends XoopsObject
      * @param $uid
      * @return mixed
      */
-    public static function hasVoted(&$pid, &$ip, &$uid)
+    public static function hasVoted($pid, $ip, $uid)
     {
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __FUNCTION__ . ' is deprecated since Xoopspoll 1.40, please use XoopspollLog and XoopspollLogHandler methods instead.');
         $slogHandler = self::getStaticLogHandler();
@@ -124,7 +124,7 @@ class XoopspollLog extends XoopsObject
 
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __FUNCTION__ . ' is deprecated since Xoopspoll 1.40, please use XoopspollLog and XoopspollLogHandler methods instead.');
         if (!isset($log_h)) {
-            $log_h =& xoops_getmodulehandler('log', 'xoopspoll');
+            $log_h = xoops_getmodulehandler('log', 'xoopspoll');
         }
 
         return $log_h;
@@ -144,7 +144,7 @@ class XoopspollLogHandler extends XoopsPersistableObjectHandler
      *
      * @param mixed $db
      **/
-    public function __construct(&$db)
+    public function __construct($db)
     {
         parent::__construct($db, 'xoopspoll_log', 'XoopspollLog', 'log_id');
     }
@@ -154,7 +154,7 @@ class XoopspollLogHandler extends XoopsPersistableObjectHandler
      *
      * @param mixed $db
      **/
-    public function XoopspollLogHandler(&$db)
+    public function XoopspollLogHandler($db)
     {
         $this->__construct($db);
     }
@@ -204,7 +204,7 @@ class XoopspollLogHandler extends XoopsPersistableObjectHandler
         $criteria->add(new Criteria('poll_id', (int)($pid), '='));
         $criteria->setSort($sortby);
         $criteria->setOrder($orderby);
-        $ret = & $this->getAll($criteria);
+        $ret = $this->getAll($criteria);
 
         return $ret;
     }
@@ -272,7 +272,7 @@ class XoopspollLogHandler extends XoopsPersistableObjectHandler
         xoops_load('pollUtility', 'xoopspoll');
         $voted_polls = XoopspollPollUtility::getVoteCookie();
         //        $voted_polls = array();  //TESTING HACK TO BYPASS COOKIES
-        $pollHandler =& xoops_getmodulehandler('poll', 'xoopspoll');
+        $pollHandler = xoops_getmodulehandler('poll', 'xoopspoll');
         if ($pollObj = $pollHandler->get($pid)) {
             $pollStarttime = $pollObj->getVar('start_time');
             $criteria      = new CriteriaCompo();

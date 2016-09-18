@@ -54,12 +54,12 @@ class XoopspollRenderer
     /**
      * @param null $poll
      */
-    public function __construct(&$poll = null)
+    public function __construct($poll = null)
     {
         // setup handlers
-        $this->pHandler = & xoops_getmodulehandler('poll', 'xoopspoll');
-        $this->oHandler = & xoops_getmodulehandler('option', 'xoopspoll');
-        $this->lHandler = & xoops_getmodulehandler('log', 'xoopspoll');
+        $this->pHandler = xoops_getmodulehandler('poll', 'xoopspoll');
+        $this->oHandler = xoops_getmodulehandler('option', 'xoopspoll');
+        $this->lHandler = xoops_getmodulehandler('log', 'xoopspoll');
 
         if ($poll instanceof XoopspollPoll) {
             $this->pollObj = $poll;
@@ -73,7 +73,7 @@ class XoopspollRenderer
     /**
      * @param null $poll
      */
-    public function XoopspollRenderer(&$poll = null)
+    public function XoopspollRenderer($poll = null)
     {
         $this->__construct($poll);
     }
@@ -99,9 +99,9 @@ class XoopspollRenderer
      * @var    object $tpl
      * @return null
      */
-    public function assignForm(&$tpl)
+    public function assignForm($tpl)
     {
-        $myts       =& MyTextSanitizer::getInstance();
+        $myts       = MyTextSanitizer::getInstance();
         $optionObjs = $this->oHandler->getAllByPollId($this->pollObj->getVar('poll_id'));
 
         if (empty($optionObjs)) {
@@ -110,7 +110,7 @@ class XoopspollRenderer
 
         }
 
-        if (XoopspollConstants::MULTIPLE_SELECT_POLL === $this->pollObj->getVar('multiple')) {
+        if (XoopspollConstants::MULTIPLE_SELECT_POLL === (int) $this->pollObj->getVar('multiple')) {
             $optionType = 'checkbox';
             $optionName = 'option_id[]';
         } else {
@@ -171,15 +171,15 @@ class XoopspollRenderer
      * @var    object tpl
      * @return null
      */
-    public function assignResults(&$tpl)
+    public function assignResults($tpl)
     {
-        $myts             =& MyTextSanitizer::getInstance();
+        $myts             = MyTextSanitizer::getInstance();
         $xuEndTimestamp   = xoops_getUserTimestamp($this->pollObj->getVar('end_time'));
         $xuEndFormatted   = ucfirst(date(_MEDIUMDATESTRING, $xuEndTimestamp));
         $xuStartTimestamp = xoops_getUserTimestamp($this->pollObj->getVar('start_time'));
         $xuStartFormatted = ucfirst(date(_MEDIUMDATESTRING, $xuStartTimestamp));
 
-        //        $lHandler =& xoops_getmodulehandler('log', 'xoopspoll');
+        //        $lHandler = xoops_getmodulehandler('log', 'xoopspoll');
         $criteria = new CriteriaCompo();
         $criteria->add(new Criteria('poll_id', $this->pollObj->getVar('poll_id'), '='));
         $criteria->setSort('option_id');
@@ -197,11 +197,11 @@ class XoopspollRenderer
             }
 
             /* setup module config handler - required since this is called by newbb too */
-            $module_handler =& xoops_gethandler('module');
-            $config_handler =& xoops_gethandler('config');
-            $xp_module      =& $module_handler->getByDirname('xoopspoll');
+            $module_handler = xoops_gethandler('module');
+            $config_handler = xoops_gethandler('config');
+            $xp_module      = $module_handler->getByDirname('xoopspoll');
             $module_id      = $xp_module->getVar('mid');
-            $xp_config      =& $config_handler->getConfigsByCat(0, $module_id);
+            $xp_config      = $config_handler->getConfigsByCat(0, $module_id);
 
             if ($xp_config['disp_vote_nums']) {
                 $options[$i]['percent'] = sprintf(' %01.1f%% (%d)', $percent, $optionVars['option_count']);
