@@ -4,7 +4,6 @@
  *
  * @package   ::    xoopspoll
  * @subpackage:: defines
- * @version   ::    $Id: admin.php 11547 2013-05-15 20:47:32Z zyspec $
  */
 define('_AM_XOOPSPOLL_DBUPDATED', 'Database Updated Successfully!');
 define('_AM_XOOPSPOLL_POLLCONF', 'Polls Configuration');

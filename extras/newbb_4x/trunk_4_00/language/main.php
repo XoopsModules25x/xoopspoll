@@ -1,5 +1,5 @@
 <?php
-// $Id: main.php 10055 2012-08-11 12:46:10Z beckmi $
+//
 if (defined('MAIN_DEFINED')) {
     return;
 }
@@ -115,34 +115,34 @@ define('_MD_SEARCHTHISFORUM', 'Search This Forum');
 define('_MD_TOPIC_SUBJECTC', 'Topic Prefix:');
 
 define('_MD_RATINGS', 'Ratings');
-define('_MD_CAN_ACCESS', 'You <strong>can</strong> access the forum.<br />');
-define('_MD_CANNOT_ACCESS', 'You <strong>cannot</strong> access the forum.<br />');
-define('_MD_CAN_POST', 'You <strong>can</strong> start a new topic.<br />');
-define('_MD_CANNOT_POST', 'You <strong>cannot</strong> start a new topic.<br />');
-define('_MD_CAN_VIEW', 'You <strong>can</strong> view topic.<br />');
-define('_MD_CANNOT_VIEW', 'You <strong>cannot</strong> view topic.<br />');
-define('_MD_CAN_REPLY', 'You <strong>can</strong> reply to posts.<br />');
-define('_MD_CANNOT_REPLY', 'You <strong>cannot</strong> reply to posts.<br />');
-define('_MD_CAN_EDIT', 'You <strong>can</strong> edit your posts.<br />');
-define('_MD_CANNOT_EDIT', 'You <strong>cannot</strong> edit your posts.<br />');
-define('_MD_CAN_DELETE', 'You <strong>can</strong> delete your posts.<br />');
-define('_MD_CANNOT_DELETE', 'You <strong>cannot</strong> delete your posts.<br />');
-define('_MD_CAN_ADDPOLL', 'You <strong>can</strong> add new polls.<br />');
-define('_MD_CANNOT_ADDPOLL', 'You <strong>cannot</strong> add new polls.<br />');
-define('_MD_CAN_VOTE', 'You <strong>can</strong> vote in polls.<br />');
-define('_MD_CANNOT_VOTE', 'You <strong>cannot</strong> vote in polls.<br />');
-define('_MD_CAN_ATTACH', 'You <strong>can</strong> attach files to posts.<br />');
-define('_MD_CANNOT_ATTACH', 'You <strong>cannot</strong> attach files to posts.<br />');
-define('_MD_CAN_NOAPPROVE', 'You <strong>can</strong> post without approval.<br />');
-define('_MD_CANNOT_NOAPPROVE', 'You <strong>cannot</strong> post without approval.<br />');
-define('_MD_CAN_TYPE', 'You <strong>can</strong> use topic type.<br />');
-define('_MD_CANNOT_TYPE', 'You <strong>cannot</strong> use topic type.<br />');
-define('_MD_CAN_HTML', 'You <strong>can</strong> use HTML syntax.<br />');
-define('_MD_CANNOT_HTML', 'You <strong>cannot</strong> use HTML syntax.<br />');
-define('_MD_CAN_UPLOAD', 'You <strong>can</strong> upload.<br />');
-define('_MD_CANNOT_UPLOAD', 'You <strong>cannot</strong> upload.<br />');
-define('_MD_CAN_SIGNATURE', 'You <strong>can</strong> use signature.<br />');
-define('_MD_CANNOT_SIGNATURE', 'You <strong>cannot</strong> use signature.<br />');
+define('_MD_CAN_ACCESS', 'You <strong>can</strong> access the forum.<br>');
+define('_MD_CANNOT_ACCESS', 'You <strong>cannot</strong> access the forum.<br>');
+define('_MD_CAN_POST', 'You <strong>can</strong> start a new topic.<br>');
+define('_MD_CANNOT_POST', 'You <strong>cannot</strong> start a new topic.<br>');
+define('_MD_CAN_VIEW', 'You <strong>can</strong> view topic.<br>');
+define('_MD_CANNOT_VIEW', 'You <strong>cannot</strong> view topic.<br>');
+define('_MD_CAN_REPLY', 'You <strong>can</strong> reply to posts.<br>');
+define('_MD_CANNOT_REPLY', 'You <strong>cannot</strong> reply to posts.<br>');
+define('_MD_CAN_EDIT', 'You <strong>can</strong> edit your posts.<br>');
+define('_MD_CANNOT_EDIT', 'You <strong>cannot</strong> edit your posts.<br>');
+define('_MD_CAN_DELETE', 'You <strong>can</strong> delete your posts.<br>');
+define('_MD_CANNOT_DELETE', 'You <strong>cannot</strong> delete your posts.<br>');
+define('_MD_CAN_ADDPOLL', 'You <strong>can</strong> add new polls.<br>');
+define('_MD_CANNOT_ADDPOLL', 'You <strong>cannot</strong> add new polls.<br>');
+define('_MD_CAN_VOTE', 'You <strong>can</strong> vote in polls.<br>');
+define('_MD_CANNOT_VOTE', 'You <strong>cannot</strong> vote in polls.<br>');
+define('_MD_CAN_ATTACH', 'You <strong>can</strong> attach files to posts.<br>');
+define('_MD_CANNOT_ATTACH', 'You <strong>cannot</strong> attach files to posts.<br>');
+define('_MD_CAN_NOAPPROVE', 'You <strong>can</strong> post without approval.<br>');
+define('_MD_CANNOT_NOAPPROVE', 'You <strong>cannot</strong> post without approval.<br>');
+define('_MD_CAN_TYPE', 'You <strong>can</strong> use topic type.<br>');
+define('_MD_CANNOT_TYPE', 'You <strong>cannot</strong> use topic type.<br>');
+define('_MD_CAN_HTML', 'You <strong>can</strong> use HTML syntax.<br>');
+define('_MD_CANNOT_HTML', 'You <strong>cannot</strong> use HTML syntax.<br>');
+define('_MD_CAN_UPLOAD', 'You <strong>can</strong> upload.<br>');
+define('_MD_CANNOT_UPLOAD', 'You <strong>cannot</strong> upload.<br>');
+define('_MD_CAN_SIGNATURE', 'You <strong>can</strong> use signature.<br>');
+define('_MD_CANNOT_SIGNATURE', 'You <strong>cannot</strong> use signature.<br>');
 
 define('_MD_IMTOPICS', 'Important Topics');
 define('_MD_NOTIMTOPICS', 'Forum Topics');
@@ -205,7 +205,7 @@ define('_MD_RATE4', 'Good');
 define('_MD_RATE5', 'Excellent');
 
 define('_MD_TOPICOPTION', 'Topic options');
-define('_MD_KARMA_REQUIREMENT', 'Your personal karm %s does not reach the required karma %s. <br /> Please try later.');
+define('_MD_KARMA_REQUIREMENT', 'Your personal karm %s does not reach the required karma %s. <br> Please try later.');
 define('_MD_REPLY_REQUIREMENT', 'To view this post, you must login and reply first.');
 define('_MD_TOPICOPTIONADMIN', 'Topic Admin options');
 define('_MD_POLLOPTIONADMIN', 'Poll Admin options');
@@ -225,10 +225,10 @@ define('_MD_EXP', 'EXP :');
 define('_MD_BROWSING', 'Browsing this Thread:');
 define('_MD_POSTTONEWS', 'Send this post to a news Story');
 
-define('_MD_EXCEEDTHREADVIEW', 'Post count exceeds the threshold for thread mode<br />Changing to flat mode');
+define('_MD_EXCEEDTHREADVIEW', 'Post count exceeds the threshold for thread mode<br>Changing to flat mode');
 
 //forumform.inc
-//define('_MD_PRIVATE', 'This is a <strong>Private</strong> forum.<br />Only users with special access can post new topics and replies to this forum');
+//define('_MD_PRIVATE', 'This is a <strong>Private</strong> forum.<br>Only users with special access can post new topics and replies to this forum');
 define('_MD_QUOTE', 'Quote');
 define('_MD_VIEW_REQUIRE', 'View requirements');
 define('_MD_REQUIRE_KARMA', 'Karma');
@@ -273,7 +273,7 @@ define('_MD_RE', 'Re');
 //post.php
 define('_MD_EDITNOTALLOWED', 'You\'re not allowed to edit this post!');
 define('_MD_EDITEDBY', 'Edited by');
-define('_MD_ANONNOTALLOWED', 'Anonymous users are not allowed to post.<br />Please register.');
+define('_MD_ANONNOTALLOWED', 'Anonymous users are not allowed to post.<br>Please register.');
 define('_MD_THANKSSUBMIT', 'Thanks for your submission!');
 define('_MD_REPLYPOSTED', 'A reply to your topic has been posted.');
 define('_MD_HELLO', 'Hello %s,');
@@ -337,7 +337,8 @@ define('_MD_UNDIGEST', 'unDigest');
 
 define('_MD_DESC_DELETE', 'Once you press the delete button at the bottom of this form the topic you have selected, and all its related posts, will be <strong>permanently</strong> removed.');
 define('_MD_DESC_MOVE', 'Once you press the move button at the bottom of this form the topic you have selected, and its related posts, will be moved to the forum you have selected.');
-define('_MD_DESC_MERGE', 'Once you press the merge button at the bottom of this form the topic you have selected, and its related posts, will be merged to the topic you have selected.<br /><strong>The destination topic ID must be smaller than current one</strong>.');
+define('_MD_DESC_MERGE',
+       'Once you press the merge button at the bottom of this form the topic you have selected, and its related posts, will be merged to the topic you have selected.<br><strong>The destination topic ID must be smaller than current one</strong>.');
 define('_MD_DESC_LOCK', 'Once you press the lock button at the bottom of this form the topic you have selected will be locked. You may unlock it at a later time if you like.');
 define('_MD_DESC_UNLOCK', 'Once you press the unlock button at the bottom of this form the topic you have selected will be unlocked. You may lock it again at a later time if you like.');
 define('_MD_DESC_STICKY', 'Once you press the Sticky button at the bottom of this form the topic you have selected will be Stickyed. You may unSticky it again at a later time if you like.');
@@ -375,7 +376,7 @@ define('_MD_NO_SUCH_FILE', 'File not exist!');
 //define('_MD_ERROR_UPATEATTACHMENT', 'Error occur when updating attachment');
 
 // ratethread.php
-define('_MD_CANTVOTEOWN', 'You cannot vote on the topic you submitted.<br />All votes are logged and reviewed.');
+define('_MD_CANTVOTEOWN', 'You cannot vote on the topic you submitted.<br>All votes are logged and reviewed.');
 define('_MD_VOTEONCE', 'Please do not vote for the same topic more than once.');
 define('_MD_VOTEAPPRE', 'Your vote is appreciated.');
 define('_MD_THANKYOU', 'Thank you for taking the time to vote here at %s'); // %s is your site name
@@ -470,7 +471,7 @@ define('_MD_TYPE_SUSPEND', 'Suspension');
 define('_MD_DBUPDATED', 'Database Updated Successfully!');
 
 define('_MD_SUSPEND_SUBJECT', 'User %s is suspended for %d days');
-define('_MD_SUSPEND_TEXT', 'User %s is suspended for %d days due to:<br />[quote]%s[/quote]<br /><br />The suspension is valid till %s');
+define('_MD_SUSPEND_TEXT', 'User %s is suspended for %d days due to:<br>[quote]%s[/quote]<br><br>The suspension is valid till %s');
 define('_MD_SUSPEND_UID', 'User ID');
 define('_MD_SUSPEND_IP', 'IP segments (full or segments)');
 define('_MD_SUSPEND_DURATION', 'Suspension duration (Days)');

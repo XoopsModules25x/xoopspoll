@@ -17,24 +17,23 @@
  * @package  ::   xoopspoll
  * @since    ::     1.40
  * @author   ::    zyspec <owners@zyspec.com>
- * @version  ::   $Id: $
- * @param $xoopsModule
+ * @param  XoopsModule $xoopsModule
  * @return bool
  */
 
-function xoops_module_pre_install_xoopspoll(&$xoopsModule)
+function xoops_module_pre_install_xoopspoll(XoopsModule $xoopsModule)
 {
-    //    $db =& XoopsDatabaseFactory::getDatabaseConnection();
+    //    $db = XoopsDatabaseFactory::getDatabaseConnection();
     $retVal = true;
 
     return $retVal;
 }
 
 /**
- * @param $xoopsModule
+ * @param  XoopsModule $xoopsModule
  * @return bool
  */
-function xoops_module_install_xoopspoll(&$xoopsModule)
+function xoops_module_install_xoopspoll(XoopsModule $xoopsModule)
 {
     $retVal = true;
 

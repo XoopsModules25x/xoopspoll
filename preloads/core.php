@@ -26,26 +26,24 @@
 /**
  *  XOOPS Poll Module results mailer preload
  *
- * @copyright::  {@link http://xoops.org XOOPS Project}
+ * @copyright ::  {@link http://xoops.org XOOPS Project}
  * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
  * @package   ::    xoopspoll
  * @subpackage:: preloads
  * @since     ::      1.4
  * @author    ::     zyspec <owners@zyspec.com>
- * @version   ::    $Id: $
  **/
-
 class XoopspollCorePreload extends XoopsPreloadItem
 {
     /**
      * plugin class for Xoops preload for index page start
      * @param $args
      */
-    public function eventCoreIndexStart($args)
+    public static function eventCoreIndexStart($args)
     {
         // check once per user session if expired poll email has been sent
         if (empty($_SESSION['pollChecked'])) {
-            $pollHandler = & xoops_getmodulehandler('poll', 'xoopspoll');
+            $pollHandler = xoops_getModuleHandler('poll', 'xoopspoll');
             $pollHandler->mailResults();  //send the results of any polls that have ended
             unset($pollHandler);
             $_SESSION['pollChecked'] = 1;

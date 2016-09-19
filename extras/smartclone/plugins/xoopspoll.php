@@ -2,9 +2,8 @@
 
 /**
  * @package:: SmartClone
- * @author::  {@link http://www.smartfactory.ca The SmartFactory}
+ * @author ::  {@link http://www.smartfactory.ca The SmartFactory}
  * @license:: {@link http://www.gnu.org/licenses/gpl-2.0.html GNU Public License}
- * @version:: $Id: $
  */
 
 /**
@@ -25,12 +24,12 @@
  * - Modulename : Clone name with only the first letter capitalized
  * - modulename : Clone name all lowercase
  * - MODULENAME : Clone name all uppercase
- * - CONSTANT 	: Used in the language constants. This is the 8 last characters of MODULENAME.
- * 				  Please note that the CONSTANT must be used with a prefixed and suffixed "_".
- * 				  For example : '_SSECTION_'
- * - CUSTOM 	: If CUSTOM if used, then the array will need to have another item called
- * 				  'function', which needs to be a function defined in the plugin and returing
- * 				  the string by which will be replaced the 'key'
+ * - CONSTANT   : Used in the language constants. This is the 8 last characters of MODULENAME.
+ *                Please note that the CONSTANT must be used with a prefixed and suffixed "_".
+ *                For example : '_SSECTION_'
+ * - CUSTOM     : If CUSTOM if used, then the array will need to have another item called
+ *                'function', which needs to be a function defined in the plugin and returing
+ *                the string by which will be replaced the 'key'
  *
  * The 'prefix' will be appended at the begining of the replacement string
  * The 'suffix' will be appended at the end of the replacement string
@@ -62,7 +61,7 @@
  * ++$i;
  *
  * function specialString($toModule) {
- * 	return $toModule . "-somethingSpecial";
+ *  return $toModule . "-somethingSpecial";
  * }
  * </code>
  */
@@ -71,28 +70,28 @@
  * SmartClone plugin for Xoopspoll
  */
 
-$i = 0;
-$pluginPatterns[$i]['key'] = '_XOOPSPOLL_';
+$i                                 = 0;
+$pluginPatterns[$i]['key']         = '_XOOPSPOLL_';
 $pluginPatterns[$i]['replacement'] = 'CONSTANT';
-$pluginPatterns[$i]['prefix'] = '_';
-$pluginPatterns[$i]['suffix'] = '_';
+$pluginPatterns[$i]['prefix']      = '_';
+$pluginPatterns[$i]['suffix']      = '_';
 
 ++$i;
-$pluginPatterns[$i]['key'] = 'XoopsPoll';
+$pluginPatterns[$i]['key']         = 'XoopsPoll';
 $pluginPatterns[$i]['replacement'] = 'ModuleName';
 
 ++$i;
-$pluginPatterns[$i]['key'] = 'Xoopspoll';
+$pluginPatterns[$i]['key']         = 'Xoopspoll';
 $pluginPatterns[$i]['replacement'] = 'Modulename';
 
 ++$i;
-$pluginPatterns[$i]['key'] = 'xoopspoll';
+$pluginPatterns[$i]['key']         = 'xoopspoll';
 $pluginPatterns[$i]['replacement'] = 'modulename';
 
 ++$i;
-$pluginPatterns[$i]['key'] = 'voted_polls';
+$pluginPatterns[$i]['key']         = 'voted_polls';
 $pluginPatterns[$i]['replacement'] = 'CUSTOM';
-$pluginPatterns[$i]['function'] = 'buildCookieName';
+$pluginPatterns[$i]['function']    = 'buildCookieName';
 
 /**
  * @return string

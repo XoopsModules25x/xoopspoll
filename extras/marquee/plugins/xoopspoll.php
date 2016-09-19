@@ -17,7 +17,6 @@
  * @author    ::      Hervé Thouzard (http://www.herve-thouzard.com)
  * @package   ::     marquee
  * @subpackage::  plugins
- * @version   ::     $Id: $
  */
 /**
  * Script to list the recent polls from the xoopspoll module version 1.40
@@ -30,20 +29,20 @@ function b_marquee_xoopspoll($limit, $dateformat, $itemssize)
 {
     include_once $GLOBALS['xoops']->path('modules/marquee/include/functions.php');
     $block        = array();
-    $myts         =& MyTextSanitizer::getInstance();
-    $poll_handler =& xoops_getmodulehandler('poll', 'xoopspoll');
+    $myts         = MyTextSanitizer::getInstance();
+    $pollHandler = xoops_getModuleHandler('poll', 'xoopspoll');
     $criteria     = new CriteriaCompo();
     $criteria->add(new Criteria('start_time', time(), '<='));
     $criteria->add(new Criteria('end_time', time(), '>'));
-    $criteria->setLimit((int)($limit));
+    $criteria->setLimit((int)$limit);
     $criteria->setSort('start_time');
     $criteria->setOrder('DESC');
     $pollFields = array('poll_id', 'question', 'start_time', 'user_id');
-    $pollObjs   = $poll_handler->getAll($criteria, $pollFields);
+    $pollObjs   = $pollHandler->getAll($criteria, $pollFields);
     foreach ($pollObjs as $pollObj) {
         $pollValues = $pollObj->getValues();
         $title      = $myts->htmlSpecialChars($pollValues['question']);
-        if ((int)($itemssize) > 0) {
+        if ((int)$itemssize > 0) {
             $title = xoops_substr($title, 0, $itemssize + 3);
         }
         $xuStartTimestamp = xoops_getUserTimestamp($pollValues['start_time']);
@@ -52,8 +51,9 @@ function b_marquee_xoopspoll($limit, $dateformat, $itemssize)
             'category' => '',
             'author'   => $pollValues['user_id'],
             'title'    => $title,
-            'link'     => "<a href='" . $GLOBALS['xoops']->url('modules/xoopspoll/index.php') . "?poll_id={$pollValues['poll_id']}'>{$title}</a>");
-        unset ($pollValues);
+            'link'     => "<a href='" . $GLOBALS['xoops']->url('modules/xoopspoll/index.php') . "?poll_id={$pollValues['poll_id']}'>{$title}</a>"
+        );
+        unset($pollValues);
     }
 
     return $block;
