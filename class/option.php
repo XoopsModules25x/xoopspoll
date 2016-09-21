@@ -47,14 +47,14 @@ class XoopspollOption extends XoopsObject
      */
     protected $option;
     /**
-     * holds an option handler
+     * Option Handler to be used to manipulate poll options
      * @var XoopspollOptionHandler
      */
     protected $optHandler;
 
     // constructor
     /**
-     * @param null $id
+     * @param int|null $id poll id
      */
     public function __construct($id = null)
     {
@@ -70,7 +70,7 @@ class XoopspollOption extends XoopsObject
         /**
          * {@internal The following is provided for backward compatibility with newbb/xforum}
          */
-        $this->optHandler = $this->getStaticOptHandler();
+        $this->optHandler = xoops_getModuleHandler('option', 'xoopspoll');
         if (!empty($id)) {
             if (is_array($id)) {
                 $this->option = $this->optHandler->create();
@@ -82,33 +82,32 @@ class XoopspollOption extends XoopsObject
     }
 
     /**
-     * @param null $id
+     * @param int|null $id poll id
+     * @return void
+     * @deprecated since PHP4 died - use __construct
      */
     public function XoopspollOption($id = null)
     {
         $this->__construct($id);
     }
-    /**#@+
-     * The following method is provided for backward compatibility with newbb/xforum
-     * @deprecated since Xoopspoll 1.40, please @see XoopspollOptionHandler & @see XoopspollOption
-     */
+
     /**
-     *
+     * The following method is provided for backward compatibility with newbb/xforum
      * Stores object into the database
      * @uses XoopsPersistableObjectHandler::insert
-     * @returns mixed
+     * @return mixed
+     * @deprecated since Xoopspoll 1.40, please @see XoopspollOptionHandler & @see XoopspollOption
      */
     public function store()
     {
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use XoopspollPoll and XoopspollPollHandler classes instead.');
-        $soptHandler = $this->getStaticOptHandler();
 
-        return $soptHandler->insert($this->option);
+        return $this->optHandler->insert($this->option);
     }
 
     /**
-     *
      * Delete all the poll options for a specific poll
+     *
      * @uses XoopsPersistableObjectHandler::deleteAll
      * @param  int   $pid is used to delete all options by this id
      * @return mixed results of deleting objects from database
@@ -116,61 +115,40 @@ class XoopspollOption extends XoopsObject
     public function deleteByPollId($pid)
     {
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use XoopspollPollHandler::' . __METHOD__ . ' instead.');
-        $soptHandler = $this->getStaticOptHandler();
         $criteria    = new Criteria('poll_id', (int)$pid, '=');
 
-        return $soptHandler->deleteAll($criteria);
+        return $this->optHandler->deleteAll($criteria);
     }
 
     /**
-     *
      * Get all options for a particular poll
+     *
      * @uses XoopsPersistableObjectHandler::getAll
-     * @param  unknown $pid
+     * @param  int $pid poll id
      * @return mixed   results of getting objects from database
      */
     public function getAllByPollId($pid)
     {
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use XoopspollPollHandler::' . __METHOD__ . ' instead.');
-        $soptHandler = $this->getStaticOptHandler();
         $criteria    = new Criteria('poll_id', (int)$pid, '=');
 
-        return $soptHandler->getAll($criteria);
+        return $this->optHandler->getAll($criteria);
     }
 
     /**
-     *
      * Reset the poll's options vote count
-     * @param unknown_type $pid
+     *
+     * @param int $pid poll id
      * @uses XoopsPersistableObjectHandler::updateAll
      * @return mixed results of the object(s) update
      */
     public function resetCountByPollId($pid)
     {
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use XoopspollPollHandler::' . __METHOD__ . ' instead.');
-        $soptHandler = $this->getStaticOptHandler();
         $criteria    = new Criteria('poll_id', (int)$pid, '=');
 
-        return $soptHandler->updateAll('option_count', 0, $criteria);
+        return $this->optHandler->updateAll('option_count', 0, $criteria);
     }
-
-    /**
-     *
-     * Get a static Option Handler to be used to manipulate poll options
-     * @uses xoops_getModuleHandler
-     * @return mixed handler object returned on success, false on failure
-     */
-    private function getStaticOptHandler()
-    {
-        static $oHandler;
-
-        if (!isset($oHandler)) {
-            $oHandler = xoops_getModuleHandler('option', 'xoopspoll');
-        }
-
-        return $oHandler;
-    }
-    /**#@-*/
 }
 
 /**
@@ -181,7 +159,7 @@ class XoopspollOptionHandler extends XoopsPersistableObjectHandler
     /**
      * XoopspollPollOptionHandler::__construct()
      *
-     * @param null|XoopsDatabase $db
+     * @param null|XoopsDatabase $db database
      **/
     public function __construct(XoopsDatabase $db)
     {
@@ -192,7 +170,9 @@ class XoopspollOptionHandler extends XoopsPersistableObjectHandler
     /**
      * XoopspollOptionHandler::XoopspollOptionHandler()
      *
-     * @param mixed $db
+     * @param mixed $db database
+     * @return void
+     * @deprecated use __construct()
      **/
     public function XoopspollOptionHandler($db)
     {
@@ -228,16 +208,16 @@ class XoopspollOptionHandler extends XoopsPersistableObjectHandler
      *
      * Gets all options for poll ID
      *
-     * @param  int    $pid
-     * @param  string $sortby
-     * @param  string $orderby
+     * @param  int    $pid     poll id
+     * @param  string $sortby  column name to sort on
+     * @param  string $orderby sort order
      * @return array  an array of Option objects
      * @uses CriteriaCompo
      * @uses XoopsPersistableObjectHandler::deleteAll
      */
     public function getAllByPollId($pid = 0, $sortby = 'option_id', $orderby = 'ASC')
     {
-        $criteria = new CriteriaCompo();
+        //$criteria = new CriteriaCompo();
         $criteria = new Criteria('poll_id', (int)$pid, '=');
         if (!empty($sortby)) {
             $criteria->setSort($sortby);
@@ -254,10 +234,9 @@ class XoopspollOptionHandler extends XoopsPersistableObjectHandler
     }
 
     /**
-     *
      * Deletes the option for selected poll
      *
-     * @param int $pid
+     * @param int $pid poll id
      * @uses Criteria
      * @uses XoopsPersistableObjectHandler::deleteAll
      * @return bool $success
@@ -270,10 +249,9 @@ class XoopspollOptionHandler extends XoopsPersistableObjectHandler
     }
 
     /**
-     *
      * Reset the vote counts for the options for selected poll
      *
-     * @param int $pid
+     * @param int $pid poll id
      * @uses Criteria
      * @uses XoopsPersistableObjectHandler::updateAll
      * @return bool $success
@@ -286,8 +264,8 @@ class XoopspollOptionHandler extends XoopsPersistableObjectHandler
     }
 
     /**
-     *
      * Generates an html select box with options
+     *
      * @param  mixed  $pid the select box is created for this poll id
      * @return string html select box
      */
@@ -301,6 +279,7 @@ class XoopspollOptionHandler extends XoopsPersistableObjectHandler
          * get all the options for this poll & add some blank options to allow adding more
          */
         if (0 === $pid) {
+            $optionObjs = array();
             $newOpts = (2 * XoopspollConstants::NUM_ADDTL_OPTIONS);
         } else {
             $optionObjs = $this->getAllByPollId($pid);
