@@ -108,7 +108,7 @@ class XoopspollRenderer
             //            redirect_header($_SERVER['HTTP_REFERER'], XoopspollConstants::REDIRECT_DELAY_MEDIUM, _MD_XOOPSPOLL_ERROR_OPTIONS_MISSING);
         }
 
-        if (XoopspollConstants::MULTIPLE_SELECT_POLL === $this->pollObj->getVar('multiple')) {
+        if (XoopspollConstants::MULTIPLE_SELECT_POLL === (int) $this->pollObj->getVar('multiple')) {
             $optionType = 'checkbox';
             $optionName = 'option_id[]';
         } else {
@@ -216,6 +216,7 @@ class XoopspollRenderer
             }
             $options[$i]['text']  = $optionVars['option_text'];
             $options[$i]['total'] = $optionVars['option_count'];
+            $options[$i]['value'] = (int) $percent;
             ++$i;
             unset($optionVars);
         }
