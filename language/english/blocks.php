@@ -5,7 +5,6 @@
  *
  * @package   ::    xoopspoll
  * @subpackage:: defines
- * @version   ::    $Id: blocks.php 11539 2013-05-13 20:56:06Z zyspec $
  */
 define('_MB_XOOPSPOLL_WILLEXPIRE', 'The poll will close at');
 define('_MB_XOOPSPOLL_HASEXPIRED', 'The poll closed at');

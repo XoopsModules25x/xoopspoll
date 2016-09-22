@@ -20,7 +20,6 @@
  * @subpackage::  class
  * @since     ::  1.40
  * @author    ::  zyspec <owners@zyspec.com>
- * @version   ::  $Id: $
  */
 xoops_load('poll', 'xoopspoll');
 
@@ -57,9 +56,9 @@ class XoopsPollHandler extends XoopspollPollHandler
 {
     /**
      * @deprecated
-     * @param mixed $db
+     * @param null|XoopsDatabase $db
      */
-    public function __construct(&$db)
+    public function __construct(XoopsDatabase $db)
     {
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __CLASS__ . ' is deprecated since Xoopspoll 1.40, please use XoopspollPoll and XoopspollPollHandler classes instead.');
         parent::__construct($db);
@@ -69,7 +68,7 @@ class XoopsPollHandler extends XoopspollPollHandler
      * @deprecated
      * @param $db
      */
-    public function XoopsPollHandler(&$db)
+    public function XoopsPollHandler($db)
     {
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __CLASS__ . ' is deprecated since Xoopspoll 1.40, please use XoopspollPoll and XoopspollPollHandler classes instead.');
         $this->__construct($db);

@@ -1,8 +1,8 @@
 <?php
-// $Id: votepolls.php,v 1.3 2005/10/19 17:20:28 phppp Exp $
+//
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
-//                    Copyright (c) 2000 XOOPS.org                           //
+//                  Copyright (c) 2000-2016 XOOPS.org                        //
 //                       <http://xoops.org/>                             //
 //  ------------------------------------------------------------------------ //
 //  This program is free software; you can redistribute it and/or modify     //
@@ -28,16 +28,17 @@
 require_once __DIR__ . '/header.php';
 xoops_load('XoopsRequest');
 
-$poll_id  = (isset($_GET['poll_id'])) ? (int)($_GET['poll_id']) : 0;
-$poll_id  = (isset($_POST['poll_id'])) ? (int)($_POST['poll_id']) : $poll_id;
-$topic_id = (isset($_GET['topic_id'])) ? (int)($_GET['topic_id']) : 0;
-$topic_id = (isset($_POST['topic_id'])) ? (int)($_POST['topic_id']) : $topic_id;
-$forum    = (isset($_GET['forum'])) ? (int)($_GET['forum']) : 0;
-$forum    = (isset($_POST['forum'])) ? (int)($_POST['forum']) : $forum;
+$poll_id  = isset($_GET['poll_id']) ? (int)$_GET['poll_id'] : 0;
+$poll_id  = isset($_POST['poll_id']) ? (int)$_POST['poll_id'] : $poll_id;
+$topic_id = isset($_GET['topic_id']) ? (int)$_GET['topic_id'] : 0;
+$topic_id = isset($_POST['topic_id']) ? (int)$_POST['topic_id'] : $topic_id;
+$forum    = isset($_GET['forum']) ? (int)$_GET['forum'] : 0;
+$forum    = isset($_POST['forum']) ? (int)$_POST['forum'] : $forum;
 
-$topic_handler =& xoops_getmodulehandler('topic', 'newbb');
-$topic_obj     =& $topic_handler->get($topic_id);
-if (!$topic_handler->getPermission($topic_obj->getVar('forum_id'), $topic_obj->getVar('topic_status'), 'vote')) {
+/** @var NewbbTopicHandler $topicHandler */
+$topicHandler = xoops_getModuleHandler('topic', 'newbb');
+$topic_obj     = $topicHandler->get($topic_id);
+if (!$topicHandler->getPermission($topic_obj->getVar('forum_id'), $topic_obj->getVar('topic_status'), 'vote')) {
     // irmtfan - issue with javascript:history.go(-1)
     redirect_header($_SERVER['HTTP_REFERER'], 2, _NOPERM);
 }
@@ -53,8 +54,8 @@ if (($xoopspoll instanceof XoopsModule) && $xoopspoll->isactive()) {
         $pollmodul = 'xoopspoll';
         xoops_load('constants', 'xoopspoll');
         xoops_loadLanguage('main', 'xoopspoll');
-        $xpPollHandler =& xoops_getmodulehandler('poll', 'xoopspoll');
-        $xpLogHandler  =& xoops_getmodulehandler('log', 'xoopspoll');
+        $xpPollHandler = xoops_getModuleHandler('poll', 'xoopspoll');
+        $xpLogHandler  = xoops_getModuleHandler('log', 'xoopspoll');
     } else { // Umfrage
         $pollmodul = 'umfrage';
         include_once XOOPS_ROOT_PATH . '/modules/umfrage/include/constants.php';
@@ -84,7 +85,8 @@ if ('xoopspoll' === $pollmodules) {
             //@todo:: add $url to all redirects
             //            $url = $GLOBALS['xoops']->buildUrl("index.php", array('poll_id' => $poll_id));
             if ($pollObj->isAllowedToVote()) {
-                $thisVoter     = (!empty($GLOBALS['xoopsUser']) && ($GLOBALS['xoopsUser'] instanceof XoopsUser)) ? $GLOBALS['xoopsUser']->getVar('uid') : null;
+                $thisVoter     = (!empty($GLOBALS['xoopsUser'])
+                                  && ($GLOBALS['xoopsUser'] instanceof XoopsUser)) ? $GLOBALS['xoopsUser']->getVar('uid') : null;
                 $votedThisPoll = $xpLogHandler->hasVoted($poll_id, xoops_getenv('REMOTE_ADDR'), $thisVoter);
                 if (!$votedThisPoll) {
                     /* user that hasn't voted before in this poll or module preferences allow it */

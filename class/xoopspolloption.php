@@ -19,7 +19,6 @@
  * @subpackage:: class
  * @since     ::         1.40
  * @author    ::     zyspec <owners@zyspec.com>
- * @version   ::    $Id: $
  */
 
 $GLOBALS['xoopsLogger']->addDeprecated('Usage of ./xoopspoll/class/xoopspolloption.php file is deprecated since Xoopspoll 1.40, please use XoopspollOption and XoopspollOptionHandler classes instead.');

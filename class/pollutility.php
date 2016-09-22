@@ -17,10 +17,8 @@
  * @package   ::    xoopspoll
  * @subpackage:: class
  * @since     ::      1.40
- * @version   ::    $Id: $
  * @access::     public
  */
-
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 class XoopspollPollUtility
@@ -61,9 +59,9 @@ class XoopspollPollUtility
     {
         static $mConfig;
         if (!isset($mConfig)) {
-            $mHandler =& xoops_gethandler('module');
-            $mod      =& $mHandler->getByDirname('xoopspoll');
-            $cHandler =& xoops_gethandler('config');
+            $mHandler = xoops_getHandler('module');
+            $mod      = $mHandler->getByDirname('xoopspoll');
+            $cHandler = xoops_getHandler('config');
             $mConfig  =& $cHandler->getConfigsByCat(0, $mod->getVar('mid'));
         }
 
@@ -88,7 +86,8 @@ class XoopspollPollUtility
                 XoopspollConstants::HIDE_NEVER  => _MD_XOOPSPOLL_HIDE_NEVER,
                 XoopspollConstants::HIDE_END    => _MD_XOOPSPOLL_HIDE_END,
                 XoopspollConstants::HIDE_VOTED  => _MD_XOOPSPOLL_HIDE_VOTED,
-                XoopspollConstants::HIDE_ALWAYS => _MD_XOOPSPOLL_HIDE_ALWAYS);
+                XoopspollConstants::HIDE_ALWAYS => _MD_XOOPSPOLL_HIDE_ALWAYS
+            );
         }
 
         return $visOptions;
@@ -140,16 +139,16 @@ class XoopspollPollUtility
             } else {
                 $cookieName = $pollDir . '_' . $cookieBaseName;
             }
-            $iVal = (string)($index);
+            $iVal = (string)$index;
             if (!empty($iVal)) {
-                if ($success = setcookie($cookieName[$index], $value, (int)($expires))) {
+                if ($success = setcookie($cookieName[$index], $value, (int)$expires)) {
                     $clientCookie = self::getVoteCookie();
                     if (!array_key_exists($index, $clientCookie) || $clientCookie[$index] !== $value) {
                         $success = false;
                     }
                 }
             } else {  //clear the cookie
-                if ($success = setcookie($cookieName, '', (int)($expires))) {
+                if ($success = setcookie($cookieName, '', (int)$expires)) {
                     $clientCookie = self::getVoteCookie();
                     if (!empty($clientCookie)) {
                         $success = false;
@@ -176,7 +175,7 @@ class XoopspollPollUtility
      * @internal param int $expires time when cookie expires
      * @internal param string $cookieBaseName name of cookie (without directory prefix)
      */
-    public static function dbTableExists(&$db, $tablename)
+    public static function dbTableExists($db, $tablename)
     {
         $tablename = addslashes($tablename);
         $mytable   = $db->prefix("{$tablename}");

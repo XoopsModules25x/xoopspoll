@@ -1,7 +1,7 @@
 <?php
 /*
                XOOPS - PHP Content Management System
-                   Copyright (c) 2000 XOOPS.org
+                   Copyright (c) 2000-2016 XOOPS.org
                       <http://xoops.org/>
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -31,7 +31,6 @@
  * @subpackage::  class
  * @since     ::  1.40
  * @author    ::  {@link http://www.myweb.ne.jp/ Kazumi Ono (AKA onokazu)}
- * @version   ::  $Id: $
  **/
 
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
@@ -39,7 +38,7 @@
  *
  * XoopspollLog() class definition for Log Objects
  * @author:: zyspec <owners@zyspec.com>
- * @uses  ::   xoops_getmodulehandler poll module handler for class use
+ * @uses  ::   xoops_getModuleHandler poll module handler for class use
  *
  */
 class XoopspollLog extends XoopsObject
@@ -73,17 +72,17 @@ class XoopspollLog extends XoopsObject
         $this->__construct($id);
     }
 
-    /**#@+
-     * The following method is provided for backward compatibility with cbb/xforum
+    /**
+     * The following method is provided for backward compatibility with newbb
      * @deprecated since Xoopspoll 1.40, please use XoopspollLogHandler & XoopspollLog
-     * @param $pid
-     * @return
+     * @param int $pid
+     * @return mixed
      */
     public static function deleteByPollId($pid)
     {
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __FUNCTION__ . ' is deprecated since Xoopspoll 1.40, please use XoopspollLog and XoopspollLogHandler methods instead.');
         $slogHandler = self::getStaticLogHandler();
-        $criteria    = new Criteria('poll_id', (int)($pid), '=');
+        $criteria    = new Criteria('poll_id', (int)$pid, '=');
 
         return $slogHandler->deleteAll($criteria);
     }
@@ -96,7 +95,7 @@ class XoopspollLog extends XoopsObject
     {
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __FUNCTION__ . ' is deprecated since Xoopspoll 1.40, please use XoopspollLog and XoopspollLogHandler methods instead.');
         $slogHandler = self::getStaticLogHandler();
-        $criteria    = new Criteria('option_id', (int)($opt_id), '=');
+        $criteria    = new Criteria('option_id', (int)$opt_id, '=');
 
         return $slogHandler->deleteAll($criteria);
     }
@@ -118,13 +117,13 @@ class XoopspollLog extends XoopsObject
     /**
      * @return bool
      */
-    private function getStaticLogHandler()
+    private static function getStaticLogHandler()
     {
         static $log_h;
 
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __FUNCTION__ . ' is deprecated since Xoopspoll 1.40, please use XoopspollLog and XoopspollLogHandler methods instead.');
         if (!isset($log_h)) {
-            $log_h = xoops_getmodulehandler('log', 'xoopspoll');
+            $log_h = xoops_getModuleHandler('log', 'xoopspoll');
         }
 
         return $log_h;
@@ -142,9 +141,9 @@ class XoopspollLogHandler extends XoopsPersistableObjectHandler
     /**
      * XoopspollLogHandler::__construct()
      *
-     * @param mixed $db
+     * @param null|XoopsDatabase $db
      **/
-    public function __construct($db)
+    public function __construct(XoopsDatabase $db)
     {
         parent::__construct($db, 'xoopspoll_log', 'XoopspollLog', 'log_id');
     }
@@ -168,7 +167,7 @@ class XoopspollLogHandler extends XoopsPersistableObjectHandler
     public function deleteByOptionId($option_id)
     {
         $criteria = new Criteria('option_id', $option_id, '=');
-        $success  = ($this->deleteAll($criteria)) ? true : false;
+        $success  = $this->deleteAll($criteria) ? true : false;
 
         return $success;
     }
@@ -182,8 +181,8 @@ class XoopspollLogHandler extends XoopsPersistableObjectHandler
      */
     public function deleteByPollId($pid)
     {
-        $criteria = new Criteria('poll_id', (int)($pid), '=');
-        $success  = ($this->deleteAll($criteria)) ? true : false;
+        $criteria = new Criteria('poll_id', (int)$pid, '=');
+        $success  = $this->deleteAll($criteria) ? true : false;
 
         return $success;
     }
@@ -201,7 +200,7 @@ class XoopspollLogHandler extends XoopsPersistableObjectHandler
     {
         $ret      = array();
         $criteria = new CriteriaCompo();
-        $criteria->add(new Criteria('poll_id', (int)($pid), '='));
+        $criteria->add(new Criteria('poll_id', (int)$pid, '='));
         $criteria->setSort($sortby);
         $criteria->setOrder($orderby);
         $ret = $this->getAll($criteria);
@@ -218,7 +217,7 @@ class XoopspollLogHandler extends XoopsPersistableObjectHandler
      */
     public function getTotalVotesByPollId($pid)
     {
-        $criteria = new Criteria('poll_id', (int)($pid), '=');
+        $criteria = new Criteria('poll_id', (int)$pid, '=');
         $numVotes = $this->getCount($criteria);
 
         return $numVotes;
@@ -234,8 +233,8 @@ class XoopspollLogHandler extends XoopsPersistableObjectHandler
     public function getTotalVotersByPollId($pid)
     {
         $criteria = new CriteriaCompo();
-        $criteria->add(new Criteria('poll_id', (int)($pid), '='));
-        $criteria->setGroupby('ip');
+        $criteria->add(new Criteria('poll_id', (int)$pid, '='));
+        $criteria->setGroupBy('ip');
         $voterGrps = $this->getCount($criteria);
         $numVoters = count($voterGrps);
 
@@ -250,7 +249,7 @@ class XoopspollLogHandler extends XoopsPersistableObjectHandler
      */
     public function getTotalVotesByOptionId($option_id)
     {
-        $criteria = new Criteria('option_id', (int)($option_id), '=');
+        $criteria = new Criteria('option_id', (int)$option_id, '=');
         $votes    = $this->getCount($criteria);
 
         return $votes;
@@ -266,13 +265,13 @@ class XoopspollLogHandler extends XoopsPersistableObjectHandler
      */
     public function hasVoted($pid, $ip, $uid = 0)
     {
-        $uid   = (int)($uid);
-        $pid   = (int)($pid);
+        $uid   = (int)$uid;
+        $pid   = (int)$pid;
         $voted = true;
         xoops_load('pollUtility', 'xoopspoll');
         $voted_polls = XoopspollPollUtility::getVoteCookie();
         //        $voted_polls = array();  //TESTING HACK TO BYPASS COOKIES
-        $pollHandler = xoops_getmodulehandler('poll', 'xoopspoll');
+        $pollHandler = xoops_getModuleHandler('poll', 'xoopspoll');
         if ($pollObj = $pollHandler->get($pid)) {
             $pollStarttime = $pollObj->getVar('start_time');
             $criteria      = new CriteriaCompo();
@@ -284,21 +283,21 @@ class XoopspollLogHandler extends XoopsPersistableObjectHandler
                  *  with new start date or if module is uninstalled and re-installed.}
                  */
                 $criteria->add(new Criteria('user_id', $uid, '='));
-                $criteria->add(new Criteria('time', (int)($pollStarttime), '>='));
+                $criteria->add(new Criteria('time', (int)$pollStarttime, '>='));
                 $vCount = $this->getCount($criteria);
                 $voted  = ($vCount > 0) ? true : false;
             } elseif (!empty($ip) && filter_var($ip, FILTER_VALIDATE_IP)) {
                 $criteria->add(new Criteria('ip', $ip, '='));
-                $criteria->add(new Criteria('time', (int)($pollStarttime), '>='));
+                $criteria->add(new Criteria('time', (int)$pollStarttime, '>='));
                 $criteria->add(new Criteria('user_id', 0, '='));
                 $vCount = $this->getCount($criteria);
                 $voted  = ($vCount > 0) ? true : false;
             } else {
                 /* Check cookie to see if someone from this system has voted before */
-                if ((array_key_exists($pid, $voted_polls)) && ((int)($voted_polls[$pid]) >= $pollStarttime)) {
+                if (array_key_exists($pid, $voted_polls) && ((int)$voted_polls[$pid] >= $pollStarttime)) {
                     $criteria = new CriteriaCompo();
                     $criteria->add(new Criteria('poll_id', $pid, '='));
-                    $criteria->add(new Criteria('time', (int)($pollStarttime), '>='));
+                    $criteria->add(new Criteria('time', (int)$pollStarttime, '>='));
                     $vCount = $this->getCount($criteria);
                     $voted  = ($vCount > 0) ? true : false;
                 } else {

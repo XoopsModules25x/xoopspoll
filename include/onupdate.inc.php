@@ -16,7 +16,6 @@
  * @package  ::   xoopspoll
  * @since    ::     1.40
  * @author   ::    zyspec <owners@zyspec.com>
- * @version  ::   $Id: $
  */
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 xoops_load('pollUtility', 'xoopspoll');
@@ -27,7 +26,7 @@ xoops_load('pollUtility', 'xoopspoll');
  * @param $toTable
  * @return bool
  */
-function xoopspollChangeTableName(&$db, $fromTable, $toTable)
+function xoopspollChangeTableName($db, $fromTable, $toTable)
 {
     $fromTable = addslashes($fromTable);
     $toTable   = addslashes($toTable);
@@ -40,7 +39,7 @@ function xoopspollChangeTableName(&$db, $fromTable, $toTable)
         $sql     = sprintf('ALTER TABLE ' . $db->prefix("{$fromTable}") . ' RENAME ' . $db->prefix('{$toTable}'));
         $success = $db->queryF($sql);
         if (!$success) {
-            $modHandler      =& xoops_getmodulehandler('module');
+            $modHandler      = xoops_getModuleHandler('module');
             $xoopspollModule =& $modHandler->getByDirname('xoopspoll');
             $xoopspollModule->setErrors(sprintf(_AM_XOOPSPOLL_UPGRADE_FAILED, $fromTable));
         }
@@ -50,11 +49,11 @@ function xoopspollChangeTableName(&$db, $fromTable, $toTable)
 }
 
 /**
- * @param $module
- * @param $prev_version
+ * @param  XoopsModule $module
+ * @param              $prev_version
  * @return bool
  */
-function xoops_module_update_xoopspoll(&$module, &$prev_version)
+function xoops_module_update_xoopspoll(XoopsModule $module, &$prev_version)
 {
     // referer check
     $success = false;
@@ -63,9 +62,9 @@ function xoops_module_update_xoopspoll(&$module, &$prev_version)
         /* module specific part */
         require_once $GLOBALS['xoops']->path('modules/xoopspoll/include/oninstall.inc.php');
 
-        $installedVersion = (int)($prev_version);
+        $installedVersion = (int)$prev_version;
         xoops_loadLanguage('admin', 'xoopspoll');
-        $db      =& XoopsDatabaseFactory::getDatabaseConnection();
+        $db      = XoopsDatabaseFactory::getDatabaseConnection();
         $success = true;
         if ($installedVersion < 140) {
             /* add column for poll anonymous which was created in versions prior

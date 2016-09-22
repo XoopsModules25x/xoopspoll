@@ -4,7 +4,6 @@
  *
  * @package   ::    xoopspoll
  * @subpackage:: defines
- * @version   ::    $Id: main.php 11539 2013-05-13 20:56:06Z zyspec $
  */
 
 /**

@@ -3,7 +3,6 @@
  * Module Info Language Definitions
  *
  * @package xoopspoll
- * @version ::  $Id: modinfo.php 11593 2013-05-27 22:28:05Z zyspec $
  */
 
 /**
@@ -41,7 +40,7 @@ define('_MI_XOOPSPOLL_DISPVOTEDSC', 'This will show/hide the total number of vot
 //define('_MI_XOOPSPOLL_CHOOSEEDITOR', 'Choose text editor to use:');
 //define('_MI_XOOPSPOLL_CHOOSEEDITORDSC', 'This is the editor to be used when entering descriptions.');
 define('_MI_XOOPSPOLL_HIDEFORUM_POLLS', 'Hide polls created in a forum from polls module and blocks');
-define('_MI_XOOPSPOLL_HIDEFORUM_POLLSDSC', 'If Yes, polls created from a forum (newbb) are hidden in the polls module.<br />Set to Yes if forum module is not installed.');
+define('_MI_XOOPSPOLL_HIDEFORUM_POLLSDSC', 'If Yes, polls created from a forum (newbb) are hidden in the polls module.<br>Set to Yes if forum module is not installed.');
 /**#@-*/
 
 /**#@+

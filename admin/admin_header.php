@@ -10,20 +10,19 @@
 /**
  * XOOPS Poll module
  *
- * @copyright::  {@link http://xoops.org/ XOOPS Project}
- * @license::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package::    xoopspoll
+ * @copyright ::  {@link http://xoops.org/ XOOPS Project}
+ * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
+ * @package   ::    xoopspoll
  * @subpackage:: admin
- * @since::      1.32
- * @author::     XOOPS Module Team
- * @version::    $Id $
+ * @since     ::      1.32
+ * @author    ::     XOOPS Module Team
  *
- * @uses $GLOBALS['xoops']::path read folder information about XOOPS
- * @uses $GLOBALS['xoopsModule'] reads module specific information
- * @uses xoops_load() method to dynamically load class for use
- * @uses xoops_gethandler() function to load the module handler
- * @uses xoops_loadLanguage() loads the module language defines
- * @uses MyTextSanitizer
+ * @uses      $GLOBALS['xoops']::path read folder information about XOOPS
+ * @uses      $GLOBALS['xoopsModule'] reads module specific information
+ * @uses      xoops_load() method to dynamically load class for use
+ * @uses      xoops_getHandler() function to load the module handler
+ * @uses      xoops_loadLanguage() loads the module language defines
+ * @uses      MyTextSanitizer
  */
 
 /** {@internal the following 2 file includes aren't
@@ -34,7 +33,8 @@ $path = dirname(dirname(dirname(__DIR__)));
 require_once $path . '/include/cp_header.php';
 
 /** Load language files
- * {@internal the following load is not needed, it's done in ./include/cp_header.php} */
+ * {@internal the following load is not needed, it's done in ./include/cp_header.php}
+ */
 //xoops_loadLanguage('admin', 'xoopspoll');
 xoops_loadLanguage('modinfo', 'xoopspoll');
 xoops_loadLanguage('main', 'xoopspoll');
@@ -51,7 +51,7 @@ include_once $GLOBALS['xoops']->path($pathModuleAdmin . '/moduleadmin.php');
 //    redirect_header($GLOBALS['xoops']->path('admin.php'), XoopspollConstants::REDIRECT_DELAY_LONG, _AM_XOOPSPOLL_ADMIN_MISSING, false);
 //}
 
-$myts =& MyTextSanitizer::getInstance();
+$myts = MyTextSanitizer::getInstance();
 
 /*
 if (!isset($GLOBALS['xoopsTpl']) || !$GLOBALS['xoopsTpl'] instanceof XoopsTpl) {

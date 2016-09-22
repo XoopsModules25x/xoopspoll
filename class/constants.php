@@ -1,7 +1,7 @@
 <?php
 /*
                XOOPS - PHP Content Management System
-                   Copyright (c) 2000 XOOPS.org
+                   Copyright (c) 2000-2016 XOOPS.org
                       <http://www.xoops.org/>
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -37,7 +37,6 @@
  * @author   ::  zyspec <owners@zyspec.com>
  * @package  ::  xoopspoll
  * @since    ::  1.40
- * @version  ::  $Id: $
  **/
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
