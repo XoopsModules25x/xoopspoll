@@ -193,8 +193,7 @@ switch ($op) {
                 } else {
                     throw new Exception(_AM_XOOPSPOLL_UMFRAGE_FAILED);
                 }
-            }
-            catch (Exception $e) {
+            } catch (Exception $e) {
                 xoops_cp_header();
                 $admin_class = new ModuleAdmin();
                 echo $admin_class->addNavigation(basename(__FILE__));

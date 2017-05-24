@@ -96,7 +96,12 @@ class Post extends XoopsObject
             $attachment_save = '';
         }
         $this->setVar('attachment', $attachment_save);
-        $sql = 'UPDATE ' . $GLOBALS['xoopsDB']->prefix('bb_posts') . ' SET attachment=' . $GLOBALS['xoopsDB']->quoteString($attachment_save) . ' WHERE post_id = ' . $this->getVar('post_id');
+        $sql = 'UPDATE '
+               . $GLOBALS['xoopsDB']->prefix('bb_posts')
+               . ' SET attachment='
+               . $GLOBALS['xoopsDB']->quoteString($attachment_save)
+               . ' WHERE post_id = '
+               . $this->getVar('post_id');
         if (!$result = $GLOBALS['xoopsDB']->queryF($sql)) {
             //xoops_error($GLOBALS['xoopsDB']->error());
             return false;
@@ -187,7 +192,7 @@ class Post extends XoopsObject
         $attachments     = $this->getAttachment();
         if (is_array($attachments) && count($attachments) > 0) {
             $iconHandler = newbb_getIconHandler();
-            $mime_path    = $iconHandler->getPath('mime');
+            $mime_path   = $iconHandler->getPath('mime');
             include_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->getVar('dirname', 'n') . '/include/functions.image.php';
             $image_extensions = array('jpg', 'jpeg', 'gif', 'png', 'bmp'); // need improve !!!
             $post_attachment .= '<br><strong>' . _MD_ATTACHMENT . '</strong>:';
@@ -203,12 +208,40 @@ class Post extends XoopsObject
                 $file_size = @filesize(XOOPS_ROOT_PATH . '/' . $xoopsModuleConfig['dir_attachments'] . '/' . $att['name_saved']);
                 $file_size = number_format($file_size / 1024, 2) . ' KB';
                 if (in_array(strtolower($file_extension), $image_extensions) && $xoopsModuleConfig['media_allowed']) {
-                    $post_attachment .= '<br><img src="' . $icon_filetype . '" alt="' . $filetype . '" /><strong>&nbsp; ' . $att['name_display'] . '</strong> <small>(' . $file_size . ')</small>';
+                    $post_attachment .= '<br><img src="'
+                                        . $icon_filetype
+                                        . '" alt="'
+                                        . $filetype
+                                        . '" /><strong>&nbsp; '
+                                        . $att['name_display']
+                                        . '</strong> <small>('
+                                        . $file_size
+                                        . ')</small>';
                     $post_attachment .= '<br>' . newbb_attachmentImage($att['name_saved']);
                     $isDisplayed = true;
                 } else {
-                    $post_attachment .= '<a href="' . XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname', 'n') . '/dl_attachment.php?attachid=' . $key . '&amp;post_id=' . $this->getVar('post_id') . '"> <img src="' . $icon_filetype . '" alt="'
-                                        . $filetype . '" /> ' . $att['name_display'] . '</a> ' . _MD_FILESIZE . ': ' . $file_size . '; ' . _MD_HITS . ': ' . $att['num_download'];
+                    $post_attachment .= '<a href="'
+                                        . XOOPS_URL
+                                        . '/modules/'
+                                        . $xoopsModule->getVar('dirname', 'n')
+                                        . '/dl_attachment.php?attachid='
+                                        . $key
+                                        . '&amp;post_id='
+                                        . $this->getVar('post_id')
+                                        . '"> <img src="'
+                                        . $icon_filetype
+                                        . '" alt="'
+                                        . $filetype
+                                        . '" /> '
+                                        . $att['name_display']
+                                        . '</a> '
+                                        . _MD_FILESIZE
+                                        . ': '
+                                        . $file_size
+                                        . '; '
+                                        . _MD_HITS
+                                        . ': '
+                                        . $att['num_download'];
                 }
                 $post_attachment .= '<br>';
             }
@@ -298,13 +331,14 @@ class Post extends XoopsObject
         require_once XOOPS_ROOT_PATH . '/modules/newbb/include/functions.user.php';
         require_once XOOPS_ROOT_PATH . '/modules/newbb/include/functions.render.php';
 
-        $uid           = is_object($xoopsUser) ? $xoopsUser->getVar('uid') : 0;
+        $uid          = is_object($xoopsUser) ? $xoopsUser->getVar('uid') : 0;
         $karmaHandler = xoops_getModuleHandler('karma', 'newbb');
-        $user_karma    = $karmaHandler->getUserKarma();
+        $user_karma   = $karmaHandler->getUserKarma();
 
         $post               = array();
         $post['attachment'] = false;
-        $post_text          = newbb_displayTarea($this->vars['post_text']['value'], $this->getVar('dohtml'), $this->getVar('dosmiley'), $this->getVar('doxcode'), $this->getVar('doimage'), $this->getVar('dobr'));
+        $post_text          = newbb_displayTarea($this->vars['post_text']['value'], $this->getVar('dohtml'), $this->getVar('dosmiley'),
+                                                 $this->getVar('doxcode'), $this->getVar('doimage'), $this->getVar('dobr'));
         if (newbb_isAdmin($this->getVar('forum_id')) or $this->checkIdentity()) {
             $post['text'] = $post_text . '<br>' . $this->displayAttachment();
         } elseif ($xoopsModuleConfig['enable_karma'] && $this->getVar('post_karma') > $user_karma) {
@@ -318,7 +352,7 @@ class Post extends XoopsObject
             $post['text'] = $post_text . '<br>' . $this->displayAttachment();
         }
         $memberHandler = xoops_getHandler('member');
-        $eachposter     = $memberHandler->getUser($this->getVar('uid'));
+        $eachposter    = $memberHandler->getUser($this->getVar('uid'));
         if (is_object($eachposter) && $eachposter->isActive()) {
             if ($xoopsModuleConfig['show_realname'] && $eachposter->getVar('name')) {
                 $post['author'] = $eachposter->getVar('name');
@@ -463,7 +497,7 @@ class Post extends XoopsObject
         if ($GLOBALS['xoopsModuleConfig']['enable_permcheck']) {
             /** @var NewbbTopicHandler $topicHandler */
             $topicHandler = xoops_getModuleHandler('topic', 'newbb');
-            $topic_status  = $topic_obj->getVar('topic_status');
+            $topic_status = $topic_obj->getVar('topic_status');
             if ($topicHandler->getPermission($forum_id, $topic_status, 'edit')) {
                 $edit_ok = ($isadmin || ($this->checkIdentity() && $this->checkTimelimit('edit_timelimit')));
 
@@ -559,7 +593,12 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
     {
         $id   = (int)$id;
         $post = null;
-        $sql  = 'SELECT p.*, t.* FROM ' . $this->db->prefix('bb_posts') . ' p LEFT JOIN ' . $this->db->prefix('bb_posts_text') . ' t ON p.post_id=t.post_id WHERE p.post_id=' . $id;
+        $sql  = 'SELECT p.*, t.* FROM '
+                . $this->db->prefix('bb_posts')
+                . ' p LEFT JOIN '
+                . $this->db->prefix('bb_posts_text')
+                . ' t ON p.post_id=t.post_id WHERE p.post_id='
+                . $id;
         if ($array = $this->db->fetchArray($this->db->query($sql))) {
             $post = $this->create(false);
             $post->assignVars($array);
@@ -576,8 +615,17 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
      */
     public function &getByLimit($topic_id, $limit, $approved = 1)
     {
-        $sql    = 'SELECT p.*, t.*, tp.topic_status FROM ' . $this->db->prefix('bb_posts') . ' p LEFT JOIN ' . $this->db->prefix('bb_posts_text') . ' t ON p.post_id=t.post_id LEFT JOIN ' . $this->db->prefix('bb_topics')
-                  . ' tp ON tp.topic_id=p.topic_id WHERE p.topic_id=' . $topic_id . ' AND p.approved =' . $approved . ' ORDER BY p.post_time DESC';
+        $sql    = 'SELECT p.*, t.*, tp.topic_status FROM '
+                  . $this->db->prefix('bb_posts')
+                  . ' p LEFT JOIN '
+                  . $this->db->prefix('bb_posts_text')
+                  . ' t ON p.post_id=t.post_id LEFT JOIN '
+                  . $this->db->prefix('bb_topics')
+                  . ' tp ON tp.topic_id=p.topic_id WHERE p.topic_id='
+                  . $topic_id
+                  . ' AND p.approved ='
+                  . $approved
+                  . ' ORDER BY p.post_time DESC';
         $result = $this->db->query($sql, $limit, 0);
         $ret    = array();
         while ($myrow = $this->db->fetchArray($result)) {
@@ -634,7 +682,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
 
         /** @var NewbbTopicHandler $topicHandler */
         $topicHandler = xoops_getModuleHandler('topic', 'newbb');
-        $topic_obj     = $topicHandler->get($post->getVar('topic_id'));
+        $topic_obj    = $topicHandler->get($post->getVar('topic_id'));
         if ($topic_obj->getVar('topic_last_post_id') < $post->getVar('post_id')) {
             $topic_obj->setVar('topic_last_post_id', $post->getVar('post_id'));
         }
@@ -647,7 +695,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
 
         /** @var NewbbForumHandler $forumHandler */
         $forumHandler = xoops_getModuleHandler('forum', 'newbb');
-        $forum_obj     = $forumHandler->get($post->getVar('forum_id'));
+        $forum_obj    = $forumHandler->get($post->getVar('forum_id'));
         if ($forum_obj->getVar('forum_last_post_id') < $post->getVar('post_id')) {
             $forum_obj->setVar('forum_last_post_id', $post->getVar('post_id'));
         }
@@ -660,7 +708,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
         // Update user stats
         if ($post->getVar('uid') > 0) {
             $memberHandler = xoops_getHandler('member');
-            $poster         = $memberHandler->getUser($post->getVar('uid'));
+            $poster        = $memberHandler->getUser($post->getVar('uid'));
             if (is_object($poster) && $post->getVar('uid') == $poster->getVar('uid')) {
                 $poster->setVar('posts', $poster->getVar('posts') + 1);
                 $res = $memberHandler->insertUser($poster, true);
@@ -680,7 +728,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
 
     /**
      * @param  XoopsObject $post
-     * @param  bool   $force
+     * @param  bool        $force
      * @return bool
      */
     public function insert(XoopsObject $post, $force = true)
@@ -711,7 +759,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
             $post->setNew();
             $topic_obj = $topicHandler->create();
         }
-        $textHandler   = xoops_getModuleHandler('text', 'newbb');
+        $textHandler    = xoops_getModuleHandler('text', 'newbb');
         $post_text_vars = array('post_text', 'post_edit', 'dohtml', 'doxcode', 'dosmiley', 'doimage', 'dobr');
         if ($post->isNew()) {
             if (!$topic_id = $post->getVar('topic_id')) {
@@ -790,8 +838,8 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
 
     /**
      * @param  XoopsObject $post
-     * @param  bool   $isDeleteOne
-     * @param  bool   $force
+     * @param  bool        $isDeleteOne
+     * @param  bool        $force
      * @return bool
      */
     public function delete(XoopsObject $post, $isDeleteOne = true, $force = false)
@@ -865,7 +913,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
         if ($post->isTopic()) {
             /** @var NewbbTopicHandler $topicHandler */
             $topicHandler = xoops_getModuleHandler('topic', 'newbb');
-            $topic_obj     = $topicHandler->get($post->getVar('topic_id'));
+            $topic_obj    = $topicHandler->get($post->getVar('topic_id'));
             if ($topic_obj instanceof Topic) {
                 if (($topic_obj->getVar('approved') > 0) && empty($force)) {
                     $topiccount_toupdate = 1;
@@ -879,7 +927,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
                     $poll_id = $topic_obj->getVar('poll_id');
                     if ($poll_id > 0) {
                         /** @var XoopsModuleHandler $moduleHandler */
-                        $moduleHandler = xoops_getHandler('module');
+                        $moduleHandler      = xoops_getHandler('module');
                         $poll_moduleHandler = $moduleHandler->getByDirname('xoopspoll');
                         if (($poll_moduleHandler instanceof XoopsModuleHandler) && $poll_moduleHandler->isactive()) {
                             $pollHandler = xoops_getModuleHandler('poll', 'xoopspoll');
@@ -920,7 +968,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
             // Update user stats
             if ($post->getVar('uid') > 0) {
                 $memberHandler = xoops_getHandler('member');
-                $poster         = $memberHandler->getUser($post->getVar('uid'));
+                $poster        = $memberHandler->getUser($post->getVar('uid'));
                 if (is_object($poster) && $post->getVar('uid') == $poster->getVar('uid')) {
                     $poster->setVar('posts', $poster->getVar('posts') - 1);
                     $res = $memberHandler->insertUser($poster, true);
@@ -959,7 +1007,13 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
     public function &getPostsByLimit($criteria = null, $limit = 1, $start = 0, $join = null)
     {
         $ret = array();
-        $sql = 'SELECT p.*, t.* ' . ' FROM ' . $this->db->prefix('bb_posts') . ' AS p' . ' LEFT JOIN ' . $this->db->prefix('bb_posts_text') . ' AS t ON t.post_id = p.post_id';
+        $sql = 'SELECT p.*, t.* '
+               . ' FROM '
+               . $this->db->prefix('bb_posts')
+               . ' AS p'
+               . ' LEFT JOIN '
+               . $this->db->prefix('bb_posts_text')
+               . ' AS t ON t.post_id = p.post_id';
         if (!empty($join)) {
             $sql .= $join;
         }
@@ -1002,7 +1056,14 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
         else:
             // for 4.0+
             /* */
-            $sql = 'DELETE ' . $this->db->prefix('bb_posts_text') . ' FROM ' . $this->db->prefix('bb_posts_text') . " LEFT JOIN {$this->table} AS aa ON " . $this->db->prefix('bb_posts_text') . '.post_id = aa.post_id ' . ' WHERE (aa.post_id IS NULL)';
+            $sql = 'DELETE '
+                   . $this->db->prefix('bb_posts_text')
+                   . ' FROM '
+                   . $this->db->prefix('bb_posts_text')
+                   . " LEFT JOIN {$this->table} AS aa ON "
+                   . $this->db->prefix('bb_posts_text')
+                   . '.post_id = aa.post_id '
+                   . ' WHERE (aa.post_id IS NULL)';
             /* */
             // Alternative for 4.1+
             /*

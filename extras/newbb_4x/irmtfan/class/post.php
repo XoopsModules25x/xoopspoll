@@ -876,7 +876,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
                 $post->setVar('pid', $pid);
             }
 
-            $text_obj =& $textHandler->create();
+            $text_obj = $textHandler->create();
             foreach ($post_text_vars as $key) {
                 $text_obj->vars[$key] = $post->vars[$key];
             }

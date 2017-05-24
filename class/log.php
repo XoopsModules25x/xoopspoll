@@ -134,9 +134,7 @@ class XoopspollLog extends XoopsObject
 /**
  * Class XoopspollLogHandler
  */
-class XoopspollLogHandler extends XoopsPersistableObjectHandler
-
-    //class XoopspollLogHandler extends XoopsPersistableObjectHandler
+class XoopspollLogHandler extends XoopsPersistableObjectHandler 
 {
     /**
      * XoopspollLogHandler::__construct()

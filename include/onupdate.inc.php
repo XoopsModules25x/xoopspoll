@@ -21,12 +21,12 @@
 xoops_load('pollUtility', 'xoopspoll');
 
 /**
- * @param $db
+ * @param XoopsDatabase $db
  * @param $fromTable
  * @param $toTable
  * @return bool
  */
-function xoopspollChangeTableName($db, $fromTable, $toTable)
+function xoopspollChangeTableName(XoopsDatabase $db, $fromTable, $toTable)
 {
     $fromTable = addslashes($fromTable);
     $toTable   = addslashes($toTable);
