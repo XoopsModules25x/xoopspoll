@@ -37,7 +37,7 @@
 require_once __DIR__ . '/admin_header.php';
 xoops_cp_header();
 
-$admin_class = new ModuleAdmin();
+$adminObject = \Xmf\Module\Admin::getInstance();
 
 $pollHandler = xoops_getModuleHandler('poll', 'xoopspoll');
 $totalPolls  = $pollHandler->getCount();
@@ -50,15 +50,15 @@ $criteria->add(new Criteria('start_time', time(), '>'));
 $totalWaitingPolls = $pollHandler->getCount($criteria);
 $totalExpiredPolls = $totalPolls - $totalActivePolls - $totalWaitingPolls;
 
-$admin_class->addInfoBox(_MD_XOOPSPOLL_DASHBOARD);
-$admin_class->addInfoBoxLine(_MD_XOOPSPOLL_DASHBOARD, "<span class='infolabel'>" . _MD_XOOPSPOLL_TOTALACTIVE . '</span>', $totalActivePolls, 'Green');
-$admin_class->addInfoBoxLine(_MD_XOOPSPOLL_DASHBOARD, "<span class='infolabel'>" . _MD_XOOPSPOLL_TOTALWAITING . '</span>', $totalWaitingPolls, 'Green');
-$admin_class->addInfoBoxLine(_MD_XOOPSPOLL_DASHBOARD, "<span class='infolabel'>" . _MD_XOOPSPOLL_TOTALEXPIRED . '</span>', $totalExpiredPolls, 'Red');
-$admin_class->addInfoBoxLine(_MD_XOOPSPOLL_DASHBOARD, "<span class='infolabel'>" . _MD_XOOPSPOLL_TOTALPOLLS . "</span><span class='infotext'>", $totalPolls . '</span>');
+$adminObject->addInfoBox(_MD_XOOPSPOLL_DASHBOARD);
+$adminObject->addInfoBoxLine(_MD_XOOPSPOLL_DASHBOARD, "<span class='infolabel'>" . _MD_XOOPSPOLL_TOTALACTIVE . '</span>', $totalActivePolls, 'Green');
+$adminObject->addInfoBoxLine(_MD_XOOPSPOLL_DASHBOARD, "<span class='infolabel'>" . _MD_XOOPSPOLL_TOTALWAITING . '</span>', $totalWaitingPolls, 'Green');
+$adminObject->addInfoBoxLine(_MD_XOOPSPOLL_DASHBOARD, "<span class='infolabel'>" . _MD_XOOPSPOLL_TOTALEXPIRED . '</span>', $totalExpiredPolls, 'Red');
+$adminObject->addInfoBoxLine(_MD_XOOPSPOLL_DASHBOARD, "<span class='infolabel'>" . _MD_XOOPSPOLL_TOTALPOLLS . "</span><span class='infotext'>", $totalPolls . '</span>');
 
 /* use templates just in case we want to easily modify display in the future */
-$GLOBALS['xoopsTpl']->assign('navigation', $admin_class->addNavigation(basename(__FILE__)));
-$GLOBALS['xoopsTpl']->assign('renderindex', $admin_class->renderIndex());
+$GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation(basename(__FILE__)));
+$GLOBALS['xoopsTpl']->assign('renderindex', $adminObject->displayIndex());
 $GLOBALS['xoopsTpl']->display($GLOBALS['xoops']->path('modules/xoopspoll/templates/admin/xoopspoll_index.tpl'));
 
 require_once __DIR__ . '/admin_footer.php';

@@ -49,7 +49,7 @@
  */
 
 require_once __DIR__ . '/admin_header.php';
-include_once $GLOBALS['xoops']->path('class/xoopsblock.php');
+require_once $GLOBALS['xoops']->path('class/xoopsblock.php');
 
 xoops_load('xoopsformloader');
 xoops_load('xoopslists');
@@ -76,11 +76,11 @@ switch ($op) {
 
         //    $GLOBALS['xoopsOption']['template_main'] = 'xoopspoll_list.html';
         xoops_cp_header();
-        $admin_class = new ModuleAdmin();
+        $adminObject = \Xmf\Module\Admin::getInstance();
 
-        $xoopsTpl->assign('navigation', $admin_class->addNavigation(basename(__FILE__)));
-        $admin_class->addItemButton(_AM_XOOPSPOLL_CREATENEWPOLL, 'main.php' . '?op=add', $icon = 'add');
-        $xoopsTpl->assign('addPollButton', $admin_class->renderButton('left'));
+        $xoopsTpl->assign('navigation', $adminObject->displayNavigation(basename(__FILE__)));
+        $adminObject->addItemButton(_AM_XOOPSPOLL_CREATENEWPOLL, 'main.php' . '?op=add', $icon = 'add');
+        $xoopsTpl->assign('addPollButton', $adminObject->displayButton('left'));
 
         $renderedNav = '';
 
@@ -92,8 +92,8 @@ switch ($op) {
             if (($newbbModule instanceof XoopsModule) && $newbbModule->isactive()) {
                 /** @var NewbbTopicHandler $topicHandler */
                 $topicHandler = xoops_getModuleHandler('topic', 'newbb');
-                $topicFields   = array('topic_id', 'topic_title', 'poll_id');
-                $criteria      = new CriteriaCompo();
+                $topicFields  = array('topic_id', 'topic_title', 'poll_id');
+                $criteria     = new CriteriaCompo();
                 $criteria->add(new Criteria('topic_haspoll', 0, '>'));
                 $pollsWithTopics = array();
                 $topicsWithPolls = $topicHandler->getAll($criteria, $topicFields, false);
@@ -104,9 +104,10 @@ switch ($op) {
                     );
                 }
                 if (!empty($pollsWithTopics)) {
-                    $admin_class->addInfoBox(_AM_XOOPSPOLL_NEWBB_SUPPORT);
-                    $admin_class->addInfoBoxLine(_AM_XOOPSPOLL_NEWBB_SUPPORT, "<img src='" . $pathIcon16 . "/forum.png' alt='" . _AM_XOOPSPOLL_NEWBB_SUPPORT . "' /> " . _AM_XOOPSPOLL_NEWBB_INTRO, null, null, 'information');
-                    $newbbIntro = $admin_class->renderInfoBox();
+                    $adminObject->addInfoBox(_AM_XOOPSPOLL_NEWBB_SUPPORT);
+                    $adminObject->addInfoBoxLine(_AM_XOOPSPOLL_NEWBB_SUPPORT, "<img src='" . $pathIcon16 . "/forum.png' alt='" . _AM_XOOPSPOLL_NEWBB_SUPPORT . "' /> " . _AM_XOOPSPOLL_NEWBB_INTRO,
+                                                 null, null, 'information');
+                    $newbbIntro = $adminObject->renderInfoBox();
                 } else {
                     $newbbIntro = '';
                 }
@@ -195,7 +196,7 @@ switch ($op) {
         $xoopsTpl->assign('rendered_nav', $renderedNav);
         $xoopsTpl->assign('self', $_SERVER['PHP_SELF']);
         $xoopsTpl->display($GLOBALS['xoops']->path('modules/xoopspoll/templates/admin/xoopspoll_list.tpl'));
-        include_once __DIR__ . '/admin_footer.php';
+        require_once __DIR__ . '/admin_footer.php';
         exit();
         break;
 
@@ -208,10 +209,10 @@ switch ($op) {
 
         // display the form
         xoops_cp_header();
-        $admin_class = new ModuleAdmin();
-        echo $admin_class->addNavigation(basename(__FILE__));
+        $adminObject = \Xmf\Module\Admin::getInstance();
+        $adminObject->displayNavigation(basename(__FILE__));
         $pollObj->renderForm($_SERVER['PHP_SELF'], 'post');
-        include_once __DIR__ . '/admin_footer.php';
+        require_once __DIR__ . '/admin_footer.php';
         exit();
         break;
 
@@ -300,7 +301,7 @@ switch ($op) {
 
         unset($optHandler, $logHandler, $pollObj, $pollHandler, $pollId);
         // clear the template cache so changes take effect immediately
-        include_once $GLOBALS['xoops']->path('class/template.php');
+        require_once $GLOBALS['xoops']->path('class/template.php');
         xoops_template_clear_module_cache($GLOBALS['xoopsModule']->getVar('mid'));
         redirect_header($_SERVER['PHP_SELF'] . '?op=list', XoopspollConstants::REDIRECT_DELAY_SHORT, _AM_XOOPSPOLL_DBUPDATED);
         break;
@@ -313,13 +314,13 @@ switch ($op) {
             redirect_header($_SERVER['PHP_SELF'], XoopspollConstants::REDIRECT_DELAY_SHORT, implode('<br>', $pollHandler->getErrors()));
         }
         xoops_cp_header();
-        $admin_class = new ModuleAdmin();
-        echo $admin_class->addNavigation(basename(__FILE__));
+        $adminObject = \Xmf\Module\Admin::getInstance();
+        $adminObject->displayNavigation(basename(__FILE__));
         xoops_confirm(array(
                           'op'      => 'delete_ok',
                           'poll_id' => $pollId
                       ), $_SERVER['PHP_SELF'], sprintf(_AM_XOOPSPOLL_RUSUREDEL, $myts->htmlSpecialChars($pollObj->getVar('question'))));
-        include_once __DIR__ . '/admin_footer.php';
+        require_once __DIR__ . '/admin_footer.php';
         //    xoops_cp_footer();
         exit();
         break;
@@ -337,7 +338,7 @@ switch ($op) {
             $logHandler->deleteByPollId($pollId);
             unset($pollHandler, $optHandler, $logHandler);
             // clear the template cache
-            include_once $GLOBALS['xoops']->path('class/template.php');
+            require_once $GLOBALS['xoops']->path('class/template.php');
             xoops_template_clear_module_cache($GLOBALS['xoopsModule']->getVar('mid'));
             // delete comments for this poll
             xoops_comment_delete($GLOBALS['xoopsModule']->getVar('mid'), $pollId);
@@ -349,7 +350,7 @@ switch ($op) {
             if (($newbbModule instanceof XoopsModule) && $newbbModule->isactive()) {
                 /** @var NewbbTopicHandler $topicHandler */
                 $topicHandler = xoops_getModuleHandler('topic', 'newbb');
-                $criteria      = new CriteriaCompo();
+                $criteria     = new CriteriaCompo();
                 $criteria->add(new Criteria('poll_id', $pollId, '='));
                 /* {@internal the order of the next 2 statements is important! */
                 $topicHandler->updateAll('topic_haspoll', 0, $criteria); // clear poll association
@@ -376,7 +377,14 @@ switch ($op) {
         $timeTray = new XoopsFormElementTray(_AM_XOOPSPOLL_POLL_TIMES, '&nbsp;&nbsp;', 'time_tray');
 
         //add start time to the form
-        $startTimeText = new XoopspollFormDateTimePicker("<div class='bold'>" . _AM_XOOPSPOLL_START_TIME . '<br>' . "<span class='x-small'>" . _AM_XOOPSPOLL_FORMAT . '<br>' . sprintf(_AM_XOOPSPOLL_CURRENTTIME, $xuCurrentFormatted) . '</span></div>', 'xu_start_time', 20, $xuStartTimestamp);
+        $startTimeText = new XoopspollFormDateTimePicker("<div class='bold'>"
+                                                         . _AM_XOOPSPOLL_START_TIME
+                                                         . '<br>'
+                                                         . "<span class='x-small'>"
+                                                         . _AM_XOOPSPOLL_FORMAT
+                                                         . '<br>'
+                                                         . sprintf(_AM_XOOPSPOLL_CURRENTTIME, $xuCurrentFormatted)
+                                                         . '</span></div>', 'xu_start_time', 20, $xuStartTimestamp);
         $timeTray->addElement($startTimeText, true);
 
         // add ending date to form
@@ -391,10 +399,10 @@ switch ($op) {
         $pollForm->addElement(new XoopsFormButton('', 'poll_submit', _AM_XOOPSPOLL_RESTART, 'submit'));
 
         xoops_cp_header();
-        $admin_class = new ModuleAdmin();
-        echo $admin_class->addNavigation(basename(__FILE__));
+        $adminObject = \Xmf\Module\Admin::getInstance();
+        $adminObject->displayNavigation(basename(__FILE__));
         $pollForm->display();
-        include_once __DIR__ . '/admin_footer.php';
+        require_once __DIR__ . '/admin_footer.php';
         exit();
         break;
 
@@ -443,7 +451,7 @@ switch ($op) {
             echo $pollObj->getHtmlErrors();
             exit();
         }
-        include_once $GLOBALS['xoops']->path('class/template.php');
+        require_once $GLOBALS['xoops']->path('class/template.php');
         xoops_template_clear_module_cache($GLOBALS['xoopsModule']->getVar('mid'));
         redirect_header($_SERVER['PHP_SELF'], XoopspollConstants::REDIRECT_DELAY_SHORT, _AM_XOOPSPOLL_DBUPDATED);
         break;
@@ -463,8 +471,8 @@ switch ($op) {
         $pollObj      = $pollHandler->get($pollId);
         $expiredClass = ($pollObj->getVar('end_time') < time()) ? ' red' : '';
         xoops_cp_header();
-        $admin_class = new ModuleAdmin();
-        echo $admin_class->addNavigation(basename(__FILE__));
+        $adminObject = \Xmf\Module\Admin::getInstance();
+        $adminObject->displayNavigation(basename(__FILE__));
 
         $xuEndTimestamp     = userTimeToServerTime($pollObj->getVar('end_time'));
         $xuEndFormattedTime = ucfirst(date(_MEDIUMDATESTRING, $xuEndTimestamp));
@@ -473,11 +481,54 @@ switch ($op) {
          * @todo need to move this html to a template and pass variables via xoopsTpl
          * {@internal show a brief description of the question we are focusing on}
          */
-        echo "<h4 class='left'>" . _AM_XOOPSPOLL_LOGSLIST . "</h4>\n" . "<table class='outer bnone width100' style='padding: 0; margin: 0;'>\n" . "  <tr>\n" . "    <td>\n" . "      <table class='width100 bnone marg2 pad3'>\n" . "        <thead>\n" . "        <tr class='bg3'>\n"
-             . "          <th class='center' nowrap>" . _AM_XOOPSPOLL_POLLQUESTION . "</th>\n" . "          <th class='center' nowrap>" . _AM_XOOPSPOLL_POLLDESC . "</th>\n" . '          <th nowrap>' . _AM_XOOPSPOLL_VOTERS . "</th>\n" . '          <th nowrap>' . _AM_XOOPSPOLL_VOTES . "</th>\n"
-             . '          <th nowrap>' . _AM_XOOPSPOLL_EXPIRATION . "</th>\n" . "        </tr>\n" . "        </thead>\n" . "        <tfoot></tfoot>\n" . "        <tbody>\n" . "        <tr class='bg1'>\n" . "          <td class='center'>" . $pollObj->getVar('question') . "</td>\n"
-             . "          <td class='center'>" . $pollObj->getVar('description') . "</td>\n" . "          <td class='center'>" . $pollObj->getVar('voters') . "</td>\n" . "          <td class='center'>" . $pollObj->getVar('votes') . "</td>\n"
-             . "          <td class='center{$expiredClass}'>{$xuEndFormattedTime}</td>\n" . "        </tr>\n" . "        </tbody>\n" . "      </table>\n" . "    </td>\n" . "  </tr>\n" . "</table>\n";
+        echo "<h4 class='left'>"
+             . _AM_XOOPSPOLL_LOGSLIST
+             . "</h4>\n"
+             . "<table class='outer bnone width100' style='padding: 0; margin: 0;'>\n"
+             . "  <tr>\n"
+             . "    <td>\n"
+             . "      <table class='width100 bnone marg2 pad3'>\n"
+             . "        <thead>\n"
+             . "        <tr class='bg3'>\n"
+             . "          <th class='center' nowrap>"
+             . _AM_XOOPSPOLL_POLLQUESTION
+             . "</th>\n"
+             . "          <th class='center' nowrap>"
+             . _AM_XOOPSPOLL_POLLDESC
+             . "</th>\n"
+             . '          <th nowrap>'
+             . _AM_XOOPSPOLL_VOTERS
+             . "</th>\n"
+             . '          <th nowrap>'
+             . _AM_XOOPSPOLL_VOTES
+             . "</th>\n"
+             . '          <th nowrap>'
+             . _AM_XOOPSPOLL_EXPIRATION
+             . "</th>\n"
+             . "        </tr>\n"
+             . "        </thead>\n"
+             . "        <tfoot></tfoot>\n"
+             . "        <tbody>\n"
+             . "        <tr class='bg1'>\n"
+             . "          <td class='center'>"
+             . $pollObj->getVar('question')
+             . "</td>\n"
+             . "          <td class='center'>"
+             . $pollObj->getVar('description')
+             . "</td>\n"
+             . "          <td class='center'>"
+             . $pollObj->getVar('voters')
+             . "</td>\n"
+             . "          <td class='center'>"
+             . $pollObj->getVar('votes')
+             . "</td>\n"
+             . "          <td class='center{$expiredClass}'>{$xuEndFormattedTime}</td>\n"
+             . "        </tr>\n"
+             . "        </tbody>\n"
+             . "      </table>\n"
+             . "    </td>\n"
+             . "  </tr>\n"
+             . "</table>\n";
         echo "<br>\n";
 
         if ($pollObj->getVar('votes')) {  // there are votes to show
@@ -488,8 +539,26 @@ switch ($op) {
             $criteria->setGroupBy('option_id');
             $options = $optHandler->getAll($criteria, null, false);
 
-            echo "<div class='center' style='margin-bottom: 2em;'>\n" . "<h4 class='left'>" . _AM_XOOPSPOLL_LOGSLIST . "</h4>\n" . "<table class='outer bnone width100' style='padding: 0; margin: 0;'>\n" . "<thead>\n" . "  <tr>\n" . "    <th class='width15'>" . _AM_XOOPSPOLL_OPTION . "</th>\n"
-                 . '    <th>' . _AM_XOOPSPOLL_LABEL . "</th>\n" . "    <th class='width15'>" . _AM_XOOPSPOLL_COUNT . "</th>\n" . "  </tr>\n" . "</thead>\n" . "<tfoot></tfoot>\n" . '<tbody>';
+            echo "<div class='center' style='margin-bottom: 2em;'>\n"
+                 . "<h4 class='left'>"
+                 . _AM_XOOPSPOLL_LOGSLIST
+                 . "</h4>\n"
+                 . "<table class='outer bnone width100' style='padding: 0; margin: 0;'>\n"
+                 . "<thead>\n"
+                 . "  <tr>\n"
+                 . "    <th class='width15'>"
+                 . _AM_XOOPSPOLL_OPTION
+                 . "</th>\n"
+                 . '    <th>'
+                 . _AM_XOOPSPOLL_LABEL
+                 . "</th>\n"
+                 . "    <th class='width15'>"
+                 . _AM_XOOPSPOLL_COUNT
+                 . "</th>\n"
+                 . "  </tr>\n"
+                 . "</thead>\n"
+                 . "<tfoot></tfoot>\n"
+                 . '<tbody>';
 
             $rowClass = 'even';
             $i        = 0;
@@ -518,7 +587,12 @@ switch ($op) {
             $class     = 'even';
 
             if (is_array($logsArray) && $logsCount > 0) {
-                echo "<table class='outer bnone width100' style='padding: 0; margin: 0;'>\n" . "  <tr>\n" . "    <td class='bg2'>\n" . "      <table class='width100 bnone pad3 marg2'>\n" . "        <thead>\n" . "        <tr class='bg3'>\n";
+                echo "<table class='outer bnone width100' style='padding: 0; margin: 0;'>\n"
+                     . "  <tr>\n"
+                     . "    <td class='bg2'>\n"
+                     . "      <table class='width100 bnone pad3 marg2'>\n"
+                     . "        <thead>\n"
+                     . "        <tr class='bg3'>\n";
 
                 $ipLabel    = (XoopspollConstants::LOOK_UP_HOST === $GLOBALS['xoopsModuleConfig']['look_up_host']) ? _AM_XOOPSPOLL_HOST_NAME : _AM_XOOPSPOLL_IP;
                 $fieldArray = array(
@@ -530,8 +604,11 @@ switch ($op) {
                 );
 
                 foreach ($fieldArray as $field) {
-                    echo "          <th nowrap>\n" . "            <a href='{$sorthref}{$field['order']}&amp;orderdir=ASC'><img src='{$arrowUp}' alt='' /></a>\n" . "            <a href='{$sorthref}{$field['order']}&amp;orderdir=DESC'><img src='{$arrowDown}' alt='' /></a>\n"
-                         . "            &nbsp;{$field['label']}\n" . "          </th>\n";
+                    echo "          <th nowrap>\n"
+                         . "            <a href='{$sorthref}{$field['order']}&amp;orderdir=ASC'><img src='{$arrowUp}' alt='' /></a>\n"
+                         . "            <a href='{$sorthref}{$field['order']}&amp;orderdir=DESC'><img src='{$arrowDown}' alt='' /></a>\n"
+                         . "            &nbsp;{$field['label']}\n"
+                         . "          </th>\n";
                 }
                 echo '        </tr>' . "        </thead>\n" . "        <tbody>\n";
 
@@ -541,7 +618,12 @@ switch ($op) {
                     $logVals  = $thisLog->getValues();
                     $option   = $optHandler->get($logVals['option_id']);
                     $remoteIp = $luhConfig ? XoopspollPollUtility::getHostByAddrWithCache($logVals['ip']) : $logVals['ip'];
-                    echo "        <tr class='bg1'>\n" . "          <td class='{$class} center'>{$logVals['log_id']}</td>\n" . "          <td class='{$class}'>" . $option->getVar('option_text') . "</td>\n" . "          <td class='{$class} center'>{$remoteIp}</td>\n";
+                    echo "        <tr class='bg1'>\n"
+                         . "          <td class='{$class} center'>{$logVals['log_id']}</td>\n"
+                         . "          <td class='{$class}'>"
+                         . $option->getVar('option_text')
+                         . "</td>\n"
+                         . "          <td class='{$class} center'>{$remoteIp}</td>\n";
 
                     if (0 !== $logVals['user_id']) {
                         $user  = new XoopsUser($logVals['user_id']);
@@ -555,8 +637,20 @@ switch ($op) {
                             'to_userid'   => $to_userid
                         ));
 
-                        echo "          <td class='{$class} center'>\n" . '            <a href=' . $GLOBALS['xoops']->url('/userinfo.php') . '?uid=' . $user->getVar('uid') . ">{$uname}</a>&nbsp;\n" . "            <a href='{$pmLink}' target='_blank'><img src='" . $pathIcon16
-                             . "/mail_generic.png' alt='" . _AM_XOOPSPOLL_PM_VOTER . "' title='" . _AM_XOOPSPOLL_PM_VOTER . "' />\n" . "          </td>\n";
+                        echo "          <td class='{$class} center'>\n"
+                             . '            <a href='
+                             . $GLOBALS['xoops']->url('/userinfo.php')
+                             . '?uid='
+                             . $user->getVar('uid')
+                             . ">{$uname}</a>&nbsp;\n"
+                             . "            <a href='{$pmLink}' target='_blank'><img src='"
+                             . $pathIcon16
+                             . "/mail_generic.png' alt='"
+                             . _AM_XOOPSPOLL_PM_VOTER
+                             . "' title='"
+                             . _AM_XOOPSPOLL_PM_VOTER
+                             . "' />\n"
+                             . "          </td>\n";
                     } else {
                         echo "          <td class='{$class} center'>{$GLOBALS['xoopsConfig']['anonymous']}</td>\n";
                     }
@@ -576,9 +670,9 @@ switch ($op) {
 
         //    echo "<div class='center' style='margin-bottom: 1em;'>[ <a href='" . $_SERVER['PHP_SELF'] . "?op=list'>" . _AM_XOOPSPOLL_RETURNLIST . "</a> ]</div>\n";
         //    echo "<div class='center' style='margin-bottom: 1em;'>[ <a href='" . $_SERVER['PHP_SELF'] . "?op=list'><img src='". $pathIcon16 ."/back.png' alt='" . _AM_XOOPSPOLL_RETURNLIST . "' title='" . _AM_XOOPSPOLL_RETURNLIST . "'>" . _AM_XOOPSPOLL_RETURNLIST . "</a> ]</div>\n";
-        $admin_class->addItemButton(_AM_XOOPSPOLL_RETURNLIST, 'main.php' . '?op=list', $icon = '../16/back');
-        echo $admin_class->renderButton('center');
-        include_once __DIR__ . '/admin_footer.php';
+        $adminObject->addItemButton(_AM_XOOPSPOLL_RETURNLIST, 'main.php' . '?op=list', $icon = '../16/back');
+        $adminObject->displayButton('center');
+        require_once __DIR__ . '/admin_footer.php';
         break;
 
     case 'quickupdate':
@@ -613,7 +707,7 @@ switch ($op) {
                 unset($pollObj);
             }
             unset($pollObjs);
-            include_once $GLOBALS['xoops']->path('class/template.php');
+            require_once $GLOBALS['xoops']->path('class/template.php');
             xoops_template_clear_module_cache($GLOBALS['xoopsModule']->getVar('mid'));
             redirect_header($_SERVER['PHP_SELF'], XoopspollConstants::REDIRECT_DELAY_SHORT, _AM_XOOPSPOLL_DBUPDATED);
         } else {

@@ -45,8 +45,6 @@ $pathImageAdmin = $moduleInfo->getInfo('icons32');
  * Admin Menu
  */
 
-$adminmenu     = array();
-$i             = 1;
 $adminmenu[$i] = array(
     'title' => _MI_XOOPSPOLL_HOME,
     'link'  => 'admin/index.php',

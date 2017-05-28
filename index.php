@@ -43,7 +43,7 @@
  * @uses     redirect_header() function used to send user to another location after completing task(s)
  */
 
-include_once dirname(dirname(__DIR__)) . '/mainfile.php';
+include_once __DIR__ . '/../../mainfile.php';
 
 xoops_load('constants', 'xoopspoll');
 xoops_load('renderer', 'xoopspoll');

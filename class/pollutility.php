@@ -167,7 +167,7 @@ class XoopspollPollUtility
      * for backward compatibility. Otherwise cookie is named
      * '<dirname>_voted_polls' to allow for module to be cloned using
      * smartClone module.
-     * @param $db
+     * @param XoopsDatabase $db
      * @param $tablename
      * @return bool success in setting cookie
      * @internal param int|string $index array index to set in cookie
@@ -175,7 +175,7 @@ class XoopspollPollUtility
      * @internal param int $expires time when cookie expires
      * @internal param string $cookieBaseName name of cookie (without directory prefix)
      */
-    public static function dbTableExists($db, $tablename)
+    public static function dbTableExists(XoopsDatabase $db, $tablename)
     {
         $tablename = addslashes($tablename);
         $mytable   = $db->prefix("{$tablename}");
