@@ -35,10 +35,11 @@
  */
 
 use Xmf\Request;
+use XoopsModules\Xoopspoll;
 
 require_once __DIR__ . '/admin_header.php';
 
-xoops_load('pollUtility', 'xoopspoll');
+//xoops_load('pollUtility', 'xoopspoll');
 
 $op = Request::getString('op', 'list');
 switch ($op) {
@@ -47,12 +48,12 @@ switch ($op) {
         xoops_cp_header();
         $adminObject = \Xmf\Module\Admin::getInstance();
 
-        // $GLOBALS['xoopsTpl']->assign('navigation', $admin_class->displayNavigation(basename(__FILE__)));
+         $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation(basename(__FILE__)));
 
         $adminObject->addItemButton(_AM_XOOPSPOLL_IMPORT_UMFRAGE, 'utility.php' . '?op=umfrage', $icon = 'download');
         $GLOBALS['xoopsTpl']->assign('addPollButton', $adminObject->displayButton('left'));
 
-        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation(basename(__FILE__)));
+
 
         $GLOBALS['xoopsTpl']->assign('umfrageIntro', _AM_XOOPSPOLL_UMFRAGE_INTRO);
         $GLOBALS['xoopsTpl']->display($GLOBALS['xoops']->path('modules/xoopspoll/templates/admin/xoopspoll_utility.tpl'));
@@ -62,10 +63,10 @@ switch ($op) {
 
     /* Import data from umfrage */
     case 'umfrage':
-        $ok = Request::getString('ok', XoopspollConstants::CONFIRM_NOT_OK, 'POST');
+        $ok = Request::getString('ok', Xoopspoll\Constants::CONFIRM_NOT_OK, 'POST');
         if ($ok) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
-                redirect_header($_SERVER['PHP_SELF'], XoopspollConstants::REDIRECT_DELAY_MEDIUM, implode('<br>', $GLOBALS['xoopsSecurity']->getErrors()));
+                redirect_header($_SERVER['PHP_SELF'], Xoopspoll\Constants::REDIRECT_DELAY_MEDIUM, implode('<br>', $GLOBALS['xoopsSecurity']->getErrors()));
             }
             // first check to see if umfrage module is installed and active
             /** @var XoopsModuleHandler $moduleHandler */
@@ -79,7 +80,7 @@ switch ($op) {
                     $success        = false;
                     $umTables       =& $umModule->getInfo('tables');
                     foreach ($umTables as $umTable) {
-                        $s = XoopspollPollUtility::dbTableExists($GLOBALS['xoopsDB'], $umTable);
+                        $s = Xoopspoll\Utility::dbTableExists($GLOBALS['xoopsDB'], $umTable);
                         if (!$s) {
                             throw new Exception("Could not find the umfrage db table ({$umTable})");
                         }
@@ -90,15 +91,15 @@ switch ($op) {
                     require_once $GLOBALS['xoops']->path('modules/umfrage/class/umfrageoption.php');
                     require_once $GLOBALS['xoops']->path('modules/umfrage/class/umfragelog.php');
 
-                    $xpHandler    = xoops_getModuleHandler('poll', 'xoopspoll');
-                    $xpOptHandler = xoops_getModuleHandler('option', 'xoopspoll');
-                    $xpLogHandler = xoops_getModuleHandler('log', 'xoopspoll');
+                    $xpHandler    = Xoopspoll\Helper::getInstance()->getHandler('Poll');
+                    $xpOptHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');
+                    $xpLogHandler = Xoopspoll\Helper::getInstance()->getHandler('Log');
 
                     // maps umfrage_desc : polltype to xoopspoll_desc : visibility
                     $typeToVisMap = [
-                        1 => XoopspollConstants::HIDE_NEVER,
-                        2 => XoopspollConstants::HIDE_ALWAYS,
-                        3 => XoopspollConstants::HIDE_VOTED
+                        1 => Xoopspoll\Constants::HIDE_NEVER,
+                        2 => Xoopspoll\Constants::HIDE_ALWAYS,
+                        3 => Xoopspoll\Constants::HIDE_VOTED
                     ];
 
                     $err                = [];
@@ -108,8 +109,8 @@ switch ($op) {
                     $allUmfragePollObjs = $umContainer->getAll();
                     foreach ($allUmfragePollObjs as $umPollObj) {
                         // make sure we don't have this question already (pretty strict comparison)
-                        $criteria = new CriteriaCompo();
-                        $criteria->add(new Criteria('question', trim($umPollObj->getVar('question')), '='));
+                        $criteria = new \CriteriaCompo();
+                        $criteria->add(new \Criteria('question', trim($umPollObj->getVar('question')), '='));
                         $criteria->setLimit(1);
                         $pollExists = $xpHandler->getCount($criteria);
                         if (0 === $pollExists) {
@@ -117,7 +118,7 @@ switch ($op) {
                             if (array_key_exists((int)$umPollObj->getVar('polltype'), $typeToVisMap)) {
                                 $visibility = $typeToVisMap[$umPollObj->getVar('polltype')];
                             } else {
-                                $visibility = XoopspollConstants::HIDE_END;
+                                $visibility = Xoopspoll\Constants::HIDE_END;
                             }
                             // save the poll into Xoopspoll database
                             $xpValues = [
@@ -192,7 +193,7 @@ switch ($op) {
                         }
                         unset($criteria, $umOptObjs);
                     }
-                    redirect_header('index.php', XoopspollConstants::REDIRECT_DELAY_MEDIUM, sprintf(_AM_XOOPSPOLL_IMPORT_SUCCESS, (int)count($allUmfragePollObjs)));
+                    redirect_header('index.php', Xoopspoll\Constants::REDIRECT_DELAY_MEDIUM, sprintf(_AM_XOOPSPOLL_IMPORT_SUCCESS, (int)count($allUmfragePollObjs)));
                 } else {
                     throw new Exception(_AM_XOOPSPOLL_UMFRAGE_FAILED);
                 }

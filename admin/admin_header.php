@@ -29,10 +29,12 @@
  * required as they are done by cp_header.php}
  */
 
+use XoopsModules\Xoopspoll;
+
 require_once __DIR__ . '/../../../include/cp_header.php';
 
 $moduleDirName = basename(dirname(__DIR__));
-$helper = \Xmf\Module\Helper::getHelper($moduleDirName);
+$helper = Xoopspoll\Helper::getInstance();
 $adminObject = \Xmf\Module\Admin::getInstance();
 
 $pathIcon16    = \Xmf\Module\Admin::iconUrl('', 16);
@@ -48,5 +50,5 @@ $myts = \MyTextSanitizer::getInstance();
 
 if (!isset($GLOBALS['xoopsTpl']) || !($GLOBALS['xoopsTpl'] instanceof XoopsTpl)) {
     require_once $GLOBALS['xoops']->path('class/template.php');
-    $xoopsTpl = new XoopsTpl();
+    $xoopsTpl = new \XoopsTpl();
 }

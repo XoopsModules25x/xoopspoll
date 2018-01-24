@@ -1,4 +1,5 @@
-<?php
+<?php namespace XoopsModules\Xoopspoll;
+
 /*
                XOOPS - PHP Content Management System
                    Copyright (c) 2000-2016 XOOPS.org
@@ -40,7 +41,7 @@
  **/
 // defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
-interface XoopspollConstants
+interface Constants
 {
     /**#@+
      * Constant definition

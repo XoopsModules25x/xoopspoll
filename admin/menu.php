@@ -36,7 +36,7 @@
 
 use XoopsModules\Xoopspoll;
 
-require_once __DIR__ . '/../class/Helper.php';
+// require_once __DIR__ . '/../class/Helper.php';
 //require_once __DIR__ . '/../include/common.php';
 $helper = Xoopspoll\Helper::getInstance();
 

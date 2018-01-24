@@ -1,4 +1,4 @@
-<?php
+<?php namespace XoopsModules\Xoopspoll;
 /*
  You may not change or alter any portion of this comment or credits
  of supporting developers from this source code or any supporting source code
@@ -22,5 +22,5 @@
  */
 
 $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-$GLOBALS['xoopsLogger']->addDeprecated('Usage of ./xoopspoll/class/xoopspolloption.php file is deprecated since Xoopspoll 1.40, please use XoopspollOption and XoopspollOptionHandler classes instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
+$GLOBALS['xoopsLogger']->addDeprecated('Usage of ./xoopspoll/class/xoopspolloption.php file is deprecated since Xoopspoll 1.40, please use Option and OptionHandler classes instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
 xoops_load('log', 'xoopspoll');

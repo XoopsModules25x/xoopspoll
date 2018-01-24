@@ -18,6 +18,10 @@
  * @since     :: 1.40
  */
 
+use XoopsModules\Xoopspoll;
+use XoopsModules\Newbb;
+
+
 xoops_loadLanguage('main', 'xoopspoll');
 xoops_load('pollUtility', 'xoopspoll');
 /*
@@ -45,7 +49,7 @@ function xoopspollBlockSinglepollShow($options)
     $block = [];
 
     $configHandler = xoops_getHandler('config');
-    $pollHandler   = xoops_getModuleHandler('poll', 'xoopspoll');
+    $pollHandler   = Xoopspoll\Helper::getInstance()->getHandler('Poll');
     /** @var XoopsModuleHandler $moduleHandler */
     $moduleHandler      = xoops_getHandler('module');
     $thisModule         = $moduleHandler->getByDirname('xoopspoll');
@@ -64,9 +68,9 @@ function xoopspollBlockSinglepollShow($options)
             $newbbModule = $moduleHandler->getByDirname('newbb');
             if ($newbbModule instanceof XoopsModule && $newbbModule->isactive()) {
                 /** @var NewbbTopicHandler $topicHandler */
-                $topicHandler = xoops_getModuleHandler('topic', 'newbb');
+                $topicHandler = Newbb\Helper::getInstance()->getHandler('Topic');
                 $tFields      = ['topic_id', 'poll_id'];
-                $tArray       =& $topicHandler->getAll(new Criteria('topic_haspoll', 0, '>'), $tFields, false);
+                $tArray       =& $topicHandler->getAll(new \Criteria('topic_haspoll', 0, '>'), $tFields, false);
                 if (!empty($tArray)) {
                     $tcriteria = [];
                     foreach ($tArray as $t) {
@@ -74,7 +78,7 @@ function xoopspollBlockSinglepollShow($options)
                     }
                     if (!empty($tcriteria)) {
                         $tstring  = '(' . implode(',', $tcriteria) . ')';
-                        $criteria = new Criteria('poll_id', $tstring, 'NOT IN');
+                        $criteria = new \Criteria('poll_id', $tstring, 'NOT IN');
                     }
                 }
                 unset($topicHandler, $tFields, $tArray);
@@ -93,7 +97,7 @@ function xoopspollBlockSinglepollShow($options)
         $pollObj = $pollHandler->get((int)$options[1]);
     }
 
-    if ($pollObj instanceof XoopspollPoll) {
+    if ($pollObj instanceof Poll) {
         if (!$pollObj->hasExpired() || (1 === $options[0])) {
             $block['langVote']        = _MD_XOOPSPOLL_VOTE;
             $block['langResults']     = _MD_XOOPSPOLL_RESULTS;
@@ -107,16 +111,16 @@ function xoopspollBlockSinglepollShow($options)
             $block['url']             = 'http' . ((!empty($_SERVER['HTTPS'])) ? 's' : '') . '://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
             $block['dispVotes']       = $this_module_config['disp_vote_nums'];
 
-            $optHandler = xoops_getModuleHandler('option', 'xoopspoll');
+            $optHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');
 
             $pollVars = $pollObj->getValues();
-            $criteria = new CriteriaCompo();
-            $criteria->add(new Criteria('poll_id', $pollVars['poll_id'], '='));
+            $criteria = new \CriteriaCompo();
+            $criteria->add(new \Criteria('poll_id', $pollVars['poll_id'], '='));
             $criteria->setSort('option_id');
             $optionsObjArray = $optHandler->getAll($criteria);
             //            $optionsObjArray = $optHandler->getAll($criteria, null, false);
 
-            if (XoopspollConstants::MULTIPLE_SELECT_POLL === $pollVars['multiple']) {
+            if (\Xoopspoll\Constants::MULTIPLE_SELECT_POLL === $pollVars['multiple']) {
                 $pollOptionType = 'checkbox';
                 $pollOptionName = 'option_id[]';
             } else {
@@ -125,12 +129,12 @@ function xoopspollBlockSinglepollShow($options)
             }
 
             $uid = 0;
-            if (isset($GLOBALS['xoopsUser']) && ($GLOBALS['xoopsUser'] instanceof XoopsUser)) {
+            if (isset($GLOBALS['xoopsUser']) && ($GLOBALS['xoopsUser'] instanceof \XoopsUser)) {
                 $uid = $GLOBALS['xoopsUser']->getVar('uid');
             }
 
             $totalVotes       = $pollVars['votes'];
-            $logHandler       = xoops_getModuleHandler('log', 'xoopspoll');
+            $logHandler       = Xoopspoll\Helper::getInstance()->getHandler('Log');
             $hasVoted         = $logHandler->hasVoted($pollVars['poll_id'], xoops_getenv('REMOTE_ADDR'), $uid) ? true : false;
             $canVote          = (!$hasVoted) && $pollObj->isAllowedToVote();
             $pollOptionsArray = [];
@@ -180,7 +184,7 @@ function xoopspollBlockSinglepollShow($options)
             $block['totalVotes']  = sprintf(_MD_XOOPSPOLL_TOTALVOTES, $totalVotes);
             $block['endTime']     = $xuEndFormattedTime; // formatted output for current user
             $block['comments']    = $pollObj->getComments($pollVars['poll_id']);
-            $block['commentMode'] = XoopspollPollUtility::commentMode();
+            $block['commentMode'] = Xoopspoll\Utility::commentMode();
 
             unset($optionsObjArray, $pollOptionsArray, $pollObj, $pollVars, $timeArray);
         }
@@ -233,10 +237,10 @@ function xoopspollBlockSinglepollEdit($options)
             . "<input type='radio' name='options[0]' value='0'{$chk0no} id='no'>\n"
             . "</td></tr>\n";
 
-    $pollHandler = xoops_getModuleHandler('poll', 'xoopspoll');
+    $pollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
     $pollFields  = ['poll_id', 'start_time', 'end_time', 'question', 'weight'];
-    $criteria    = new CriteriaCompo();
-    //    $criteria->add(new Criteria('end_time', time(), '>'));
+    $criteria    = new \CriteriaCompo();
+    //    $criteria->add(new \Criteria('end_time', time(), '>'));
     $criteria->setOrder('ASC');
     $criteria->setSort('weight');
     /**
@@ -244,7 +248,7 @@ function xoopspollBlockSinglepollEdit($options)
      * up in the block once they have started.  To only allow selection of active polls uncomment
      * the following line in the code - this could be made a module config option if desired
      */
-    // $criteria->add(new Criteria('start_time', time(), '<='));
+    // $criteria->add(new \Criteria('start_time', time(), '<='));
     /**
      * now check to see if we want to hide polls that were created using newbb
      */
@@ -258,9 +262,9 @@ function xoopspollBlockSinglepollEdit($options)
         $newbbModule = $moduleHandler->getByDirname('newbb');
         if ($newbbModule instanceof XoopsModule && $newbbModule->isactive()) {
             /** @var NewbbTopicHandler $topicHandler */
-            $topicHandler = xoops_getModuleHandler('topic', 'newbb');
+            $topicHandler = Newbb\Helper::getInstance()->getHandler('Topic');
             $tFields      = ['topic_id', 'poll_id'];
-            $tArray       =& $topicHandler->getAll(new Criteria('topic_haspoll', 0, '>'), $tFields, false);
+            $tArray       =& $topicHandler->getAll(new \Criteria('topic_haspoll', 0, '>'), $tFields, false);
             if (!empty($tArray)) {
                 $tcriteria = [];
                 foreach ($tArray as $t) {
@@ -268,7 +272,7 @@ function xoopspollBlockSinglepollEdit($options)
                 }
                 if (!empty($tcriteria)) {
                     $tstring = '(' . implode(',', $tcriteria) . ')';
-                    $criteria->add(new Criteria('poll_id', $tstring, 'NOT IN'));
+                    $criteria->add(new \Criteria('poll_id', $tstring, 'NOT IN'));
                 }
             }
             unset($topicHandler, $tFields, $tArray);
@@ -313,7 +317,7 @@ function xoopspollBlockSinglepollEdit($options)
              . "</td></tr>\n";
 
     /* find out if want to show options as a list or as a select box */
-    if (XoopspollConstants::POLL_OPTIONS_SELECT === $options[3]) {
+    if (\Xoopspoll\Constants::POLL_OPTIONS_SELECT === $options[3]) {
         $chk3select = ' checked';
         $chk3list   = '';
     } else {
@@ -327,13 +331,13 @@ function xoopspollBlockSinglepollEdit($options)
              . _MB_XOOPSPOLL_LIST
              . "</label>\n"
              . "<input type='radio' name='options[3]' value='"
-             . XoopspollConstants::POLL_OPTIONS_LIST
+             . Xoopspoll\Constants::POLL_OPTIONS_LIST
              . "'{$chk3list} id='list'>\n"
              . "<label class='middle' style='margin-left: 2em;' for='select'>&nbsp;&nbsp;&nbsp;"
              . _MB_XOOPSPOLL_SELECT
              . "</label>\n"
              . "<input type='radio' name='options[3]' value='"
-             . XoopspollConstants::POLL_OPTIONS_SELECT
+             . Xoopspoll\Constants::POLL_OPTIONS_SELECT
              . "'{$chk3select} id='select'>\n"
              . "</td></tr>\n"
              . "</table>\n";

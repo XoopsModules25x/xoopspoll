@@ -33,22 +33,11 @@
  * @since     ::      1.4
  * @author    ::     zyspec <owners@zyspec.com>
  **/
-class XoopspollCorePreload extends XoopsPreloadItem
+
+use XoopsModules\Xoopspoll;
+
+class XoopspollCorePreload extends \XoopsPreloadItem
 {
-    /**
-     * plugin class for Xoops preload for index page start
-     * @param $args
-     */
-    public static function eventCoreIndexStart($args)
-    {
-        // check once per user session if expired poll email has been sent
-        if (empty($_SESSION['pollChecked'])) {
-            $pollHandler = xoops_getModuleHandler('poll', 'xoopspoll');
-            $pollHandler->mailResults();  //send the results of any polls that have ended
-            unset($pollHandler);
-            $_SESSION['pollChecked'] = 1;
-        }
-    }
 
     // to add PSR-4 autoloader
     /**
@@ -57,5 +46,20 @@ class XoopspollCorePreload extends XoopsPreloadItem
     public static function eventCoreIncludeCommonEnd($args)
     {
         include __DIR__ . '/autoloader.php';
+    }
+
+    /**
+     * plugin class for Xoops preload for index page start
+     * @param $args
+     */
+    public static function eventCoreIndexStart($args)
+    {
+        // check once per user session if expired poll email has been sent
+        if (empty($_SESSION['pollChecked'])) {
+            $pollHandler = \XoopsModules\Xoopspoll\Helper::getInstance()->getHandler('Poll');
+            $pollHandler->mailResults();  //send the results of any polls that have ended
+            unset($pollHandler);
+            $_SESSION['pollChecked'] = 1;
+        }
     }
 }

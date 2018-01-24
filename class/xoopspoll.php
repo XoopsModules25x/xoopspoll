@@ -21,60 +21,41 @@
  * @since     ::  1.40
  * @author    ::  zyspec <owners@zyspec.com>
  */
-xoops_load('poll', 'xoopspoll');
+
+use XoopsModules\Xoopspoll;
+
+//xoops_load('poll', 'xoopspoll');
 
 /**
  * @deprecated
  */
-class Xoopspoll extends XoopspollPoll
+class Xoopspoll extends Xoopspoll\Poll
 {
     /**
      * @deprecated
      * @param null $id
      */
-    public function __construct(&$id = null)
+    public function __construct($id = null)
     {
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __CLASS__ . ' is deprecated since Xoopspoll 1.40, please use XoopspollPoll and XoopspollPollHandler classes instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
+        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __CLASS__ . ' is deprecated since Xoopspoll 1.40, please use Poll and PollHandler classes instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
         parent::__construct($id);
-    }
-
-    /**
-     * @deprecated
-     * @param null $id
-     */
-    public function XoopsPoll(&$id = null)
-    {
-        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __CLASS__ . ' is deprecated since Xoopspoll 1.40, please use XoopspollPoll and XoopspollPollHandler classes instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
-        $this->__construct($id);
     }
 }
 
 /**
  * @deprecated
  */
-class XoopsPollHandler extends XoopspollPollHandler
+class XoopsPollHandler extends Xoopspoll\PollHandler
 {
     /**
      * @deprecated
-     * @param null|XoopsDatabase $db
+     * @param null|\XoopsDatabase $db
      */
-    public function __construct(XoopsDatabase $db)
+    public function __construct(\XoopsDatabase $db)
     {
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __CLASS__ . ' is deprecated since Xoopspoll 1.40, please use XoopspollPoll and XoopspollPollHandler classes instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
+        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __CLASS__ . ' is deprecated since Xoopspoll 1.40, please use Poll and PollHandler classes instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
         parent::__construct($db);
-    }
-
-    /**
-     * @deprecated
-     * @param $db
-     */
-    public function XoopsPollHandler($db)
-    {
-        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __CLASS__ . ' is deprecated since Xoopspoll 1.40, please use XoopspollPoll and XoopspollPollHandler classes instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
-        $this->__construct($db);
     }
 }

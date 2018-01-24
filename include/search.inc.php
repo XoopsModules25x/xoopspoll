@@ -19,7 +19,12 @@
  * @since     ::      1.40
  * @author    ::     John Neill, zyspec <owners@zyspec.com>
  */
+
+use XoopsModules\Xoopspoll;
+use XoopsModules\Newbb;
+
 // defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+
 
 /**
  * xoopspoll_search()
@@ -38,10 +43,10 @@ function xoopspoll_search($queryArray, $andor, $limit, $offset, $uid)
     $ret = [];
     if (0 === (int)$uid) {
         xoops_load('pollUtility', 'xoopspoll');
-        $pollHandler = xoops_getModuleHandler('poll', 'xoopspoll');
+        $pollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
         $pollFields  = ['poll_id', 'user_id', 'question', 'start_time'];
-        $criteria    = new CriteriaCompo();
-        $criteria->add(new Criteria('start_time', time(), '<=')); // only show polls that have started
+        $criteria    = new \CriteriaCompo();
+        $criteria->add(new \Criteria('start_time', time(), '<=')); // only show polls that have started
         /**
          * @todo:
          * find out if want to show polls that were created with a forum. If no, then change
@@ -62,9 +67,9 @@ function xoopspoll_search($queryArray, $andor, $limit, $offset, $uid)
             $newbbModule = $moduleHandler->getByDirname('newbb');
             if ($newbbModule instanceof XoopsModule && $newbbModule->isactive()) {
                 /** @var NewbbTopicHandler $topicHandler */
-                $topicHandler = xoops_getModuleHandler('topic', 'newbb');
+                $topicHandler = Newbb\Helper::getInstance()->getHandler('Topic');
                 $tFields      = ['topic_id', 'poll_id'];
-                $tArray       =& $topicHandler->getAll(new Criteria('topic_haspoll', 0, '>'), $tFields, false);
+                $tArray       =& $topicHandler->getAll(new \Criteria('topic_haspoll', 0, '>'), $tFields, false);
                 foreach ($tArray as $t) {
                     $pollsWithTopics[$t['poll_id']] = $t['topic_id'];
                 }
@@ -78,13 +83,13 @@ function xoopspoll_search($queryArray, $andor, $limit, $offset, $uid)
         $criteria->setStart((int)$offset);
 
         if (is_array($queryArray) && !empty($queryArray)) {
-            $criteria->add(new Criteria('question', "%{$queryArray[0]}%", 'LIKE'));
-            $criteria->add(new Criteria('description', "%{$queryArray[0]}%", 'LIKE'), 'OR');
+            $criteria->add(new \Criteria('question', "%{$queryArray[0]}%", 'LIKE'));
+            $criteria->add(new \Criteria('description', "%{$queryArray[0]}%", 'LIKE'), 'OR');
             array_shift($queryArray); //get rid of first element
 
             foreach ($queryArray as $query) {
-                $criteria->add(new Criteria('question', "%{$query}%", 'LIKE'), $andor);
-                $criteria->add(new Criteria('description', "%{$query}%", 'LIKE'), 'OR');
+                $criteria->add(new \Criteria('question', "%{$query}%", 'LIKE'), $andor);
+                $criteria->add(new \Criteria('description', "%{$query}%", 'LIKE'), 'OR');
             }
         }
         $pollArray = $pollHandler->getAll($criteria, $pollFields, false);

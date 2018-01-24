@@ -1,4 +1,4 @@
-<?php
+<?php namespace XoopsModules\Xoopspoll;
 /**
  * Xoopspoll form timepicker
  *
@@ -24,7 +24,7 @@
 /**
  * Creates a text field with jquery ui calendar & time select popup
  */
-class XoopspollFormDateTimePicker extends XoopsFormText
+class FormDateTimePicker extends \XoopsFormText
 {
     /**
      *

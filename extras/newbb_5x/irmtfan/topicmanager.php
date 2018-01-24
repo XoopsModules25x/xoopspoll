@@ -17,6 +17,10 @@
  * @author       XOOPS Development Team,  phppp (D.J., infomax@gmail.com)
  */
 
+use XoopsModules\Xoopspoll;
+use XoopsModules\Newbb;
+
+
 require_once __DIR__ . '/header.php';
 
 if (isset($_POST['submit'])) {
@@ -43,10 +47,10 @@ if (!$topic_id) {
     $redirect = $GLOBALS['xoops']->url("modules/newbb/{$redirect}");
     redirect_header($redirect, 2, _MD_ERRORTOPIC);
 }
-/** @var NewbbTopicHandler $topicHandler */
-$topicHandler = xoops_getModuleHandler('topic', 'newbb');
-/** @var NewbbForumHandler $forumHandler */
-$forumHandler = xoops_getModuleHandler('forum', 'newbb');
+/** @var Newbb\TopicHandler $topicHandler */
+$topicHandler = Newbb\Helper::getInstance()->getHandler('Topic');
+/** @var Newbb\ForumHandler $forumHandler */
+$forumHandler = Newbb\Helper::getInstance()->getHandler('Forum');
 
 if (!$forum) {
     $topic_obj = $topicHandler->get((int)$topic_id);
@@ -60,7 +64,7 @@ if (!$forum) {
 }
 
 if ($xoopsModuleConfig['wol_enabled']) {
-    $onlineHandler = xoops_getModuleHandler('online', 'newbb');
+    $onlineHandler = Newbb\Helper::getInstance()->getHandler('Online');
     $onlineHandler->init($forum);
 }
 // irmtfan add restore to viewtopic
@@ -113,10 +117,10 @@ if (isset($_POST['submit'])) {
         // irmtfan full URL
         echo $action[$mode]['msg'] . "<p><a href='" . XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname') . "/viewforum.php?forum=$forum'>" . _MD_RETURNTOTHEFORUM . "</a></p><p><a href='index.php'>" . _MD_RETURNFORUMINDEX . '</a></p>';
     } elseif ('restore' === $mode) {
-        // /** @var NewbbTopicHandler $topicHandler */
-        //        $topicHandler = xoops_getModuleHandler('topic', 'newbb');
+        // /** @var Newbb\TopicHandler $topicHandler */
+        //        $topicHandler = Newbb\Helper::getInstance()->getHandler('Topic');
         $forums     = [];
-        $topics_obj =& $topicHandler->getAll(new Criteria('topic_id', '(' . implode(',', $topic_id) . ')', 'IN'));
+        $topics_obj =& $topicHandler->getAll(new \Criteria('topic_id', '(' . implode(',', $topic_id) . ')', 'IN'));
         foreach (array_keys($topics_obj) as $id) {
             $topic_obj = $topics_obj[$id];
             $topicHandler->approve($topic_obj);
@@ -124,7 +128,7 @@ if (isset($_POST['submit'])) {
             $forums[$topic_obj->getVar('forum_id')] = 1;
         }
         //irmtfan remove - no need to approve posts manually - see class/post.php approve function
-        $criteria_forum = new Criteria('forum_id', '(' . implode(',', array_keys($forums)) . ')', 'IN');
+        $criteria_forum = new \Criteria('forum_id', '(' . implode(',', array_keys($forums)) . ')', 'IN');
         $forums_obj     =& $forumHandler->getAll($criteria_forum);
         foreach (array_keys($forums_obj) as $id) {
             $forumHandler->synchronization($forums_obj[$id]);
@@ -158,8 +162,8 @@ if (isset($_POST['submit'])) {
         $pollModule    = $moduleHandler->getByDirname('xoopspoll');
         if (($pollModule instanceof XoopsModule) && $pollModule->isactive()) {
             $pollmodul    = 'xoopspoll';
-            $xpOptHandler = xoops_getModuleHandler('option', 'xoopspoll');
-            $xpLogHandler = xoops_getModuleHandler('log', 'xoopspoll');
+            $xpOptHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');
+            $xpLogHandler = Xoopspoll\Helper::getInstance()->getHandler('Log');
         } else {
             //Umfrage
             $pollModule = $moduleHandler->getByDirname('umfrage');
@@ -168,7 +172,7 @@ if (isset($_POST['submit'])) {
             }
         }
 
-        $postHandler = xoops_getModuleHandler('post', 'newbb');
+        $postHandler = Newbb\Helper::getInstance()->getHandler('Post');
         foreach ($topic_id as $tid) {
             $topic_obj    = $topicHandler->get($tid);
             $newtopic_obj = $topicHandler->get($newtopic);
@@ -178,14 +182,14 @@ if (isset($_POST['submit'])) {
                             redirect_header("javascript:history.go(-1)", 2, _MD_ERROR);
                         }
             */
-            $criteria_topic = new Criteria('topic_id', $tid);
-            $criteria       = new CriteriaCompo($criteria_topic);
-            $criteria->add(new Criteria('pid', 0));
+            $criteria_topic = new \Criteria('topic_id', $tid);
+            $criteria       = new \CriteriaCompo($criteria_topic);
+            $criteria->add(new \Criteria('pid', 0));
             $postHandler->updateAll('pid', $topicHandler->getTopPostId($newtopic), $criteria, true);
             $postHandler->updateAll('topic_id', $newtopic, $criteria_topic, true);
 
             $topic_views       = $topic_obj->getVar('topic_views') + $newtopic_obj->getVar('topic_views');
-            $criteria_newtopic = new Criteria('topic_id', $newtopic);
+            $criteria_newtopic = new \Criteria('topic_id', $newtopic);
             $topicHandler->updateAll('topic_views', $topic_views, $criteria_newtopic, true);
 
             $topicHandler->synchronization($newtopic);
@@ -193,7 +197,7 @@ if (isset($_POST['submit'])) {
             $poll_id = $topicHandler->get($tid, 'poll_id');
             if ($poll_id > 0) {
                 if ('xoopspoll' === $pollmodul) {
-                    $xpPollHandler = xoops_getModuleHandler('poll', 'xoopspoll');
+                    $xpPollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
                     $poll          = $xpPollHandler->get($poll_id);
                     if (false !== $xpPollHandler->delete($poll)) {
                         $xpOptHandler->deleteByPollId($poll_id);
@@ -295,9 +299,9 @@ if (isset($_POST['submit'])) {
         }
         if ('digest' === $mode && $xoopsDB->getAffectedRows()) {
             $topic_obj    = $topicHandler->get($topic_id);
-            $statsHandler = xoops_getModuleHandler('stats', 'newbb');
+            $statsHandler = Newbb\Helper::getInstance()->getHandler('Stats');
             $statsHandler->update($topic_obj->getVar('forum_id'), 'digest');
-            $userstatsHandler = xoops_getModuleHandler('userstats', 'newbb');
+            $userstatsHandler = Newbb\Helper::getInstance()->getHandler('Userstats');
             if ($user_stat = $userstatsHandler->get($topic_obj->getVar('topic_poster'))) {
                 $z = $user_stat->getVar('user_digests') + 1;
                 $user_stat->setVar('user_digests', (int)$z);
@@ -332,7 +336,7 @@ if (isset($_POST['submit'])) {
         echo '<tr><td class="bg3">' . _MD_MOVETOPICTO . '</td><td class="bg1">';
         $box = '<select name="newforum" size="1">';
 
-        $categoryHandler = xoops_getModuleHandler('category', 'newbb');
+        $categoryHandler = Newbb\Helper::getInstance()->getHandler('Category');
         $categories      = $categoryHandler->getByPermission('access');
         $forums          =& $forumHandler->getForumsByCategory(array_keys($categories), 'post', false);
 

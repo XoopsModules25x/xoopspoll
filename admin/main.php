@@ -49,6 +49,9 @@
  */
 
 use Xmf\Request;
+use XoopsModules\Xoopspoll;
+use XoopsModules\Newbb;
+
 
 require_once __DIR__ . '/admin_header.php';
 require_once $GLOBALS['xoops']->path('class/xoopsblock.php');
@@ -63,12 +66,12 @@ switch ($op) {
 
     case 'list':
     default:
-        $limit = Request::getInt('limit', XoopspollConstants::DEFAULT_POLL_PAGE_LIMIT);
+        $limit = Request::getInt('limit', Xoopspoll\Constants::DEFAULT_POLL_PAGE_LIMIT);
         $start = Request::getInt('start', 0);
 
-        /** @var XoopsPersistableObjectHandler $pollHandler */
-        $pollHandler = xoops_getModuleHandler('poll', 'xoopspoll');
-        $criteria    = new CriteriaCompo();
+        /** @var \XoopsPersistableObjectHandler $pollHandler */
+        $pollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
+        $criteria    = new \CriteriaCompo();
         $criteria->setLimit($limit + 1);
         $criteria->setStart($start);
         $criteria->setSort('weight ASC, start_time');  // trick criteria to allow 2 sort criteria
@@ -93,10 +96,10 @@ switch ($op) {
             $newbbModule   = $moduleHandler->getByDirname('newbb');
             if (($newbbModule instanceof XoopsModule) && $newbbModule->isactive()) {
                 /** @var NewbbTopicHandler $topicHandler */
-                $topicHandler = xoops_getModuleHandler('topic', 'newbb');
+                $topicHandler = Newbb\Helper::getInstance()->getHandler('Topic');
                 $topicFields  = ['topic_id', 'topic_title', 'poll_id'];
-                $criteria     = new CriteriaCompo();
-                $criteria->add(new Criteria('topic_haspoll', 0, '>'));
+                $criteria     = new \CriteriaCompo();
+                $criteria->add(new \Criteria('topic_haspoll', 0, '>'));
                 $pollsWithTopics = [];
                 $topicsWithPolls =& $topicHandler->getAll($criteria, $topicFields, false);
                 foreach ($topicsWithPolls as $pollTopics) {
@@ -132,7 +135,7 @@ switch ($op) {
                     $topic_title = '';
                 }
 
-                $checked = (XoopspollConstants::DISPLAY_POLL_IN_BLOCK === $pollVars['display']) ? ' checked' : '';
+                $checked = (\Xoopspoll\Constants::DISPLAY_POLL_IN_BLOCK === $pollVars['display']) ? ' checked' : '';
 
                 $xuCurrentTimestamp   = xoops_getUserTimestamp(time());
                 $xuCurrentFormatted   = ucfirst(date(_MEDIUMDATESTRING, $xuCurrentTimestamp));
@@ -189,7 +192,7 @@ switch ($op) {
                 }
             }
             xoops_load('pagenav');
-            $pageNav     = new XoopsPageNav($pollsCount, $limit, $start);
+            $pageNav     = new \XoopsPageNav($pollsCount, $limit, $start);
             $renderedNav = $pageNav->renderNav();
         }
 
@@ -203,8 +206,8 @@ switch ($op) {
 
     case 'edit':
     case 'add':
-        $optHandler  = xoops_getModuleHandler('option', 'xoopspoll');
-        $pollHandler = xoops_getModuleHandler('poll', 'xoopspoll');
+        $optHandler  = Xoopspoll\Helper::getInstance()->getHandler('Option');
+        $pollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
         $pollId      = Request::getInt('poll_id', 0);
         $pollObj     = $pollHandler->get($pollId); // will auto create object if poll_id=0
 
@@ -219,23 +222,23 @@ switch ($op) {
 
     case 'update':
         if (!$GLOBALS['xoopsSecurity']->check()) {
-            redirect_header($_SERVER['PHP_SELF'], XoopspollConstants::REDIRECT_DELAY_MEDIUM, implode('<br>', $GLOBALS['xoopsSecurity']->getErrors()));
+            redirect_header($_SERVER['PHP_SELF'], Xoopspoll\Constants::REDIRECT_DELAY_MEDIUM, implode('<br>', $GLOBALS['xoopsSecurity']->getErrors()));
         }
 
-        $optHandler  = xoops_getModuleHandler('option', 'xoopspoll');
-        $logHandler  = xoops_getModuleHandler('log', 'xoopspoll');
-        $pollHandler = xoops_getModuleHandler('poll', 'xoopspoll');
+        $optHandler  = Xoopspoll\Helper::getInstance()->getHandler('Option');
+        $logHandler  = Xoopspoll\Helper::getInstance()->getHandler('Log');
+        $pollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
 
         $pollId  = Request::getInt('poll_id', 0, 'POST');
         $pollObj = $pollHandler->get($pollId);
 
-        $notify = Request::getInt('notify', XoopspollConstants::NOTIFICATION_ENABLED, 'POST');
+        $notify = Request::getInt('notify', Xoopspoll\Constants::NOTIFICATION_ENABLED, 'POST');
 
         $currentTimestamp = time();
         $xuEndTimestamp   = strtotime(Request::getString('xu_end_time', null, 'POST'));
-        $endTimestamp     = empty($xuEndTimestamp) ? ($currentTimestamp + XoopspollConstants::DEFAULT_POLL_DURATION) : userTimeToServerTime($xuEndTimestamp);
+        $endTimestamp     = empty($xuEndTimestamp) ? ($currentTimestamp + Xoopspoll\Constants::DEFAULT_POLL_DURATION) : userTimeToServerTime($xuEndTimestamp);
         $xuStartTimestamp = strtotime(Request::getString('xu_start_time', null, 'POST'));
-        $startTimestamp   = empty($xuStartTimestamp) ? ($endTimestamp - XoopspollConstants::DEFAULT_POLL_DURATION) : userTimeToServerTime($xuStartTimestamp);
+        $startTimestamp   = empty($xuStartTimestamp) ? ($endTimestamp - Xoopspoll\Constants::DEFAULT_POLL_DURATION) : userTimeToServerTime($xuStartTimestamp);
 
         //  don't allow changing start time if there are votes in the log
         if (($startTimestamp < $pollObj->getVar('start_time')) && ($logHandler->getTotalVotesByPollId($pollId) > 0)) {
@@ -246,16 +249,16 @@ switch ($op) {
             'user_id'     => Request::getInt('user_id', $GLOBALS['xoopsUser']->uid(), 'POST'),
             'question'    => Request::getString('question', null, 'POST'),
             'description' => Request::getText('description', null, 'POST'),
-            'mail_status' => (XoopspollConstants::NOTIFICATION_ENABLED === $notify) ? XoopspollConstants::POLL_NOT_MAILED : XoopspollConstants::POLL_MAILED,
-            'mail_voter'  => Request::getInt('mail_voter', XoopspollConstants::NOT_MAIL_POLL_TO_VOTER, 'POST'),
+            'mail_status' => (\Xoopspoll\Constants::NOTIFICATION_ENABLED === $notify) ? Xoopspoll\Constants::POLL_NOT_MAILED : Xoopspoll\Constants::POLL_MAILED,
+            'mail_voter'  => Request::getInt('mail_voter', Xoopspoll\Constants::NOT_MAIL_POLL_TO_VOTER, 'POST'),
             'start_time'  => $startTimestamp,
             'end_time'    => $endTimestamp,
-            'display'     => Request::getInt('display', XoopspollConstants::DO_NOT_DISPLAY_POLL_IN_BLOCK, 'POST'),
-            'visibility'  => Request::getInt('visibility', XoopspollConstants::HIDE_NEVER, 'POST'),
-            'weight'      => Request::getInt('weight', XoopspollConstants::DEFAULT_WEIGHT, 'POST'),
-            'multiple'    => Request::getInt('multiple', XoopspollConstants::NOT_MULTIPLE_SELECT_POLL, 'POST'),
-            'multilimit'  => Request::getInt('multilimit', XoopspollConstants::MULTIPLE_SELECT_LIMITLESS, 'POST'),
-            'anonymous'   => Request::getInt('anonymous', XoopspollConstants::ANONYMOUS_VOTING_DISALLOWED, 'POST')
+            'display'     => Request::getInt('display', Xoopspoll\Constants::DO_NOT_DISPLAY_POLL_IN_BLOCK, 'POST'),
+            'visibility'  => Request::getInt('visibility', Xoopspoll\Constants::HIDE_NEVER, 'POST'),
+            'weight'      => Request::getInt('weight', Xoopspoll\Constants::DEFAULT_WEIGHT, 'POST'),
+            'multiple'    => Request::getInt('multiple', Xoopspoll\Constants::NOT_MULTIPLE_SELECT_POLL, 'POST'),
+            'multilimit'  => Request::getInt('multilimit', Xoopspoll\Constants::MULTIPLE_SELECT_LIMITLESS, 'POST'),
+            'anonymous'   => Request::getInt('anonymous', Xoopspoll\Constants::ANONYMOUS_VOTING_DISALLOWED, 'POST')
         ];
         $pollObj->setVars($pollVars);
         $pollId = $pollHandler->insert($pollObj);
@@ -304,15 +307,15 @@ switch ($op) {
         // clear the template cache so changes take effect immediately
         require_once $GLOBALS['xoops']->path('class/template.php');
         xoops_template_clear_module_cache($GLOBALS['xoopsModule']->getVar('mid'));
-        redirect_header($_SERVER['PHP_SELF'] . '?op=list', XoopspollConstants::REDIRECT_DELAY_SHORT, _AM_XOOPSPOLL_DBUPDATED);
+        redirect_header($_SERVER['PHP_SELF'] . '?op=list', Xoopspoll\Constants::REDIRECT_DELAY_SHORT, _AM_XOOPSPOLL_DBUPDATED);
         break;
 
     case 'delete':
         $pollId      = Request::getInt('poll_id', 0);
-        $pollHandler = xoops_getModuleHandler('poll', 'xoopspoll');
+        $pollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
         $pollObj     = $pollHandler->get($pollId);
-        if (empty($pollObj) || !($pollObj instanceof XoopspollPoll)) {
-            redirect_header($_SERVER['PHP_SELF'], XoopspollConstants::REDIRECT_DELAY_SHORT, implode('<br>', $pollHandler->getErrors()));
+        if (empty($pollObj) || !($pollObj instanceof Poll)) {
+            redirect_header($_SERVER['PHP_SELF'], Xoopspoll\Constants::REDIRECT_DELAY_SHORT, implode('<br>', $pollHandler->getErrors()));
         }
         xoops_cp_header();
         $adminObject = \Xmf\Module\Admin::getInstance();
@@ -328,14 +331,14 @@ switch ($op) {
 
     case 'delete_ok':
         if (!$GLOBALS['xoopsSecurity']->check()) {
-            redirect_header($_SERVER['PHP_SELF'], XoopspollConstants::REDIRECT_DELAY_MEDIUM, implode('<br>', $GLOBALS['xoopsSecurity']->getErrors()));
+            redirect_header($_SERVER['PHP_SELF'], Xoopspoll\Constants::REDIRECT_DELAY_MEDIUM, implode('<br>', $GLOBALS['xoopsSecurity']->getErrors()));
         }
-        $pollHandler = xoops_getModuleHandler('poll', 'xoopspoll');
+        $pollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
         $pollId      = Request::getInt('poll_id', 0, 'POST');
-        if ($pollHandler->deleteAll(new Criteria('poll_id', $pollId, '='))) {
-            $optHandler = xoops_getModuleHandler('option', 'xoopspoll');
-            $optHandler->deleteAll(new Criteria('poll_id', $pollId));
-            $logHandler = xoops_getModuleHandler('log', 'xoopspoll');
+        if ($pollHandler->deleteAll(new \Criteria('poll_id', $pollId, '='))) {
+            $optHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');
+            $optHandler->deleteAll(new \Criteria('poll_id', $pollId));
+            $logHandler = Xoopspoll\Helper::getInstance()->getHandler('Log');
             $logHandler->deleteByPollId($pollId);
             unset($pollHandler, $optHandler, $logHandler);
             // clear the template cache
@@ -350,47 +353,47 @@ switch ($op) {
             $newbbModule   = $moduleHandler->getByDirname('newbb');
             if (($newbbModule instanceof XoopsModule) && $newbbModule->isactive()) {
                 /** @var NewbbTopicHandler $topicHandler */
-                $topicHandler = xoops_getModuleHandler('topic', 'newbb');
-                $criteria     = new CriteriaCompo();
-                $criteria->add(new Criteria('poll_id', $pollId, '='));
+                $topicHandler = Newbb\Helper::getInstance()->getHandler('Topic');
+                $criteria     = new \CriteriaCompo();
+                $criteria->add(new \Criteria('poll_id', $pollId, '='));
                 /* {@internal the order of the next 2 statements is important! */
                 $topicHandler->updateAll('topic_haspoll', 0, $criteria); // clear poll association
                 $topicHandler->updateAll('poll_id', 0, $criteria); // clear poll_id
                 xoops_template_clear_module_cache($newbbModule->getVar('mid')); // clear newbb template cache
             }
         }
-        redirect_header($_SERVER['PHP_SELF'], XoopspollConstants::REDIRECT_DELAY_SHORT, _AM_XOOPSPOLL_DBUPDATED);
+        redirect_header($_SERVER['PHP_SELF'], Xoopspoll\Constants::REDIRECT_DELAY_SHORT, _AM_XOOPSPOLL_DBUPDATED);
         break;
 
     case 'restart':
-        xoops_load('FormDateTimePicker', 'xoopspoll');
+//        xoops_load('FormDateTimePicker', 'xoopspoll');
         $pollId      = Request::getInt('poll_id', 0);
-        $pollHandler = xoops_getModuleHandler('poll', 'xoopspoll');
+        $pollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
         $pollObj     = $pollHandler->get($pollId);
-        $pollForm    = new XoopsThemeForm(_AM_XOOPSPOLL_RESTARTPOLL, 'poll_form', $_SERVER['PHP_SELF'], 'post', true);
+        $pollForm    = new \XoopsThemeForm(_AM_XOOPSPOLL_RESTARTPOLL, 'poll_form', $_SERVER['PHP_SELF'], 'post', true);
 
         // setup times for forms
         $xuCurrentTimestamp = xoops_getUserTimestamp(time());
         $xuCurrentFormatted = ucfirst(date(_MEDIUMDATESTRING, $xuCurrentTimestamp));
         $xuStartTimestamp   = $xuCurrentTimestamp;
-        $xuEndTimestamp     = $xuStartTimestamp + XoopspollConstants::DEFAULT_POLL_DURATION;
+        $xuEndTimestamp     = $xuStartTimestamp + Xoopspoll\Constants::DEFAULT_POLL_DURATION;
 
-        $timeTray = new XoopsFormElementTray(_AM_XOOPSPOLL_POLL_TIMES, '&nbsp;&nbsp;', 'time_tray');
+        $timeTray = new \XoopsFormElementTray(_AM_XOOPSPOLL_POLL_TIMES, '&nbsp;&nbsp;', 'time_tray');
 
         //add start time to the form
-        $startTimeText = new XoopspollFormDateTimePicker("<div class='bold'>" . _AM_XOOPSPOLL_START_TIME . '<br>' . "<span class='x-small'>" . _AM_XOOPSPOLL_FORMAT . '<br>' . sprintf(_AM_XOOPSPOLL_CURRENTTIME, $xuCurrentFormatted) . '</span></div>', 'xu_start_time', 20, $xuStartTimestamp);
+        $startTimeText = new \Xoopspoll\FormDateTimePicker("<div class='bold'>" . _AM_XOOPSPOLL_START_TIME . '<br>' . "<span class='x-small'>" . _AM_XOOPSPOLL_FORMAT . '<br>' . sprintf(_AM_XOOPSPOLL_CURRENTTIME, $xuCurrentFormatted) . '</span></div>', 'xu_start_time', 20, $xuStartTimestamp);
         $timeTray->addElement($startTimeText, true);
 
         // add ending date to form
-        $endTimeText = new XoopspollFormDateTimePicker("<div class='bold middle'>" . _AM_XOOPSPOLL_EXPIRATION . '</div>', 'xu_end_time', 20, $xuEndTimestamp);
+        $endTimeText = new \Xoopspoll\FormDateTimePicker("<div class='bold middle'>" . _AM_XOOPSPOLL_EXPIRATION . '</div>', 'xu_end_time', 20, $xuEndTimestamp);
         $timeTray->addElement($endTimeText, true);
         $pollForm->addElement($timeTray);
 
-        $pollForm->addElement(new XoopsFormRadioYN(_AM_XOOPSPOLL_NOTIFY, 'notify', XoopspollConstants::POLL_MAILED));
-        $pollForm->addElement(new XoopsFormRadioYN(_AM_XOOPSPOLL_RESET, 'reset', 0));
-        $pollForm->addElement(new XoopsFormHidden('op', 'restart_ok'));
-        $pollForm->addElement(new XoopsFormHidden('poll_id', $pollId));
-        $pollForm->addElement(new XoopsFormButton('', 'poll_submit', _AM_XOOPSPOLL_RESTART, 'submit'));
+        $pollForm->addElement(new \XoopsFormRadioYN(_AM_XOOPSPOLL_NOTIFY, 'notify', Xoopspoll\Constants::POLL_MAILED));
+        $pollForm->addElement(new \XoopsFormRadioYN(_AM_XOOPSPOLL_RESET, 'reset', 0));
+        $pollForm->addElement(new \XoopsFormHidden('op', 'restart_ok'));
+        $pollForm->addElement(new \XoopsFormHidden('poll_id', $pollId));
+        $pollForm->addElement(new \XoopsFormButton('', 'poll_submit', _AM_XOOPSPOLL_RESTART, 'submit'));
 
         xoops_cp_header();
         $adminObject = \Xmf\Module\Admin::getInstance();
@@ -402,43 +405,43 @@ switch ($op) {
 
     case 'restart_ok':
         if (!$GLOBALS['xoopsSecurity']->check()) {
-            redirect_header($_SERVER['PHP_SELF'], XoopspollConstants::REDIRECT_DELAY_MEDIUM, implode('<br>', $GLOBALS['xoopsSecurity']->getErrors()));
+            redirect_header($_SERVER['PHP_SELF'], Xoopspoll\Constants::REDIRECT_DELAY_MEDIUM, implode('<br>', $GLOBALS['xoopsSecurity']->getErrors()));
         }
         $pollId = Request::getInt('poll_id', 0, 'POST');
         if (empty($pollId)) {
-            redirect_header($_SERVER['PHP_SELF'], XoopspollConstants::REDIRECT_DELAY_SHORT, _AM_XOOPSPOLL_ERROR_INVALID_POLLID);
+            redirect_header($_SERVER['PHP_SELF'], Xoopspoll\Constants::REDIRECT_DELAY_SHORT, _AM_XOOPSPOLL_ERROR_INVALID_POLLID);
         }
 
-        $pollHandler = xoops_getModuleHandler('poll', 'xoopspoll');
+        $pollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
         $pollObj     = $pollHandler->get($pollId);
 
         $xuEndTimestamp   = strtotime(Request::getString('xu_end_time', null, 'POST'));
         $xuStartTimestamp = strtotime(Request::getString('xu_start_time', null, 'POST'));
 
-        $endTimestamp   = empty($xuEndTimestamp) ? (time() + XoopspollConstants::DEFAULT_POLL_DURATION) : userTimeToServerTime($xuEndTimestamp);
-        $startTimestamp = empty($xuStartTimestamp) ? ($xuEndTimestamp - XoopspollConstants::DEFAULT_POLL_DURATION) : userTimeToServerTime($xuStartTimestamp);
+        $endTimestamp   = empty($xuEndTimestamp) ? (time() + Xoopspoll\Constants::DEFAULT_POLL_DURATION) : userTimeToServerTime($xuEndTimestamp);
+        $startTimestamp = empty($xuStartTimestamp) ? ($xuEndTimestamp - Xoopspoll\Constants::DEFAULT_POLL_DURATION) : userTimeToServerTime($xuStartTimestamp);
         $pollObj->setVar('end_time', $endTimestamp);
         $pollObj->setVar('start_time', $startTimestamp);
 
-        $notify = Request::getInt('notify', XoopspollConstants::NOTIFICATION_DISABLED, 'POST');
-        if (XoopspollConstants::NOTIFICATION_ENABLED === $notify) {
+        $notify = Request::getInt('notify', Xoopspoll\Constants::NOTIFICATION_DISABLED, 'POST');
+        if (\Xoopspoll\Constants::NOTIFICATION_ENABLED === $notify) {
             // if notify, set mail status to "not mailed"
-            $pollObj->setVar('mail_status', XoopspollConstants::POLL_NOT_MAILED);
+            $pollObj->setVar('mail_status', Xoopspoll\Constants::POLL_NOT_MAILED);
         } else {
             // if not notify, set mail status to already "mailed"
-            $pollObj->setVar('mail_status', XoopspollConstants::POLL_MAILED);
+            $pollObj->setVar('mail_status', Xoopspoll\Constants::POLL_MAILED);
         }
         // save the poll settings
         $pollHandler->insert($pollObj);
 
-        $reset = Request::getInt('reset', XoopspollConstants::DO_NOT_RESET_RESULTS, 'POST');
-        if (XoopspollConstants::RESET_RESULTS === $reset) {
+        $reset = Request::getInt('reset', Xoopspoll\Constants::DO_NOT_RESET_RESULTS, 'POST');
+        if (\Xoopspoll\Constants::RESET_RESULTS === $reset) {
             // reset all logs
-            $logHandler = xoops_getModuleHandler('log', 'xoopspoll');
+            $logHandler = Xoopspoll\Helper::getInstance()->getHandler('Log');
             $logHandler->deleteByPollId($pollId);
             unset($logHandler);
-            $optHandler = xoops_getModuleHandler('option', 'xoopspoll');
-            $criteria   = new Criteria('poll_id', $pollId, '=');
+            $optHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');
+            $criteria   = new \Criteria('poll_id', $pollId, '=');
             $optHandler->updateAll('option_count', 0, $criteria);
         }
         if (!$pollHandler->updateCount($pollObj)) {
@@ -447,21 +450,21 @@ switch ($op) {
         }
         require_once $GLOBALS['xoops']->path('class/template.php');
         xoops_template_clear_module_cache($GLOBALS['xoopsModule']->getVar('mid'));
-        redirect_header($_SERVER['PHP_SELF'], XoopspollConstants::REDIRECT_DELAY_SHORT, _AM_XOOPSPOLL_DBUPDATED);
+        redirect_header($_SERVER['PHP_SELF'], Xoopspoll\Constants::REDIRECT_DELAY_SHORT, _AM_XOOPSPOLL_DBUPDATED);
         break;
 
     case 'log':
         $pollId   = Request::getInt('poll_id', 0);
-        $limit    = Request::getInt('limit', XoopspollConstants::DEFAULT_POLL_PAGE_LIMIT);
+        $limit    = Request::getInt('limit', Xoopspoll\Constants::DEFAULT_POLL_PAGE_LIMIT);
         $start    = Request::getInt('start', 0);
         $orderby  = Request::getString('orderby', 'time');
         $orderdir = Request::getString('orderdir', 'ASC');
 
         if (empty($pollId)) {
-            redirect_header($_SERVER['PHP_SELF'], XoopspollConstants::REDIRECT_DELAY_SHORT, _AM_XOOPSPOLL_ERROR_INVALID_POLLID);
+            redirect_header($_SERVER['PHP_SELF'], Xoopspoll\Constants::REDIRECT_DELAY_SHORT, _AM_XOOPSPOLL_ERROR_INVALID_POLLID);
         }
 
-        $pollHandler  = xoops_getModuleHandler('poll', 'xoopspoll');
+        $pollHandler  = Xoopspoll\Helper::getInstance()->getHandler('Poll');
         $pollObj      = $pollHandler->get($pollId);
         $expiredClass = ($pollObj->getVar('end_time') < time()) ? ' red' : '';
         xoops_cp_header();
@@ -527,9 +530,9 @@ switch ($op) {
 
         if ($pollObj->getVar('votes')) {  // there are votes to show
             // show summary of results
-            $optHandler = xoops_getModuleHandler('option', 'xoopspoll');
-            $criteria   = new CriteriaCompo();
-            $criteria->add(new Criteria('poll_id', $pollId, '='));
+            $optHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');
+            $criteria   = new \CriteriaCompo();
+            $criteria->add(new \Criteria('poll_id', $pollId, '='));
             $criteria->setGroupBy('option_id');
             $options = $optHandler->getAll($criteria, null, false);
 
@@ -565,9 +568,9 @@ switch ($op) {
             // show logs
             echo "<h4 class='left'>" . _AM_XOOPSPOLL_POLLVOTERS . "</h4>\n";
 
-            $logHandler = xoops_getModuleHandler('log', 'xoopspoll');
-            $criteria   = new CriteriaCompo();
-            $criteria->add(new Criteria('poll_id', $pollId, '='));
+            $logHandler = Xoopspoll\Helper::getInstance()->getHandler('Log');
+            $criteria   = new \CriteriaCompo();
+            $criteria->add(new \Criteria('poll_id', $pollId, '='));
             $logsCount = $logHandler->getCount($criteria);
             $criteria->setSort($orderby);
             $criteria->setOrder($orderdir);
@@ -583,7 +586,7 @@ switch ($op) {
             if (is_array($logsArray) && $logsCount > 0) {
                 echo "<table class='outer bnone width100' style='padding: 0; margin: 0;'>\n" . "  <tr>\n" . "    <td class='bg2'>\n" . "      <table class='width100 bnone pad3 marg2'>\n" . "        <thead>\n" . "        <tr class='bg3'>\n";
 
-                $ipLabel    = (XoopspollConstants::LOOK_UP_HOST === $GLOBALS['xoopsModuleConfig']['look_up_host']) ? _AM_XOOPSPOLL_HOST_NAME : _AM_XOOPSPOLL_IP;
+                $ipLabel    = (\Xoopspoll\Constants::LOOK_UP_HOST === $GLOBALS['xoopsModuleConfig']['look_up_host']) ? _AM_XOOPSPOLL_HOST_NAME : _AM_XOOPSPOLL_IP;
                 $fieldArray = [
                     ['order' => 'log_id', 'label' => _AM_XOOPSPOLL_LOGID],
                     ['order' => 'option_id', 'label' => _AM_XOOPSPOLL_OPTIONID],
@@ -601,16 +604,16 @@ switch ($op) {
                 }
                 echo '        </tr>' . "        </thead>\n" . "        <tbody>\n";
 
-                $optHandler = xoops_getModuleHandler('option', 'xoopspoll');
-                $luhConfig  = (XoopspollConstants::LOOK_UP_HOST === $GLOBALS['xoopsModuleConfig']['look_up_host']) ? true : false;
+                $optHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');
+                $luhConfig  = (\Xoopspoll\Constants::LOOK_UP_HOST === $GLOBALS['xoopsModuleConfig']['look_up_host']) ? true : false;
                 foreach ($logsArray as $thisLog) {
                     $logVals  = $thisLog->getValues();
                     $option   = $optHandler->get($logVals['option_id']);
-                    $remoteIp = $luhConfig ? XoopspollPollUtility::getHostByAddrWithCache($logVals['ip']) : $logVals['ip'];
+                    $remoteIp = $luhConfig ? Xoopspoll\Utility::getHostByAddrWithCache($logVals['ip']) : $logVals['ip'];
                     echo "        <tr class='bg1'>\n" . "          <td class='{$class} center'>{$logVals['log_id']}</td>\n" . "          <td class='{$class}'>" . $option->getVar('option_text') . "</td>\n" . "          <td class='{$class} center'>{$remoteIp}</td>\n";
 
                     if (0 !== $logVals['user_id']) {
-                        $user  = new XoopsUser($logVals['user_id']);
+                        $user  = new \XoopsUser($logVals['user_id']);
                         $uname = $user->getVar('uname');
 
                         $from_userid = $GLOBALS['xoopsUser']->getVar('uid');
@@ -647,7 +650,7 @@ switch ($op) {
                 echo "        </tbody>\n" . "      </table>\n" . "    </td>\n" . "  </tr>\n" . "</table>\n";
 
                 xoops_load('pagenav');
-                $pageNav = new XoopsPageNav($logsCount, $limit, $start, 'start', "op=log&amp;poll_id={$pollId}");
+                $pageNav = new \XoopsPageNav($logsCount, $limit, $start, 'start', "op=log&amp;poll_id={$pollId}");
                 echo "<div class='right' style='margin: 2em auto;'>" . $pageNav->renderNav() . '</div>';
             }
         }
@@ -668,10 +671,10 @@ switch ($op) {
         $count = count($pollId);
 
         if ($count) {
-            $pollHandler = xoops_getModuleHandler('poll', 'xoopspoll');
-            $criteria    = new CriteriaCompo();
+            $pollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
+            $criteria    = new \CriteriaCompo();
             $idString    = '(' . implode(',', $pollId) . ')';
-            $criteria->add(new Criteria('poll_id', $idString, 'IN'));
+            $criteria->add(new \Criteria('poll_id', $idString, 'IN'));
             $pollObjs = $pollHandler->getAll($criteria);
 
             // get display variables from form POST
@@ -682,8 +685,8 @@ switch ($op) {
 
             foreach ($pollObjs as $pollObj) {
                 $thisId           = $pollObj->getVar('poll_id');
-                $display[$thisId] = empty($display[$thisId]) ? XoopspollConstants::DO_NOT_DISPLAY_POLL_IN_BLOCK : XoopspollConstants::DISPLAY_POLL_IN_BLOCK;
-                $weight[$thisId]  = empty($weight[$thisId]) ? XoopspollConstants::DEFAULT_WEIGHT : $weight[$thisId];
+                $display[$thisId] = empty($display[$thisId]) ? Xoopspoll\Constants::DO_NOT_DISPLAY_POLL_IN_BLOCK : Xoopspoll\Constants::DISPLAY_POLL_IN_BLOCK;
+                $weight[$thisId]  = empty($weight[$thisId]) ? Xoopspoll\Constants::DEFAULT_WEIGHT : $weight[$thisId];
                 if ($display[$thisId] !== $pollObj->getVar('display') || $weight[$thisId] !== $pollObj->getVar('weight')) {
                     $pollObj->setVars(['display' => $display[$thisId], 'weight' => $weight[$thisId]]);
                     $pollHandler->insert($pollObj);
@@ -693,25 +696,25 @@ switch ($op) {
             unset($pollObjs);
             require_once $GLOBALS['xoops']->path('class/template.php');
             xoops_template_clear_module_cache($GLOBALS['xoopsModule']->getVar('mid'));
-            redirect_header($_SERVER['PHP_SELF'], XoopspollConstants::REDIRECT_DELAY_SHORT, _AM_XOOPSPOLL_DBUPDATED);
+            redirect_header($_SERVER['PHP_SELF'], Xoopspoll\Constants::REDIRECT_DELAY_SHORT, _AM_XOOPSPOLL_DBUPDATED);
         } else {
-            redirect_header($_SERVER['PHP_SELF'], XoopspollConstants::REDIRECT_DELAY_SHORT, _AM_XOOPSPOLL_NOTHING_HERE);
+            redirect_header($_SERVER['PHP_SELF'], Xoopspoll\Constants::REDIRECT_DELAY_SHORT, _AM_XOOPSPOLL_NOTHING_HERE);
         }
         break;
     // added cloning capability in v 1.40
     case 'clone':
-        $pollHandler = xoops_getModuleHandler('poll', 'xoopspoll');
-        $optHandler  = xoops_getModuleHandler('option', 'xoopspoll');
+        $pollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
+        $optHandler  = Xoopspoll\Helper::getInstance()->getHandler('Option');
         $pollId      = Request::getInt('poll_id', 0);
         $pollObj     = $pollHandler->get($pollId);
         $origValues  = $pollObj->getValues();
         unset($origValues['poll_id']);
         $pollDuration = $origValues['end_time'] - $origValues['start_time'];
-        $pollDuration = ($pollDuration > 0) ? $pollDuration : XoopspollConstants::DEFAULT_POLL_DURATION;
+        $pollDuration = ($pollDuration > 0) ? $pollDuration : Xoopspoll\Constants::DEFAULT_POLL_DURATION;
         $newValues    = [
             'votes'       => 0,
             'voters'      => 0,
-            'mail_status' => XoopspollConstants::POLL_NOT_MAILED,
+            'mail_status' => Xoopspoll\Constants::POLL_NOT_MAILED,
             'question'    => $origValues['question'] . '(' . _AM_XOOPSPOLL_CLONE . ')',
             'start_time'  => time(),  //set the start time to now
             'end_time'    => time() + $pollDuration
@@ -734,6 +737,6 @@ switch ($op) {
             unset($cloneValues, $cloneOptObj);
         }
         unset($pollObj, $cloneObj, $origValues, $cloneValues, $newValues);
-        redirect_header($_SERVER['PHP_SELF'] . "?poll_id={$cloneId}&amp;op=edit", XoopspollConstants::REDIRECT_DELAY_MEDIUM, _AM_XOOPSPOLL_CLONE_SUCCESS);
+        redirect_header($_SERVER['PHP_SELF'] . "?poll_id={$cloneId}&amp;op=edit", Xoopspoll\Constants::REDIRECT_DELAY_MEDIUM, _AM_XOOPSPOLL_CLONE_SUCCESS);
         break;
 }

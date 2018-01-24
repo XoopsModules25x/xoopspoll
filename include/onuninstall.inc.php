@@ -21,7 +21,11 @@
  * @return bool
  */
 
-function xoops_module_pre_uninstall_xoopspoll(XoopsModule $module)
+use XoopsModules\Xoopspoll;
+use XoopsModules\Newbb;
+
+
+function xoops_module_pre_uninstall_xoopspoll(\XoopsModule $module)
 {
     /* make sure that any polls associated with xoopspoll are cleared from newbb */
     /** @var XoopsModuleHandler $moduleHandler */
@@ -30,8 +34,8 @@ function xoops_module_pre_uninstall_xoopspoll(XoopsModule $module)
     $success       = true;
     if (is_object($newbbModule) && $newbbModule->getVar('isactive')) {
         /** @var NewbbTopicHandler $topicHandler */
-        $topicHandler = xoops_getModuleHandler('topic', 'newbb');
-        $criteria     = new Criteria('topic_haspoll', 0, '>');
+        $topicHandler = Newbb\Helper::getInstance()->getHandler('Topic');
+        $criteria     = new \Criteria('topic_haspoll', 0, '>');
         $s1           = $topicHandler->updateAll('poll_id', 0, $criteria);  // clear any polls associated with forum topic
         $s2           = $topicHandler->updateAll('topic_haspoll', 0, $criteria); // clear haspoll indicator in forum
         $success      = $s1 && $s2;
@@ -44,11 +48,11 @@ function xoops_module_pre_uninstall_xoopspoll(XoopsModule $module)
  * @param  XoopsModule $module
  * @return bool
  */
-function xoops_module_uninstall_xoopspoll(XoopsModule $module)
+function xoops_module_uninstall_xoopspoll(\XoopsModule $module)
 {
     /* clear the voted cookie(s) for the admin user's machine when module is uninstalled */
     xoops_load('pollUtility', 'xoopspoll');
-    $success = XoopspollPollUtility::setVoteCookie('', null, time() - 3600);
+    $success = Xoopspoll\Utility::setVoteCookie('', null, time() - 3600);
 
     return $success;
 }

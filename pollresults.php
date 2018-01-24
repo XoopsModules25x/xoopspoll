@@ -35,6 +35,9 @@
  **/
 
 use Xmf\Request;
+use XoopsModules\Xoopspoll;
+use XoopsModules\Newbb;
+
 
 /**
  * @uses xoops_load() method used to load classes
@@ -57,8 +60,8 @@ if ($GLOBALS['xoopsModuleConfig']['hide_forum_polls']) {
     $newbbModule   = $moduleHandler->getByDirname('newbb');
     if ($newbbModule instanceof XoopsModule && $newbbModule->isactive()) {
         /** @var NewbbTopicHandler $topicHandler */
-        $topicHandler = xoops_getModuleHandler('topic', 'newbb');
-        $tCount       = $topicHandler->getCount(new Criteria('poll_id', $pollId, '='));
+        $topicHandler = Newbb\Helper::getInstance()->getHandler('Topic');
+        $tCount       = $topicHandler->getCount(new \Criteria('poll_id', $pollId, '='));
         if (!empty($tCount)) {
             $pollId = 0; // treat it as if no poll requested
         }
@@ -66,21 +69,21 @@ if ($GLOBALS['xoopsModuleConfig']['hide_forum_polls']) {
 }
 
 if (empty($pollId)) {
-    redirect_header('index.php', XoopspollConstants::REDIRECT_DELAY_NONE);
+    redirect_header('index.php', Xoopspoll\Constants::REDIRECT_DELAY_NONE);
 }
 $GLOBALS['xoopsOption']['template_main'] = 'xoopspoll_results.tpl';
 include $GLOBALS['xoops']->path('header.php');
 
-$pollHandler = xoops_getModuleHandler('poll', 'xoopspoll');
+$pollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
 $pollObj     = $pollHandler->get($pollId);
-if ((!empty($pollObj)) && ($pollObj instanceof XoopspollPoll)) {
+if ((!empty($pollObj)) && ($pollObj instanceof Xoopspoll\Poll)) {
     /* make sure the poll has started */
     if ($pollObj->getVar('start_time') > time()) {
-        redirect_header('index.php', XoopspollConstants::REDIRECT_DELAY_NONE);
+        redirect_header('index.php', Xoopspoll\Constants::REDIRECT_DELAY_NONE);
     }
 
     /* assign variables to template */
-    $renderer = new XoopspollRenderer($pollObj);
+    $renderer = new \Xoopspoll\Renderer($pollObj);
     $renderer->assignResults($GLOBALS['xoopsTpl']);
 
     $visReturn  = $pollObj->isResultVisible();
@@ -95,7 +98,7 @@ if ((!empty($pollObj)) && ($pollObj instanceof XoopspollPoll)) {
                                      'back_text'      => _BACK
                                  ]);
 } else {
-    redirect_header('index.php', XoopspollConstants::REDIRECT_DELAY_MEDIUM, _MD_XOOPSPOLL_ERROR_INVALID_POLLID);
+    redirect_header('index.php', Xoopspoll\Constants::REDIRECT_DELAY_MEDIUM, _MD_XOOPSPOLL_ERROR_INVALID_POLLID);
 }
 include $GLOBALS['xoops']->path('include/comment_view.php');
 include $GLOBALS['xoops']->path('footer.php');

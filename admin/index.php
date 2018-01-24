@@ -34,19 +34,21 @@
  * @author    ::     XOOPS Module Team
  **/
 
+use XoopsModules\Xoopspoll;
+
 require_once __DIR__ . '/admin_header.php';
 xoops_cp_header();
 
 $adminObject = \Xmf\Module\Admin::getInstance();
 
-$pollHandler = xoops_getModuleHandler('poll', 'xoopspoll');
+$pollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
 $totalPolls  = $pollHandler->getCount();
-$criteria    = new CriteriaCompo();
-$criteria->add(new Criteria('start_time', time(), '<='));
-$criteria->add(new Criteria('end_time', time(), '>'));
+$criteria    = new \CriteriaCompo();
+$criteria->add(new \Criteria('start_time', time(), '<='));
+$criteria->add(new \Criteria('end_time', time(), '>'));
 $totalActivePolls = $pollHandler->getCount($criteria);
-$criteria         = new CriteriaCompo();
-$criteria->add(new Criteria('start_time', time(), '>'));
+$criteria         = new \CriteriaCompo();
+$criteria->add(new \Criteria('start_time', time(), '>'));
 $totalWaitingPolls = $pollHandler->getCount($criteria);
 $totalExpiredPolls = $totalPolls - $totalActivePolls - $totalWaitingPolls;
 

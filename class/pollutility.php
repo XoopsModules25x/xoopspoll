@@ -1,4 +1,4 @@
-<?php
+<?php namespace XoopsModules\Xoopspoll;
 /*
  Description: Poll Class Definition
 
@@ -19,9 +19,12 @@
  * @since     ::      1.40
  * @access::     public
  */
+
+use XoopsModules\Xoopspoll;
+
 // defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
-class XoopspollPollUtility
+class PollUtility
 {
     /**
      *
@@ -58,11 +61,11 @@ class XoopspollPollUtility
     public static function commentMode()
     {
         static $mConfig;
-        if (!isset($mConfig)) {
+        if (null === $mConfig) {
             $mHandler = xoops_getHandler('module');
             $mod      = $mHandler->getByDirname('xoopspoll');
             $cHandler = xoops_getHandler('config');
-            $mConfig  =& $cHandler->getConfigsByCat(0, $mod->getVar('mid'));
+            $mConfig  = $cHandler->getConfigsByCat(0, $mod->getVar('mid'));
         }
 
         return $mConfig['com_rule'];
@@ -83,10 +86,10 @@ class XoopspollPollUtility
             xoops_loadLanguage('main', 'xoopspoll');
             xoops_load('constants', 'xoopspoll');
             $visOptions = [
-                XoopspollConstants::HIDE_NEVER  => _MD_XOOPSPOLL_HIDE_NEVER,
-                XoopspollConstants::HIDE_END    => _MD_XOOPSPOLL_HIDE_END,
-                XoopspollConstants::HIDE_VOTED  => _MD_XOOPSPOLL_HIDE_VOTED,
-                XoopspollConstants::HIDE_ALWAYS => _MD_XOOPSPOLL_HIDE_ALWAYS
+                Xoopspoll\Constants::HIDE_NEVER  => _MD_XOOPSPOLL_HIDE_NEVER,
+                Xoopspoll\Constants::HIDE_END    => _MD_XOOPSPOLL_HIDE_END,
+                Xoopspoll\Constants::HIDE_VOTED  => _MD_XOOPSPOLL_HIDE_VOTED,
+                Xoopspoll\Constants::HIDE_ALWAYS => _MD_XOOPSPOLL_HIDE_ALWAYS
             ];
         }
 
@@ -103,13 +106,17 @@ class XoopspollPollUtility
      * @param  string $cookieBaseName
      * @return array  contains cookie for polls, empty array if not found
      */
-    public static function getVoteCookie($cookieBaseName = 'voted_polls')
+    public static function getVoteCookie($cookieBaseName = null)
     {
+//        $cookieBaseName = null === $cookieBaseName ? 'voted_polls': $cookieBaseName;
+        if (null === $cookieBaseName) {
+            $cookieBaseName ='voted_polls';
+        }
         $pollDir = basename(dirname(__DIR__));
         if ('xoopspoll' === $pollDir) {
-            $pollCookie = (!empty($_COOKIE[$cookieBaseName])) ? $_COOKIE[$cookieBaseName] : [];
+            $pollCookie = !empty($_COOKIE[$cookieBaseName]) ? $_COOKIE[$cookieBaseName] : [];
         } else {
-            $pollCookie = (!empty($_COOKIE["{$pollDir}_{$cookieBaseName}"])) ? $_COOKIE["{$pollDir}_{$cookieBaseName}"] : [];
+            $pollCookie = !empty($_COOKIE["{$pollDir}_{$cookieBaseName}"]) ? $_COOKIE["{$pollDir}_{$cookieBaseName}"] : [];
         }
 
         return $pollCookie;
@@ -175,7 +182,7 @@ class XoopspollPollUtility
      * @internal param int $expires time when cookie expires
      * @internal param string $cookieBaseName name of cookie (without directory prefix)
      */
-    public static function dbTableExists(XoopsDatabase $db, $tablename)
+    public static function dbTableExists(\XoopsDatabase $db, $tablename)
     {
         $tablename = addslashes($tablename);
         $mytable   = $db->prefix("{$tablename}");

@@ -25,15 +25,18 @@
  * @param $itemssize
  * @return array
  */
+
+use XoopsModules\Xoopspoll;
+
 function b_marquee_xoopspoll($limit, $dateformat, $itemssize)
 {
     require_once $GLOBALS['xoops']->path('modules/marquee/include/functions.php');
     $block       = [];
     $myts        = \MyTextSanitizer::getInstance();
-    $pollHandler = xoops_getModuleHandler('poll', 'xoopspoll');
-    $criteria    = new CriteriaCompo();
-    $criteria->add(new Criteria('start_time', time(), '<='));
-    $criteria->add(new Criteria('end_time', time(), '>'));
+    $pollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
+    $criteria    = new \CriteriaCompo();
+    $criteria->add(new \Criteria('start_time', time(), '<='));
+    $criteria->add(new \Criteria('end_time', time(), '>'));
     $criteria->setLimit((int)$limit);
     $criteria->setSort('start_time');
     $criteria->setOrder('DESC');

@@ -26,7 +26,7 @@ xoops_load('pollUtility', 'xoopspoll');
  * @param               $toTable
  * @return bool
  */
-function xoopspollChangeTableName(XoopsDatabase $db, $fromTable, $toTable)
+function xoopspollChangeTableName(\XoopsDatabase $db, $fromTable, $toTable)
 {
     $fromTable = addslashes($fromTable);
     $toTable   = addslashes($toTable);
@@ -35,7 +35,7 @@ function xoopspollChangeTableName(XoopsDatabase $db, $fromTable, $toTable)
         $toThisTable = $db->prefix("{$toTable}");
     */
     $success = false;
-    if (XoopspollPollUtility::dbTableExists($db, $fromTable) && !XoopspollPollUtility::dbTableExists($db, $toTable)) {
+    if (\Xoopspoll\Utility::dbTableExists($db, $fromTable) && !Xoopspoll\Utility::dbTableExists($db, $toTable)) {
         $sql     = sprintf('ALTER TABLE ' . $db->prefix("{$fromTable}") . ' RENAME ' . $db->prefix('{$toTable}'));
         $success = $db->queryF($sql);
         if (false === $success) {
@@ -53,7 +53,7 @@ function xoopspollChangeTableName(XoopsDatabase $db, $fromTable, $toTable)
  * @param              $prev_version
  * @return bool
  */
-function xoops_module_update_xoopspoll(XoopsModule $module, &$prev_version)
+function xoops_module_update_xoopspoll(\XoopsModule $module, &$prev_version)
 {
     // referer check
     $success = false;
@@ -64,7 +64,7 @@ function xoops_module_update_xoopspoll(XoopsModule $module, &$prev_version)
 
         $installedVersion = (int)$prev_version;
         xoops_loadLanguage('admin', 'xoopspoll');
-        $db      = XoopsDatabaseFactory::getDatabaseConnection();
+        $db      = \XoopsDatabaseFactory::getDatabaseConnection();
         $success = true;
         if ($installedVersion < 140) {
             /* add column for poll anonymous which was created in versions prior

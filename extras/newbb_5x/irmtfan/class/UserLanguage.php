@@ -1,4 +1,4 @@
-<?php
+<?php namespace XoopsModules\Newbb;
 /**
  * User Language Class (moved from 'main' language file)
  * @package   ::    newbb
@@ -13,11 +13,11 @@ require_once $GLOBALS['xoops']->path('modules/newbb/class/user.php');
  * If you have a customized userbar, define it here.
  *
  */
-class User_language extends User
+class UserLanguage extends User
 {
 
     /**
-     * User_language constructor.
+     * UserLanguage constructor.
      * @param $user
      */
     public function __construct($user)
@@ -26,17 +26,9 @@ class User_language extends User
     }
 
     /**
-     * @param $user
-     */
-    public function User_language(&$user)
-    {
-        $this->__construct($user);
-    }
-
-    /**
      * @return array|null
      */
-    public function &getUserbar()
+    public function getUserbar()
     {
         global $xoopsModuleConfig, $xoopsUser, $isadmin;
         if (empty($GLOBALS['xoopsModuleConfig']['userbar_enabled'])) {

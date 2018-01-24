@@ -1,4 +1,4 @@
-<?php
+<?php namespace XoopsModules\Xoopspoll;
 /*
  You may not change or alter any portion of this comment or credits
  of supporting developers from this source code or any supporting source code
@@ -22,5 +22,5 @@
  */
 
 $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-$GLOBALS['xoopsLogger']->addDeprecated('Usage of ./xoopspoll/class/xoopspollrenderer.php file is deprecated since Xoopspoll 1.40, please use XoopspollRenderer and XoopspollRendererHandler classes instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
+$GLOBALS['xoopsLogger']->addDeprecated('Usage of ./xoopspoll/class/xoopspollrenderer.php file is deprecated since Xoopspoll 1.40, please use Renderer and RendererHandler classes instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
 require_once $GLOBALS['xoops']->path('modules/xoopspoll/class/renderer.php');

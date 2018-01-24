@@ -1,4 +1,5 @@
-<?php
+<?php namespace XoopsModules\Xoopspoll;
+
 /*
                XOOPS - PHP Content Management System
                    Copyright (c) 2000-2016 XOOPS.org
@@ -34,14 +35,16 @@
  * @author    ::  {@link http://www.myweb.ne.jp/ Kazumi Ono (AKA onokazu)}
  */
 
+use XoopsModules\Xoopspoll;
+
 xoops_loadLanguage('main', 'xoopspoll');
 xoops_load('constants', 'xoopspoll');
 xoops_load('pollUtility', 'xoopspoll');
 
 /**
- * Class XoopspollRenderer
+ * Class Renderer
  */
-class XoopspollRenderer
+class Renderer
 {
     // XoopsPoll class object
     protected $pollObj;
@@ -57,11 +60,11 @@ class XoopspollRenderer
     public function __construct($poll = null)
     {
         // setup handlers
-        $this->pHandler = xoops_getModuleHandler('poll', 'xoopspoll');
-        $this->oHandler = xoops_getModuleHandler('option', 'xoopspoll');
-        $this->lHandler = xoops_getModuleHandler('log', 'xoopspoll');
+        $this->pHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
+        $this->oHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');
+        $this->lHandler = Xoopspoll\Helper::getInstance()->getHandler('Log');
 
-        if ($poll instanceof XoopspollPoll) {
+        if ($poll instanceof Poll) {
             $this->pollObj = $poll;
         } elseif (!empty($poll) && ((int)$poll > 0)) {
             $this->pollObj = $this->pHandler->get((int)$poll);
@@ -73,7 +76,7 @@ class XoopspollRenderer
     /**
      * @param null $poll
      */
-    public function XoopspollRenderer($poll = null)
+    public function Renderer($poll = null)
     {
         $this->__construct($poll);
     }
@@ -86,7 +89,7 @@ class XoopspollRenderer
      */
     public function renderForm()
     {
-        $myTpl = new XoopsTpl();
+        $myTpl = new \XoopsTpl();
         $this->assignForm($myTpl);  // get the poll information
 
         return $myTpl->fetch($GLOBALS['xoops']->path('modules/xoopspoll/templates/xoopspoll_view.tpl'));
@@ -96,20 +99,20 @@ class XoopspollRenderer
      *
      * assigns form values to template for display
      * @access public
-     * @var    XoopsTpl $tpl
+     * @var    \XoopsTpl $tpl
      * @return null
      */
-    public function assignForm(XoopsTpl $tpl)
+    public function assignForm(\XoopsTpl $tpl)
     {
         $myts       = \MyTextSanitizer::getInstance();
         $optionObjs = $this->oHandler->getAllByPollId($this->pollObj->getVar('poll_id'));
 
         if (empty($optionObjs)) {
             /* there was a problem with missing Options */
-            //            redirect_header($_SERVER['HTTP_REFERER'], XoopspollConstants::REDIRECT_DELAY_MEDIUM, _MD_XOOPSPOLL_ERROR_OPTIONS_MISSING);
+            //            redirect_header($_SERVER['HTTP_REFERER'], Xoopspoll\Constants::REDIRECT_DELAY_MEDIUM, _MD_XOOPSPOLL_ERROR_OPTIONS_MISSING);
         }
 
-        if (XoopspollConstants::MULTIPLE_SELECT_POLL === $this->pollObj->getVar('multiple')) {
+        if (\Xoopspoll\Constants::MULTIPLE_SELECT_POLL === $this->pollObj->getVar('multiple')) {
             $optionType = 'checkbox';
             $optionName = 'option_id[]';
         } else {
@@ -161,7 +164,7 @@ class XoopspollRenderer
      */
     public function renderResults()
     {
-        $myTpl = new XoopsTpl();
+        $myTpl = new \XoopsTpl();
         $this->assignResults($myTpl);  // get the poll information
 
         return $myTpl->fetch($GLOBALS['xoops']->path('modules/xoopspoll/templates/xoopspoll_results_renderer.tpl'));
@@ -171,10 +174,10 @@ class XoopspollRenderer
      *
      * assigns form results to template
      * @access public
-     * @var    XoopsTpl tpl
+     * @var    \XoopsTpl tpl
      * @return null
      */
-    public function assignResults(XoopsTpl $tpl)
+    public function assignResults(\XoopsTpl $tpl)
     {
         $myts             = \MyTextSanitizer::getInstance();
         $xuEndTimestamp   = xoops_getUserTimestamp($this->pollObj->getVar('end_time'));
@@ -182,9 +185,9 @@ class XoopspollRenderer
         $xuStartTimestamp = xoops_getUserTimestamp($this->pollObj->getVar('start_time'));
         $xuStartFormatted = ucfirst(date(_MEDIUMDATESTRING, $xuStartTimestamp));
 
-        //        $lHandler = xoops_getModuleHandler('log', 'xoopspoll');
-        $criteria = new CriteriaCompo();
-        $criteria->add(new Criteria('poll_id', $this->pollObj->getVar('poll_id'), '='));
+        //        $lHandler = Xoopspoll\Helper::getInstance()->getHandler('Log');
+        $criteria = new \CriteriaCompo();
+        $criteria->add(new \Criteria('poll_id', $this->pollObj->getVar('poll_id'), '='));
         $criteria->setSort('option_id');
         $optObjsArray = $this->oHandler->getAll($criteria);
         $total        = $this->pollObj->getVar('votes');

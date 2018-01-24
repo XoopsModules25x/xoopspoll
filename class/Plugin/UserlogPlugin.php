@@ -1,4 +1,4 @@
-<?php
+<?php namespace XoopsModules\Xoopspoll\Plugin;
 /*
  You may not change or alter any portion of this comment or credits
  of supporting developers from this source code or any supporting source code
@@ -21,10 +21,15 @@
  */
 
 use Xmf\Request;
+use XoopsModules\Userlog;
 
 // defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
-class XoopspollUserlogPlugin extends Userlog_Module_Plugin_Abstract implements UserlogPluginInterface
+/**
+ * Class UserlogPlugin
+ * @package XoopsModules\Xoopspoll\Plugin
+ */
+class UserlogPlugin extends Userlog\Plugin\PluginAbstract implements Userlog\Plugin\PluginInterface
 {
     /**
      * @param string $subscribe_from Name of the script

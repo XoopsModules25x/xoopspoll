@@ -16,9 +16,13 @@
  * @author          Taiwen Jiang <phppp@users.sourceforge.net>
  */
 
+use XoopsModules\Xoopspoll;
+use XoopsModules\Newbb;
+
+
 // defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
-class Post extends XoopsObject
+class Post extends \XoopsObject
 {
     public $attachment_array = [];
 
@@ -316,7 +320,7 @@ class Post extends XoopsObject
         require_once XOOPS_ROOT_PATH . '/modules/newbb/include/functions.render.php';
 
         $uid          = is_object($xoopsUser) ? $xoopsUser->getVar('uid') : 0;
-        $karmaHandler = xoops_getModuleHandler('karma', 'newbb');
+        $karmaHandler = Newbb\Helper::getInstance()->getHandler('Karma');
         $user_karma   = $karmaHandler->getUserKarma();
 
         $post               = [];
@@ -477,8 +481,8 @@ class Post extends XoopsObject
         $thread_buttons = [];
 
         if ($GLOBALS['xoopsModuleConfig']['enable_permcheck']) {
-            /** @var NewbbTopicHandler $topicHandler */
-            $topicHandler = xoops_getModuleHandler('topic', 'newbb');
+            /** @var Newbb\TopicHandler $topicHandler */
+            $topicHandler = Newbb\Helper::getInstance()->getHandler('Topic');
             $topic_status = $topic_obj->getVar('topic_status');
             if ($topicHandler->getPermission($forum_id, $topic_status, 'edit')) {
                 $edit_ok = ($isadmin || ($this->checkIdentity() && $this->checkTimelimit('edit_timelimit')));
@@ -555,14 +559,14 @@ class Post extends XoopsObject
 }
 
 /**
- * Class NewbbPostHandler
+ * Class PostHandler
  */
-class NewbbPostHandler extends XoopsPersistableObjectHandler
+class PostHandler extends \XoopsPersistableObjectHandler
 {
     /**
-     * @param null|XoopsDatabase $db
+     * @param null|\XoopsDatabase $db
      */
-    public function __construct(XoopsDatabase $db)
+    public function __construct(\XoopsDatabase $db)
     {
         parent::__construct($db, 'bb_posts', 'Post', 'post_id', 'subject');
     }
@@ -658,8 +662,8 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
         $post->setVar('approved', 1);
         $this->insert($post, true);
 
-        /** @var NewbbTopicHandler $topicHandler */
-        $topicHandler = xoops_getModuleHandler('topic', 'newbb');
+        /** @var Newbb\TopicHandler $topicHandler */
+        $topicHandler = Newbb\Helper::getInstance()->getHandler('Topic');
         $topic_obj    = $topicHandler->get($post->getVar('topic_id'));
         if ($topic_obj->getVar('topic_last_post_id') < $post->getVar('post_id')) {
             $topic_obj->setVar('topic_last_post_id', $post->getVar('post_id'));
@@ -671,8 +675,8 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
         }
         $topicHandler->insert($topic_obj, true);
 
-        /** @var NewbbForumHandler $forumHandler */
-        $forumHandler = xoops_getModuleHandler('forum', 'newbb');
+        /** @var Newbb\ForumHandler $forumHandler */
+        $forumHandler = Newbb\Helper::getInstance()->getHandler('Forum');
         $forum_obj    = $forumHandler->get($post->getVar('forum_id'));
         if ($forum_obj->getVar('forum_last_post_id') < $post->getVar('post_id')) {
             $forum_obj->setVar('forum_last_post_id', $post->getVar('post_id'));
@@ -695,7 +699,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
         }
 
         // Update forum stats
-        $statsHandler = xoops_getModuleHandler('stats', 'newbb');
+        $statsHandler = Newbb\Helper::getInstance()->getHandler('Stats');
         $statsHandler->update($post->getVar('forum_id'), 'post');
         if ($post->isTopic()) {
             $statsHandler->update($post->getVar('forum_id'), 'topic');
@@ -705,11 +709,11 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
     }
 
     /**
-     * @param  XoopsObject $post
+     * @param  \XoopsObject $post
      * @param  bool        $force
      * @return bool
      */
-    public function insert(XoopsObject $post, $force = true)
+    public function insert(\XoopsObject $post, $force = true)
     {
         global $xoopsUser;
 
@@ -719,8 +723,8 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
             $post->setVar('post_time', time());
         }
 
-        /** @var NewbbTopicHandler $topicHandler */
-        $topicHandler = xoops_getModuleHandler('topic', 'newbb');
+        /** @var Newbb\TopicHandler $topicHandler */
+        $topicHandler = Newbb\Helper::getInstance()->getHandler('Topic');
         // Verify the topic ID
         if ($topic_id = $post->getVar('topic_id')) {
             $topic_obj = $topicHandler->get($topic_id);
@@ -736,7 +740,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
             $post->setNew();
             $topic_obj = $topicHandler->create();
         }
-        $textHandler    = xoops_getModuleHandler('text', 'newbb');
+        $textHandler    = Newbb\Helper::getInstance()->getHandler('Text');
         $post_text_vars = ['post_text', 'post_edit', 'dohtml', 'doxcode', 'dosmiley', 'doimage', 'dobr'];
         if ($post->isNew()) {
             if (!$topic_id = $post->getVar('topic_id')) {
@@ -814,21 +818,21 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
     }
 
     /**
-     * @param  XoopsObject $post
+     * @param  \XoopsObject $post
      * @param  bool        $isDeleteOne
      * @param  bool        $force
      * @return bool
      */
-    public function delete(XoopsObject $post, $isDeleteOne = true, $force = false)
+    public function delete(\XoopsObject $post, $isDeleteOne = true, $force = false)
     {
         if (!is_object($post) || 0 == $post->getVar('post_id')) {
             return false;
         }
         if ($isDeleteOne) {
             if ($post->isTopic()) {
-                $criteria = new CriteriaCompo(new Criteria('topic_id', $post->getVar('topic_id')));
-                $criteria->add(new Criteria('approved', 1));
-                $criteria->add(new Criteria('pid', 0, '>'));
+                $criteria = new \CriteriaCompo(new \Criteria('topic_id', $post->getVar('topic_id')));
+                $criteria->add(new \Criteria('approved', 1));
+                $criteria->add(new \Criteria('pid', 0, '>'));
                 if ($this->getPostCount($criteria) > 0) {
                     return false;
                 }
@@ -837,7 +841,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
             return $this->_delete($post, $force);
         } else {
             require_once XOOPS_ROOT_PATH . '/class/xoopstree.php';
-            $mytree = new XoopsTree($this->db->prefix('bb_posts'), 'post_id', 'pid');
+            $mytree = new \XoopsTree($this->db->prefix('bb_posts'), 'post_id', 'pid');
             $arr    = $mytree->getAllChild($post->getVar('post_id'));
             for ($i = 0, $iMax = count($arr); $i < $iMax; ++$i) {
                 $childpost = $this->create(false);
@@ -888,8 +892,8 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
         }
 
         if ($post->isTopic()) {
-            /** @var NewbbTopicHandler $topicHandler */
-            $topicHandler = xoops_getModuleHandler('topic', 'newbb');
+            /** @var Newbb\TopicHandler $topicHandler */
+            $topicHandler = Newbb\Helper::getInstance()->getHandler('Topic');
             $topic_obj    = $topicHandler->get($post->getVar('topic_id'));
             if ($topic_obj instanceof Topic) {
                 if (($topic_obj->getVar('approved') > 0) && empty($force)) {
@@ -907,12 +911,12 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
                         $moduleHandler      = xoops_getHandler('module');
                         $poll_moduleHandler = $moduleHandler->getByDirname('xoopspoll');
                         if (($poll_moduleHandler instanceof XoopsModuleHandler) && $poll_moduleHandler->isactive()) {
-                            $pollHandler = xoops_getModuleHandler('poll', 'xoopspoll');
-                            if (false !== $pollHandler->deleteAll(new Criteria('poll_id', $poll_id, '='))) {
-                                $optionHandler = xoops_getModuleHandler('option', 'xoopspoll');
-                                $optionHandler->deleteAll(new Criteria('poll_id', $poll_id, '='));
-                                $logHandler = xoops_getModuleHandler('log', 'xoopspoll');
-                                $logHandler->deleteAll(new Criteria('poll_id', $poll_id, '='));
+                            $pollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
+                            if (false !== $pollHandler->deleteAll(new \Criteria('poll_id', $poll_id, '='))) {
+                                $optionHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');
+                                $optionHandler->deleteAll(new \Criteria('poll_id', $poll_id, '='));
+                                $logHandler = Xoopspoll\Helper::getInstance()->getHandler('Log');
+                                $logHandler->deleteAll(new \Criteria('poll_id', $poll_id, '='));
                                 xoops_comment_delete($GLOBALS['xoopsModule']->getVar('mid'), $poll_id);
                             }
                         }
@@ -1017,7 +1021,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
     public function cleanOrphan()
     {
         global $xoopsDB;
-        $this->deleteAll(new Criteria('post_time', 0), true, true);
+        $this->deleteAll(new \Criteria('post_time', 0), true, true);
         parent::cleanOrphan($this->db->prefix('bb_topics'), 'topic_id');
         parent::cleanOrphan($this->db->prefix('bb_posts_text'), 'post_id');
 
@@ -1051,9 +1055,9 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
      */
     public function cleanExpires($expire = 0)
     {
-        $crit_expire = new CriteriaCompo(new Criteria('approved', 0, '<='));
+        $crit_expire = new \CriteriaCompo(new \Criteria('approved', 0, '<='));
         //if (!empty($expire)) {
-        $crit_expire->add(new Criteria('post_time', time() - (int)$expire, '<'));
+        $crit_expire->add(new \Criteria('post_time', time() - (int)$expire, '<'));
 
         //}
         return $this->deleteAll($crit_expire, true/*, true*/);

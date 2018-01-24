@@ -1,4 +1,5 @@
-<?php
+<?php namespace XoopsModules\Xoopspoll;
+
 /*
                XOOPS - PHP Content Management System
                    Copyright (c) 2000-2016 XOOPS.org
@@ -33,18 +34,20 @@
  * @author    ::  {@link http://www.myweb.ne.jp/ Kazumi Ono (AKA onokazu)}
  **/
 
+use XoopsModules\Xoopspoll;
+
 // defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 /**
  *
- * XoopspollLog() class definition for Log Objects
+ * Log() class definition for Log Objects
  * @author:: zyspec <owners@zyspec.com>
  * @uses  ::   xoops_getModuleHandler poll module handler for class use
  *
  */
-class XoopspollLog extends XoopsObject
+class Log extends \XoopsObject
 {
-    //  class XoopspollLog extends XoopsObject {
+    //  class Log extends \XoopsObject {
     //    var $db;
 
     /**
@@ -68,23 +71,23 @@ class XoopspollLog extends XoopsObject
     /**
      * @param null $id
      */
-    public function XoopspollLog($id = null)
+    public function Log($id = null)
     {
         $this->__construct($id);
     }
 
     /**
      * The following method is provided for backward compatibility with newbb
-     * @deprecated since Xoopspoll 1.40, please use XoopspollLogHandler & XoopspollLog
+     * @deprecated since Xoopspoll 1.40, please use LogHandler & Log
      * @param int $pid
      * @return mixed
      */
     public static function deleteByPollId($pid)
     {
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __FUNCTION__ . ' is deprecated since Xoopspoll 1.40, please use XoopspollLog and XoopspollLogHandler methods instead.' . " Called from {$trace[0]['file']}line {$trace[0]['line']}");
+        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __FUNCTION__ . ' is deprecated since Xoopspoll 1.40, please use Log and LogHandler methods instead.' . " Called from {$trace[0]['file']}line {$trace[0]['line']}");
         $slogHandler = self::getStaticLogHandler();
-        $criteria    = new Criteria('poll_id', (int)$pid, '=');
+        $criteria    = new \Criteria('poll_id', (int)$pid, '=');
 
         return $slogHandler->deleteAll($criteria);
     }
@@ -96,10 +99,10 @@ class XoopspollLog extends XoopsObject
     public static function deleteByOptionId($opt_id)
     {
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __FUNCTION__ . ' is deprecated since Xoopspoll 1.40, please use XoopspollLog and XoopspollLogHandler methods instead.' . " Called from {$trace[0]['file']}line {$trace[0]['line']}");
+        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __FUNCTION__ . ' is deprecated since Xoopspoll 1.40, please use Log and LogHandler methods instead.' . " Called from {$trace[0]['file']}line {$trace[0]['line']}");
 
         $slogHandler = self::getStaticLogHandler();
-        $criteria    = new Criteria('option_id', (int)$opt_id, '=');
+        $criteria    = new \Criteria('option_id', (int)$opt_id, '=');
 
         return $slogHandler->deleteAll($criteria);
     }
@@ -113,7 +116,7 @@ class XoopspollLog extends XoopsObject
     public static function hasVoted($pid, $ip, $uid)
     {
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __FUNCTION__ . ' is deprecated since Xoopspoll 1.40, please use XoopspollLog and XoopspollLogHandler methods instead.' . " Called from {$trace[0]['file']}line {$trace[0]['line']}");
+        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __FUNCTION__ . ' is deprecated since Xoopspoll 1.40, please use Log and LogHandler methods instead.' . " Called from {$trace[0]['file']}line {$trace[0]['line']}");
 
         $slogHandler = self::getStaticLogHandler();
 
@@ -127,190 +130,13 @@ class XoopspollLog extends XoopsObject
     {
         static $log_h;
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __FUNCTION__ . ' is deprecated since Xoopspoll 1.40, please use XoopspollLog and XoopspollLogHandler methods instead.' . " Called from {$trace[0]['file']}line {$trace[0]['line']}");
+        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __FUNCTION__ . ' is deprecated since Xoopspoll 1.40, please use Log and LogHandler methods instead.' . " Called from {$trace[0]['file']}line {$trace[0]['line']}");
 
         if (!isset($log_h)) {
-            $log_h = xoops_getModuleHandler('log', 'xoopspoll');
+            $log_h = Xoopspoll\Helper::getInstance()->getHandler('Log');
         }
 
         return $log_h;
     }
     /**#@-*/
-}
-
-/**
- * Class XoopspollLogHandler
- */
-class XoopspollLogHandler extends XoopsPersistableObjectHandler
-{
-    /**
-     * XoopspollLogHandler::__construct()
-     *
-     * @param null|XoopsDatabase $db
-     **/
-    public function __construct(XoopsDatabase $db)
-    {
-        parent::__construct($db, 'xoopspoll_log', 'XoopspollLog', 'log_id');
-    }
-
-    /**
-     * XoopspollLogHandler::XoopspollLogHandler()
-     *
-     * @param mixed $db
-     **/
-    public function XoopspollLogHandler($db)
-    {
-        $this->__construct($db);
-    }
-
-    /**
-     *
-     * Delete all log entries by Option ID
-     * @param  int $option_id
-     * @return bool $success
-     */
-    public function deleteByOptionId($option_id)
-    {
-        $criteria = new Criteria('option_id', $option_id, '=');
-        $success  = $this->deleteAll($criteria) ? true : false;
-
-        return $success;
-    }
-
-    /**
-     *
-     * Delete all log entries by Poll ID
-     * @uses CriteriaCompo
-     * @param  int $pid
-     * @return bool $success
-     */
-    public function deleteByPollId($pid)
-    {
-        $criteria = new Criteria('poll_id', (int)$pid, '=');
-        $success  = $this->deleteAll($criteria) ? true : false;
-
-        return $success;
-    }
-
-    /**
-     *
-     * Gets all log entries by Poll ID
-     * @uses CriteriaCompo
-     * @param  int    $pid
-     * @param  string $sortby  sort all results by this field
-     * @param  string $orderby sort order (ASC, DESC)
-     * @return bool   $success
-     */
-    public function getAllByPollId($pid, $sortby = 'time', $orderby = 'ASC')
-    {
-        $ret      = [];
-        $criteria = new CriteriaCompo();
-        $criteria->add(new Criteria('poll_id', (int)$pid, '='));
-        $criteria->setSort($sortby);
-        $criteria->setOrder($orderby);
-        $ret =& $this->getAll($criteria);
-
-        return $ret;
-    }
-
-    /**
-     *
-     * Get the total number of votes by the Poll ID
-     * @uses CriteriaCompo
-     * @param  int $pid
-     * @return int
-     */
-    public function getTotalVotesByPollId($pid)
-    {
-        $criteria = new Criteria('poll_id', (int)$pid, '=');
-        $numVotes = $this->getCount($criteria);
-
-        return $numVotes;
-    }
-
-    /**
-     *
-     * Get the total number of voters for a specific Poll
-     * @uses CriteriaCompo
-     * @param  int $pid
-     * @return int
-     */
-    public function getTotalVotersByPollId($pid)
-    {
-        $criteria = new CriteriaCompo();
-        $criteria->add(new Criteria('poll_id', (int)$pid, '='));
-        $criteria->setGroupBy('ip');
-        $voterGrps = $this->getCount($criteria);
-        $numVoters = count($voterGrps);
-
-        return $numVoters;
-    }
-
-    /**
-     * Get the total number of votes for an option
-     * @uses CriteriaCompo
-     * @param  int $option_id
-     * @return int
-     */
-    public function getTotalVotesByOptionId($option_id)
-    {
-        $criteria = new Criteria('option_id', (int)$option_id, '=');
-        $votes    = $this->getCount($criteria);
-
-        return $votes;
-    }
-
-    /**
-     * hasVoted indicates if user (logged in or not) has voted in a poll
-     * @uses $_COOKIE
-     * @param  int    $pid of the poll the check
-     * @param  string $ip  the ip address for this voter
-     * @param  int    $uid the XOOPS user id of this voter (0 for anon)
-     * @return bool
-     */
-    public function hasVoted($pid, $ip, $uid = 0)
-    {
-        $uid   = (int)$uid;
-        $pid   = (int)$pid;
-        $voted = true;
-        xoops_load('pollUtility', 'xoopspoll');
-        $voted_polls = XoopspollPollUtility::getVoteCookie();
-        //        $voted_polls = array();  //TESTING HACK TO BYPASS COOKIES
-        $pollHandler = xoops_getModuleHandler('poll', 'xoopspoll');
-        if ($pollObj = $pollHandler->get($pid)) {
-            $pollStarttime = $pollObj->getVar('start_time');
-            $criteria      = new CriteriaCompo();
-            $criteria->add(new Criteria('poll_id', $pid, '='));
-            if ($uid > 0) {
-                /**
-                 *  {@internal check to see if vote was from before poll was started
-                 *  and if so allow voting. This allows voting if poll is restarted
-                 *  with new start date or if module is uninstalled and re-installed.}
-                 */
-                $criteria->add(new Criteria('user_id', $uid, '='));
-                $criteria->add(new Criteria('time', (int)$pollStarttime, '>='));
-                $vCount = $this->getCount($criteria);
-                $voted  = ($vCount > 0) ? true : false;
-            } elseif (!empty($ip) && filter_var($ip, FILTER_VALIDATE_IP)) {
-                $criteria->add(new Criteria('ip', $ip, '='));
-                $criteria->add(new Criteria('time', (int)$pollStarttime, '>='));
-                $criteria->add(new Criteria('user_id', 0, '='));
-                $vCount = $this->getCount($criteria);
-                $voted  = ($vCount > 0) ? true : false;
-            } else {
-                /* Check cookie to see if someone from this system has voted before */
-                if (array_key_exists($pid, $voted_polls) && ((int)$voted_polls[$pid] >= $pollStarttime)) {
-                    $criteria = new CriteriaCompo();
-                    $criteria->add(new Criteria('poll_id', $pid, '='));
-                    $criteria->add(new Criteria('time', (int)$pollStarttime, '>='));
-                    $vCount = $this->getCount($criteria);
-                    $voted  = ($vCount > 0) ? true : false;
-                } else {
-                    $voted = false;
-                }
-            }
-        }
-
-        return $voted;
-    }
 }

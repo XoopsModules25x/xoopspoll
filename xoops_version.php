@@ -41,9 +41,9 @@ defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 require_once __DIR__ . '/preloads/autoloader.php';
 
-$modversion['version']       = 1.40;
-$modversion['module_status'] = 'Final';
-$modversion['release_date']  = '2016/10/23';
+$modversion['version']       = 2.00;
+$modversion['module_status'] = 'Beta 1';
+$modversion['release_date']  = '2018/01/12';
 $modversion['name']          = _MI_XOOPSPOLL_NAME;
 $modversion['description']   = _MI_XOOPSPOLL_DESC;
 $modversion['author']        = 'Kazumi Ono, modified by Mazarin';
@@ -54,9 +54,6 @@ $modversion['license_url']   = 'www.gnu.org/licenses/gpl-2.0.html';
 $modversion['official']      = 1; // 0 = 3rd party module, 1 = supported by XOOPS Community
 $modversion['image']         = 'assets/images/logoModule.png';
 $modversion['dirname']       = basename(__DIR__);
-//$modversion['dirmoduleadmin'] = 'Frameworks/moduleclasses/moduleadmin';
-//$modversion['icons16']        = '../../Frameworks/moduleclasses/icons/16';
-//$modversion['icons32']        = '../../Frameworks/moduleclasses/icons/32';
 $modversion['modicons16'] = 'assets/images/icons/16';
 $modversion['modicons32'] = 'assets/images/icons/32';
 

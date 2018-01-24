@@ -1,4 +1,4 @@
-<?php
+<?php namespace XoopsModules\Xoopspoll;
 /*
  You may not change or alter any portion of this comment or credits
  of supporting developers from this source code or any supporting source code
@@ -18,16 +18,19 @@
  * @since     ::         1.40
  * @author    ::     zyspec <owners@zyspec.com>
  */
+
+use XoopsModules\Xoopspoll;
+
 // defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
-class XoopspollPoll extends XoopsObject
+class Poll extends \XoopsObject
 {
     /**
-     * XoopspollPoll::__construct()
+     * Poll::__construct()
      *
      * @param null $id
      */
-    public function __construct(&$id = null)
+    public function __construct($id = null)
     {
         parent::__construct();
         //        $timestamp = xoops_getUserTimestamp(time());
@@ -38,24 +41,24 @@ class XoopspollPoll extends XoopsObject
         $this->initVar('description', XOBJ_DTYPE_TXTAREA, null, false);
         $this->initVar('user_id', XOBJ_DTYPE_INT, null, false);
         $this->initVar('start_time', XOBJ_DTYPE_INT, $current_timestamp, false);
-        $this->initVar('end_time', XOBJ_DTYPE_INT, $current_timestamp + XoopspollConstants::DEFAULT_POLL_DURATION, true);
+        $this->initVar('end_time', XOBJ_DTYPE_INT, $current_timestamp + Xoopspoll\Constants::DEFAULT_POLL_DURATION, true);
         $this->initVar('votes', XOBJ_DTYPE_INT, 0, false);
         $this->initVar('voters', XOBJ_DTYPE_INT, 0, false);
-        $this->initVar('display', XOBJ_DTYPE_INT, XoopspollConstants::DISPLAY_POLL_IN_BLOCK, false);
-        $this->initVar('visibility', XOBJ_DTYPE_INT, XoopspollConstants::HIDE_NEVER, false);
-        $this->initVar('anonymous', XOBJ_DTYPE_INT, XoopspollConstants::ANONYMOUS_VOTING_DISALLOWED, false);
-        $this->initVar('weight', XOBJ_DTYPE_INT, XoopspollConstants::DEFAULT_WEIGHT, false);
-        $this->initVar('multiple', XOBJ_DTYPE_INT, XoopspollConstants::NOT_MULTIPLE_SELECT_POLL, false);
-        $this->initVar('multilimit', XOBJ_DTYPE_INT, XoopspollConstants::MULTIPLE_SELECT_LIMITLESS, false);
-        $this->initVar('mail_status', XOBJ_DTYPE_INT, XoopspollConstants::POLL_NOT_MAILED, false);
-        $this->initVar('mail_voter', XOBJ_DTYPE_INT, XoopspollConstants::NOT_MAIL_POLL_TO_VOTER, false);
+        $this->initVar('display', XOBJ_DTYPE_INT, Xoopspoll\Constants::DISPLAY_POLL_IN_BLOCK, false);
+        $this->initVar('visibility', XOBJ_DTYPE_INT, Xoopspoll\Constants::HIDE_NEVER, false);
+        $this->initVar('anonymous', XOBJ_DTYPE_INT, Xoopspoll\Constants::ANONYMOUS_VOTING_DISALLOWED, false);
+        $this->initVar('weight', XOBJ_DTYPE_INT, Xoopspoll\Constants::DEFAULT_WEIGHT, false);
+        $this->initVar('multiple', XOBJ_DTYPE_INT, Xoopspoll\Constants::NOT_MULTIPLE_SELECT_POLL, false);
+        $this->initVar('multilimit', XOBJ_DTYPE_INT, Xoopspoll\Constants::MULTIPLE_SELECT_LIMITLESS, false);
+        $this->initVar('mail_status', XOBJ_DTYPE_INT, Xoopspoll\Constants::POLL_NOT_MAILED, false);
+        $this->initVar('mail_voter', XOBJ_DTYPE_INT, Xoopspoll\Constants::NOT_MAIL_POLL_TO_VOTER, false);
 
         /**
          * {@internal This code added to support previous versions of newbb/xForum}
          */
         if (!empty($id)) {
             $trace   = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-            $err_msg = __CLASS__ . " instantiation with 'id' set is deprecated since Xoopspoll 1.40, please use XoopspollPollHandler instead." . " Called from {$trace[0]['file']}line {$trace[0]['line']}";
+            $err_msg = __CLASS__ . " instantiation with 'id' set is deprecated since Xoopspoll 1.40, please use PollHandler instead." . " Called from {$trace[0]['file']}line {$trace[0]['line']}";
             if (isset($GLOBALS['xoopsLogger'])) {
                 $GLOBALS['xoopsLogger']->addDeprecated($err_msg);
             } else {
@@ -65,8 +68,8 @@ class XoopspollPoll extends XoopsObject
             if (is_array($id)) {
                 $this->assignVars($id);
             } else {
-                $pHandler = xoops_getModuleHandler('poll', 'xoopspoll');
-                $this->assignVars($pHandler->getAll(new Criteria('id', $id, '=')), null, false);
+                $pHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
+                $this->assignVars($pHandler->getAll(new \Criteria('id', $id, '=')), null, false);
                 unset($pHandler);
             }
         }
@@ -74,11 +77,11 @@ class XoopspollPoll extends XoopsObject
 
     /**
      *
-     * XoopspollPoll::XoopspollPoll()
+     * Poll::Poll()
      * @access public
      * @param null $id
      */
-    public function XoopspollPoll(&$id = null)
+    public function Poll(&$id = null)
     {
         $this->__construct($id);
     }
@@ -95,7 +98,7 @@ class XoopspollPoll extends XoopsObject
      *
      * Find out if poll has expired
      * @access public
-     * @uses   XoopspollPoll::getVar()
+     * @uses   Poll::getVar()
      * @return bool
      */
     public function hasExpired()
@@ -112,17 +115,17 @@ class XoopspollPoll extends XoopsObject
      *
      * Determine if user is allowed to vote in this poll
      * @uses   XoopsUser
-     * @uses   XoopspollPoll::getVar()
+     * @uses   Poll::getVar()
      * @access public
      * @return bool
      */
     public function isAllowedToVote()
     {
         $ret = false;
-        if ((($GLOBALS['xoopsUser'] instanceof XoopsUser)
+        if ((($GLOBALS['xoopsUser'] instanceof \XoopsUser)
              && (($GLOBALS['xoopsUser']->uid() > 0)
                  && $GLOBALS['xoopsUser']->isActive()))
-            || (XoopspollConstants::ANONYMOUS_VOTING_ALLOWED === $this->getVar('anonymous'))) {
+            || (\Xoopspoll\Constants::ANONYMOUS_VOTING_ALLOWED === $this->getVar('anonymous'))) {
             $ret = true;
         }
 
@@ -133,8 +136,8 @@ class XoopspollPoll extends XoopsObject
      * @access   public
      * @uses     xoops_getModuleHandler()
      * @uses     CriteriaCompo()
-     * @uses     XoopspollPollHandler::getAll()
-     * @uses     XoopspollLogHandler
+     * @uses     PollHandler::getAll()
+     * @uses     LogHandler
      * @param  int    $optionId
      * @param  string $ip ip address of voter
      * @param         $time
@@ -145,18 +148,18 @@ class XoopspollPoll extends XoopsObject
     {
         if (!empty($optionId) && $this->isAllowedToVote()) {
             $voteTime    = empty($time) ? time() : (int)$time;
-            $uid         = ($GLOBALS['xoopsUser'] instanceof XoopsUser) ? $GLOBALS['xoopsUser']->uid() : 0;
-            $logHandler  = xoops_getModuleHandler('log', 'xoopspoll');
-            $optHandler  = xoops_getModuleHandler('option', 'xoopspoll');
+            $uid         = ($GLOBALS['xoopsUser'] instanceof \XoopsUser) ? $GLOBALS['xoopsUser']->uid() : 0;
+            $logHandler  = Xoopspoll\Helper::getInstance()->getHandler('Log');
+            $optHandler  = Xoopspoll\Helper::getInstance()->getHandler('Option');
             $optsIdArray = (array)$optionId; // type cast to make sure it's an array
             $optsIdArray = array_map('intval', $optsIdArray); // make sure values are integers
             /* check to make sure voter hasn't selected too many options */
             if (!$this->getVar('multiple')
                 || ($this->getVar('multiple')
-                    && ((XoopspollConstants::MULTIPLE_SELECT_LIMITLESS === $this->getVar('multilimit'))
+                    && ((\Xoopspoll\Constants::MULTIPLE_SELECT_LIMITLESS === $this->getVar('multilimit'))
                         || (count($optsIdArray) <= $this->getVar('multilimit'))))) {
-                $criteria = new CriteriaCompo();
-                $criteria->add(new Criteria('option_id', '(' . implode(',', $optsIdArray) . ')', 'IN'));
+                $criteria = new \CriteriaCompo();
+                $criteria->add(new \Criteria('option_id', '(' . implode(',', $optsIdArray) . ')', 'IN'));
                 $optionObjs = $optHandler->getAll($criteria);
                 foreach ($optionObjs as $optionObj) {
                     //                    if ($this->getVar('poll_id') == $optionObj->getVar('poll_id')) {
@@ -176,7 +179,7 @@ class XoopspollPoll extends XoopsObject
                     }
                 }
                 // now send voter an email if the poll is set to allow it (if the user is not anon)
-                if (XoopspollConstants::MAIL_POLL_TO_VOTER === $this->getVar('mail_voter') && (!empty($uid))) {
+                if (\Xoopspoll\Constants::MAIL_POLL_TO_VOTER === $this->getVar('mail_voter') && (!empty($uid))) {
                     $this->notifyVoter($GLOBALS['xoopsUser']);
                 }
 
@@ -199,9 +202,9 @@ class XoopspollPoll extends XoopsObject
         $pollModule    = $moduleHandler->getByDirname('xoopspoll');
 
         $commentHandler = xoops_getHandler('comment');
-        $criteria       = new CriteriaCompo();
-        $criteria->add(new Criteria('com_itemid', $this->getVar('poll_id'), '='));
-        $criteria->add(new Criteria('com_modid', $pollModule->getVar('mid'), '='));
+        $criteria       = new \CriteriaCompo();
+        $criteria->add(new \Criteria('com_itemid', $this->getVar('poll_id'), '='));
+        $criteria->add(new \Criteria('com_modid', $pollModule->getVar('mid'), '='));
         $commentCount = $commentHandler->getCount($criteria);
         $commentCount = (int)$commentCount;
 
@@ -236,14 +239,14 @@ class XoopspollPoll extends XoopsObject
         }
 
         /*  create the form */
-        $pollForm    = new XoopsThemeForm(ucwords($formTitle), 'poll_form', $rtnPage, $rtnMethod, $rtnSecurity);
-        $authorLabel = new XoopsFormLabel(_AM_XOOPSPOLL_AUTHOR, "<a href='" . $GLOBALS['xoops']->url('userinfo.php') . '?uid=' . $this->getVar('user_id') . "' target='_blank'>" . ucfirst(XoopsUser::getUnameFromId($this->getVar('user_id'))) . '</a>');
+        $pollForm    = new \XoopsThemeForm(ucwords($formTitle), 'poll_form', $rtnPage, $rtnMethod, $rtnSecurity);
+        $authorLabel = new \XoopsFormLabel(_AM_XOOPSPOLL_AUTHOR, "<a href='" . $GLOBALS['xoops']->url('userinfo.php') . '?uid=' . $this->getVar('user_id') . "' target='_blank'>" . ucfirst(\XoopsUser::getUnameFromId($this->getVar('user_id'))) . '</a>');
         $pollForm->addElement($authorLabel);
-        $pollForm->addElement(new XoopsFormText(_AM_XOOPSPOLL_DISPLAYORDER, 'weight', 6, 5, $this->getVar('weight')));
-        $questionText = new XoopsFormText(_AM_XOOPSPOLL_POLLQUESTION, 'question', 50, 255, $this->getVar('question', 'E'));
+        $pollForm->addElement(new \XoopsFormText(_AM_XOOPSPOLL_DISPLAYORDER, 'weight', 6, 5, $this->getVar('weight')));
+        $questionText = new \XoopsFormText(_AM_XOOPSPOLL_POLLQUESTION, 'question', 50, 255, $this->getVar('question', 'E'));
         $pollForm->addElement($questionText, true);
         /*
-                $descTarea = new XoopsFormTextarea(_AM_XOOPSPOLL_POLLDESC, "description", $this->getVar('description', 'E'));
+                $descTarea = new \XoopsFormTextarea(_AM_XOOPSPOLL_POLLDESC, "description", $this->getVar('description', 'E'));
                 $pollForm->addElement($descTarea);
         */
         $moduleHandler = xoops_getHandler('module');
@@ -271,13 +274,13 @@ class XoopspollPoll extends XoopsObject
             //                           'value'  => $myts->stripSlashesGPC($this->getVar('description'))
             'value'  => $myts->htmlSpecialChars($this->getVar('description'))
         ];
-        $desc_text     = new XoopsFormEditor(_AM_XOOPSPOLL_POLLDESC, 'description', $editorConfigs);
+        $desc_text     = new \XoopsFormEditor(_AM_XOOPSPOLL_POLLDESC, 'description', $editorConfigs);
         $pollForm->addElement($desc_text);
 
-        $author = new XoopsUser($this->getVar('user_id'));
+        $author = new \XoopsUser($this->getVar('user_id'));
 
         /* setup time variables */
-        $timeTray = new XoopsFormElementTray(_AM_XOOPSPOLL_POLL_TIMES, '&nbsp;&nbsp;', 'time_tray');
+        $timeTray = new \XoopsFormElementTray(_AM_XOOPSPOLL_POLL_TIMES, '&nbsp;&nbsp;', 'time_tray');
 
         $xuCurrentTimestamp = xoops_getUserTimestamp(time());
         $xuCurrentFormatted = ucfirst(date(_MEDIUMDATESTRING, $xuCurrentTimestamp));
@@ -285,9 +288,9 @@ class XoopspollPoll extends XoopsObject
         $xuEndTimestamp     = xoops_getUserTimestamp($this->getVar('end_time'));
 
         /* display start/end time fields on form */
-        $startTimeText = new XoopspollFormDateTimePicker("<div class='bold'>" . _AM_XOOPSPOLL_START_TIME . '<br>' . "<span class='x-small'>" . _AM_XOOPSPOLL_FORMAT . '<br>' . sprintf(_AM_XOOPSPOLL_CURRENTTIME, $xuCurrentFormatted) . '</span></div>', 'xu_start_time', 20, $xuStartTimestamp);
+        $startTimeText = new FormDateTimePicker("<div class='bold'>" . _AM_XOOPSPOLL_START_TIME . '<br>' . "<span class='x-small'>" . _AM_XOOPSPOLL_FORMAT . '<br>' . sprintf(_AM_XOOPSPOLL_CURRENTTIME, $xuCurrentFormatted) . '</span></div>', 'xu_start_time', 20, $xuStartTimestamp);
         if (!$this->hasExpired()) {
-            $endTimeText = new XoopspollFormDateTimePicker("<div class='bold middle'>" . _AM_XOOPSPOLL_EXPIRATION . '</div>', 'xu_end_time', 20, $xuEndTimestamp);
+            $endTimeText = new FormDateTimePicker("<div class='bold middle'>" . _AM_XOOPSPOLL_EXPIRATION . '</div>', 'xu_end_time', 20, $xuEndTimestamp);
         } else {
             /*
                         $extra = "";
@@ -296,7 +299,7 @@ class XoopspollPoll extends XoopsObject
                         }
 
                         $xuEndFormattedTime = ucfirst(date(_MEDIUMDATESTRING, $xuEndTimestamp));
-                        $endTimeText = new XoopsFormLabel("<div class='bold middle'>" . _AM_XOOPSPOLL_EXPIRATION,
+                        $endTimeText = new \XoopsFormLabel("<div class='bold middle'>" . _AM_XOOPSPOLL_EXPIRATION,
                                          sprintf(_AM_XOOPSPOLL_EXPIREDAT, $xuEndFormattedTime)
                                        . "<br><a href='{$rtnPage}?op=restart&amp;poll_id="
                                        . $this->getVar('poll_id') . "{$extra}'>" . _AM_XOOPSPOLL_RESTART . "</a></div>");
@@ -307,54 +310,54 @@ class XoopspollPoll extends XoopsObject
             $query              = http_build_query($extra);
             $query              = htmlentities($query, ENT_QUOTES);
             $xuEndFormattedTime = ucfirst(date(_MEDIUMDATESTRING, $xuEndTimestamp));
-            $endTimeText        = new XoopsFormLabel("<div class='bold middle'>" . _AM_XOOPSPOLL_EXPIRATION, sprintf(_AM_XOOPSPOLL_EXPIREDAT, $xuEndFormattedTime) . "<br><a href='{$rtnPage}?{$query}'>" . _AM_XOOPSPOLL_RESTART . '</a></div>');
+            $endTimeText        = new \XoopsFormLabel("<div class='bold middle'>" . _AM_XOOPSPOLL_EXPIRATION, sprintf(_AM_XOOPSPOLL_EXPIREDAT, $xuEndFormattedTime) . "<br><a href='{$rtnPage}?{$query}'>" . _AM_XOOPSPOLL_RESTART . '</a></div>');
         }
 
         $timeTray->addElement($startTimeText);
         $timeTray->addElement($endTimeText, true);
         $pollForm->addElement($timeTray);
         /* allow anonymous voting */
-        $pollForm->addElement(new XoopsFormRadioYN(_AM_XOOPSPOLL_ALLOWANONYMOUS, 'anonymous', $this->getVar('anonymous')));
+        $pollForm->addElement(new \XoopsFormRadioYN(_AM_XOOPSPOLL_ALLOWANONYMOUS, 'anonymous', $this->getVar('anonymous')));
         /* add poll options to the form */
-        $pollForm->addElement(new XoopsFormLabel(_AM_XOOPSPOLL_OPTION_SETTINGS, "<hr class='center'>"));
+        $pollForm->addElement(new \XoopsFormLabel(_AM_XOOPSPOLL_OPTION_SETTINGS, "<hr class='center'>"));
         $multiCount = ($this->getVar('multiple') > 0) ? $this->getVar('multiple') : '';
-        $pollForm->addElement(new XoopsFormRadioYN(_AM_XOOPSPOLL_ALLOWMULTI, 'multiple', $this->getVar('multiple')));
+        $pollForm->addElement(new \XoopsFormRadioYN(_AM_XOOPSPOLL_ALLOWMULTI, 'multiple', $this->getVar('multiple')));
 
         /* add multiple selection limit to multiple selection polls */
-        $multiLimit = new XoopsFormText(_AM_XOOPSPOLL_MULTI_LIMIT . '<br><small>' . _AM_XOOPSPOLL_MULTI_LIMIT_DESC . '</small>', 'multilimit', 6, 5, $this->getVar('multilimit'));
+        $multiLimit = new \XoopsFormText(_AM_XOOPSPOLL_MULTI_LIMIT . '<br><small>' . _AM_XOOPSPOLL_MULTI_LIMIT_DESC . '</small>', 'multilimit', 6, 5, $this->getVar('multilimit'));
         $pollForm->addElement($multiLimit);
 
-        $optHandler = xoops_getModuleHandler('option', 'xoopspoll');
+        $optHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');
         $optionTray = $optHandler->renderOptionFormTray($this->getVar('poll_id'));
         $pollForm->addElement($optionTray);
 
         /* add preferences to the form */
-        $pollForm->addElement(new XoopsFormLabel(_AM_XOOPSPOLL_PREFERENCES, "<hr class='center'>"));
-        $visSelect = new XoopsFormSelect(_AM_XOOPSPOLL_BLIND, 'visibility', $this->getVar('visibility'), 1, false);
+        $pollForm->addElement(new \XoopsFormLabel(_AM_XOOPSPOLL_PREFERENCES, "<hr class='center'>"));
+        $visSelect = new \XoopsFormSelect(_AM_XOOPSPOLL_BLIND, 'visibility', $this->getVar('visibility'), 1, false);
         /**
          * {@internal Do NOT add/delete from $vis_options after the module has been installed}
          */
         xoops_loadLanguage('main', 'xoopspoll');
-        $visSelect->addOptionArray(XoopspollPollUtility::getVisibilityArray());
+        $visSelect->addOptionArray(\Xoopspoll\Utility::getVisibilityArray());
         $pollForm->addElement($visSelect);
-        $notifyValue = (XoopspollConstants::POLL_MAILED !== $this->getVar('mail_status')) ? XoopspollConstants::NOTIFICATION_ENABLED : XoopspollConstants::NOTIFICATION_DISABLED;
-        $pollForm->addElement(new XoopsFormRadioYN(_AM_XOOPSPOLL_NOTIFY, 'notify', $notifyValue));
+        $notifyValue = (\Xoopspoll\Constants::POLL_MAILED !== $this->getVar('mail_status')) ? Xoopspoll\Constants::NOTIFICATION_ENABLED : Xoopspoll\Constants::NOTIFICATION_DISABLED;
+        $pollForm->addElement(new \XoopsFormRadioYN(_AM_XOOPSPOLL_NOTIFY, 'notify', $notifyValue));
 
         // Add "notify voter" in the form
-        $mail_voter_yn = new XoopsFormRadioYN(_AM_XOOPSPOLL_NOTIFY_VOTER, 'mail_voter', $this->getVar('mail_voter'));
+        $mail_voter_yn = new \XoopsFormRadioYN(_AM_XOOPSPOLL_NOTIFY_VOTER, 'mail_voter', $this->getVar('mail_voter'));
         $pollForm->addElement($mail_voter_yn);
 
-        $pollForm->addElement(new XoopsFormRadioYN(_AM_XOOPSPOLL_DISPLAYBLOCK, 'display', $this->getVar('display')));
+        $pollForm->addElement(new \XoopsFormRadioYN(_AM_XOOPSPOLL_DISPLAYBLOCK, 'display', $this->getVar('display')));
 
         foreach ($addHidden as $key => $value) {
-            $pollForm->addElement(new XoopsFormHidden($key, $value));
+            $pollForm->addElement(new \XoopsFormHidden($key, $value));
         }
-        $pollForm->addElement(new XoopsFormHidden('op', 'update'));
-        $pollForm->addElement(new XoopsFormHidden('poll_id', $this->getVar('poll_id')));
-        $pollForm->addElement(new XoopsFormHidden('user_id', $this->getVar('user_id')));
-        $pollForm->addElement(new XoopsFormButtonTray('submit', _SUBMIT, null, null, true));
+        $pollForm->addElement(new \XoopsFormHidden('op', 'update'));
+        $pollForm->addElement(new \XoopsFormHidden('poll_id', $this->getVar('poll_id')));
+        $pollForm->addElement(new \XoopsFormHidden('user_id', $this->getVar('user_id')));
+        $pollForm->addElement(new \XoopsFormButtonTray('submit', _SUBMIT, null, null, true));
 
-        //        $pollForm->addElement(new XoopsFormButtonTray( "form_submit", _SUBMIT, "submit", "", true));
+        //        $pollForm->addElement(new \XoopsFormButtonTray( "form_submit", _SUBMIT, "submit", "", true));
         return $pollForm->display();
     }
 
@@ -367,12 +370,12 @@ class XoopspollPoll extends XoopsObject
     {
         xoops_loadLanguage('main', 'xoopspoll');
         switch ($this->getVar('visibility')) {
-            case XoopspollConstants::HIDE_ALWAYS:  // always hide the results
+            case Xoopspoll\Constants::HIDE_ALWAYS:  // always hide the results
             default:
                 $isVisible  = false;
                 $visibleMsg = _MD_XOOPSPOLL_HIDE_ALWAYS_MSG;
                 break;
-            case XoopspollConstants::HIDE_END:  // hide the results until the poll ends
+            case Xoopspoll\Constants::HIDE_END:  // hide the results until the poll ends
                 if (!$this->hasExpired()) {
                     $visibleMsg = _MD_XOOPSPOLL_HIDE_END_MSG;
                     $isVisible  = false;
@@ -380,9 +383,9 @@ class XoopspollPoll extends XoopsObject
                     $isVisible = true;
                 }
                 break;
-            case XoopspollConstants::HIDE_VOTED: // hide the results until user votes
-                $logHandler = xoops_getModuleHandler('log', 'xoopspoll');
-                $uid        = (($GLOBALS['xoopsUser'] instanceof XoopsUser)
+            case Xoopspoll\Constants::HIDE_VOTED: // hide the results until user votes
+                $logHandler = Xoopspoll\Helper::getInstance()->getHandler('Log');
+                $uid        = (($GLOBALS['xoopsUser'] instanceof \XoopsUser)
                                && ($GLOBALS['xoopsUser']->getVar('uid') > 0)) ? $GLOBALS['xoopsUser']->getVar('uid') : 0;
                 if ($this->isAllowedToVote()
                     && $logHandler->hasVoted($this->getVar('poll_id'), xoops_getenv('REMOTE_ADDR'), $uid)) {
@@ -392,7 +395,7 @@ class XoopspollPoll extends XoopsObject
                     $isVisible  = false;
                 }
                 break;
-            case XoopspollConstants::HIDE_NEVER:  // never hide the results - always show
+            case Xoopspoll\Constants::HIDE_NEVER:  // never hide the results - always show
                 $isVisible = true;
                 break;
         }
@@ -408,7 +411,7 @@ class XoopspollPoll extends XoopsObject
      */
     public function notifyVoter($user = null)
     {
-        if (($user instanceof XoopsUser) && (XoopspollConstants::MAIL_POLL_TO_VOTER === $this->getVar('mail_voter'))) {
+        if (($user instanceof \XoopsUser) && (\Xoopspoll\Constants::MAIL_POLL_TO_VOTER === $this->getVar('mail_voter'))) {
             xoops_loadLanguage('main', 'xoopspoll');
             $xoopsMailer = xoops_getMailer();
             $xoopsMailer->useMail();
@@ -423,7 +426,7 @@ class XoopspollPoll extends XoopsObject
             $xoopsMailer->setTemplateDir($templateDir);
             $xoopsMailer->setTemplate($templateFilename);
 
-            $author = new XoopsUser($this->getVar('user_id'));
+            $author = new \XoopsUser($this->getVar('user_id'));
             $xoopsMailer->setFromUser($author);
             $xoopsMailer->setToUsers($user);
 
@@ -440,17 +443,17 @@ class XoopspollPoll extends XoopsObject
 
             $visibleText = '';
             switch ($this->getVar('visibility')) {
-                case XoopspollConstants::HIDE_ALWAYS:  // always hide the results - election mode
+                case Xoopspoll\Constants::HIDE_ALWAYS:  // always hide the results - election mode
                 default:
                     break;
-                case XoopspollConstants::HIDE_END:  // hide the results until the poll ends
+                case Xoopspoll\Constants::HIDE_END:  // hide the results until the poll ends
                     $visibleText = _MD_XOOPSPOLL_SEE_AFTER;
                     if ($this->hasExpired()) {
                         $visibleText = _MD_XOOPSPOLL_SEE_AT;
                     }
                     break;
-                case XoopspollConstants::HIDE_VOTED: // hide the results until user votes
-                case XoopspollConstants::HIDE_NEVER:  // never hide the results - always show
+                case Xoopspoll\Constants::HIDE_VOTED: // hide the results until user votes
+                case Xoopspoll\Constants::HIDE_NEVER:  // never hide the results - always show
                     $visibleText = _MD_XOOPSPOLL_SEE_AT;
                     break;
             }
@@ -477,7 +480,7 @@ class XoopspollPoll extends XoopsObject
 
     /**#@+
      * The following method is provided for backward compatibility with newbb/xforum
-     * @deprecated since Xoopspoll 1.40, please use XoopspollPollHandler & XoopspollPoll
+     * @deprecated since Xoopspoll 1.40, please use PollHandler & Poll
      */
     /**
      *
@@ -487,7 +490,7 @@ class XoopspollPoll extends XoopsObject
     public function delete()
     {
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use XoopspollPollHandler::' . __METHOD__ . ' instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
+        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use PollHandler::' . __METHOD__ . ' instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
         $pollHandler = $this->getStaticPollHandler();
 
         return $pollHandler->delete($this->poll);
@@ -501,7 +504,7 @@ class XoopspollPoll extends XoopsObject
     public function updateCount()
     {
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use XoopspollPollHandler::' . __METHOD__ . ' instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
+        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use PollHandler::' . __METHOD__ . ' instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
         $pollHandler = $this->getStaticPollHandler();
 
         return $pollHandler->updateCount($this->poll->getVar('poll_id'));
@@ -515,7 +518,7 @@ class XoopspollPoll extends XoopsObject
     public function store()
     {
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use XoopspollPollHandler::insert() instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
+        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use PollHandler::insert() instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
         $pollHandler = $this->getStaticPollHandler();
 
         return $pollHandler->insert($this->poll);
@@ -528,118 +531,14 @@ class XoopspollPoll extends XoopsObject
     private function getStaticPollHandler()
     {
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use XoopspollPoll and XoopspollPollHandler classes instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
+        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use Poll and PollHandler classes instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
         static $pH;
 
         if (!isset($pH)) {
-            $pH = xoops_getModuleHandler('poll', 'xoopspoll');
+            $pH = Xoopspoll\Helper::getInstance()->getHandler('Poll');
         }
 
         return $pH;
     }
     /**#@-*/
-}
-
-/**
- * Class XoopspollPollHandler
- */
-class XoopspollPollHandler extends XoopsPersistableObjectHandler
-{
-    /**
-     * XoopspollPollHandler::__construct()
-     *
-     * @param null|XoopsDatabase $db
-     **/
-    public function __construct(XoopsDatabase $db)
-    {
-        parent::__construct($db, 'xoopspoll_desc', 'XoopspollPoll', 'poll_id', 'question');
-    }
-
-    /**
-     *
-     * Update the Vote count from the log and polls
-     * @access public
-     * @param  obj $pollObj
-     * @return bool $success
-     */
-    public function updateCount(&$pollObj)
-    {
-        $success = false;
-        if ($pollObj instanceof XoopspollPoll) {
-            $pollId     = $pollObj->getVar('poll_id');
-            $logHandler = xoops_getModuleHandler('log', 'xoopspoll');
-            $votes      = $logHandler->getTotalVotesByPollId($pollId);
-            $voters     = $logHandler->getTotalVotersByPollId($pollId);
-            $pollObj->setVar('votes', $votes);
-            $pollObj->setVar('voters', $voters);
-            $success = $this->insert($pollObj);
-        }
-
-        return $success;
-    }
-
-    /**
-     *
-     * Mail the results of poll when expired
-     * @param  mixed $pollObj
-     * @return bool  true|false indicating sendmail status
-     */
-    public function mailResults($pollObj = null)
-    {
-        xoops_load('constants', 'xoopspoll');
-
-        $criteria = new CriteriaCompo();
-        $criteria->add(new Criteria('end_time', time(), '<'));  // expired polls
-        $criteria->add(new Criteria('mail_status', XoopspollConstants::POLL_NOT_MAILED, '=')); // email not previously sent
-        if (!empty($pollObj) && ($pollObj instanceof XoopspollPoll)) {
-            $criteria->add(new Criteria('poll_id', $pollObj->getVar('poll_id'), '='));
-            $criteria->setLimit(1);
-        }
-        $pollObjs =& $this->getAll($criteria);
-        $tplFile  = 'mail_results.tpl';
-        $lang     = 'english';
-        if (file_exists($GLOBALS['xoops']->path('modules/xoopspoll/language/' . $GLOBALS['xoopsConfig']['language'] . '/mail_template/' . $tplFile))) {
-            $lang = $GLOBALS['xoopsConfig']['language'];
-        }
-        xoops_loadLanguage('main', 'xoopspoll', $lang);
-
-        $ret = [];
-
-        // setup mailer
-        $xoopsMailer = xoops_getMailer();
-        $xoopsMailer->useMail();
-        $xoopsMailer->setTemplateDir($GLOBALS['xoops']->path('modules/xoopspoll/language/' . $lang . '/mail_template/'));
-
-        $xoopsMailer->setTemplate($tplFile);
-        $xoopsMailer->assign('SITENAME', $GLOBALS['xoopsConfig']['sitename']);
-        $xoopsMailer->assign('ADMINMAIL', $GLOBALS['xoopsConfig']['adminmail']);
-        $xoopsMailer->assign('SITEURL', $GLOBALS['xoops']->url(''));
-        $xoopsMailer->assign('MODULEURL', $GLOBALS['xoops']->url('modules/xoopspoll/'));
-        $xoopsMailer->setFromEmail($GLOBALS['xoopsConfig']['adminmail']);
-        $xoopsMailer->setFromName($GLOBALS['xoopsConfig']['sitename']);
-        foreach ($pollObjs as $pollObj) {
-            $pollValues = $pollObj->getValues();
-            // get author info
-            $author = new XoopsUser($pollValues['user_id']);
-            if (($author instanceof XoopsUser) && ($author->uid() > 0)) {
-                $xoopsMailer->setToUsers($author);
-                // initialize variables
-                $xoopsMailer->assign('POLL_QUESTION', $pollValues['question']);
-                $xoopsMailer->assign('POLL_START', formatTimestamp($pollValues['start_time'], 'l', $author->timezone()));
-                $xoopsMailer->assign('POLL_END', formatTimestamp($pollValues['end_time'], 'l', $author->timezone()));
-                $xoopsMailer->assign('POLL_VOTES', $pollValues['votes']);
-                $xoopsMailer->assign('POLL_VOTERS', $pollValues['voters']);
-                $xoopsMailer->assign('POLL_ID', $pollValues['poll_id']);
-                $xoopsMailer->setSubject(sprintf(_MD_XOOPSPOLL_YOURPOLLAT, $author->uname(), $GLOBALS['xoopsConfig']['sitename']));
-                if (false !== $xoopsMailer->send(false)) {
-                    $pollObj->setVar('mail_status', XoopspollConstants::POLL_MAILED);
-                    $ret[] = $this->insert($pollObj);
-                } else {
-                    $ret[] = $xoopsMailer->getErrors(false); // return error array from mailer
-                }
-            }
-        }
-
-        return $ret;
-    }
 }
