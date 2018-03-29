@@ -22,8 +22,8 @@
 
 use Xmf\Request;
 use XoopsModules\Xoopspoll;
+use XoopsModules\Xoopspoll\Constants;
 use XoopsModules\Newbb;
-
 
 require_once __DIR__ . '/header.php';
 
@@ -207,10 +207,10 @@ switch ($op) {
         if ("xoopspoll" == $pollmodules) {
     //        $poll_obj = $xpPollHandler->create();
             $poll_obj = $xpPollHandler->get($poll_id); // will either get or create poll obj
-            $default_poll_duration = Xoopspoll\Constants::DEFAULT_POLL_DURATION;
-            $poll_not_mailed       = Xoopspoll\Constants::POLL_NOT_MAILED;
-            $poll_mailed           = Xoopspoll\Constants::POLL_MAILED;
-            $display               = Xoopspoll\Constants::DO_NOT_DISPLAY_POLL_IN_BLOCK;
+            $default_poll_duration = Constants::DEFAULT_POLL_DURATION;
+            $poll_not_mailed       = Constants::POLL_NOT_MAILED;
+            $poll_mailed           = Constants::POLL_MAILED;
+            $display               = Constants::DO_NOT_DISPLAY_POLL_IN_BLOCK;
         } else { // Umfrage
     //        $poll_obj = new Umfrage();
             if (empty($poll_id)) {  //if creating new poll
@@ -219,7 +219,7 @@ switch ($op) {
                 $poll_obj = new Umfrage($poll_id);
             }
             $default_poll_duration = (86400 * 10);
-            $poll_not_mailed = POLL_NOTMAILED;
+            $poll_not_mailed = POLL_NOT_MAILED;
             $poll_mailed     = POLL_MAILED;
             $display         = 0;
         }
@@ -395,13 +395,13 @@ switch ($op) {
             $xpOptHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');
             $xpLogHandler = Xoopspoll\Helper::getInstance()->getHandler('Log');
 
-            $notify = Request::getInt('notify', Xoopspoll\Constants::NOTIFICATION_ENABLED, 'POST');
+            $notify = Request::getInt('notify', Constants::NOTIFICATION_ENABLED, 'POST');
 
             $currentTimestamp = time();
             $xuEndTimestamp   = strtotime(Request::getString('xu_end_time', null, 'POST'));
-            $endTimestamp     = empty($xuEndTimestamp) ? ($currentTimestamp + Xoopspoll\Constants::DEFAULT_POLL_DURATION) : userTimeToServerTime($xuEndTimestamp);
+            $endTimestamp     = empty($xuEndTimestamp) ? ($currentTimestamp + Constants::DEFAULT_POLL_DURATION) : userTimeToServerTime($xuEndTimestamp);
             $xuStartTimestamp = strtotime(Request::getString('xu_start_time', null, 'POST'));
-            $startTimestamp   = empty($xuStartTimestamp) ? ($endTimestamp - Xoopspoll\Constants::DEFAULT_POLL_DURATION) : userTimeToServerTime($xuStartTimestamp);
+            $startTimestamp   = empty($xuStartTimestamp) ? ($endTimestamp - Constants::DEFAULT_POLL_DURATION) : userTimeToServerTime($xuStartTimestamp);
 
             //  don't allow changing start time if there are votes in the log
             if (($startTimestamp < $poll_obj->getVar('start_time'))
@@ -413,16 +413,16 @@ switch ($op) {
                 'user_id'     => Request::getInt('user_id', $GLOBALS['xoopsUser']->uid(), 'POST'),
                 'question'    => Request::getString('question', null, 'POST'),
                 'description' => Request::getText('description', null, 'POST'),
-                'mail_status' => (\Xoopspoll\Constants::NOTIFICATION_ENABLED === $notify) ? Xoopspoll\Constants::POLL_NOT_MAILED : Xoopspoll\Constants::POLL_MAILED,
-                'mail_voter'  => Request::getInt('mail_voter', Xoopspoll\Constants::NOT_MAIL_POLL_TO_VOTER, 'POST'),
+                'mail_status' => (Constants::NOTIFICATION_ENABLED === $notify) ? Constants::POLL_NOT_MAILED : Constants::POLL_MAILED,
+                'mail_voter'  => Request::getInt('mail_voter', Constants::NOT_MAIL_POLL_TO_VOTER, 'POST'),
                 'start_time'  => $startTimestamp,
                 'end_time'    => $endTimestamp,
-                'display'     => Request::getInt('display', Xoopspoll\Constants::DO_NOT_DISPLAY_POLL_IN_BLOCK, 'POST'),
-                'visibility'  => Request::getInt('visibility', Xoopspoll\Constants::HIDE_NEVER, 'POST'),
-                'weight'      => Request::getInt('weight', Xoopspoll\Constants::DEFAULT_WEIGHT, 'POST'),
-                'multiple'    => Request::getInt('multiple', Xoopspoll\Constants::NOT_MULTIPLE_SELECT_POLL, 'POST'),
-                'multilimit'  => Request::getInt('multilimit', Xoopspoll\Constants::MULTIPLE_SELECT_LIMITLESS, 'POST'),
-                'anonymous'   => Request::getInt('anonymous', Xoopspoll\Constants::ANONYMOUS_VOTING_DISALLOWED, 'POST')
+                'display'     => Request::getInt('display', Constants::DO_NOT_DISPLAY_POLL_IN_BLOCK, 'POST'),
+                'visibility'  => Request::getInt('visibility', Constants::HIDE_NEVER, 'POST'),
+                'weight'      => Request::getInt('weight', Constants::DEFAULT_WEIGHT, 'POST'),
+                'multiple'    => Request::getInt('multiple', Constants::NOT_MULTIPLE_SELECT_POLL, 'POST'),
+                'multilimit'  => Request::getInt('multilimit', Constants::MULTIPLE_SELECT_LIMITLESS, 'POST'),
+                'anonymous'   => Request::getInt('anonymous', Constants::ANONYMOUS_VOTING_DISALLOWED, 'POST')
             ];
             $poll_obj->setVars($poll_vars);
             $poll_id = $xpPollHandler->insert($poll_obj);
@@ -476,7 +476,7 @@ switch ($op) {
             //        require_once $GLOBALS['xoops']->path("class" . "/template.php");
             //        xoops_template_clear_module_cache($GLOBALS['xoopsModule']->getVar('mid'));
             //        xoops_template_clear_module_cache($xoopspoll->getVar('mid'));
-            //        redirect_header("viewtopic.php?topic_id={$topic_id}", Xoopspoll\Constants::REDIRECT_DELAY_SHORT, _MD_POLL_DBUPDATED);
+            //        redirect_header("viewtopic.php?topic_id={$topic_id}", Constants::REDIRECT_DELAY_SHORT, _MD_POLL_DBUPDATED);
         } else { // Umfrage
             $poll_obj = new Umfrage($poll_id);
             $poll_obj->setVar('question', @$_POST['question']);
@@ -493,7 +493,7 @@ switch ($op) {
             $poll_obj->setVar('multiple', (int)(@$_POST['multiple']));
             if (!empty($_POST['notify']) && $end_time > time()) {
                 // if notify, set mail status to 'not mailed'
-                $poll_obj->setVar('mail_status', POLL_NOTMAILED);
+                $poll_obj->setVar('mail_status', POLL_NOT_MAILED);
             } else {
                 // if not notify, set mail status to already "mailed"
                 $poll_obj->setVar('mail_status', POLL_MAILED);
@@ -697,7 +697,7 @@ switch ($op) {
 
     case 'restart':
         if ('xoopspoll' === $pollmodules) {
-            $default_poll_duration = Xoopspoll\Constants::DEFAULT_POLL_DURATION;
+            $default_poll_duration = Constants::DEFAULT_POLL_DURATION;
         } else { // Umfrage
             $default_poll_duration = (86400 * 10);
         }
@@ -725,13 +725,13 @@ switch ($op) {
 
         if ('xoopspoll' === $pollmodules) {
             $poll_obj              = $xpPollHandler->get($poll_id);
-            $default_poll_duration = Xoopspoll\Constants::DEFAULT_POLL_DURATION;
-            $poll_mailed           = Xoopspoll\Constants::POLL_MAILED;
-            $poll_not_mailed       = Xoopspoll\Constants::POLL_NOT_MAILED;
+            $default_poll_duration = Constants::DEFAULT_POLL_DURATION;
+            $poll_mailed           = Constants::POLL_MAILED;
+            $poll_not_mailed       = Constants::POLL_NOT_MAILED;
         } else { // Umfrage
             $poll_obj              = new Umfrage($poll_id);
             $default_poll_duration = (86400 * 10);
-            $poll_not_mailed       = POLL_NOTMAILED;
+            $poll_not_mailed       = POLL_NOT_MAILED;
             $poll_mailed           = POLL_MAILED;
         }
 

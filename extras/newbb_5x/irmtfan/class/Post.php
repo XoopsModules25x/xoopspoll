@@ -1,4 +1,5 @@
 <?php namespace XoopsModules\Newbb;
+
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -20,8 +21,7 @@
 use XoopsModules\Xoopspoll;
 use XoopsModules\Newbb;
 
-
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 defined('NEWBB_FUNCTIONS_INI') || include XOOPS_ROOT_PATH . '/modules/newbb/include/functions.ini.php';
 newbb_load_object();
@@ -338,8 +338,8 @@ class Post extends \XoopsObject
         $GLOBALS['xoopsModuleConfig'] = newbb_load_config(); // irmtfan  load all newbb configs - newbb config in blocks activated in some modules like profile
 //        mod_loadFunctions('user', 'newbb');
 //        mod_loadFunctions('render', 'newbb');
-        include_once __DIR__ . '/../include/functions.user.php';
-        include_once __DIR__ . '/../include/functions.render.php';
+        require_once __DIR__ . '/../include/functions.user.php';
+        require_once __DIR__ . '/../include/functions.render.php';
 
         $uid          = ($GLOBALS['xoopsUser'] instanceof \XoopsUser) ? $GLOBALS['xoopsUser']->getVar('uid') : 0;
         $karmaHandler = Newbb\Helper::getInstance()->getHandler('Karma');
@@ -441,9 +441,9 @@ class Post extends \XoopsObject
 //        mod_loadFunctions('time', 'newbb');
 //        mod_loadFunctions('render', 'newbb');
 //        mod_loadFunctions('text', 'newbb'); // irmtfan add text functions
-        include_once __DIR__ . '/../include/functions.time.php';
-        include_once __DIR__ . '/../include/functions.render.php';
-        include_once __DIR__ . '/../include/functions.text.php';
+        require_once __DIR__ . '/../include/functions.time.php';
+        require_once __DIR__ . '/../include/functions.render.php';
+        require_once __DIR__ . '/../include/functions.text.php';
 
         $post_id  = $this->getVar('post_id');
         $topic_id = $this->getVar('topic_id');
@@ -457,7 +457,7 @@ class Post extends \XoopsObject
                 $query_array[$var] = "{$var}={$_GET[$var]}";
             }
         }
-        $page_query = htmlspecialchars(implode('&', array_values($query_array)));
+        $page_query = htmlspecialchars(implode('&', array_values($query_array)), ENT_QUOTES | ENT_HTML5);
 
         $uid = ($GLOBALS['xoopsUser'] instanceof \XoopsUser) ? $GLOBALS['xoopsUser']->getVar('uid') : 0;
 

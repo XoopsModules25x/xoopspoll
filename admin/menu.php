@@ -52,24 +52,24 @@ $adminmenu[] = [
     'title' => _MI_XOOPSPOLL_HOME,
     'link'  => 'admin/index.php',
     'desc'  => _MI_XOOPSPOLL_HOMEDSC,
-    'icon'  => "{$pathIcon32}" . '/home.png'
+    'icon'  => ($pathIcon32) . '/home.png'
 ];
 
 $adminmenu[] = [
     'title' => _MI_XOOPSPOLL_ADMENU1,
     'link'  => 'admin/main.php',
     'desc'  => _MI_XOOPSPOLL_ADMENU1DSC,
-    'icon'  => "{$pathIcon32}" . '/poll.png'
+    'icon'  => ($pathIcon32) . '/poll.png'
 ];
 $adminmenu[] = [
     'title' => _MI_XOOPSPOLL_ADMENU2,
     'link'  => 'admin/utility.php',
     'desc'  => _MI_XOOPSPOLL_ADMENU2DSC,
-    'icon'  => "{$pathIcon32}" . '/wizard.png'
+    'icon'  => ($pathIcon32) . '/wizard.png'
 ];
 $adminmenu[] = [
     'title' => _MI_XOOPSPOLL_ADABOUT,
     'link'  => 'admin/about.php',
     'desc'  => _MI_XOOPSPOLL_ADABOUTDSC,
-    'icon'  => "{$pathIcon32}" . '/about.png'
+    'icon'  => ($pathIcon32) . '/about.png'
 ];

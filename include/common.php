@@ -18,6 +18,7 @@
  */
 
 use XoopsModules\Xoopspoll;
+
 include __DIR__ . '/../preloads/autoloader.php';
 
 $moduleDirName = basename(dirname(__DIR__));
@@ -30,7 +31,7 @@ $moduleDirNameUpper   = strtoupper($moduleDirName); //$capsDirName
 $db      = \XoopsDatabaseFactory::getDatabaseConnection();
 $helper  = Xoopspoll\Helper::getInstance();
 $utility = new \Xoopspoll\Utility();
-//$configurator = new \Xoopspoll\common\Configurator();
+//$configurator = new \Xoopspoll\Common\Configurator();
 
 $helper->loadLanguage('common');
 

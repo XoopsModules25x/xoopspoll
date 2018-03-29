@@ -35,8 +35,8 @@
  **/
 
 use XoopsModules\Xoopspoll;
+use XoopsModules\Xoopspoll\Constants;
 use XoopsModules\Newbb;
-
 
 xoops_loadLanguage('main', 'xoopspoll');
 /*
@@ -72,7 +72,7 @@ function xoopspollBlockMultiShow($options)
 
     $pollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
     $criteria    = new \CriteriaCompo();
-    $criteria->add(new \Criteria('display', Xoopspoll\Constants::DISPLAY_POLL_IN_BLOCK, '='));
+    $criteria->add(new \Criteria('display', Constants::DISPLAY_POLL_IN_BLOCK, '='));
     $criteria->add(new \Criteria('start_time', time(), '<='));
     if (0 === $options[1]) {
         $criteria->add(new \Criteria('end_time', time(), '>='));
@@ -128,7 +128,7 @@ function xoopspollBlockMultiShow($options)
             $criteria->add(new \Criteria('poll_id', $pollVars['poll_id'], '='));
             $criteria->setSort('option_id');
             $pollOptionObjs = $optHandler->getAll($criteria);
-            if (\Xoopspoll\Constants::MULTIPLE_SELECT_POLL === $pollVars['multiple']) {
+            if (Constants::MULTIPLE_SELECT_POLL === $pollVars['multiple']) {
                 $pollOptionType = 'checkbox';
                 $pollOptionName = 'option_id[]';
             } else {
@@ -240,7 +240,7 @@ function xoopspollBlockMultiEdit($options)
             . "  </tr>\n";
 
     // find out if want to show options as a lists or as a select boxes
-    if (\Xoopspoll\Constants::POLL_OPTIONS_SELECT === $options[0]) {
+    if (Constants::POLL_OPTIONS_SELECT === $options[0]) {
         $chk0select = ' checked';
         $chk0list   = '';
     } else {
@@ -256,13 +256,13 @@ function xoopspollBlockMultiEdit($options)
              . _MB_XOOPSPOLL_LIST
              . "</label>\n"
              . "      <input type='radio' name='options[0]' value='"
-             . Xoopspoll\Constants::POLL_OPTIONS_LIST
+             . Constants::POLL_OPTIONS_LIST
              . "'{$chk0list} id='list'>\n"
              . "      <label class='middle' style='margin-left: 2em;' for='select'>&nbsp;&nbsp;&nbsp;"
              . _MB_XOOPSPOLL_SELECT
              . "</label>\n"
              . "      <input type='radio' name='options[0]' value='"
-             . Xoopspoll\Constants::POLL_OPTIONS_SELECT
+             . Constants::POLL_OPTIONS_SELECT
              . "'{$chk0select} id='select'>\n"
              . "    </td>\n"
              . "  </tr>\n"

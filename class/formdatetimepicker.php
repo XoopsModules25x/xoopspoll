@@ -1,4 +1,5 @@
 <?php namespace XoopsModules\Xoopspoll;
+
 /**
  * Xoopspoll form timepicker
  *
@@ -19,7 +20,7 @@
  * @credits::     {@link http://www.trentrichardson.com Trent Richardson}
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 /**
  * Creates a text field with jquery ui calendar & time select popup

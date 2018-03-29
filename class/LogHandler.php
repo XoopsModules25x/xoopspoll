@@ -34,7 +34,7 @@
  * @author    ::  {@link http://www.myweb.ne.jp/ Kazumi Ono (AKA onokazu)}
  **/
 
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 use XoopsModules\Xoopspoll;
 

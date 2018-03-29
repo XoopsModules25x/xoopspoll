@@ -36,8 +36,8 @@
 
 use Xmf\Request;
 use XoopsModules\Xoopspoll;
+use XoopsModules\Xoopspoll\Constants;
 use XoopsModules\Newbb;
-
 
 /**
  * @uses xoops_load() method used to load classes
@@ -69,7 +69,7 @@ if ($GLOBALS['xoopsModuleConfig']['hide_forum_polls']) {
 }
 
 if (empty($pollId)) {
-    redirect_header('index.php', Xoopspoll\Constants::REDIRECT_DELAY_NONE);
+    redirect_header('index.php', Constants::REDIRECT_DELAY_NONE);
 }
 $GLOBALS['xoopsOption']['template_main'] = 'xoopspoll_results.tpl';
 include $GLOBALS['xoops']->path('header.php');
@@ -79,7 +79,7 @@ $pollObj     = $pollHandler->get($pollId);
 if ((!empty($pollObj)) && ($pollObj instanceof Xoopspoll\Poll)) {
     /* make sure the poll has started */
     if ($pollObj->getVar('start_time') > time()) {
-        redirect_header('index.php', Xoopspoll\Constants::REDIRECT_DELAY_NONE);
+        redirect_header('index.php', Constants::REDIRECT_DELAY_NONE);
     }
 
     /* assign variables to template */
@@ -98,7 +98,7 @@ if ((!empty($pollObj)) && ($pollObj instanceof Xoopspoll\Poll)) {
                                      'back_text'      => _BACK
                                  ]);
 } else {
-    redirect_header('index.php', Xoopspoll\Constants::REDIRECT_DELAY_MEDIUM, _MD_XOOPSPOLL_ERROR_INVALID_POLLID);
+    redirect_header('index.php', Constants::REDIRECT_DELAY_MEDIUM, _MD_XOOPSPOLL_ERROR_INVALID_POLLID);
 }
 include $GLOBALS['xoops']->path('include/comment_view.php');
 include $GLOBALS['xoops']->path('footer.php');

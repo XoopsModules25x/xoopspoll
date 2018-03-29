@@ -1,4 +1,5 @@
 <?php namespace XoopsModules\Xoopspoll;
+
 /*
  You may not change or alter any portion of this comment or credits
  of supporting developers from this source code or any supporting source code
@@ -20,8 +21,9 @@
  */
 
 use XoopsModules\Xoopspoll;
+use XoopsModules\Xoopspoll\Constants;
 
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 class Poll extends \XoopsObject
 {
@@ -41,17 +43,17 @@ class Poll extends \XoopsObject
         $this->initVar('description', XOBJ_DTYPE_TXTAREA, null, false);
         $this->initVar('user_id', XOBJ_DTYPE_INT, null, false);
         $this->initVar('start_time', XOBJ_DTYPE_INT, $current_timestamp, false);
-        $this->initVar('end_time', XOBJ_DTYPE_INT, $current_timestamp + Xoopspoll\Constants::DEFAULT_POLL_DURATION, true);
+        $this->initVar('end_time', XOBJ_DTYPE_INT, $current_timestamp + Constants::DEFAULT_POLL_DURATION, true);
         $this->initVar('votes', XOBJ_DTYPE_INT, 0, false);
         $this->initVar('voters', XOBJ_DTYPE_INT, 0, false);
-        $this->initVar('display', XOBJ_DTYPE_INT, Xoopspoll\Constants::DISPLAY_POLL_IN_BLOCK, false);
-        $this->initVar('visibility', XOBJ_DTYPE_INT, Xoopspoll\Constants::HIDE_NEVER, false);
-        $this->initVar('anonymous', XOBJ_DTYPE_INT, Xoopspoll\Constants::ANONYMOUS_VOTING_DISALLOWED, false);
-        $this->initVar('weight', XOBJ_DTYPE_INT, Xoopspoll\Constants::DEFAULT_WEIGHT, false);
-        $this->initVar('multiple', XOBJ_DTYPE_INT, Xoopspoll\Constants::NOT_MULTIPLE_SELECT_POLL, false);
-        $this->initVar('multilimit', XOBJ_DTYPE_INT, Xoopspoll\Constants::MULTIPLE_SELECT_LIMITLESS, false);
-        $this->initVar('mail_status', XOBJ_DTYPE_INT, Xoopspoll\Constants::POLL_NOT_MAILED, false);
-        $this->initVar('mail_voter', XOBJ_DTYPE_INT, Xoopspoll\Constants::NOT_MAIL_POLL_TO_VOTER, false);
+        $this->initVar('display', XOBJ_DTYPE_INT, Constants::DISPLAY_POLL_IN_BLOCK, false);
+        $this->initVar('visibility', XOBJ_DTYPE_INT, Constants::HIDE_NEVER, false);
+        $this->initVar('anonymous', XOBJ_DTYPE_INT, Constants::ANONYMOUS_VOTING_DISALLOWED, false);
+        $this->initVar('weight', XOBJ_DTYPE_INT, Constants::DEFAULT_WEIGHT, false);
+        $this->initVar('multiple', XOBJ_DTYPE_INT, Constants::NOT_MULTIPLE_SELECT_POLL, false);
+        $this->initVar('multilimit', XOBJ_DTYPE_INT, Constants::MULTIPLE_SELECT_LIMITLESS, false);
+        $this->initVar('mail_status', XOBJ_DTYPE_INT, Constants::POLL_NOT_MAILED, false);
+        $this->initVar('mail_voter', XOBJ_DTYPE_INT, Constants::NOT_MAIL_POLL_TO_VOTER, false);
 
         /**
          * {@internal This code added to support previous versions of newbb/xForum}
@@ -125,7 +127,7 @@ class Poll extends \XoopsObject
         if ((($GLOBALS['xoopsUser'] instanceof \XoopsUser)
              && (($GLOBALS['xoopsUser']->uid() > 0)
                  && $GLOBALS['xoopsUser']->isActive()))
-            || (\Xoopspoll\Constants::ANONYMOUS_VOTING_ALLOWED === $this->getVar('anonymous'))) {
+            || (Constants::ANONYMOUS_VOTING_ALLOWED === $this->getVar('anonymous'))) {
             $ret = true;
         }
 
@@ -156,7 +158,7 @@ class Poll extends \XoopsObject
             /* check to make sure voter hasn't selected too many options */
             if (!$this->getVar('multiple')
                 || ($this->getVar('multiple')
-                    && ((\Xoopspoll\Constants::MULTIPLE_SELECT_LIMITLESS === $this->getVar('multilimit'))
+                    && ((Constants::MULTIPLE_SELECT_LIMITLESS === $this->getVar('multilimit'))
                         || (count($optsIdArray) <= $this->getVar('multilimit'))))) {
                 $criteria = new \CriteriaCompo();
                 $criteria->add(new \Criteria('option_id', '(' . implode(',', $optsIdArray) . ')', 'IN'));
@@ -179,7 +181,7 @@ class Poll extends \XoopsObject
                     }
                 }
                 // now send voter an email if the poll is set to allow it (if the user is not anon)
-                if (\Xoopspoll\Constants::MAIL_POLL_TO_VOTER === $this->getVar('mail_voter') && (!empty($uid))) {
+                if (Constants::MAIL_POLL_TO_VOTER === $this->getVar('mail_voter') && (!empty($uid))) {
                     $this->notifyVoter($GLOBALS['xoopsUser']);
                 }
 
@@ -340,7 +342,7 @@ class Poll extends \XoopsObject
         xoops_loadLanguage('main', 'xoopspoll');
         $visSelect->addOptionArray(\Xoopspoll\Utility::getVisibilityArray());
         $pollForm->addElement($visSelect);
-        $notifyValue = (\Xoopspoll\Constants::POLL_MAILED !== $this->getVar('mail_status')) ? Xoopspoll\Constants::NOTIFICATION_ENABLED : Xoopspoll\Constants::NOTIFICATION_DISABLED;
+        $notifyValue = (Constants::POLL_MAILED !== $this->getVar('mail_status')) ? Constants::NOTIFICATION_ENABLED : Constants::NOTIFICATION_DISABLED;
         $pollForm->addElement(new \XoopsFormRadioYN(_AM_XOOPSPOLL_NOTIFY, 'notify', $notifyValue));
 
         // Add "notify voter" in the form
@@ -370,12 +372,12 @@ class Poll extends \XoopsObject
     {
         xoops_loadLanguage('main', 'xoopspoll');
         switch ($this->getVar('visibility')) {
-            case Xoopspoll\Constants::HIDE_ALWAYS:  // always hide the results
+            case Constants::HIDE_ALWAYS:  // always hide the results
             default:
                 $isVisible  = false;
                 $visibleMsg = _MD_XOOPSPOLL_HIDE_ALWAYS_MSG;
                 break;
-            case Xoopspoll\Constants::HIDE_END:  // hide the results until the poll ends
+            case Constants::HIDE_END:  // hide the results until the poll ends
                 if (!$this->hasExpired()) {
                     $visibleMsg = _MD_XOOPSPOLL_HIDE_END_MSG;
                     $isVisible  = false;
@@ -383,7 +385,7 @@ class Poll extends \XoopsObject
                     $isVisible = true;
                 }
                 break;
-            case Xoopspoll\Constants::HIDE_VOTED: // hide the results until user votes
+            case Constants::HIDE_VOTED: // hide the results until user votes
                 $logHandler = Xoopspoll\Helper::getInstance()->getHandler('Log');
                 $uid        = (($GLOBALS['xoopsUser'] instanceof \XoopsUser)
                                && ($GLOBALS['xoopsUser']->getVar('uid') > 0)) ? $GLOBALS['xoopsUser']->getVar('uid') : 0;
@@ -395,7 +397,7 @@ class Poll extends \XoopsObject
                     $isVisible  = false;
                 }
                 break;
-            case Xoopspoll\Constants::HIDE_NEVER:  // never hide the results - always show
+            case Constants::HIDE_NEVER:  // never hide the results - always show
                 $isVisible = true;
                 break;
         }
@@ -411,7 +413,7 @@ class Poll extends \XoopsObject
      */
     public function notifyVoter($user = null)
     {
-        if (($user instanceof \XoopsUser) && (\Xoopspoll\Constants::MAIL_POLL_TO_VOTER === $this->getVar('mail_voter'))) {
+        if (($user instanceof \XoopsUser) && (Constants::MAIL_POLL_TO_VOTER === $this->getVar('mail_voter'))) {
             xoops_loadLanguage('main', 'xoopspoll');
             $xoopsMailer = xoops_getMailer();
             $xoopsMailer->useMail();
@@ -443,17 +445,17 @@ class Poll extends \XoopsObject
 
             $visibleText = '';
             switch ($this->getVar('visibility')) {
-                case Xoopspoll\Constants::HIDE_ALWAYS:  // always hide the results - election mode
+                case Constants::HIDE_ALWAYS:  // always hide the results - election mode
                 default:
                     break;
-                case Xoopspoll\Constants::HIDE_END:  // hide the results until the poll ends
+                case Constants::HIDE_END:  // hide the results until the poll ends
                     $visibleText = _MD_XOOPSPOLL_SEE_AFTER;
                     if ($this->hasExpired()) {
                         $visibleText = _MD_XOOPSPOLL_SEE_AT;
                     }
                     break;
-                case Xoopspoll\Constants::HIDE_VOTED: // hide the results until user votes
-                case Xoopspoll\Constants::HIDE_NEVER:  // never hide the results - always show
+                case Constants::HIDE_VOTED: // hide the results until user votes
+                case Constants::HIDE_NEVER:  // never hide the results - always show
                     $visibleText = _MD_XOOPSPOLL_SEE_AT;
                     break;
             }

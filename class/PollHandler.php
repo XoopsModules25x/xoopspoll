@@ -1,4 +1,5 @@
 <?php namespace XoopsModules\Xoopspoll;
+
 /*
  You may not change or alter any portion of this comment or credits
  of supporting developers from this source code or any supporting source code
@@ -20,8 +21,9 @@
  */
 
 use XoopsModules\Xoopspoll;
+use XoopsModules\Xoopspoll\Constants;
 
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 
 /**
@@ -74,7 +76,7 @@ class PollHandler extends \XoopsPersistableObjectHandler
 
         $criteria = new \CriteriaCompo();
         $criteria->add(new \Criteria('end_time', time(), '<'));  // expired polls
-        $criteria->add(new \Criteria('mail_status', Xoopspoll\Constants::POLL_NOT_MAILED, '=')); // email not previously sent
+        $criteria->add(new \Criteria('mail_status', Constants::POLL_NOT_MAILED, '=')); // email not previously sent
         if (!empty($pollObj) && ($pollObj instanceof Poll)) {
             $criteria->add(new \Criteria('poll_id', $pollObj->getVar('poll_id'), '='));
             $criteria->setLimit(1);
@@ -116,7 +118,7 @@ class PollHandler extends \XoopsPersistableObjectHandler
                 $xoopsMailer->assign('POLL_ID', $pollValues['poll_id']);
                 $xoopsMailer->setSubject(sprintf(_MD_XOOPSPOLL_YOURPOLLAT, $author->uname(), $GLOBALS['xoopsConfig']['sitename']));
                 if (false !== $xoopsMailer->send(false)) {
-                    $pollObj->setVar('mail_status', Xoopspoll\Constants::POLL_MAILED);
+                    $pollObj->setVar('mail_status', Constants::POLL_MAILED);
                     $ret[] = $this->insert($pollObj);
                 } else {
                     $ret[] = $xoopsMailer->getErrors(false); // return error array from mailer

@@ -40,14 +40,13 @@
 use XoopsModules\Xoopspoll;
 use XoopsModules\Newbb;
 
-
 // irmtfan enhance include
 require_once __DIR__ . '/header.php';
 $xoopsLogger->startTime('newbb_viewtopic');
 //mod_loadFunctions('read', 'newbb');
 //mod_loadFunctions('render', 'newbb');
-include_once __DIR__ . '/../include/functions.read.php';
-include_once __DIR__ . '/../include/functions.render.php';
+require_once __DIR__ . '/../include/functions.read.php';
+require_once __DIR__ . '/../include/functions.render.php';
 xoops_loadLanguage('user'); // irmtfan add last_login
 
 /*Build the page query*/
@@ -58,7 +57,7 @@ foreach ($query_vars as $var) {
         $query_array[$var] = "{$var}={$_GET[$var]}";
     }
 }
-$page_query = htmlspecialchars(implode('&', array_values($query_array)));
+$page_query = htmlspecialchars(implode('&', array_values($query_array)), ENT_QUOTES | ENT_HTML5);
 unset($query_array);
 
 $forum_id = !empty($_GET['forum']) ? (int)$_GET['forum'] : 0;
@@ -241,7 +240,7 @@ if ($topicHandler->getPermission($forum_obj, $topic_obj->getVar('topic_status'),
         $xoopsTpl->assign('topic_lock', _MD_TOPICLOCKED);
     }
     if (!empty($GLOBALS['xoopsModuleConfig']['show_reg']) && !is_object($xoopsUser)) {
-        $xoopsTpl->assign('forum_register', '<a href="' . XOOPS_URL . '/user.php?xoops_redirect=' . htmlspecialchars($xoopsRequestUri) . '">' . _MD_REGTOPOST . '</a>');
+        $xoopsTpl->assign('forum_register', '<a href="' . XOOPS_URL . '/user.php?xoops_redirect=' . htmlspecialchars($xoopsRequestUri, ENT_QUOTES | ENT_HTML5) . '">' . _MD_REGTOPOST . '</a>');
     }
 }
 // irmtfan for backward compatibility assign forum_post_or_register smarty again.
@@ -665,7 +664,7 @@ if (!empty($GLOBALS['xoopsModuleConfig']['rating_enabled'])) {
 // create jump box
 if (!empty($GLOBALS['xoopsModuleConfig']['show_jump'])) {
 //    mod_loadFunctions('forum', 'newbb');
-    include_once __DIR__ . '/../include/functions.forum.php';
+    require_once __DIR__ . '/../include/functions.forum.php';
     $xoopsTpl->assign('forum_jumpbox', newbb_make_jumpbox($forum_id));
 }
 

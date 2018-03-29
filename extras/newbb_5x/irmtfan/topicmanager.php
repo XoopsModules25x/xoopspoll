@@ -17,9 +17,10 @@
  * @author       XOOPS Development Team,  phppp (D.J., infomax@gmail.com)
  */
 
-use XoopsModules\Xoopspoll;
 use XoopsModules\Newbb;
-
+use XoopsModules\Xoopspoll;
+/** @var Xoopspoll\Helper $helper */
+$helper = Xoopspoll\Helper::getInstance();
 
 require_once __DIR__ . '/header.php';
 
@@ -63,7 +64,7 @@ if (!$forum) {
     unset($topic_obj);
 }
 
-if ($xoopsModuleConfig['wol_enabled']) {
+if ($helper->getConfig('wol_enabled')) {
     $onlineHandler = Newbb\Helper::getInstance()->getHandler('Online');
     $onlineHandler->init($forum);
 }

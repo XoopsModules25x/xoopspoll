@@ -46,6 +46,7 @@
 
 use Xmf\Request;
 use XoopsModules\Xoopspoll;
+use XoopsModules\Xoopspoll\Constants;
 use XoopsModules\Newbb;
 
 require_once __DIR__ . '/../../mainfile.php';
@@ -79,7 +80,7 @@ if (empty($pollId)) {
                                  ]);
 
     /* get polls to display on this page */
-    $limit    = Request::getInt('limit', Xoopspoll\Constants::DEFAULT_POLL_PAGE_LIMIT);
+    $limit    = Request::getInt('limit', Constants::DEFAULT_POLL_PAGE_LIMIT);
     $start    = Request::getInt('start', 0);
     $criteria = new \CriteriaCompo();
     $criteria->add(new \Criteria('start_time', time(), '<='));  // only display polls that have started
@@ -190,7 +191,7 @@ if (empty($pollId)) {
                         $msg = _MD_XOOPSPOLL_THANKSFORVOTE;
                     } else {
                         /* there was a problem registering the vote */
-                        redirect_header($GLOBALS['xoops']->buildUrl('index.php', ['poll_id' => $pollId]), Xoopspoll\Constants::REDIRECT_DELAY_MEDIUM, _MD_XOOPSPOLL_VOTE_ERROR);
+                        redirect_header($GLOBALS['xoops']->buildUrl('index.php', ['poll_id' => $pollId]), Constants::REDIRECT_DELAY_MEDIUM, _MD_XOOPSPOLL_VOTE_ERROR);
                     }
                 } else {
                     $msg = _MD_XOOPSPOLL_ALREADYVOTED;
@@ -211,14 +212,14 @@ if (empty($pollId)) {
         $msg = _MD_XOOPSPOLL_ERROR_INVALID_POLLID;
     }
     if ('' !== $url) {
-        redirect_header($url, Xoopspoll\Constants::REDIRECT_DELAY_MEDIUM, $msg);
+        redirect_header($url, Constants::REDIRECT_DELAY_MEDIUM, $msg);
     } else {
-        redirect_header($GLOBALS['xoops']->buildUrl('pollresults.php', ['poll_id' => $pollId]), Xoopspoll\Constants::REDIRECT_DELAY_MEDIUM, $msg);
+        redirect_header($GLOBALS['xoops']->buildUrl('pollresults.php', ['poll_id' => $pollId]), Constants::REDIRECT_DELAY_MEDIUM, $msg);
     }
 } else {
     $pollObj = $pollHandler->get($pollId);
     if ($pollObj->hasExpired()) {
-        redirect_header($GLOBALS['xoops']->buildUrl('pollresults.php', ['poll_id' => $pollId]), Xoopspoll\Constants::REDIRECT_DELAY_SHORT, _MD_XOOPSPOLL_SORRYEXPIRED);
+        redirect_header($GLOBALS['xoops']->buildUrl('pollresults.php', ['poll_id' => $pollId]), Constants::REDIRECT_DELAY_SHORT, _MD_XOOPSPOLL_SORRYEXPIRED);
     }
     $GLOBALS['xoopsOption']['template_main'] = 'xoopspoll_view.tpl';
     include $GLOBALS['xoops']->path('header.php');

@@ -36,6 +36,7 @@
 
 use Xmf\Request;
 use XoopsModules\Xoopspoll;
+use XoopsModules\Xoopspoll\Constants;
 
 require_once __DIR__ . '/admin_header.php';
 
@@ -63,10 +64,10 @@ switch ($op) {
 
     /* Import data from umfrage */
     case 'umfrage':
-        $ok = Request::getString('ok', Xoopspoll\Constants::CONFIRM_NOT_OK, 'POST');
+        $ok = Request::getString('ok', Constants::CONFIRM_NOT_OK, 'POST');
         if ($ok) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
-                redirect_header($_SERVER['PHP_SELF'], Xoopspoll\Constants::REDIRECT_DELAY_MEDIUM, implode('<br>', $GLOBALS['xoopsSecurity']->getErrors()));
+                redirect_header($_SERVER['PHP_SELF'], Constants::REDIRECT_DELAY_MEDIUM, implode('<br>', $GLOBALS['xoopsSecurity']->getErrors()));
             }
             // first check to see if umfrage module is installed and active
             /** @var XoopsModuleHandler $moduleHandler */
@@ -97,9 +98,9 @@ switch ($op) {
 
                     // maps umfrage_desc : polltype to xoopspoll_desc : visibility
                     $typeToVisMap = [
-                        1 => Xoopspoll\Constants::HIDE_NEVER,
-                        2 => Xoopspoll\Constants::HIDE_ALWAYS,
-                        3 => Xoopspoll\Constants::HIDE_VOTED
+                        1 => Constants::HIDE_NEVER,
+                        2 => Constants::HIDE_ALWAYS,
+                        3 => Constants::HIDE_VOTED
                     ];
 
                     $err                = [];
@@ -118,7 +119,7 @@ switch ($op) {
                             if (array_key_exists((int)$umPollObj->getVar('polltype'), $typeToVisMap)) {
                                 $visibility = $typeToVisMap[$umPollObj->getVar('polltype')];
                             } else {
-                                $visibility = Xoopspoll\Constants::HIDE_END;
+                                $visibility = Constants::HIDE_END;
                             }
                             // save the poll into Xoopspoll database
                             $xpValues = [
@@ -193,11 +194,11 @@ switch ($op) {
                         }
                         unset($criteria, $umOptObjs);
                     }
-                    redirect_header('index.php', Xoopspoll\Constants::REDIRECT_DELAY_MEDIUM, sprintf(_AM_XOOPSPOLL_IMPORT_SUCCESS, (int)count($allUmfragePollObjs)));
+                    redirect_header('index.php', Constants::REDIRECT_DELAY_MEDIUM, sprintf(_AM_XOOPSPOLL_IMPORT_SUCCESS, (int)count($allUmfragePollObjs)));
                 } else {
                     throw new Exception(_AM_XOOPSPOLL_UMFRAGE_FAILED);
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 xoops_cp_header();
                 $adminObject = \Xmf\Module\Admin::getInstance();
                 echo $adminObject->displayNavigation(basename(__FILE__));

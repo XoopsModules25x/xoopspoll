@@ -16,9 +16,10 @@
  * @author          Taiwen Jiang <phppp@users.sourceforge.net>
  */
 
-use XoopsModules\Xoopspoll;
 use XoopsModules\Newbb;
-
+use XoopsModules\Xoopspoll;
+/** @var Xoopspoll\Helper $helper */
+$helper = Xoopspoll\Helper::getInstance();
 
 include __DIR__ . '/header.php';
 
@@ -52,7 +53,7 @@ if (!$forumHandler->getPermission($forum, 'moderate')
     redirect_header("viewtopic.php?forum={$forum}&amp;topic_id={$topic_id}", 2, _NOPERM);
 }
 
-if ($xoopsModuleConfig['wol_enabled']) {
+if ($helper->getConfig('wol_enabled')) {
     $onlineHandler = Newbb\Helper::getInstance()->getHandler('Online');
     $onlineHandler->init($forum);
 }

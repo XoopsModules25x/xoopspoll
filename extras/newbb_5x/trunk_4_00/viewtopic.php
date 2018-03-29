@@ -17,9 +17,10 @@
  */
 
 
-use XoopsModules\Xoopspoll;
 use XoopsModules\Newbb;
-
+use XoopsModules\Xoopspoll;
+/** @var Xoopspoll\Helper $helper */
+$helper = Xoopspoll\Helper::getInstance();
 
 include __DIR__ . '/header.php';
 require_once XOOPS_ROOT_PATH . '/modules/newbb/include/functions.read.php';
@@ -36,7 +37,7 @@ foreach ($query_vars as $var) {
     }
     $query_array[$var] = "{$var}={$_GET[$var]}";
 }
-$page_query = htmlspecialchars(implode('&', array_values($query_array)));
+$page_query = htmlspecialchars(implode('&', array_values($query_array)), ENT_QUOTES | ENT_HTML5);
 unset($query_array);
 
 $topic_id = isset($_GET['topic_id']) ? (int)$_GET['topic_id'] : 0;
@@ -96,12 +97,12 @@ if (!$topicHandler->getPermission($forum_obj, $topic_obj->getVar('topic_status')
 $karmaHandler = Newbb\Helper::getInstance()->getHandler('Karma');
 $user_karma   = $karmaHandler->getUserKarma();
 
-$valid_modes     = $xoopsModuleConfig['valid_viewmodes'];
+$valid_modes     = $helper->getConfig('valid_viewmodes');
 $viewmode_cookie = newbb_getcookie('V');
 if (isset($_GET['viewmode']) && in_array($_GET['viewmode'], $valid_modes)) {
     newbb_setcookie('V', $_GET['viewmode'], $forumCookie['expire']);
 }
-$viewmode = isset($_GET['viewmode']) ? $_GET['viewmode'] : (!empty($viewmode_cookie) ? $viewmode_cookie : @$valid_modes[$xoopsModuleConfig['view_mode'] - 1]);
+$viewmode = isset($_GET['viewmode']) ? $_GET['viewmode'] : (!empty($viewmode_cookie) ? $viewmode_cookie : @$valid_modes[$helper->getConfig('view_mode') - 1]);
 $viewmode = @in_array($viewmode, $valid_modes) ? $viewmode : $valid_modes[0];
 $order    = (isset($_GET['order'])
              && in_array(strtoupper($_GET['order']), ['DESC', 'ASC'])) ? $_GET['order'] : 'ASC';
@@ -112,13 +113,13 @@ $xoopsLogger->startTime('XOOPS output module - topic - post');
 
 if ('thread' === $viewmode) {
     $GLOBALS['xoopsOption']['template_main'] = 'newbb_viewtopic_thread.tpl';
-    if (!empty($xoopsModuleConfig['posts_for_thread']) && $total_posts > $xoopsModuleConfig['posts_for_thread']) {
+    if (!empty($helper->getConfig('posts_for_thread')) && $total_posts > $helper->getConfig('posts_for_thread')) {
         redirect_header("viewtopic.php?topic_id={$topic_id}&amp;viewmode=flat", 2, _MD_EXCEEDTHREADVIEW);
     }
     $postsArray =& $topicHandler->getAllPosts($topic_obj, $order, $total_posts, $start, 0, $status);
 } else {
     $GLOBALS['xoopsOption']['template_main'] = 'newbb_viewtopic_flat.tpl';
-    $postsArray                              =& $topicHandler->getAllPosts($topic_obj, $order, $xoopsModuleConfig['posts_per_page'], $start, $post_id, $status);
+    $postsArray                              =& $topicHandler->getAllPosts($topic_obj, $order, $helper->getConfig('posts_per_page'), $start, $post_id, $status);
 }
 
 $xoopsLogger->stopTime('XOOPS output module - topic - post');
@@ -126,7 +127,7 @@ $xoopsLogger->stopTime('XOOPS output module - topic - post');
 $topic_obj->incrementCounter();
 newbb_setRead('topic', $topic_id, $topic_obj->getVar('topic_last_post_id'));
 
-if (!empty($xoopsModuleConfig['rss_enable'])) {
+if (!empty($helper->getConfig('rss_enable'))) {
     $xoops_module_header .= '<link rel="alternate" type="application/rss+xml" title="' . $xoopsModule->getVar('name') . '-' . $forum_obj->getVar('forum_name') . '" href="' . XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname') . '/rss.php?f=' . $forum_obj->getVar('forum_id') . '">';
 }
 $xoops_pagetitle = $topic_obj->getVar('topic_title') . ' [' . $xoopsModule->getVar('name') . ' - ' . $forum_obj->getVar('forum_name') . ']';
@@ -140,7 +141,7 @@ $xoopsLogger->startTime('XOOPS output module - topic');
 $xoopsTpl->assign('xoops_pagetitle', $xoops_pagetitle);
 $xoopsTpl->assign('xoops_module_header', $xoops_module_header);
 
-if ($xoopsModuleConfig['wol_enabled']) {
+if ($helper->getConfig('wol_enabled')) {
     $onlineHandler = Newbb\Helper::getInstance()->getHandler('Online');
     $onlineHandler->init($forum_obj, $topic_obj);
     $xoopsTpl->assign('online', $onlineHandler->show_online());
@@ -174,7 +175,7 @@ if ($topicHandler->getPermission($forum_obj, $topic_obj->getVar('topic_status'),
     if ($topic_obj->getVar('topic_status')) {
         $xoopsTpl->assign('forum_post_or_register', _MD_TOPICLOCKED);
     } elseif (!is_object($xoopsUser)) {
-        $xoopsTpl->assign('forum_post_or_register', '<a href="' . XOOPS_URL . '/user.php?xoops_redirect=' . htmlspecialchars($xoopsRequestUri) . '">' . _MD_REGTOPOST . '</a>');
+        $xoopsTpl->assign('forum_post_or_register', '<a href="' . XOOPS_URL . '/user.php?xoops_redirect=' . htmlspecialchars($xoopsRequestUri, ENT_QUOTES | ENT_HTML5) . '">' . _MD_REGTOPOST . '</a>');
     }
 } else {
     $xoopsTpl->assign('forum_post_or_register', '');
@@ -210,7 +211,7 @@ $xoopsLogger->startTime('XOOPS output module - topic - user - user');
 $viewtopic_users = [];
 if (count($userid_array) > 0) {
     require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->getVar('dirname', 'n') . '/class/user.php';
-    $userHandler         = new NewbbUserHandler($xoopsModuleConfig['groupbar_enabled'], $xoopsModuleConfig['wol_enabled']);
+    $userHandler         = new NewbbUserHandler($helper->getConfig('groupbar_enabled'), $helper->getConfig('wol_enabled'));
     $userHandler->users  = $users;
     $userHandler->online = $online;
     $viewtopic_users     = $userHandler->getUsers();
@@ -220,8 +221,8 @@ $xoopsLogger->stopTime('XOOPS output module - topic - user - user');
 
 $xoopsLogger->stopTime('XOOPS output module - topic - user');
 
-if ($xoopsModuleConfig['allow_require_reply'] && $require_reply) {
-    if (!empty($xoopsModuleConfig['cache_enabled'])) {
+if ($helper->getConfig('allow_require_reply') && $require_reply) {
+    if (!empty($helper->getConfig('cache_enabled'))) {
         $viewtopic_posters = newbb_getsession('t' . $topic_id, true);
         if (!is_array($viewtopic_posters) || 0 === count($viewtopic_posters)) {
             $viewtopic_posters =& $topicHandler->getAllPosters($topic_obj);
@@ -276,9 +277,9 @@ if ('thread' === $viewmode) {
         $xoopsTpl->append('topic_posts', $eachpost->showPost($isadmin));
     }
 
-    if ($total_posts > $xoopsModuleConfig['posts_per_page']) {
+    if ($total_posts > $helper->getConfig('posts_per_page')) {
         include XOOPS_ROOT_PATH . '/class/pagenav.php';
-        $nav = new \XoopsPageNav($total_posts, $xoopsModuleConfig['posts_per_page'], $start, 'start', 'topic_id=' . $topic_id . '&amp;viewmode=' . $viewmode . '&amp;order=' . $order . '&amp;status=' . $status . '&amp;mode=' . $mode);
+        $nav = new \XoopsPageNav($total_posts, $helper->getConfig('posts_per_page'), $start, 'start', 'topic_id=' . $topic_id . '&amp;viewmode=' . $viewmode . '&amp;order=' . $order . '&amp;status=' . $status . '&amp;mode=' . $mode);
         $xoopsTpl->assign('forum_page_nav', $nav->renderNav(4));
     } else {
         $xoopsTpl->assign('forum_page_nav', '');
@@ -360,7 +361,7 @@ $xoopsTpl->assign_by_ref('admin_actions', $admin_actions);
 
 $xoopsTpl->assign('viewer_level', $isadmin ? 2 : is_object($xoopsUser));
 
-if ($xoopsModuleConfig['show_permissiontable']) {
+if ($helper->getConfig('show_permissiontable')) {
     $permHandler      = Newbb\Helper::getInstance()->getHandler('Permission');
     $permission_table = $permHandler->permission_table($forum_obj, $topic_obj->getVar('topic_status'), $isadmin);
     $xoopsTpl->assign_by_ref('permission_table', $permission_table);
@@ -469,16 +470,16 @@ if (($xoopspoll instanceof XoopsModule) && $xoopspoll->isactive()) {
     }
 }
 $xoopsTpl->assign('up', newbb_displayImage('up', _MD_TOP));
-$xoopsTpl->assign('rating_enable', $xoopsModuleConfig['rating_enabled']);
-$xoopsTpl->assign('groupbar_enable', $xoopsModuleConfig['groupbar_enabled']);
-$xoopsTpl->assign('anonymous_prefix', $xoopsModuleConfig['anonymous_prefix']);
+$xoopsTpl->assign('rating_enable', $helper->getConfig('rating_enabled'));
+$xoopsTpl->assign('groupbar_enable', $helper->getConfig('groupbar_enabled'));
+$xoopsTpl->assign('anonymous_prefix', $helper->getConfig('anonymous_prefix'));
 
 $xoopsTpl->assign('previous', newbb_displayImage('previous'));
 $xoopsTpl->assign('next', newbb_displayImage('next'));
 $xoopsTpl->assign('down', newbb_displayImage('down'));
 $xoopsTpl->assign('post_content', newbb_displayImage('post'));
 
-if (!empty($xoopsModuleConfig['rating_enabled'])) {
+if (!empty($helper->getConfig('rating_enabled'))) {
     $xoopsTpl->assign('votes', $topic_obj->getVar('votes'));
     $rating = number_format($topic_obj->getVar('rating') / 2, 0);
     if ($rating < 1) {
@@ -495,7 +496,7 @@ if (!empty($xoopsModuleConfig['rating_enabled'])) {
 }
 
 // create jump box
-if (!empty($xoopsModuleConfig['show_jump'])) {
+if (!empty($helper->getConfig('show_jump'))) {
     require_once XOOPS_ROOT_PATH . '/modules/newbb/include/functions.forum.php';
     $xoopsTpl->assign('forum_jumpbox', newbb_make_jumpbox($forum_id));
 }
@@ -590,7 +591,7 @@ $xoopsTpl->assign('menumode_other', $menumode_other);
 
 $xoopsLogger->startTime('XOOPS output module - topic - quickreply');
 
-if (!empty($xoopsModuleConfig['quickreply_enabled'])
+if (!empty($helper->getConfig('quickreply_enabled'))
     && $topicHandler->getPermission($forum_obj, $topic_obj->getVar('topic_status'), 'reply')) {
     require_once XOOPS_ROOT_PATH . '/class/xoopsform/formelement.php';
     require_once XOOPS_ROOT_PATH . '/class/xoopsform/formhidden.php';
@@ -671,7 +672,7 @@ if (!empty($xoopsModuleConfig['quickreply_enabled'])
 $xoopsLogger->stopTime('XOOPS output module - topic - quickreply');
 
 $xoopsLogger->startTime('XOOPS output module - topic - tag');
-if ($xoopsModuleConfig['do_tag'] && @require_once XOOPS_ROOT_PATH . '/modules/tag/include/tagbar.php') {
+if ($helper->getConfig('do_tag') && @require_once XOOPS_ROOT_PATH . '/modules/tag/include/tagbar.php') {
     $xoopsTpl->assign('tagbar', tagBar($topic_obj->getVar('topic_tags', 'n')));
 }
 $xoopsLogger->stopTime('XOOPS output module - topic - tag');

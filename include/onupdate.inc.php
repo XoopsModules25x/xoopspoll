@@ -17,7 +17,7 @@
  * @since    ::     1.40
  * @author   ::    zyspec <owners@zyspec.com>
  */
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 xoops_load('pollUtility', 'xoopspoll');
 
 /**
@@ -36,7 +36,7 @@ function xoopspollChangeTableName(\XoopsDatabase $db, $fromTable, $toTable)
     */
     $success = false;
     if (\Xoopspoll\Utility::dbTableExists($db, $fromTable) && !Xoopspoll\Utility::dbTableExists($db, $toTable)) {
-        $sql     = sprintf('ALTER TABLE ' . $db->prefix("{$fromTable}") . ' RENAME ' . $db->prefix('{$toTable}'));
+        $sql     = sprintf('ALTER TABLE ' . $db->prefix((string)($fromTable)) . ' RENAME ' . $db->prefix('{$toTable}'));
         $success = $db->queryF($sql);
         if (false === $success) {
             $moduleHandler   = xoops_getModuleHandler('module');

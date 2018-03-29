@@ -36,6 +36,7 @@
  */
 
 use XoopsModules\Xoopspoll;
+use XoopsModules\Xoopspoll\Constants;
 
 xoops_loadLanguage('main', 'xoopspoll');
 xoops_load('constants', 'xoopspoll');
@@ -109,10 +110,10 @@ class Renderer
 
         if (empty($optionObjs)) {
             /* there was a problem with missing Options */
-            //            redirect_header($_SERVER['HTTP_REFERER'], Xoopspoll\Constants::REDIRECT_DELAY_MEDIUM, _MD_XOOPSPOLL_ERROR_OPTIONS_MISSING);
+            //            redirect_header($_SERVER['HTTP_REFERER'], Constants::REDIRECT_DELAY_MEDIUM, _MD_XOOPSPOLL_ERROR_OPTIONS_MISSING);
         }
 
-        if (\Xoopspoll\Constants::MULTIPLE_SELECT_POLL === $this->pollObj->getVar('multiple')) {
+        if (Constants::MULTIPLE_SELECT_POLL === $this->pollObj->getVar('multiple')) {
             $optionType = 'checkbox';
             $optionName = 'option_id[]';
         } else {

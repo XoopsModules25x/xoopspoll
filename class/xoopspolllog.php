@@ -1,4 +1,5 @@
 <?php namespace XoopsModules\Xoopspoll;
+
 /*
 
  You may not change or alter any portion of this comment or credits

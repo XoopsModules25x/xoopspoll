@@ -19,8 +19,8 @@
 
 use Xmf\Request;
 use XoopsModules\Xoopspoll;
+use XoopsModules\Xoopspoll\Constants;
 use XoopsModules\Newbb;
-
 
 require_once __DIR__ . '/header.php';
 
@@ -95,7 +95,7 @@ if ('xoopspoll' === $pollmodules) {
                         $msg = _MD_XOOPSPOLL_THANKSFORVOTE;
                     } else {
                         /* there was a problem registering the vote */
-                        redirect_header($GLOBALS['xoops']->buildUrl('index.php', ['poll_id' => $poll_id]), Xoopspoll\Constants::REDIRECT_DELAY_MEDIUM, _MD_XOOPSPOLL_VOTE_ERROR);
+                        redirect_header($GLOBALS['xoops']->buildUrl('index.php', ['poll_id' => $poll_id]), Constants::REDIRECT_DELAY_MEDIUM, _MD_XOOPSPOLL_VOTE_ERROR);
                     }
                 } else {
                     $msg = _MD_XOOPSPOLL_ALREADYVOTED;
@@ -116,14 +116,14 @@ if ('xoopspoll' === $pollmodules) {
         $msg = _MD_XOOPSPOLL_ERROR_INVALID_POLLID;
     }
     if (null !== $url) {
-        redirect_header($url, Xoopspoll\Constants::REDIRECT_DELAY_MEDIUM, $msg);
+        redirect_header($url, Constants::REDIRECT_DELAY_MEDIUM, $msg);
     } else {
         /*
                 redirect_header($GLOBALS['xoops']->buildUrl("pollresults.php", array('poll_id' => $poll_id)),
-                                                       Xoopspoll\Constants::REDIRECT_DELAY_MEDIUM,
+                                                       Constants::REDIRECT_DELAY_MEDIUM,
                                                        $msg);
         */
-        redirect_header($GLOBALS['xoops']->buildUrl('viewtopic.php', ['topic_id' => $topic_id]), Xoopspoll\Constants::REDIRECT_DELAY_MEDIUM, $msg);
+        redirect_header($GLOBALS['xoops']->buildUrl('viewtopic.php', ['topic_id' => $topic_id]), Constants::REDIRECT_DELAY_MEDIUM, $msg);
     }
 } else { //Umfrage
     $poll = new Umfrage($poll_id);

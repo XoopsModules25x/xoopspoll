@@ -1,11 +1,14 @@
 <?php namespace XoopsModules\Newbb;
+
 /**
  * User Language Class (moved from 'main' language file)
  * @package   ::    newbb
  * @subpackage:: class
  */
 
-require_once $GLOBALS['xoops']->path('modules/newbb/class/user.php');
+use XoopsModules\Newbb;
+
+//require_once $GLOBALS['xoops']->path('modules/newbb/class/user.php');
 
 /**
  *
@@ -13,7 +16,7 @@ require_once $GLOBALS['xoops']->path('modules/newbb/class/user.php');
  * If you have a customized userbar, define it here.
  *
  */
-class UserLanguage extends User
+class UserLanguage extends Newbb\User
 {
 
     /**

@@ -1,4 +1,5 @@
 <?php namespace XoopsModules\Newbb;
+
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -20,8 +21,7 @@
 use XoopsModules\Xoopspoll;
 use XoopsModules\Newbb;
 
-
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 defined('NEWBB_FUNCTIONS_INI') || include XOOPS_ROOT_PATH . '/modules/newbb/include/functions.ini.php';
 //newbb_load_object();
@@ -81,7 +81,7 @@ class PostHandler extends \XoopsPersistableObjectHandler
                   . ' ORDER BY p.post_time DESC';
         $result = $this->db->query($sql, $limit, 0);
         $ret    = [];
-        while ($myrow = $this->db->fetchArray($result)) {
+        while (false !== ($myrow = $this->db->fetchArray($result))) {
             $post = $this->create(false);
             $post->assignVars($myrow);
 
@@ -548,7 +548,7 @@ class PostHandler extends \XoopsPersistableObjectHandler
             //            xoops_error($this->db->error());
             return $ret;
         }
-        while ($myrow = $this->db->fetchArray($result)) {
+        while (false !== ($myrow = $this->db->fetchArray($result))) {
             $post = $this->create(false);
             $post->assignVars($myrow);
             $ret[$myrow['post_id']] = $post;

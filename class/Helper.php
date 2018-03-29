@@ -1,4 +1,5 @@
 <?php namespace XoopsModules\Xoopspoll;
+
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -17,7 +18,7 @@
  * @author     XOOPS Development Team
  */
 
-defined('XOOPS_ROOT_PATH') || exit('Restricted access');
+defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 /**
  * Class Helper
@@ -27,19 +28,19 @@ class Helper extends \Xmf\Module\Helper
     public $debug;
 
     /**
-     * @internal param $debug
      * @param bool $debug
      */
     protected function __construct($debug = false)
     {
         $this->debug   = $debug;
-        $this->dirname = basename(dirname(__DIR__));
+       $moduleDirName = basename(dirname(__DIR__));
+       parent::__construct($moduleDirName);
     }
 
     /**
      * @param bool $debug
      *
-     * @return \Helper
+     * @return \Xmf\Module\Helper
      */
     public static function getInstance($debug = false)
     {

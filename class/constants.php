@@ -39,9 +39,9 @@
  * @package  ::  xoopspoll
  * @since    ::  1.40
  **/
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
-interface Constants
+class Constants
 {
     /**#@+
      * Constant definition

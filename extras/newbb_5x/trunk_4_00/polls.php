@@ -22,8 +22,8 @@
 
 use Xmf\Request;
 use XoopsModules\Xoopspoll;
+use XoopsModules\Xoopspoll\Constants;
 use XoopsModules\Newbb;
-
 
 require_once $GLOBALS['xoops']->path('header.php');
 
@@ -138,13 +138,13 @@ switch ($op) {
         $xpOptHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');
         $xpLogHandler = Xoopspoll\Helper::getInstance()->getHandler('Log');
 
-        $notify = Request::getInt('notify', Xoopspoll\Constants::NOTIFICATION_ENABLED, 'POST');
+        $notify = Request::getInt('notify', Constants::NOTIFICATION_ENABLED, 'POST');
 
         $currentTimestamp = time();
         $xuEndTimestamp   = strtotime(Request::getString('xu_end_time', null, 'POST'));
-        $endTimestamp     = empty($_POST['xu_end_time']) ? ($currentTimestamp + Xoopspoll\Constants::DEFAULT_POLL_DURATION) : userTimeToServerTime($xuEndTimestamp);
+        $endTimestamp     = empty($_POST['xu_end_time']) ? ($currentTimestamp + Constants::DEFAULT_POLL_DURATION) : userTimeToServerTime($xuEndTimestamp);
         $xuStartTimestamp = strtotime(Request::getString('xu_start_time', null, 'POST'));
-        $startTimestamp   = empty($_POST['xu_start_time']) ? ($endTimestamp - Xoopspoll\Constants::DEFAULT_POLL_DURATION) : userTimeToServerTime($xuStartTimestamp);
+        $startTimestamp   = empty($_POST['xu_start_time']) ? ($endTimestamp - Constants::DEFAULT_POLL_DURATION) : userTimeToServerTime($xuStartTimestamp);
 
         //  don't allow changing start time if there are votes in the log
         if (($startTimestamp < $poll_obj->getVar('start_time'))
@@ -156,16 +156,16 @@ switch ($op) {
             'user_id'     => Request::getInt('user_id', $GLOBALS['xoopsUser']->uid(), 'POST'),
             'question'    => Request::getString('question', null, 'POST'),
             'description' => Request::getText('description', null, 'POST'),
-            'mail_status' => (\Xoopspoll\Constants::NOTIFICATION_ENABLED === $notify) ? Xoopspoll\Constants::POLL_NOT_MAILED : Xoopspoll\Constants::POLL_MAILED,
-            'mail_voter'  => Request::getInt('mail_voter', Xoopspoll\Constants::NOT_MAIL_POLL_TO_VOTER, 'POST'),
+            'mail_status' => (Constants::NOTIFICATION_ENABLED === $notify) ? Constants::POLL_NOT_MAILED : Constants::POLL_MAILED,
+            'mail_voter'  => Request::getInt('mail_voter', Constants::NOT_MAIL_POLL_TO_VOTER, 'POST'),
             'start_time'  => $startTimestamp,
             'end_time'    => $endTimestamp,
-            'display'     => Request::getInt('display', Xoopspoll\Constants::DO_NOT_DISPLAY_POLL_IN_BLOCK, 'POST'),
-            'visibility'  => Request::getInt('visibility', Xoopspoll\Constants::HIDE_NEVER, 'POST'),
-            'weight'      => Request::getInt('weight', Xoopspoll\Constants::DEFAULT_WEIGHT, 'POST'),
-            'multiple'    => Request::getInt('multiple', Xoopspoll\Constants::NOT_MULTIPLE_SELECT_POLL, 'POST'),
-            'multilimit'  => Request::getInt('multilimit', Xoopspoll\Constants::MULTIPLE_SELECT_LIMITLESS, 'POST'),
-            'anonymous'   => Request::getInt('anonymous', Xoopspoll\Constants::ANONYMOUS_VOTING_DISALLOWED, 'POST')
+            'display'     => Request::getInt('display', Constants::DO_NOT_DISPLAY_POLL_IN_BLOCK, 'POST'),
+            'visibility'  => Request::getInt('visibility', Constants::HIDE_NEVER, 'POST'),
+            'weight'      => Request::getInt('weight', Constants::DEFAULT_WEIGHT, 'POST'),
+            'multiple'    => Request::getInt('multiple', Constants::NOT_MULTIPLE_SELECT_POLL, 'POST'),
+            'multilimit'  => Request::getInt('multilimit', Constants::MULTIPLE_SELECT_LIMITLESS, 'POST'),
+            'anonymous'   => Request::getInt('anonymous', Constants::ANONYMOUS_VOTING_DISALLOWED, 'POST')
         ];
         $poll_obj->setVars($poll_vars);
         $poll_id = $xpPollHandler->insert($poll_obj);
@@ -329,7 +329,7 @@ switch ($op) {
         break;
 
     case 'restart':
-        $default_poll_duration = Xoopspoll\Constants::DEFAULT_POLL_DURATION;
+        $default_poll_duration = Constants::DEFAULT_POLL_DURATION;
         $poll_form             = new \XoopsThemeForm(_MD_POLL_RESTARTPOLL, 'poll_form', 'polls.php', 'post', true);
         $expire_text           = new \XoopsFormText(_MD_POLL_EXPIRATION . '<br><small>' . _MD_POLL_FORMAT . '<br>' . sprintf(_MD_POLL_CURRENTTIME, formatTimestamp(time(), _DATESTRING)) . '</small>', 'end_time', 20, 19, formatTimestamp(time() + $default_poll_duration, _DATESTRING));
         $poll_form->addElement($expire_text);
@@ -352,9 +352,9 @@ switch ($op) {
         }
 
         $poll_obj              = $xpPollHandler->get($poll_id);
-        $default_poll_duration = Xoopspoll\Constants::DEFAULT_POLL_DURATION;
-        $poll_mailed           = Xoopspoll\Constants::POLL_MAILED;
-        $poll_not_mailed       = Xoopspoll\Constants::POLL_NOT_MAILED;
+        $default_poll_duration = Constants::DEFAULT_POLL_DURATION;
+        $poll_mailed           = Constants::POLL_MAILED;
+        $poll_not_mailed       = Constants::POLL_NOT_MAILED;
 
         $end_time = empty($_POST['end_time']) ? 0 : (int)$_POST['end_time'];
         if (!empty($end_time)) {

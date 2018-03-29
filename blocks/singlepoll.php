@@ -19,8 +19,8 @@
  */
 
 use XoopsModules\Xoopspoll;
+use XoopsModules\Xoopspoll\Constants;
 use XoopsModules\Newbb;
-
 
 xoops_loadLanguage('main', 'xoopspoll');
 xoops_load('pollUtility', 'xoopspoll');
@@ -120,7 +120,7 @@ function xoopspollBlockSinglepollShow($options)
             $optionsObjArray = $optHandler->getAll($criteria);
             //            $optionsObjArray = $optHandler->getAll($criteria, null, false);
 
-            if (\Xoopspoll\Constants::MULTIPLE_SELECT_POLL === $pollVars['multiple']) {
+            if (Constants::MULTIPLE_SELECT_POLL === $pollVars['multiple']) {
                 $pollOptionType = 'checkbox';
                 $pollOptionName = 'option_id[]';
             } else {
@@ -317,7 +317,7 @@ function xoopspollBlockSinglepollEdit($options)
              . "</td></tr>\n";
 
     /* find out if want to show options as a list or as a select box */
-    if (\Xoopspoll\Constants::POLL_OPTIONS_SELECT === $options[3]) {
+    if (Constants::POLL_OPTIONS_SELECT === $options[3]) {
         $chk3select = ' checked';
         $chk3list   = '';
     } else {
@@ -331,13 +331,13 @@ function xoopspollBlockSinglepollEdit($options)
              . _MB_XOOPSPOLL_LIST
              . "</label>\n"
              . "<input type='radio' name='options[3]' value='"
-             . Xoopspoll\Constants::POLL_OPTIONS_LIST
+             . Constants::POLL_OPTIONS_LIST
              . "'{$chk3list} id='list'>\n"
              . "<label class='middle' style='margin-left: 2em;' for='select'>&nbsp;&nbsp;&nbsp;"
              . _MB_XOOPSPOLL_SELECT
              . "</label>\n"
              . "<input type='radio' name='options[3]' value='"
-             . Xoopspoll\Constants::POLL_OPTIONS_SELECT
+             . Constants::POLL_OPTIONS_SELECT
              . "'{$chk3select} id='select'>\n"
              . "</td></tr>\n"
              . "</table>\n";

@@ -1,4 +1,5 @@
 <?php namespace XoopsModules\Xoopspoll\Plugin;
+
 /*
  You may not change or alter any portion of this comment or credits
  of supporting developers from this source code or any supporting source code
@@ -23,7 +24,7 @@
 use Xmf\Request;
 use XoopsModules\Userlog;
 
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 /**
  * Class UserlogPlugin

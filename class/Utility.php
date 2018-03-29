@@ -2,6 +2,7 @@
 
 use Xmf\Request;
 use XoopsModules\Xoopspoll;
+use XoopsModules\Xoopspoll\Constants;
 use XoopsModules\Xoopspoll\Common;
 
 /**
@@ -35,7 +36,7 @@ class Utility
                 if ($hostAddr === $ipAddr) {
                     $retVal =& $ipAddr;
                 } else {
-                    $ipArray[$ipAddr] = htmlspecialchars($hostAddr);
+                    $ipArray[$ipAddr] = htmlspecialchars($hostAddr, ENT_QUOTES | ENT_HTML5);
                     $retVal           = $ipArray[$ipAddr];
                 }
             }
@@ -76,10 +77,10 @@ class Utility
             xoops_loadLanguage('main', 'xoopspoll');
             xoops_load('constants', 'xoopspoll');
             $visOptions = [
-                Xoopspoll\Constants::HIDE_NEVER  => _MD_XOOPSPOLL_HIDE_NEVER,
-                Xoopspoll\Constants::HIDE_END    => _MD_XOOPSPOLL_HIDE_END,
-                Xoopspoll\Constants::HIDE_VOTED  => _MD_XOOPSPOLL_HIDE_VOTED,
-                Xoopspoll\Constants::HIDE_ALWAYS => _MD_XOOPSPOLL_HIDE_ALWAYS
+                Constants::HIDE_NEVER  => _MD_XOOPSPOLL_HIDE_NEVER,
+                Constants::HIDE_END    => _MD_XOOPSPOLL_HIDE_END,
+                Constants::HIDE_VOTED  => _MD_XOOPSPOLL_HIDE_VOTED,
+                Constants::HIDE_ALWAYS => _MD_XOOPSPOLL_HIDE_ALWAYS
             ];
         }
 
@@ -171,7 +172,7 @@ class Utility
     public static function dbTableExists(\XoopsDatabase $db, $tablename)
     {
         $tablename = addslashes($tablename);
-        $mytable   = $db->prefix("{$tablename}");
+        $mytable   = $db->prefix((string)($tablename));
         $result    = $db->queryF("SHOW TABLES LIKE '{$mytable}'");
         $found     = $db->getRowsNum($result);
 
