@@ -22,12 +22,12 @@ use XoopsModules\Newbb;
 
 require_once __DIR__ . '/header.php';
 
-$poll_id  = isset($_GET['poll_id']) ? (int)$_GET['poll_id'] : 0;
-$poll_id  = isset($_POST['poll_id']) ? (int)$_POST['poll_id'] : $poll_id;
-$topic_id = isset($_GET['topic_id']) ? (int)$_GET['topic_id'] : 0;
-$topic_id = isset($_POST['topic_id']) ? (int)$_POST['topic_id'] : $topic_id;
-$forum    = isset($_GET['forum']) ? (int)$_GET['forum'] : 0;
-$forum    = isset($_POST['forum']) ? (int)$_POST['forum'] : $forum;
+$poll_id  = \Xmf\Request::getInt('poll_id', 0, 'GET');
+$poll_id  = \Xmf\Request::getInt('poll_id', $poll_id, 'POST');
+$topic_id = \Xmf\Request::getInt('topic_id', 0, 'GET');
+$topic_id = \Xmf\Request::getInt('topic_id', $topic_id, 'POST');
+$forum    = \Xmf\Request::getInt('forum', 0, 'GET');
+$forum    = \Xmf\Request::getInt('forum', $forum, 'POST');
 
 /** @var Newbb\TopicHandler $topicHandler */
 $topicHandler = Newbb\Helper::getInstance()->getHandler('Topic');

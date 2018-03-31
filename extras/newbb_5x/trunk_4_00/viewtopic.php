@@ -40,7 +40,7 @@ foreach ($query_vars as $var) {
 $page_query = htmlspecialchars(implode('&', array_values($query_array)), ENT_QUOTES | ENT_HTML5);
 unset($query_array);
 
-$topic_id = isset($_GET['topic_id']) ? (int)$_GET['topic_id'] : 0;
+$topic_id = \Xmf\Request::getInt('topic_id', 0, 'GET');
 $post_id  = !empty($_GET['post_id']) ? (int)$_GET['post_id'] : 0;
 $forum_id = !empty($_GET['forum']) ? (int)$_GET['forum'] : 0;
 $move     = isset($_GET['move']) ? strtolower($_GET['move']) : '';
