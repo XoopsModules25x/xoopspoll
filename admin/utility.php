@@ -194,7 +194,7 @@ switch ($op) {
                         }
                         unset($criteria, $umOptObjs);
                     }
-                    redirect_header('index.php', Constants::REDIRECT_DELAY_MEDIUM, sprintf(_AM_XOOPSPOLL_IMPORT_SUCCESS, (int)count($allUmfragePollObjs)));
+                    redirect_header('index.php', Constants::REDIRECT_DELAY_MEDIUM, sprintf(_AM_XOOPSPOLL_IMPORT_SUCCESS, count($allUmfragePollObjs)));
                 } else {
                     throw new Exception(_AM_XOOPSPOLL_UMFRAGE_FAILED);
                 }
