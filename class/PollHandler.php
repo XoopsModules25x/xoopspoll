@@ -68,7 +68,7 @@ class PollHandler extends \XoopsPersistableObjectHandler
      *
      * Mail the results of poll when expired
      * @param  mixed $pollObj
-     * @return bool  true|false indicating sendmail status
+     * @return array true|false indicating sendmail status
      */
     public function mailResults($pollObj = null)
     {

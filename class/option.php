@@ -42,7 +42,7 @@ class Option extends \XoopsObject
 {
     /**
      * database connection object
-     * @var XoopsDatabasefactory
+     * @var \XoopsDatabasefactory
      */
     //    protected $db;
     /**
@@ -133,7 +133,7 @@ class Option extends \XoopsObject
      *
      * Get all options for a particular poll
      * @uses XoopsPersistableObjectHandler::getAll
-     * @param  unknown $pid
+     * @param  int $pid
      * @return mixed   results of getting objects from database
      */
     public function getAllByPollId($pid)
@@ -149,7 +149,7 @@ class Option extends \XoopsObject
     /**
      *
      * Reset the poll's options vote count
-     * @param unknown_type $pid
+     * @param int $pid
      * @uses XoopsPersistableObjectHandler::updateAll
      * @return mixed results of the object(s) update
      */

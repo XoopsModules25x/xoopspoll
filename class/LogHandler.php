@@ -99,7 +99,7 @@ class LogHandler extends \XoopsPersistableObjectHandler
      * @param  int    $pid
      * @param  string $sortby  sort all results by this field
      * @param  string $orderby sort order (ASC, DESC)
-     * @return bool   $success
+     * @return array $success
      */
     public function getAllByPollId($pid, $sortby = 'time', $orderby = 'ASC')
     {

@@ -176,8 +176,8 @@ class PollUtility
      * for backward compatibility. Otherwise cookie is named
      * '<dirname>_voted_polls' to allow for module to be cloned using
      * smartClone module.
-     * @param XoopsDatabase $db
-     * @param               $tablename
+     * @param \XoopsDatabase $db
+     * @param                $tablename
      * @return bool success in setting cookie
      * @internal param int|string $index array index to set in cookie
      * @internal param unknown_type $value data to store in cookie

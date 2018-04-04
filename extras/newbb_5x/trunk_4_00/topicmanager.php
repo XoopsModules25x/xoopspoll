@@ -128,10 +128,10 @@ if (isset($_POST['submit'])) {
             }
         }
 
-        $sql    = sprintf('DELETE FROM %s WHERE topic_id = %u', $xoopsDB->prefix('bb_topics'), $topic_id);
+        $sql    = sprintf('DELETE FROM `%s` WHERE topic_id = %u', $xoopsDB->prefix('bb_topics'), $topic_id);
         $result = $xoopsDB->queryF($sql);
 
-        $sql    = sprintf('DELETE FROM %s WHERE topic_id = %u', $xoopsDB->prefix('bb_votedata'), $topic_id);
+        $sql    = sprintf('DELETE FROM `%s` WHERE topic_id = %u', $xoopsDB->prefix('bb_votedata'), $topic_id);
         $result = $xoopsDB->queryF($sql);
 
         $sql    = sprintf('UPDATE %s SET forum_topics = forum_topics-1 WHERE forum_id = %u', $xoopsDB->prefix('bb_forums'), $forum);

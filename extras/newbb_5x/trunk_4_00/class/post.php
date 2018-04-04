@@ -889,7 +889,7 @@ class PostHandler extends \XoopsPersistableObjectHandler
             }
             /* delete pending post directly */
         } else {
-            $sql = sprintf('DELETE FROM %s WHERE post_id = %u', $this->db->prefix('bb_posts'), $post->getVar('post_id'));
+            $sql = sprintf('DELETE FROM `%s` WHERE post_id = %u', $this->db->prefix('bb_posts'), $post->getVar('post_id'));
             if (!$result = $this->db->queryF($sql)) {
                 $post->setErrors('delte post error: ' . $sql);
 
@@ -897,7 +897,7 @@ class PostHandler extends \XoopsPersistableObjectHandler
             }
             $post->deleteAttachment();
 
-            $sql = sprintf('DELETE FROM %s WHERE post_id = %u', $this->db->prefix('bb_posts_text'), $post->getVar('post_id'));
+            $sql = sprintf('DELETE FROM `%s` WHERE post_id = %u', $this->db->prefix('bb_posts_text'), $post->getVar('post_id'));
             if (!$result = $this->db->queryF($sql)) {
                 $post->setErrors('Could not remove post text: ' . $sql);
 
@@ -937,11 +937,11 @@ class PostHandler extends \XoopsPersistableObjectHandler
                     }
                 }
 
-                $sql = sprintf('DELETE FROM %s WHERE topic_id = %u', $this->db->prefix('bb_topics'), $post->getVar('topic_id'));
+                $sql = sprintf('DELETE FROM `%s` WHERE topic_id = %u', $this->db->prefix('bb_topics'), $post->getVar('topic_id'));
                 if (!$result = $this->db->queryF($sql)) {
                     //xoops_error($this->db->error());
                 }
-                $sql = sprintf('DELETE FROM %s WHERE topic_id = %u', $this->db->prefix('bb_votedata'), $post->getVar('topic_id'));
+                $sql = sprintf('DELETE FROM `%s` WHERE topic_id = %u', $this->db->prefix('bb_votedata'), $post->getVar('topic_id'));
                 if (!$result = $this->db->queryF($sql)) {
                     //xoops_error($this->db->error());
                 }
