@@ -265,7 +265,7 @@ switch ($op) {
 
         $xpOptHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');
         $i            = 0;
-        $option_color = empty($_POST['option_color']) ? null : $_POST['option_color'];
+        $option_color = \Xmf\Request::getString('option_color', null, 'POST');
         foreach ($option_text as $optxt) {
             $optxt = trim($optxt);
             if ('' !== $optxt) {
@@ -356,7 +356,7 @@ switch ($op) {
         $poll_mailed           = Constants::POLL_MAILED;
         $poll_not_mailed       = Constants::POLL_NOT_MAILED;
 
-        $end_time = empty($_POST['end_time']) ? 0 : (int)$_POST['end_time'];
+        $end_time = \Xmf\Request::getInt('end_time', 0, 'POST');
         if (!empty($end_time)) {
             $timezone = ($GLOBALS['xoopsUser'] instanceof \XoopsUser) ? $GLOBALS['xoopsUser']->getVar('timezone') : null;
             //        $poll_obj->setVar("end_time", userTimeToServerTime(strtotime($end_time), $timezone));

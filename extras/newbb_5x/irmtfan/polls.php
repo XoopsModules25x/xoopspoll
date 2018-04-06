@@ -255,7 +255,7 @@ switch ($op) {
         } else { // Umfrage
             $new_poll_id = $poll_obj->store();
         }
-        $option_color = empty($_POST['option_color']) ? null : $_POST['option_color'];
+        $option_color = \Xmf\Request::getString('option_color', null, 'POST');
         if (!empty($new_poll_id)) {
             $i = 0;
             foreach ($option_text as $optxt) {
@@ -504,8 +504,8 @@ switch ($op) {
                 break;
             }
             $i            = 0;
-            $option_id    = empty($_POST['option_id']) ? null : $_POST['option_id'];
-            $option_color = empty($_POST['option_color']) ? null : $_POST['option_color'];
+            $option_id    = \Xmf\Request::getString('option_id', null, 'POST');
+            $option_color = \Xmf\Request::getString('option_color', null, 'POST');
             foreach ($option_id as $opid) {
                 $option_obj      = new UmfrageOption($opid);
                 $option_text[$i] = trim($option_text[$i]);
@@ -603,7 +603,7 @@ switch ($op) {
             $xpOptHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');
         }
         $i            = 0;
-        $option_color = empty($_POST['option_color']) ? null : $_POST['option_color'];
+        $option_color = \Xmf\Request::getString('option_color', null, 'POST');
         foreach ($option_text as $optxt) {
             $optxt = trim($optxt);
             if ('' !== $optxt) {
@@ -735,7 +735,7 @@ switch ($op) {
             $poll_mailed           = POLL_MAILED;
         }
 
-        $end_time = empty($_POST['end_time']) ? 0 : (int)$_POST['end_time'];
+        $end_time = \Xmf\Request::getInt('end_time', 0, 'POST');
         if (!empty($end_time)) {
             $timezone = ($GLOBALS['xoopsUser'] instanceof \XoopsUser) ? $GLOBALS['xoopsUser']->getVar('timezone') : null;
             //        $poll_obj->setVar("end_time", userTimeToServerTime(strtotime($end_time), $timezone));

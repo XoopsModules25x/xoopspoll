@@ -26,7 +26,7 @@ require_once __DIR__ . '/header.php';
 
 if (isset($_POST['submit'])) {
     foreach (['forum', 'newforum', 'newtopic'] as $getint) {
-        ${$getint} = isset($_POST[$getint]) ? (int)$_POST[$getint] : 0;
+        ${$getint} = isset($_POST[$getint]) ? \Xmf\Request::getInt($getint, 0, 'POST') : 0;
     }
     $topic_id = [];
     if (isset($_POST['topic_id']) && !is_array($_POST['topic_id'])) {

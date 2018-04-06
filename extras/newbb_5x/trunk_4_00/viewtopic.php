@@ -41,13 +41,13 @@ $page_query = htmlspecialchars(implode('&', array_values($query_array)), ENT_QUO
 unset($query_array);
 
 $topic_id = \Xmf\Request::getInt('topic_id', 0, 'GET');
-$post_id  = !empty($_GET['post_id']) ? (int)$_GET['post_id'] : 0;
-$forum_id = !empty($_GET['forum']) ? (int)$_GET['forum'] : 0;
+$post_id  = \Xmf\Request::getInt('post_id', 0, 'GET');
+$forum_id = \Xmf\Request::getInt('forum', 0, 'GET');
 $move     = isset($_GET['move']) ? strtolower($_GET['move']) : '';
-$start    = !empty($_GET['start']) ? (int)$_GET['start'] : 0;
+$start    = \Xmf\Request::getInt('start', 0, 'GET');
 $status   = (!empty($_GET['status'])
              && in_array($_GET['status'], ['active', 'pending', 'deleted'])) ? $_GET['status'] : '';
-$mode     = !empty($_GET['mode']) ? (int)$_GET['mode'] : (!empty($status) ? 2 : 0);
+$mode     = \Xmf\Request::getInt('mode', (!empty($status) ? 2 : 0), 'GET');
 
 if (!$topic_id && !$post_id) {
     $redirect = empty($forum_id) ? 'index.php' : "viewforum.php?forum={$forum_id}";
