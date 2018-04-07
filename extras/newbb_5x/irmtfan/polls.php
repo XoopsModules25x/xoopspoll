@@ -228,7 +228,7 @@ switch ($op) {
         $description = (isset($_POST['description'])) ? htmlspecialchars($_POST['description']) : '';
         $poll_obj->setVar("description", $description);
 
-        if (!empty($_POST['end_time'])) {
+       if (\Xmf\Request::hasVar('end_time', 'POST')) {
             $timezone = ($GLOBALS['xoopsUser'] instanceof \XoopsUser) ? $GLOBALS['xoopsUser']->getVar("timezone") : null;
             //$poll_obj->setVar("end_time", userTimeToServerTime(strtotime($_POST['end_time']), $timezone));
             //Hack by irmtfan
@@ -757,7 +757,7 @@ switch ($op) {
                 xoops_error($poll_obj->getHtmlErrors());
                 exit();
             }
-            if (!empty($_POST['reset'])) { // reset all vote/voter counters
+           if (\Xmf\Request::hasVar('reset', 'POST')) { // reset all vote/voter counters
                 $xpLogHandler = Xoopspoll\Helper::getInstance()->getHandler('Log');
                 $xpLogHandler->deleteByPollId($poll_id);
                 $xpOptHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');
@@ -769,7 +769,7 @@ switch ($op) {
                 xoops_error($poll_obj->getHtmlErrors());
                 exit();
             }
-            if (!empty($_POST['reset'])) { // reset all logs
+           if (\Xmf\Request::hasVar('reset', 'POST')) { // reset all logs
                 UmfrageLog::deleteByPollId($poll_id);
                 UmfrageOption::resetCountByPollId($poll_id);
                 $poll_obj->updateCount();

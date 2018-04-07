@@ -226,7 +226,7 @@ if (isset($_POST['submit'])) {
             $sql    = sprintf('DELETE FROM `%s` WHERE topic_id = %u', $xoopsDB->prefix('bb_votedata'), $tid);
             $result = $xoopsDB->queryF($sql);
 
-            $sql    = sprintf('UPDATE %s SET forum_topics = forum_topics-1 WHERE forum_id = %u', $xoopsDB->prefix('bb_forums'), $forum);
+            $sql    = sprintf('UPDATE `%s` SET forum_topics = forum_topics-1 WHERE forum_id = %u', $xoopsDB->prefix('bb_forums'), $forum);
             $result = $xoopsDB->queryF($sql);
 
             $topic_obj->loadFilters('delete');
@@ -264,7 +264,7 @@ if (isset($_POST['submit'])) {
             $topicHandler->insert($topic_obj, true);
             $topic_obj->loadFilters('update');
 
-            $sql = sprintf('UPDATE %s SET forum_id = %u WHERE topic_id = %u', $xoopsDB->prefix('bb_posts'), $newforum, $topic_id);
+            $sql = sprintf('UPDATE `%s` SET forum_id = %u WHERE topic_id = %u', $xoopsDB->prefix('bb_posts'), $newforum, $topic_id);
             if (!$r = $xoopsDB->query($sql)) {
                 return false;
             }
@@ -291,7 +291,7 @@ if (isset($_POST['submit'])) {
         }
 
         if (!empty($action[$mode]['sql'])) {
-            $sql = sprintf('UPDATE %s SET ' . $action[$mode]['sql'] . ' WHERE topic_id = %u', $xoopsDB->prefix('bb_topics'), $topic_id);
+            $sql = sprintf('UPDATE `%s` SET ' . $action[$mode]['sql'] . ' WHERE topic_id = %u', $xoopsDB->prefix('bb_topics'), $topic_id);
             if (!$r = $xoopsDB->query($sql)) {
                 redirect_header(XOOPS_URL . "/modules/newbb/viewtopic.php?forum=$forum&amp;topic_id=$topic_id&amp;order=$order&amp;viewmode=$viewmode", 2, _MD_ERROR_BACK . '<br>sql:' . $sql);
             }

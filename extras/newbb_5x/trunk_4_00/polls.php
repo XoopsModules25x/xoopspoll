@@ -377,7 +377,7 @@ switch ($op) {
             xoops_error($poll_obj->getHtmlErrors());
             exit();
         }
-        if (!empty($_POST['reset'])) { // reset all vote/voter counters
+        if (\Xmf\Request::hasVar('reset', 'POST')) { // reset all vote/voter counters
             $xpLogHandler = Xoopspoll\Helper::getInstance()->getHandler('Log');
             $xpLogHandler->deleteByPollId($poll_id);
             $xpOptHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');
