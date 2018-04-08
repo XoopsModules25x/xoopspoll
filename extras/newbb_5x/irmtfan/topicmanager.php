@@ -17,6 +17,7 @@
  * @author       XOOPS Development Team,  phppp (D.J., infomax@gmail.com)
  */
 
+use Xmf\Request;
 use XoopsModules\Newbb;
 use XoopsModules\Xoopspoll;
 /** @var Xoopspoll\Helper $helper */
@@ -274,7 +275,7 @@ if (isset($_POST['submit'])) {
             echo $action[$mode]['msg'] . "<p><a href='" . XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname') . "/viewtopic.php?topic_id=$topic_id&amp;forum=$newforum'>" . _MD_GOTONEWFORUM . "</a></p><p><a href='" . XOOPS_URL . "/modules/newbb/index.php'>" . _MD_RETURNFORUMINDEX . '</a></p>';
         } else {
             // irmtfan - issue with javascript:history.go(-1)
-            redirect_header($_SERVER['HTTP_REFERER'], 2, _MD_ERRORFORUM);
+            redirect_header(Request::getString('HTTP_REFERER', '', 'SERVER'), 2, _MD_ERRORFORUM);
         }
     } else {
         $topic_id  = $topic_id[0];

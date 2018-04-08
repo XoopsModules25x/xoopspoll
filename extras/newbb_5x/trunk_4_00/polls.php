@@ -65,7 +65,7 @@ if (is_object($xoopspoll) && $xoopspoll->getVar('isactive')) {
     xoops_loadLanguage('admin', 'xoopspoll');
     $xpPollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
 } else {
-    redirect_header($_SERVER['HTTP_REFERER'], 2, _MD_POLLMODULE_ERROR);
+    redirect_header(Request::getString('HTTP_REFERER', '', 'SERVER'), 2, _MD_POLLMODULE_ERROR);
 }
 
 /** @var Newbb\TopicHandler $topicHandler */
@@ -131,7 +131,7 @@ switch ($op) {
         $option_string = trim($option_string);
         if (empty($option_string)) {
             // irmtfan - issue with javascript:history.go(-1)
-            redirect_header($_SERVER['HTTP_REFERER'], 2, _MD_ERROROCCURED . ': ' . _MD_POLL_POLLOPTIONS . ' !');
+            redirect_header(Request::getString('HTTP_REFERER', '', 'SERVER'), 2, _MD_ERROROCCURED . ': ' . _MD_POLL_POLLOPTIONS . ' !');
         }
 
         $poll_obj     = $xpPollHandler->get($poll_id);
@@ -260,7 +260,7 @@ switch ($op) {
         $option_string = trim($option_string);
         if (empty($option_string)) {
             // irmtfan - issue with javascript:history.go(-1)
-            redirect_header($_SERVER['HTTP_REFERER'], 2, _MD_ERROROCCURED . ': ' . _MD_POLL_POLLOPTIONS . ' !');
+            redirect_header(Request::getString('HTTP_REFERER', '', 'SERVER'), 2, _MD_ERROROCCURED . ': ' . _MD_POLL_POLLOPTIONS . ' !');
         }
 
         $xpOptHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');

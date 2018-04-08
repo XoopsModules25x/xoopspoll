@@ -73,7 +73,7 @@ if ('xoopspoll' === $pollmodules) {
         require_once $GLOBALS['xoops']->path('modules/umfrage/class/umfragerenderer.php');
     } else {
         // irmtfan - issue with javascript:history.go(-1)
-        redirect_header($_SERVER['HTTP_REFERER'], 2, _MD_POLLMODULE_ERROR);
+        redirect_header(Request::getString('HTTP_REFERER', '', 'SERVER'), 2, _MD_POLLMODULE_ERROR);
     }
 }
 /** @var Newbb\TopicHandler $topicHandler */
@@ -192,7 +192,7 @@ switch ($op) {
 
         // make sure the question isn't empty
         if (empty($_POST['question'])) {
-            redirect_header($_SERVER['HTTP_REFERER'], 2, _MD_ERROROCCURED . ': ' . _MD_POLL_POLLQUESTION . ' !');
+            redirect_header(Request::getString('HTTP_REFERER', '', 'SERVER'), 2, _MD_ERROROCCURED . ': ' . _MD_POLL_POLLQUESTION . ' !');
         }
 
         // Check to see if any options are set
@@ -201,7 +201,7 @@ switch ($op) {
         $option_string = trim($option_string);
         if (empty($option_string)) {
             // irmtfan - issue with javascript:history.go(-1)
-            redirect_header($_SERVER['HTTP_REFERER'], 2, _MD_ERROROCCURED . ': ' . _MD_POLL_POLLOPTIONS . ' !');
+            redirect_header(Request::getString('HTTP_REFERER', '', 'SERVER'), 2, _MD_ERROROCCURED . ': ' . _MD_POLL_POLLOPTIONS . ' !');
         }
 
         if ("xoopspoll" == $pollmodules) {
@@ -387,7 +387,7 @@ switch ($op) {
         $option_string = trim($option_string);
         if (empty($option_string)) {
             // irmtfan - issue with javascript:history.go(-1)
-            redirect_header($_SERVER['HTTP_REFERER'], 2, _MD_ERROROCCURED . ': ' . _MD_POLL_POLLOPTIONS . ' !');
+            redirect_header(Request::getString('HTTP_REFERER', '', 'SERVER'), 2, _MD_ERROROCCURED . ': ' . _MD_POLL_POLLOPTIONS . ' !');
         }
 
         if ('xoopspoll' === $pollmodules) {
@@ -596,7 +596,7 @@ switch ($op) {
         $option_string = trim($option_string);
         if (empty($option_string)) {
             // irmtfan - issue with javascript:history.go(-1)
-            redirect_header($_SERVER['HTTP_REFERER'], 2, _MD_ERROROCCURED . ': ' . _MD_POLL_POLLOPTIONS . ' !');
+            redirect_header(Request::getString('HTTP_REFERER', '', 'SERVER'), 2, _MD_ERROROCCURED . ': ' . _MD_POLL_POLLOPTIONS . ' !');
         }
 
         if ('xoopspoll' === $pollmodules) {

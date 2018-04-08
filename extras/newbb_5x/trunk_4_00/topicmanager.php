@@ -16,6 +16,7 @@
  * @author          Taiwen Jiang <phppp@users.sourceforge.net>
  */
 
+use Xmf\Request;
 use XoopsModules\Newbb;
 use XoopsModules\Xoopspoll;
 /** @var Xoopspoll\Helper $helper */
@@ -94,7 +95,7 @@ if (isset($_POST['submit'])) {
         $newtopic_obj = $topicHandler->get($newtopic);
         /* return false if destination topic is newer or not existing */
         if ($newtopic > $topic_id || !is_object($newtopic_obj)) {
-            redirect_header($_SERVER['HTTP_REFERER'], 2, _MD_ERROR);
+            redirect_header(Request::getString('HTTP_REFERER', '', 'SERVER'), 2, _MD_ERROR);
         }
 
         $criteria_topic = new \Criteria('topic_id', $topic_id);
@@ -157,7 +158,7 @@ if (isset($_POST['submit'])) {
             $forumHandler->synchronization($forum);
             echo $action[$mode]['msg'] . "<p><a href='viewtopic.php?topic_id={$topic_id}&amp;forum={$newforum}'>" . _MD_GOTONEWFORUM . "</a></p><p><a href='index.php'>" . _MD_RETURNFORUMINDEX . '</a></p>';
         } else {
-            redirect_header($_SERVER['HTTP_REFERER'], 2, _MD_ERRORFORUM);
+            redirect_header(Request::getString('HTTP_REFERER', '', 'SERVER'), 2, _MD_ERRORFORUM);
         }
     } else {
         $sql = sprintf('UPDATE `%s` SET ' . $action[$mode]['sql'] . ' WHERE topic_id = %u', $xoopsDB->prefix('bb_topics'), $topic_id);
