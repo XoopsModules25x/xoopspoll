@@ -45,7 +45,7 @@ use XoopsModules\Newbb;
  * @uses $GLOBALS['xoops']::path gets XOOPS directory information
  * @uses xoops_getModuleHandler() to load handler for this module's class(es)
  */
-require_once __DIR__ . '/../../mainfile.php';
+require_once  dirname(dirname(__DIR__)) . '/mainfile.php';
 
 xoops_load('constants', 'xoopspoll');
 xoops_load('renderer', 'xoopspoll');

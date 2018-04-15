@@ -19,12 +19,13 @@
 
 use XoopsModules\Newbb;
 use XoopsModules\Xoopspoll;
-/** @var Xoopspoll\Helper $helper */
-$helper = Xoopspoll\Helper::getInstance();
 
 include __DIR__ . '/header.php';
 require_once XOOPS_ROOT_PATH . '/modules/newbb/include/functions.read.php';
 require_once XOOPS_ROOT_PATH . '/modules/newbb/include/functions.render.php';
+
+/** @var Xoopspoll\Helper $helper */
+$helper = Xoopspoll\Helper::getInstance();
 
 /*
  * Build the page query

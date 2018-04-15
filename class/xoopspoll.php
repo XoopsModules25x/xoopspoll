@@ -29,7 +29,7 @@ use XoopsModules\Xoopspoll;
 /**
  * @deprecated
  */
-class Xoopspoll extends Xoopspoll\Poll
+class Xoopspoll extends \Xoopspoll\Poll
 {
     /**
      * @deprecated
@@ -46,7 +46,7 @@ class Xoopspoll extends Xoopspoll\Poll
 /**
  * @deprecated
  */
-class XoopsPollHandler extends Xoopspoll\PollHandler
+class XoopsPollHandler extends \Xoopspoll\PollHandler
 {
     /**
      * @deprecated

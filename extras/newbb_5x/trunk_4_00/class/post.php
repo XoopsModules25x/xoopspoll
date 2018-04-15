@@ -18,8 +18,6 @@
 
 use XoopsModules\Newbb;
 use XoopsModules\Xoopspoll;
-/** @var Xoopspoll\Helper $helper */
-$helper = Xoopspoll\Helper::getInstance();
 
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
 

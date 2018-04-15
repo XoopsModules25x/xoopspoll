@@ -20,10 +20,11 @@
 use Xmf\Request;
 use XoopsModules\Newbb;
 use XoopsModules\Xoopspoll;
-/** @var Xoopspoll\Helper $helper */
-$helper = Xoopspoll\Helper::getInstance();
 
 require_once __DIR__ . '/header.php';
+
+/** @var Xoopspoll\Helper $helper */
+$helper = Xoopspoll\Helper::getInstance();
 
 if (isset($_POST['submit'])) {
     foreach (['forum', 'newforum', 'newtopic'] as $getint) {

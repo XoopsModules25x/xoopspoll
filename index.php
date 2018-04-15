@@ -49,7 +49,7 @@ use XoopsModules\Xoopspoll;
 use XoopsModules\Xoopspoll\Constants;
 use XoopsModules\Newbb;
 
-require_once __DIR__ . '/../../mainfile.php';
+require_once  dirname(dirname(__DIR__)) . '/mainfile.php';
 
 xoops_load('constants', 'xoopspoll');
 xoops_load('renderer', 'xoopspoll');

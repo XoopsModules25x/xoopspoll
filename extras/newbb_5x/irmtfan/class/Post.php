@@ -338,8 +338,8 @@ class Post extends \XoopsObject
         $GLOBALS['xoopsModuleConfig'] = newbb_load_config(); // irmtfan  load all newbb configs - newbb config in blocks activated in some modules like profile
 //        mod_loadFunctions('user', 'newbb');
 //        mod_loadFunctions('render', 'newbb');
-        require_once __DIR__ . '/../include/functions.user.php';
-        require_once __DIR__ . '/../include/functions.render.php';
+        require_once  dirname(__DIR__) . '/include/functions.user.php';
+        require_once  dirname(__DIR__) . '/include/functions.render.php';
 
         $uid          = ($GLOBALS['xoopsUser'] instanceof \XoopsUser) ? $GLOBALS['xoopsUser']->getVar('uid') : 0;
         $karmaHandler = Newbb\Helper::getInstance()->getHandler('Karma');
@@ -441,9 +441,9 @@ class Post extends \XoopsObject
 //        mod_loadFunctions('time', 'newbb');
 //        mod_loadFunctions('render', 'newbb');
 //        mod_loadFunctions('text', 'newbb'); // irmtfan add text functions
-        require_once __DIR__ . '/../include/functions.time.php';
-        require_once __DIR__ . '/../include/functions.render.php';
-        require_once __DIR__ . '/../include/functions.text.php';
+        require_once  dirname(__DIR__) . '/include/functions.time.php';
+        require_once  dirname(__DIR__) . '/include/functions.render.php';
+        require_once  dirname(__DIR__) . '/include/functions.text.php';
 
         $post_id  = $this->getVar('post_id');
         $topic_id = $this->getVar('topic_id');

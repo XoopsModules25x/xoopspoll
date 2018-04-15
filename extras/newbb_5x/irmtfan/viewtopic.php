@@ -45,8 +45,8 @@ require_once __DIR__ . '/header.php';
 $xoopsLogger->startTime('newbb_viewtopic');
 //mod_loadFunctions('read', 'newbb');
 //mod_loadFunctions('render', 'newbb');
-require_once __DIR__ . '/../include/functions.read.php';
-require_once __DIR__ . '/../include/functions.render.php';
+require_once  dirname(__DIR__) . '/include/functions.read.php';
+require_once  dirname(__DIR__) . '/include/functions.render.php';
 xoops_loadLanguage('user'); // irmtfan add last_login
 
 /*Build the page query*/
@@ -664,7 +664,7 @@ if (!empty($GLOBALS['xoopsModuleConfig']['rating_enabled'])) {
 // create jump box
 if (!empty($GLOBALS['xoopsModuleConfig']['show_jump'])) {
 //    mod_loadFunctions('forum', 'newbb');
-    require_once __DIR__ . '/../include/functions.forum.php';
+    require_once  dirname(__DIR__) . '/include/functions.forum.php';
     $xoopsTpl->assign('forum_jumpbox', newbb_make_jumpbox($forum_id));
 }
 

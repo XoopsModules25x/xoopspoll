@@ -158,7 +158,7 @@ switch ($op) {
             $poll_form->addElement($notify_yn);
 
             $option_tray = new \XoopsFormElementTray(_MD_POLL_POLLOPTIONS, "");
-            $barcolor_array = XoopsLists::getImgListAsArray(XOOPS_ROOT_PATH . "/modules/{$pollmodules}/assets/images/colorbars/");
+            $barcolor_array = \XoopsLists::getImgListAsArray(XOOPS_ROOT_PATH . "/modules/{$pollmodules}/assets/images/colorbars/");
             for ($i = 0; $i < 10; ++$i) {
                 $current_bar = ("blank.gif" != current($barcolor_array)) ? current($barcolor_array) : next($barcolor_array);
                 $option_text = new \XoopsFormText("", "option_text[]", 50, 255);
@@ -343,7 +343,7 @@ switch ($op) {
             $notify_yn = new \XoopsFormRadioYN(_MD_POLL_NOTIFY, 'notify', $notify_value);
             $poll_form->addElement($notify_yn);
             $option_tray    = new \XoopsFormElementTray(_MD_POLL_POLLOPTIONS, '');
-            $barcolor_array = XoopsLists::getImgListAsArray($GLOBALS['xoops']->path("modules/{$pollmodules}/assets/images/colorbars/"));
+            $barcolor_array = \XoopsLists::getImgListAsArray($GLOBALS['xoops']->path("modules/{$pollmodules}/assets/images/colorbars/"));
             $i              = 0;
             foreach ($options_arr as $option) {
                 $option_tray->addElement(new \XoopsFormText('', 'option_text[]', 50, 255, $option->getVar('option_text')));
@@ -557,7 +557,7 @@ switch ($op) {
             $option_tray = $xpOptHandler->renderOptionFormTray($poll_id);
         } else {
             $option_tray    = new \XoopsFormElementTray(_MD_POLL_POLLOPTIONS, '');
-            $barcolor_array = XoopsLists::getImgListAsArray($GLOBALS['xoops']->path("modules/{$pollmodules}/assets/images/colorbars/"));
+            $barcolor_array = \XoopsLists::getImgListAsArray($GLOBALS['xoops']->path("modules/{$pollmodules}/assets/images/colorbars/"));
             for ($i = 0; $i < 10; ++$i) {
                 $current_bar = ('blank.gif' !== current($barcolor_array)) ? current($barcolor_array) : next($barcolor_array);
                 $option_text = new \XoopsFormText('', 'option_text[]', 50, 255);
