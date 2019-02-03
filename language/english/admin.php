@@ -55,7 +55,7 @@ define('_AM_XOOPSPOLL_POLLVOTERS', 'Voters participating in this Poll');
 define('_AM_XOOPSPOLL_ERROR_INVALID_POLLID', 'Invalid Poll ID, please try again.');
 
 //1.40
-define('_AM_XOOPSPOLL_ADMIN_MISSING', "<span style='color: red;'> ERROR: You must install the XOOPS Frameworks moduleadmin class.</span>");
+define('_AM_XOOPSPOLL_ADMIN_MISSING', "<span style='color: #ff0000;'> ERROR: You must install the XOOPS Frameworks moduleadmin class.</span>");
 define('_AM_XOOPSPOLL_RESULT_SUM', 'Results Summary');
 define('_AM_XOOPSPOLL_OPTION', 'Option');
 define('_AM_XOOPSPOLL_LABEL', 'Label');
@@ -65,7 +65,7 @@ define('_AM_XOOPSPOLL_CLONE_SUCCESS', 'Clone of poll created successfully');
 define('_AM_XOOPSPOLL_CLONE_FAIL', 'Unable to clone this poll');
 define('_AM_XOOPSPOLL_START_TIME', 'Start time');
 define('_AM_XOOPSPOLL_PM_VOTER', 'Private message voter');
-define('_AM_XOOPSPOLL_ERROR_DBUPDATE', "<span style='color: red;'> Database could not be updated</span>");
+define('_AM_XOOPSPOLL_ERROR_DBUPDATE', "<span style='color: #ff0000;'> Database could not be updated</span>");
 define('_AM_XOOPSPOLL_HELPNOTUPDATED', 'Unable to update link text in help file');
 define('_AM_XOOPSPOLL_ERROR_UPDATE', 'The module update script did not complete successfully.');
 define('_AM_XOOPSPOLL_ERROR_COLUMN', 'Could not create column in database : ');
