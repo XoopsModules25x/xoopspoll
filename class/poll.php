@@ -26,6 +26,10 @@ use XoopsModules\Xoopspoll;
 
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
+/**
+ * Class Poll
+ * @package XoopsModules\Xoopspoll
+ */
 class Poll extends \XoopsObject
 {
     /**

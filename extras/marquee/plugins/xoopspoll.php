@@ -29,6 +29,12 @@
 
 use XoopsModules\Xoopspoll;
 
+/**
+ * @param $limit
+ * @param $dateformat
+ * @param $itemssize
+ * @return array
+ */
 function b_marquee_xoopspoll($limit, $dateformat, $itemssize)
 {
     require_once $GLOBALS['xoops']->path('modules/marquee/include/functions.php');

@@ -21,6 +21,9 @@ use XoopsModules\Xoopspoll;
 
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
+/**
+ * Class post
+ */
 class post extends \XoopsObject
 {
     public $attachment_array = [];

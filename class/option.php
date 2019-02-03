@@ -41,6 +41,10 @@ use XoopsModules\Xoopspoll;
 
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
+/**
+ * Class Option
+ * @package XoopsModules\Xoopspoll
+ */
 class Option extends \XoopsObject
 {
     /**

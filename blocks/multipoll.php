@@ -197,11 +197,10 @@ function xoopspollBlockMultiShow($options)
  * Display a form to edit poll block display option
  *
  * @access public
- * @global mixed $GLOBALS ['xoopsUser']
- * @uses   xoops_getModuleHandler() function to get class handler for this modules class(es)
- * @param        array    options contains settings for block display (init in xoopsversion.php and saved in db)
  * @param mixed  $options
  * @return string HTML form for display by block admin
+ * @global mixed $GLOBALS ['xoopsUser']
+ * @uses   xoops_getModuleHandler() function to get class handler for this modules class(es)
  */
 function xoopspollBlockMultiEdit($options)
 {

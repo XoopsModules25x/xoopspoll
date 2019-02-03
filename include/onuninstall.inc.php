@@ -24,6 +24,10 @@
 use XoopsModules\Newbb;
 use XoopsModules\Xoopspoll;
 
+/**
+ * @param \XoopsModule $module
+ * @return bool
+ */
 function xoops_module_pre_uninstall_xoopspoll(\XoopsModule $module)
 {
     /* make sure that any polls associated with xoopspoll are cleared from newbb */

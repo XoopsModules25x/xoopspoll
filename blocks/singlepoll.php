@@ -35,14 +35,13 @@ require_once $GLOBALS['xoops']->path( "modules"
  * Display a single XOOPS Polls in a block
  *
  * @access public
+ * @param mixed  $options
+ * @return array block keys and values to be used by block template
  * @global mixed $GLOBALS ['xoopsUser']
  * @uses   CriteriaCompo
  * @uses   Criteria
  * @uses   xoops_getUserTimestamp() function to convert time to user time
  * @uses   formatTimestamp() takes timestamp and converts to human readable format
- * @param        array    options contains settings for block display
- * @param mixed  $options
- * @return array block keys and values to be used by block template
  */
 function xoopspollBlockSinglepollShow($options)
 {
@@ -197,11 +196,10 @@ function xoopspollBlockSinglepollShow($options)
  * Display a form to edit poll block display option
  *
  * @access public
- * @global mixed $GLOBALS ['xoopsUser']
- * @uses   xoops_getModuleHandler() function to get class handler for this modules class(es)
- * @param        array    options contains settings for block display (init in xoopsversion.php and saved in db)
  * @param mixed  $options
  * @return string HTML form for display by block admin
+ * @global mixed $GLOBALS ['xoopsUser']
+ * @uses   xoops_getModuleHandler() function to get class handler for this modules class(es)
  */
 function xoopspollBlockSinglepollEdit($options)
 {

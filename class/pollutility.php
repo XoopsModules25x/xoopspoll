@@ -28,6 +28,10 @@ use XoopsModules\Xoopspoll;
 
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
+/**
+ * Class PollUtility
+ * @package XoopsModules\Xoopspoll
+ */
 class PollUtility
 {
     /**

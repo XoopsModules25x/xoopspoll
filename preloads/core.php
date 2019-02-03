@@ -36,6 +36,9 @@
 
 use XoopsModules\Xoopspoll;
 
+/**
+ * Class XoopspollCorePreload
+ */
 class XoopspollCorePreload extends \XoopsPreloadItem
 {
     // to add PSR-4 autoloader
