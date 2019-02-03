@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\Xoopspoll;
+<?php
+
+namespace XoopsModules\Xoopspoll;
 
 /**
  * Xoopspoll form timepicker
@@ -28,13 +30,11 @@
 class FormDateTimePicker extends \XoopsFormText
 {
     /**
-     *
      * Contains the maximum field size
      */
     const MAXSIZE = 25;
 
     /**
-     *
      * Constructor to build FormDateTimePicker object
      * @param mixed $caption HTML description to display for the element
      * @param mixed $name    HTML element name (ie. name='$name')
@@ -50,7 +50,6 @@ class FormDateTimePicker extends \XoopsFormText
     }
 
     /**
-     *
      * Generate the HTML <input> to display the date/time field
      * @return string HTML code used to display in a form
      */

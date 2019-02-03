@@ -17,9 +17,9 @@
  */
 
 use Xmf\Request;
+use XoopsModules\Newbb;
 use XoopsModules\Xoopspoll;
 use XoopsModules\Xoopspoll\Constants;
-use XoopsModules\Newbb;
 
 require_once __DIR__ . '/header.php';
 
@@ -43,7 +43,7 @@ if (empty($_POST['option_id'])) {
     redirect_header("viewtopic.php?topic_id={$topic_id}", 1, _MD_POLL_NOOPTION);
 }
 
-/** @var XoopsModuleHandler $moduleHandler */
+/** @var \XoopsModuleHandler $moduleHandler */
 $moduleHandler = xoops_getHandler('module');
 $xoopspoll     = $moduleHandler->getByDirname('xoopspoll');
 
@@ -94,7 +94,7 @@ if ($pollObj instanceof Poll) {
             }
             /* set anon user vote (and the time they voted) */
             if (!$GLOBALS['xoopsUser'] instanceof \XoopsUser) {
-//                xoops_load('pollUtility', 'xoopspoll');
+                //                xoops_load('pollUtility', 'xoopspoll');
                 Xoopspoll\Utility::setVoteCookie($poll_id, $voteTime, 0);
             }
         } else {

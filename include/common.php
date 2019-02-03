@@ -14,24 +14,23 @@
  * @license      GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  * @package
  * @since
- * @author     XOOPS Development Team
+ * @author       XOOPS Development Team
  */
 
 use XoopsModules\Xoopspoll;
 
-include  dirname(__DIR__) . '/preloads/autoloader.php';
+require dirname(__DIR__) . '/preloads/autoloader.php';
 
-$moduleDirName = basename(dirname(__DIR__));
-$moduleDirNameUpper   = strtoupper($moduleDirName); //$capsDirName
-
+$moduleDirName      = basename(dirname(__DIR__));
+$moduleDirNameUpper = mb_strtoupper($moduleDirName); //$capsDirName
 
 /** @var \XoopsDatabase $db */
-/** @var Xoopspoll\Helper $helper */
-/** @var Xoopspoll\Utility $utility */
+/** @var \Xoopspoll\Helper $helper */
+/** @var \Xoopspoll\Utility $utility */
 $db      = \XoopsDatabaseFactory::getDatabaseConnection();
 $helper  = Xoopspoll\Helper::getInstance();
-$utility = new \Xoopspoll\Utility();
-//$configurator = new \Xoopspoll\Common\Configurator();
+$utility = new Xoopspoll\Utility();
+//$configurator = new Xoopspoll\Common\Configurator();
 
 $helper->loadLanguage('common');
 
@@ -55,10 +54,8 @@ if (!defined($moduleDirNameUpper . '_CONSTANTS_DEFINED')) {
     define($moduleDirNameUpper . '_CONSTANTS_DEFINED', 1);
 }
 
-
-
-$pathIcon16    = \Xmf\Module\Admin::iconUrl('', 16);
-$pathIcon32    = \Xmf\Module\Admin::iconUrl('', 32);
+$pathIcon16 = \Xmf\Module\Admin::iconUrl('', 16);
+$pathIcon32 = \Xmf\Module\Admin::iconUrl('', 32);
 //$pathModIcon16 = $helper->getModule()->getInfo('modicons16');
 //$pathModIcon32 = $helper->getModule()->getInfo('modicons32');
 

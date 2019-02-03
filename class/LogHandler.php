@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\Xoopspoll;
+<?php
+
+namespace XoopsModules\Xoopspoll;
 
 /*
                XOOPS - PHP Content Management System
@@ -48,7 +50,7 @@ class LogHandler extends \XoopsPersistableObjectHandler
      *
      * @param null|\XoopsDatabase $db
      **/
-    public function __construct(\XoopsDatabase $db)
+    public function __construct(\XoopsDatabase $db = null)
     {
         parent::__construct($db, 'xoopspoll_log', Log::class, 'log_id');
     }
@@ -64,7 +66,6 @@ class LogHandler extends \XoopsPersistableObjectHandler
     }
 
     /**
-     *
      * Delete all log entries by Option ID
      * @param  int $option_id
      * @return bool $success
@@ -78,7 +79,6 @@ class LogHandler extends \XoopsPersistableObjectHandler
     }
 
     /**
-     *
      * Delete all log entries by Poll ID
      * @uses CriteriaCompo
      * @param  int $pid
@@ -93,7 +93,6 @@ class LogHandler extends \XoopsPersistableObjectHandler
     }
 
     /**
-     *
      * Gets all log entries by Poll ID
      * @uses CriteriaCompo
      * @param  int    $pid
@@ -108,13 +107,12 @@ class LogHandler extends \XoopsPersistableObjectHandler
         $criteria->add(new \Criteria('poll_id', (int)$pid, '='));
         $criteria->setSort($sortby);
         $criteria->setOrder($orderby);
-        $ret =& $this->getAll($criteria);
+        $ret = &$this->getAll($criteria);
 
         return $ret;
     }
 
     /**
-     *
      * Get the total number of votes by the Poll ID
      * @uses CriteriaCompo
      * @param  int $pid
@@ -129,7 +127,6 @@ class LogHandler extends \XoopsPersistableObjectHandler
     }
 
     /**
-     *
      * Get the total number of voters for a specific Poll
      * @uses CriteriaCompo
      * @param  int $pid

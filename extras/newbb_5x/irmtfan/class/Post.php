@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\Newbb;
+<?php
+
+namespace XoopsModules\Newbb;
 
 /*
  * You may not change or alter any portion of this comment or credits
@@ -18,12 +20,11 @@
  * @author       XOOPS Development Team, phppp (D.J., infomax@gmail.com)
  */
 
-use XoopsModules\Xoopspoll;
 use XoopsModules\Newbb;
 
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
-defined('NEWBB_FUNCTIONS_INI') || include XOOPS_ROOT_PATH . '/modules/newbb/include/functions.ini.php';
+defined('NEWBB_FUNCTIONS_INI') || require XOOPS_ROOT_PATH . '/modules/newbb/include/functions.ini.php';
 newbb_load_object();
 
 /**
@@ -66,6 +67,7 @@ class Post extends \XoopsObject
 
     // ////////////////////////////////////////////////////////////////////////////////////
     // attachment functions    TODO: there should be a file/attachment management class
+
     /**
      * @return array|mixed|null
      */
@@ -78,7 +80,7 @@ class Post extends \XoopsObject
         if (empty($attachment)) {
             $this->attachment_array = null;
         } else {
-            $this->attachment_array = @unserialize(base64_decode($attachment));
+            $this->attachment_array = @unserialize(base64_decode($attachment, true));
         }
 
         return $this->attachment_array;
@@ -137,7 +139,7 @@ class Post extends \XoopsObject
         }
 
         foreach ($attach_old as $key => $attach) {
-            if (in_array($key, $attach_array)) {
+            if (in_array($key, $attach_array, true)) {
                 @unlink(XOOPS_ROOT_PATH . '/' . $GLOBALS['xoopsModuleConfig']['dir_attachments'] . '/' . $attach['name_saved']);
                 @unlink(XOOPS_ROOT_PATH . '/' . $GLOBALS['xoopsModuleConfig']['dir_attachments'] . '/thumbs/' . $attach['name_saved']); // delete thumbnails
                 continue;
@@ -170,7 +172,7 @@ class Post extends \XoopsObject
                 'name_saved'   => $name_saved,
                 'name_display' => isset($name_display) ? $name_display : $name_saved,
                 'mimetype'     => $mimetype,
-                'num_download' => isset($num_download) ? (int)$num_download : 0
+                'num_download' => isset($num_download) ? (int)$num_download : 0,
             ];
         }
         $attachment_save = null;
@@ -200,7 +202,7 @@ class Post extends \XoopsObject
             $post_attachment  .= "<div style='margin: 1em 0; border-top: 1px solid;'></div>\n";
             //            $post_attachment .= '<br><hr style="height: 1px;" noshade="noshade"><br>';
             foreach ($attachments as $key => $att) {
-                $file_extension = ltrim(strrchr($att['name_saved'], '.'), '.');
+                $file_extension = ltrim(mb_strrchr($att['name_saved'], '.'), '.');
                 $filetype       = $file_extension;
                 if (file_exists($GLOBALS['xoops']->path("{$mime_path}/{$filetype}.gif"))) {
                     $icon_filetype = $GLOBALS['xoops']->url("{$mime_path}/{$filetype}.gif");
@@ -209,7 +211,7 @@ class Post extends \XoopsObject
                 }
                 $file_size = @filesize($GLOBALS['xoops']->path($GLOBALS['xoopsModuleConfig']['dir_attachments'] . '/' . $att['name_saved']));
                 $file_size = number_format($file_size / 1024, 2) . ' KB';
-                if (in_array(strtolower($file_extension), $image_extensions)
+                if (in_array(mb_strtolower($file_extension), $image_extensions, true)
                     && $GLOBALS['xoopsModuleConfig']['media_allowed']) {
                     $post_attachment .= '<br><img src="' . $icon_filetype . '" alt="' . $filetype . '"><strong>&nbsp; ' . $att['name_display'] . '</strong> <small>(' . $file_size . ')</small>';
                     $post_attachment .= '<br>' . newbb_attachmentImage($att['name_saved']);
@@ -244,6 +246,7 @@ class Post extends \XoopsObject
 
         return $post_attachment;
     }
+
     // attachment functions
     // ////////////////////////////////////////////////////////////////////////////////////
 
@@ -273,7 +276,7 @@ class Post extends \XoopsObject
 
         $post_edits = $this->getVar('post_edit');
         if (!empty($post_edits)) {
-            $post_edits = unserialize(base64_decode($post_edits));
+            $post_edits = unserialize(base64_decode($post_edits, true));
         }
         if (!is_array($post_edits)) {
             $post_edits = [];
@@ -300,7 +303,7 @@ class Post extends \XoopsObject
         $post_edit  = '';
         $post_edits = $this->getVar('post_edit');
         if (!empty($post_edits)) {
-            $post_edits = unserialize(base64_decode($post_edits));
+            $post_edits = unserialize(base64_decode($post_edits, true));
         }
         if (!isset($post_edits) || !is_array($post_edits)) {
             $post_edits = [];
@@ -309,7 +312,7 @@ class Post extends \XoopsObject
             foreach ($post_edits as $postedit) {
                 $edit_time = (int)$postedit['edit_time'];
                 $edit_user = $myts->stripSlashesGPC($postedit['edit_user']);
-                $edit_msg  = (!empty($postedit['edit_msg'])) ? $myts->stripSlashesGPC($postedit['edit_msg']) : '';
+                $edit_msg  = !empty($postedit['edit_msg']) ? $myts->stripSlashesGPC($postedit['edit_msg']) : '';
                 // Start irmtfan add option to do only the latest edit when do_latestedit=0 (Alfred)
                 if (empty($GLOBALS['xoopsModuleConfig']['do_latestedit'])) {
                     $post_edit = '';
@@ -336,10 +339,10 @@ class Post extends \XoopsObject
     {
         global $myts;
         $GLOBALS['xoopsModuleConfig'] = newbb_load_config(); // irmtfan  load all newbb configs - newbb config in blocks activated in some modules like profile
-//        mod_loadFunctions('user', 'newbb');
-//        mod_loadFunctions('render', 'newbb');
-        require_once  dirname(__DIR__) . '/include/functions.user.php';
-        require_once  dirname(__DIR__) . '/include/functions.render.php';
+        //        mod_loadFunctions('user', 'newbb');
+        //        mod_loadFunctions('render', 'newbb');
+        require_once dirname(__DIR__) . '/include/functions.user.php';
+        require_once dirname(__DIR__) . '/include/functions.render.php';
 
         $uid          = ($GLOBALS['xoopsUser'] instanceof \XoopsUser) ? $GLOBALS['xoopsUser']->getVar('uid') : 0;
         $karmaHandler = Newbb\Helper::getInstance()->getHandler('Karma');
@@ -347,7 +350,7 @@ class Post extends \XoopsObject
 
         $post               = [];
         $post['attachment'] = false;
-        $post_text          =& newbb_displayTarea($this->vars['post_text']['value'], $this->getVar('dohtml'), $this->getVar('dosmiley'), $this->getVar('doxcode'), $this->getVar('doimage'), $this->getVar('dobr'));
+        $post_text          = &newbb_displayTarea($this->vars['post_text']['value'], $this->getVar('dohtml'), $this->getVar('dosmiley'), $this->getVar('doxcode'), $this->getVar('doimage'), $this->getVar('dobr'));
         if (newbb_isAdmin($this->getVar('forum_id')) or $this->checkIdentity()) {
             $post['text'] = $post_text . '<br>' . $this->displayAttachment();
         } elseif ($GLOBALS['xoopsModuleConfig']['enable_karma'] && $this->getVar('post_karma') > $user_karma) {
@@ -438,12 +441,12 @@ class Post extends \XoopsObject
             $name_anonymous = $myts->htmlSpecialChars($GLOBALS['xoopsConfig']['anonymous']);
         }
 
-//        mod_loadFunctions('time', 'newbb');
-//        mod_loadFunctions('render', 'newbb');
-//        mod_loadFunctions('text', 'newbb'); // irmtfan add text functions
-        require_once  dirname(__DIR__) . '/include/functions.time.php';
-        require_once  dirname(__DIR__) . '/include/functions.render.php';
-        require_once  dirname(__DIR__) . '/include/functions.text.php';
+        //        mod_loadFunctions('time', 'newbb');
+        //        mod_loadFunctions('render', 'newbb');
+        //        mod_loadFunctions('text', 'newbb'); // irmtfan add text functions
+        require_once dirname(__DIR__) . '/include/functions.time.php';
+        require_once dirname(__DIR__) . '/include/functions.render.php';
+        require_once dirname(__DIR__) . '/include/functions.text.php';
 
         $post_id  = $this->getVar('post_id');
         $topic_id = $this->getVar('topic_id');
@@ -462,7 +465,7 @@ class Post extends \XoopsObject
         $uid = ($GLOBALS['xoopsUser'] instanceof \XoopsUser) ? $GLOBALS['xoopsUser']->getVar('uid') : 0;
 
         ++$post_NO;
-        if ('desc' === strtolower($order)) {
+        if ('desc' === mb_strtolower($order)) {
             $post_no = $total_posts - ($start + $post_NO) + 1;
         } else {
             $post_no = $start + $post_NO;
@@ -476,7 +479,7 @@ class Post extends \XoopsObject
             $post_attachment = '';
         } elseif ($GLOBALS['xoopsModuleConfig']['allow_require_reply'] && $this->getVar('require_reply')
                   && (!$uid
-                      || !in_array($uid, $viewtopic_posters))) {
+                      || !in_array($uid, $viewtopic_posters, true))) {
             $post_text       = "<div class='karma'>" . _MD_REPLY_REQUIREMENT . "</div>\n";
             $post_attachment = '';
         } else {
@@ -486,7 +489,7 @@ class Post extends \XoopsObject
         // START irmtfan add highlight feature
         // Hightlighting searched words
         $post_title = $this->getVar('subject');
-        if (isset($_GET['keywords']) && !empty($_GET['keywords'])) {
+        if (\Xmf\Request::hasVar('keywords', 'GET') && !empty($_GET['keywords'])) {
             $keywords   = $myts->htmlSpecialChars(trim(urldecode($_GET['keywords'])));
             $post_text  = newbb_highlightText($post_text, $keywords);
             $post_title = newbb_highlightText($post_title, $keywords);
@@ -499,7 +502,7 @@ class Post extends \XoopsObject
             $poster = [
                 'poster_uid' => 0,
                 'name'       => $name,
-                'link'       => $name
+                'link'       => $name,
             ];
         }
 
@@ -661,7 +664,7 @@ class Post extends \XoopsObject
             'thread_buttons'  => $thread_buttons,
             'mod_buttons'     => $mod_buttons,
             'poster'          => $poster,
-            'post_permalink'  => "<a href='" . $GLOBALS['xoops']->url('/modules/' . $GLOBALS['xoopsModule']->getVar('dirname') . "/viewtopic.php?post_id={$post_id}") . "'></a>"
+            'post_permalink'  => "<a href='" . $GLOBALS['xoops']->url('/modules/' . $GLOBALS['xoopsModule']->getVar('dirname') . "/viewtopic.php?post_id={$post_id}") . "'></a>",
         ];
 
         unset($thread_buttons, $mod_buttons, $eachposter);

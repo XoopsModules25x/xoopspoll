@@ -69,7 +69,6 @@
 /**
  * SmartClone plugin for Xoopspoll
  */
-
 $i                                 = 0;
 $pluginPatterns[$i]['key']         = '_XOOPSPOLL_';
 $pluginPatterns[$i]['replacement'] = 'CONSTANT';

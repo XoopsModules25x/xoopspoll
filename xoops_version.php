@@ -36,7 +36,6 @@
  * @since    ::  1.0
  * @author   ::  {@link http://www.myweb.ne.jp Kazumi Ono}
  **/
-
 defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 require_once __DIR__ . '/preloads/autoloader.php';
@@ -54,8 +53,8 @@ $modversion['license_url']   = 'www.gnu.org/licenses/gpl-2.0.html';
 $modversion['official']      = 1; // 0 = 3rd party module, 1 = supported by XOOPS Community
 $modversion['image']         = 'assets/images/logoModule.png';
 $modversion['dirname']       = basename(__DIR__);
-$modversion['modicons16'] = 'assets/images/icons/16';
-$modversion['modicons32'] = 'assets/images/icons/32';
+$modversion['modicons16']    = 'assets/images/icons/16';
+$modversion['modicons32']    = 'assets/images/icons/32';
 
 $modversion['onInstall']           = 'include/oninstall.inc.php';
 $modversion['onUpdate']            = 'include/onupdate.inc.php';
@@ -87,7 +86,7 @@ $modversion['sqlfile']['postgresql'] = 'sql'
 $modversion['tables'] = [
     'xoopspoll_option',
     'xoopspoll_desc',
-    'xoopspoll_log'
+    'xoopspoll_log',
 ];
 
 /**
@@ -146,7 +145,7 @@ $modversion['blocks'][1] = [
     'show_func'   => 'xoopspollBlockMultiShow',
     'edit_func'   => 'xoopspollBlockMultiEdit',
     'options'     => '1|1',
-    'template'    => 'xoopspoll_block_poll.tpl'
+    'template'    => 'xoopspoll_block_poll.tpl',
 ];
 $modversion['blocks'][2] = [
     'file'        => 'singlepoll.php',
@@ -155,7 +154,7 @@ $modversion['blocks'][2] = [
     'show_func'   => 'xoopspollBlockSinglepollShow',
     'edit_func'   => 'xoopspollBlockSinglepollEdit',
     'options'     => '1|0|1|1',
-    'template'    => 'xoopspoll_block_singlepoll.tpl'
+    'template'    => 'xoopspoll_block_singlepoll.tpl',
 ];
 /**#@-*/
 
@@ -173,7 +172,7 @@ $modversion['config'][] = [
     'formtype'    => 'yesno',
     'valuetype'   => 'int',
     'default'     => '0',
-    'options'     => []
+    'options'     => [],
 ];
 
 /**
@@ -186,7 +185,7 @@ $modversion['config'][] = [
     'formtype'    => 'yesno',
     'valuetype'   => 'int',
     'default'     => '1',
-    'options'     => []
+    'options'     => [],
 ];
 
 /**
@@ -200,7 +199,7 @@ $modversion['config'][] = [
     'formtype'    => 'yesno',
     'valuetype'   => 'int',
     'default'     => '1',
-    'options'     => []
+    'options'     => [],
 ];
 
 /**

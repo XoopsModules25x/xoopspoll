@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\Xoopspoll;
+<?php
+
+namespace XoopsModules\Xoopspoll;
 
 /*
  * You may not change or alter any portion of this comment or credits
@@ -15,9 +17,8 @@
  * @license      GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  * @package
  * @since
- * @author     XOOPS Development Team
+ * @author       XOOPS Development Team
  */
-
 defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 /**
@@ -33,8 +34,8 @@ class Helper extends \Xmf\Module\Helper
     public function __construct($debug = false)
     {
         $this->debug   = $debug;
-       $moduleDirName = basename(dirname(__DIR__));
-       parent::__construct($moduleDirName);
+        $moduleDirName = basename(dirname(__DIR__));
+        parent::__construct($moduleDirName);
     }
 
     /**
@@ -71,8 +72,9 @@ class Helper extends \Xmf\Module\Helper
     {
         $ret   = false;
         $db    = \XoopsDatabaseFactory::getDatabaseConnection();
-        $class = '\\XoopsModules\\' . ucfirst(strtolower(basename(dirname(__DIR__)))) . '\\' . $name . 'Handler';
+        $class = '\\XoopsModules\\' . ucfirst(mb_strtolower(basename(dirname(__DIR__)))) . '\\' . $name . 'Handler';
         $ret   = new $class($db);
+
         return $ret;
     }
 }

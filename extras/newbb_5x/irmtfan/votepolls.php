@@ -18,9 +18,9 @@
  */
 
 use Xmf\Request;
+use XoopsModules\Newbb;
 use XoopsModules\Xoopspoll;
 use XoopsModules\Xoopspoll\Constants;
-use XoopsModules\Newbb;
 
 require_once __DIR__ . '/header.php';
 
@@ -102,7 +102,7 @@ if ('xoopspoll' === $pollmodules) {
                 }
                 /* set anon user vote (and the time they voted) */
                 if (!$GLOBALS['xoopsUser'] instanceof \XoopsUser) {
-//                    xoops_load('pollUtility', 'xoopspoll');
+                    //                    xoops_load('pollUtility', 'xoopspoll');
                     Xoopspoll\Utility::setVoteCookie($poll_id, $voteTime, 0);
                 }
             } else {

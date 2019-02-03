@@ -20,12 +20,12 @@ use Xmf\Request;
 use XoopsModules\Newbb;
 use XoopsModules\Xoopspoll;
 
-include __DIR__ . '/header.php';
+require_once __DIR__ . '/header.php';
 
-/** @var Xoopspoll\Helper $helper */
+/** @var \Xoopspoll\Helper $helper */
 $helper = Xoopspoll\Helper::getInstance();
 
-if (isset($_POST['submit'])) {
+if (\Xmf\Request::hasVar('submit', 'POST')) {
     foreach (['forum', 'topic_id', 'newforum', 'newtopic'] as $getint) {
         ${$getint} = (int)(@$_POST[$getint]);
     }
@@ -64,10 +64,10 @@ $action_array = ['merge', 'delete', 'move', 'lock', 'unlock', 'sticky', 'unstick
 foreach ($action_array as $_action) {
     $action[$_action] = [
         'name'   => $_action,
-        'desc'   => constant(strtoupper("_MD_DESC_{$_action}")),
-        'submit' => constant(strtoupper("_MD_{$_action}")),
+        'desc'   => constant(mb_strtoupper("_MD_DESC_{$_action}")),
+        'submit' => constant(mb_strtoupper("_MD_{$_action}")),
         'sql'    => "topic_{$_action}=1",
-        'msg'    => constant(strtoupper("_MD_TOPIC{$_action}"))
+        'msg'    => constant(mb_strtoupper("_MD_TOPIC{$_action}")),
     ];
 }
 $action['lock']['sql']     = 'topic_status = 1';
@@ -78,9 +78,9 @@ $action['digest']['sql']   = 'topic_digest = 1, digest_time = ' . time();
 
 // Disable cache
 $xoopsConfig['module_cache'][$xoopsModule->getVar('mid')] = 0;
-include XOOPS_ROOT_PATH . '/header.php';
+require_once XOOPS_ROOT_PATH . '/header.php';
 
-if (isset($_POST['submit'])) {
+if (\Xmf\Request::hasVar('submit', 'POST')) {
     $mode = $_POST['mode'];
     if ('delete' === $mode) {
         $topic_obj = $topicHandler->get($topic_id);
@@ -114,7 +114,7 @@ if (isset($_POST['submit'])) {
         $poll_id = $topicHandler->get($topic_id, 'poll_id');
 
         if ($poll_id > 0) {
-            /** @var XoopsModuleHandler $moduleHandler */
+            /** @var \XoopsModuleHandler $moduleHandler */
             $moduleHandler = xoops_getHandler('module');
             $pollModule    = $moduleHandler->getByDirname('xoopspoll');
             if (($pollModule instanceof XoopsModule) && $pollModule->isactive()) {
@@ -194,7 +194,7 @@ if (isset($_POST['submit'])) {
 
         $categoryHandler = Newbb\Helper::getInstance()->getHandler('Category');
         $categories      = $categoryHandler->getByPermission('access');
-        $forums          =& $forumHandler->getForumsByCategory(array_keys($categories), 'post', false);
+        $forums          = &$forumHandler->getForumsByCategory(array_keys($categories), 'post', false);
 
         if (count($categories) > 0 && count($forums) > 0) {
             foreach (array_keys($forums) as $key) {
@@ -229,4 +229,4 @@ if (isset($_POST['submit'])) {
     echo "<input type='submit' name='submit' value='" . $action[$mode]['submit'] . "'>";
     echo '</td></tr></form></table></td></tr></table>';
 }
-include XOOPS_ROOT_PATH . '/footer.php';
+require_once XOOPS_ROOT_PATH . '/footer.php';

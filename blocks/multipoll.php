@@ -34,9 +34,9 @@
  *
  **/
 
+use XoopsModules\Newbb;
 use XoopsModules\Xoopspoll;
 use XoopsModules\Xoopspoll\Constants;
-use XoopsModules\Newbb;
 
 xoops_loadLanguage('main', 'xoopspoll');
 /*
@@ -50,7 +50,6 @@ xoops_load('pollUtility', 'xoopspoll');
 xoops_load('constants', 'xoopspoll');
 
 /**
- *
  * Display XOOPS polls in a block
  *
  * @access public
@@ -64,7 +63,7 @@ function xoopspollBlockMultiShow($options)
 {
     $block = [];
 
-    /** @var XoopsModuleHandler $moduleHandler */
+    /** @var \XoopsModuleHandler $moduleHandler */
     $moduleHandler      = xoops_getHandler('module');
     $thisModule         = $moduleHandler->getByDirname('xoopspoll');
     $configHandler      = xoops_getHandler('config');
@@ -87,7 +86,7 @@ function xoopspollBlockMultiShow($options)
             /** @var NewbbTopicHandler $topicHandler */
             $topicHandler = Newbb\Helper::getInstance()->getHandler('Topic');
             $tFields      = ['topic_id', 'poll_id'];
-            $tArray       =& $topicHandler->getAll(new \Criteria('topic_haspoll', 0, '>'), $tFields, false);
+            $tArray       = &$topicHandler->getAll(new \Criteria('topic_haspoll', 0, '>'), $tFields, false);
             if (!empty($tArray)) {
                 $tcriteria = [];
                 foreach ($tArray as $t) {
@@ -114,7 +113,7 @@ function xoopspollBlockMultiShow($options)
         $block['langExpired']   = _MB_XOOPSPOLL_HASEXPIRED;
         $block['langComments']  = _MB_XOOPSPOLL_COMMENTS;
         $block['langComment']   = _MB_XOOPSPOLL_COMMENT;
-        $block['url']           = 'http' . ((!empty($_SERVER['HTTPS'])) ? 's' : '') . '://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+        $block['url']           = 'http' . (!empty($_SERVER['HTTPS']) ? 's' : '') . '://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
         $block['dispVotes']     = $this_module_config['disp_vote_nums'];
         $block['thisModuleDir'] = 'xoopspoll';
         $block['asList']        = $options[0];
@@ -153,7 +152,7 @@ function xoopspollBlockMultiShow($options)
                     'text'    => $optionObjVars['option_text'],
                     'count'   => $optionObjVars['option_count'],
                     'percent' => sprintf(' %01.1f%%', $percent),
-                    'color'   => $optionObjVars['option_color']
+                    'color'   => $optionObjVars['option_color'],
                 ];
             }
             unset($pollOptionObjs, $optionObjVars);
@@ -184,7 +183,7 @@ function xoopspollBlockMultiShow($options)
                 'totalVotes'  => sprintf(_MD_XOOPSPOLL_TOTALVOTES, $totalVotes),
                 'comments'    => $pollObj->getComments($pollVars['poll_id']),
                 'endTime'     => $xuEndFormattedTime,
-                'commentMode' => Xoopspoll\Utility::commentMode()
+                'commentMode' => Xoopspoll\Utility::commentMode(),
             ];
             $block['polls'][] = $poll;
             unset($pollOptionArray, $poll, $pollVars);
@@ -195,13 +194,13 @@ function xoopspollBlockMultiShow($options)
 }
 
 /**
- *
  * Display a form to edit poll block display option
  *
  * @access public
  * @global mixed $GLOBALS ['xoopsUser']
  * @uses   xoops_getModuleHandler() function to get class handler for this modules class(es)
  * @param        array    options contains settings for block display (init in xoopsversion.php and saved in db)
+ * @param mixed  $options
  * @return string HTML form for display by block admin
  */
 function xoopspollBlockMultiEdit($options)
@@ -210,7 +209,6 @@ function xoopspollBlockMultiEdit($options)
      * Options[]
      *        [0]    0|1 = show as option|select
      *        [1]    0|1 show expired polls in block
-     *
      */
 
     // find out if want to show expired polls in block

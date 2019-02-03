@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\Xoopspoll;
+<?php
+
+namespace XoopsModules\Xoopspoll;
 
 /*
                XOOPS - PHP Content Management System

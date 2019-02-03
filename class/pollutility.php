@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\Xoopspoll;
+<?php
+
+namespace XoopsModules\Xoopspoll;
 
 /*
  Description: Poll Class Definition
@@ -10,6 +12,7 @@
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 */
+
 /**
  *  XoopsPoll Utility Class Elements
  *
@@ -22,14 +25,12 @@
  */
 
 use XoopsModules\Xoopspoll;
-use XoopsModules\Xoopspoll\Constants;
 
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 class PollUtility
 {
     /**
-     *
      * gets the name of the host located at a specific ip address
      * @param  string $ipAddr the ip address of the host
      * @return string host name
@@ -37,7 +38,7 @@ class PollUtility
     public static function getHostByAddrWithCache(&$ipAddr)
     {
         static $ipArray = [];
-        $retVal  =& $ipAddr;
+        $retVal  = &$ipAddr;
         $options = ['flags' => FILTER_FLAG_NO_PRIV_RANGE, FILTER_FLAG_NO_RES_RANGE];
         if (filter_var($ipAddr, FILTER_VALIDATE_IP, $options)) {
             if (array_key_exists($ipAddr, $ipArray)) {
@@ -45,7 +46,7 @@ class PollUtility
             } else {
                 $hostAddr = gethostbyaddr($ipAddr);
                 if ($hostAddr === $ipAddr) {
-                    $retVal =& $ipAddr;
+                    $retVal = &$ipAddr;
                 } else {
                     $ipArray[$ipAddr] = htmlspecialchars($hostAddr, ENT_QUOTES | ENT_HTML5);
                     $retVal           = $ipArray[$ipAddr];
@@ -74,7 +75,6 @@ class PollUtility
     }
 
     /**
-     *
      * Creates a visibility array from module default values
      * @return array visibility options available for a poll
      */
@@ -91,7 +91,7 @@ class PollUtility
                 Constants::HIDE_NEVER  => _MD_XOOPSPOLL_HIDE_NEVER,
                 Constants::HIDE_END    => _MD_XOOPSPOLL_HIDE_END,
                 Constants::HIDE_VOTED  => _MD_XOOPSPOLL_HIDE_VOTED,
-                Constants::HIDE_ALWAYS => _MD_XOOPSPOLL_HIDE_ALWAYS
+                Constants::HIDE_ALWAYS => _MD_XOOPSPOLL_HIDE_ALWAYS,
             ];
         }
 
@@ -110,9 +110,9 @@ class PollUtility
      */
     public static function getVoteCookie($cookieBaseName = null)
     {
-//        $cookieBaseName = null === $cookieBaseName ? 'voted_polls': $cookieBaseName;
+        //        $cookieBaseName = null === $cookieBaseName ? 'voted_polls': $cookieBaseName;
         if (null === $cookieBaseName) {
-            $cookieBaseName ='voted_polls';
+            $cookieBaseName = 'voted_polls';
         }
         $pollDir = basename(dirname(__DIR__));
         if ('xoopspoll' === $pollDir) {
@@ -176,8 +176,8 @@ class PollUtility
      * for backward compatibility. Otherwise cookie is named
      * '<dirname>_voted_polls' to allow for module to be cloned using
      * smartClone module.
-     * @param \XoopsDatabase $db
-     * @param                $tablename
+     * @param \XoopsDatabase|null $db
+     * @param                     $tablename
      * @return bool success in setting cookie
      * @internal param int|string $index array index to set in cookie
      * @internal param unknown_type $value data to store in cookie
@@ -187,7 +187,7 @@ class PollUtility
     public static function dbTableExists(\XoopsDatabase $db, $tablename)
     {
         $tablename = addslashes($tablename);
-        $mytable   = $db->prefix((string)($tablename));
+        $mytable   = $db->prefix((string)$tablename);
         $result    = $db->queryF("SHOW TABLES LIKE '{$mytable}'");
         $found     = $db->getRowsNum($result);
 

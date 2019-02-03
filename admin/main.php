@@ -49,9 +49,9 @@
  */
 
 use Xmf\Request;
+use XoopsModules\Newbb;
 use XoopsModules\Xoopspoll;
 use XoopsModules\Xoopspoll\Constants;
-use XoopsModules\Newbb;
 
 require_once __DIR__ . '/admin_header.php';
 require_once $GLOBALS['xoops']->path('class/xoopsblock.php');
@@ -61,9 +61,8 @@ xoops_load('xoopslists');
 xoops_load('renderer', 'xoopspoll');
 xoops_load('pollUtility', 'xoopspoll');
 
-$op = Request::getCmd('op', Request::getCmd('op', 'list', 'POST'), 'GET');
+$op = Request::getString('op', Request::getCmd('op', 'list', 'POST'), 'GET');
 switch ($op) {
-
     case 'list':
     default:
         $limit = Request::getInt('limit', Constants::DEFAULT_POLL_PAGE_LIMIT);
@@ -91,7 +90,7 @@ switch ($op) {
 
         if (is_array($pollObjs) && $pollsCount > 0) {
             /* if newbb forum module is loaded find poll/topic association */
-            /** @var XoopsModuleHandler $moduleHandler */
+            /** @var \XoopsModuleHandler $moduleHandler */
             $moduleHandler = xoops_getHandler('module');
             $newbbModule   = $moduleHandler->getByDirname('newbb');
             if (($newbbModule instanceof XoopsModule) && $newbbModule->isactive()) {
@@ -101,11 +100,11 @@ switch ($op) {
                 $criteria     = new \CriteriaCompo();
                 $criteria->add(new \Criteria('topic_haspoll', 0, '>'));
                 $pollsWithTopics = [];
-                $topicsWithPolls =& $topicHandler->getAll($criteria, $topicFields, false);
+                $topicsWithPolls = &$topicHandler->getAll($criteria, $topicFields, false);
                 foreach ($topicsWithPolls as $pollTopics) {
                     $pollsWithTopics[$pollTopics['poll_id']] = [
                         'topic_id'    => $pollTopics['topic_id'],
-                        'topic_title' => $pollTopics['topic_title']
+                        'topic_title' => $pollTopics['topic_title'],
                     ];
                 }
                 if (!empty($pollsWithTopics)) {
@@ -164,30 +163,30 @@ switch ($op) {
                         'edit'   => [
                             'href' => $_SERVER['PHP_SELF'] . "?op=edit&amp;poll_id={$id}",
                             'file' => $pathIcon16 . '/edit.png',
-                            'alt'  => _AM_XOOPSPOLL_EDITPOLL
+                            'alt'  => _AM_XOOPSPOLL_EDITPOLL,
                         ],
                         'clone'  => [
                             'href' => $_SERVER['PHP_SELF'] . "?op=clone&amp;poll_id={$id}",
                             'file' => $pathIcon16 . '/editcopy.png',
-                            'alt'  => _AM_XOOPSPOLL_CLONE
+                            'alt'  => _AM_XOOPSPOLL_CLONE,
                         ],
                         'delete' => [
                             'href' => $_SERVER['PHP_SELF'] . "?op=delete&amp;poll_id={$id}",
                             'file' => $pathIcon16 . '/delete.png',
-                            'alt'  => _DELETE
+                            'alt'  => _DELETE,
                         ],
                         'log'    => [
                             'href' => $_SERVER['PHP_SELF'] . "?op=log&amp;poll_id={$id}",
                             'file' => $pathIcon16 . '/search.png',
-                            'alt'  => _AM_XOOPSPOLL_VIEWLOG
-                        ]
-                    ]
+                            'alt'  => _AM_XOOPSPOLL_VIEWLOG,
+                        ],
+                    ],
                 ];
                 if ($topic_id > 0) {
                     $pollItems[$id]['buttons']['forum'] = [
                         'href' => $GLOBALS['xoops']->url('modules/newbb/viewtopic.php') . "?topic_id={$topic_id}",
                         'file' => $pathIcon16 . '/forum.png',
-                        'alt'  => _AM_XOOPSPOLL_NEWBB_TOPIC . '&nbsp;' . htmlspecialchars($topic_title, ENT_QUOTES | ENT_HTML5)
+                        'alt'  => _AM_XOOPSPOLL_NEWBB_TOPIC . '&nbsp;' . htmlspecialchars($topic_title, ENT_QUOTES | ENT_HTML5),
                     ];
                 }
             }
@@ -203,7 +202,6 @@ switch ($op) {
         require_once __DIR__ . '/admin_footer.php';
         exit();
         break;
-
     case 'edit':
     case 'add':
         $optHandler  = Xoopspoll\Helper::getInstance()->getHandler('Option');
@@ -219,7 +217,6 @@ switch ($op) {
         require_once __DIR__ . '/admin_footer.php';
         exit();
         break;
-
     case 'update':
         if (!$GLOBALS['xoopsSecurity']->check()) {
             redirect_header($_SERVER['PHP_SELF'], Constants::REDIRECT_DELAY_MEDIUM, implode('<br>', $GLOBALS['xoopsSecurity']->getErrors()));
@@ -258,7 +255,7 @@ switch ($op) {
             'weight'      => Request::getInt('weight', Constants::DEFAULT_WEIGHT, 'POST'),
             'multiple'    => Request::getInt('multiple', Constants::NOT_MULTIPLE_SELECT_POLL, 'POST'),
             'multilimit'  => Request::getInt('multilimit', Constants::MULTIPLE_SELECT_LIMITLESS, 'POST'),
-            'anonymous'   => Request::getInt('anonymous', Constants::ANONYMOUS_VOTING_DISALLOWED, 'POST')
+            'anonymous'   => Request::getInt('anonymous', Constants::ANONYMOUS_VOTING_DISALLOWED, 'POST'),
         ];
         $pollObj->setVars($pollVars);
         $pollId = $pollHandler->insert($pollObj);
@@ -309,7 +306,6 @@ switch ($op) {
         xoops_template_clear_module_cache($GLOBALS['xoopsModule']->getVar('mid'));
         redirect_header($_SERVER['PHP_SELF'] . '?op=list', Constants::REDIRECT_DELAY_SHORT, _AM_XOOPSPOLL_DBUPDATED);
         break;
-
     case 'delete':
         $pollId      = Request::getInt('poll_id', 0);
         $pollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
@@ -322,13 +318,12 @@ switch ($op) {
         $adminObject->displayNavigation(basename(__FILE__));
         xoops_confirm([
                           'op'      => 'delete_ok',
-                          'poll_id' => $pollId
+                          'poll_id' => $pollId,
                       ], $_SERVER['PHP_SELF'], sprintf(_AM_XOOPSPOLL_RUSUREDEL, $myts->htmlSpecialChars($pollObj->getVar('question'))));
         require_once __DIR__ . '/admin_footer.php';
         //    xoops_cp_footer();
         exit();
         break;
-
     case 'delete_ok':
         if (!$GLOBALS['xoopsSecurity']->check()) {
             redirect_header($_SERVER['PHP_SELF'], Constants::REDIRECT_DELAY_MEDIUM, implode('<br>', $GLOBALS['xoopsSecurity']->getErrors()));
@@ -348,7 +343,7 @@ switch ($op) {
             xoops_comment_delete($GLOBALS['xoopsModule']->getVar('mid'), $pollId);
 
             //now clear association with newbb topic if one exists
-            /** @var XoopsModuleHandler $moduleHandler */
+            /** @var \XoopsModuleHandler $moduleHandler */
             $moduleHandler = xoops_getHandler('module');
             $newbbModule   = $moduleHandler->getByDirname('newbb');
             if (($newbbModule instanceof XoopsModule) && $newbbModule->isactive()) {
@@ -364,9 +359,8 @@ switch ($op) {
         }
         redirect_header($_SERVER['PHP_SELF'], Constants::REDIRECT_DELAY_SHORT, _AM_XOOPSPOLL_DBUPDATED);
         break;
-
     case 'restart':
-//        xoops_load('FormDateTimePicker', 'xoopspoll');
+        //        xoops_load('FormDateTimePicker', 'xoopspoll');
         $pollId      = Request::getInt('poll_id', 0);
         $pollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
         $pollObj     = $pollHandler->get($pollId);
@@ -402,7 +396,6 @@ switch ($op) {
         require_once __DIR__ . '/admin_footer.php';
         exit();
         break;
-
     case 'restart_ok':
         if (!$GLOBALS['xoopsSecurity']->check()) {
             redirect_header($_SERVER['PHP_SELF'], Constants::REDIRECT_DELAY_MEDIUM, implode('<br>', $GLOBALS['xoopsSecurity']->getErrors()));
@@ -452,7 +445,6 @@ switch ($op) {
         xoops_template_clear_module_cache($GLOBALS['xoopsModule']->getVar('mid'));
         redirect_header($_SERVER['PHP_SELF'], Constants::REDIRECT_DELAY_SHORT, _AM_XOOPSPOLL_DBUPDATED);
         break;
-
     case 'log':
         $pollId   = Request::getInt('poll_id', 0);
         $limit    = Request::getInt('limit', Constants::DEFAULT_POLL_PAGE_LIMIT);
@@ -592,7 +584,7 @@ switch ($op) {
                     ['order' => 'option_id', 'label' => _AM_XOOPSPOLL_OPTIONID],
                     ['order' => 'ip', 'label' => $ipLabel],
                     ['order' => 'user_id', 'label' => _AM_XOOPSPOLL_VOTER],
-                    ['order' => 'time', 'label' => _AM_XOOPSPOLL_VOTETIME]
+                    ['order' => 'time', 'label' => _AM_XOOPSPOLL_VOTETIME],
                 ];
 
                 foreach ($fieldArray as $field) {
@@ -621,7 +613,7 @@ switch ($op) {
                         $pmLink      = $GLOBALS['xoops']->buildUrl($GLOBALS['xoops']->path('pmlite.php', true), [
                             'send'        => 1,
                             'from_userid' => $from_userid,
-                            'to_userid'   => $to_userid
+                            'to_userid'   => $to_userid,
                         ]);
 
                         echo "          <td class='{$class} center'>\n"
@@ -661,7 +653,6 @@ switch ($op) {
         $adminObject->displayButton('center');
         require_once __DIR__ . '/admin_footer.php';
         break;
-
     case 'quickupdate':
 
         $pollId = Request::getArray('poll_id', [], 'POST');
@@ -717,7 +708,7 @@ switch ($op) {
             'mail_status' => Constants::POLL_NOT_MAILED,
             'question'    => $origValues['question'] . '(' . _AM_XOOPSPOLL_CLONE . ')',
             'start_time'  => time(),  //set the start time to now
-            'end_time'    => time() + $pollDuration
+            'end_time'    => time() + $pollDuration,
         ];
         $cloneValues  = array_merge($origValues, $newValues);
         $cloneObj     = $pollHandler->create();
@@ -725,7 +716,7 @@ switch ($op) {
         $cloneId = $pollHandler->insert($cloneObj);
 
         // now set cloned options
-        $optionObjs =& $optHandler->getAllByPollId($pollId);
+        $optionObjs = &$optHandler->getAllByPollId($pollId);
         foreach ($optionObjs as $optionObj) {
             $cloneOptObj                 = $optHandler->create();
             $cloneValues                 = $optionObj->getValues();

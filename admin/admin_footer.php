@@ -22,12 +22,11 @@
  * @uses      xoops_getHandler() used to load information about the module
  * @uses      XoopsModule::getByDirname() to load information if module info not currently present
  */
-
 if (!isset($GLOBALS['xoopsModule']) || !($GLOBALS['xoopsModule'] instanceof XoopsModule)) {
     $GLOBALS['xoopsModule'] = XoopsModule::getByDirname('xoopspoll');
 }
 
-/** @var XoopsModuleHandler $moduleHandler */
+/** @var \XoopsModuleHandler $moduleHandler */
 $moduleHandler = xoops_getHandler('module');
 $moduleInfo    = $moduleHandler->get($GLOBALS['xoopsModule']->getVar('mid'));
 

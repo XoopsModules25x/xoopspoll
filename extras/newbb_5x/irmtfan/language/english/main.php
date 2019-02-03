@@ -1,5 +1,5 @@
 <?php
-//
+
 if (defined('MAIN_DEFINED')) {
     return;
 }
@@ -36,7 +36,7 @@ define('_MD_MODERATOR', 'Moderator');
 define('_MD_NEWPOSTS', 'New posts');
 define('_MD_NONEWPOSTS', 'No new posts');
 define('_MD_PRIVATEFORUM', 'Inactive Forum');
-define('_MD_BY', 'by');// Posted by
+define('_MD_BY', 'by'); // Posted by
 define('_MD_TOSTART', 'To start viewing messages, select the forum that you want to visit from the list below.');
 define('_MD_TOTALTOPICSC', 'Total Topics: ');
 define('_MD_TOTALPOSTSC', 'Total Posts: ');
@@ -240,8 +240,8 @@ define('_MD_TIMEISUP', 'You\'ve reached the time limit for editing your post.');
 define('_MD_TIMEISUPDEL', 'You\'ve reached the time limit for deleting your post.');
 
 //reply.php
-define('_MD_ON', 'on');//Posted on
-define('_MD_USERWROTE', '%s wrote:');// %s is username
+define('_MD_ON', 'on'); //Posted on
+define('_MD_USERWROTE', '%s wrote:'); // %s is username
 define('_MD_RE', 'Re');
 
 //post.php
@@ -251,7 +251,7 @@ define('_MD_ANONNOTALLOWED', 'Anonymous users are not allowed to post.<br>Please
 define('_MD_THANKSSUBMIT', 'Thanks for your submission!');
 define('_MD_REPLYPOSTED', 'A reply to your topic has been posted.');
 define('_MD_HELLO', 'Hello %s,');
-define('_MD_URRECEIVING', 'You are receiving this email because a message you posted on %s forums has been replied to.');// %s is your site name
+define('_MD_URRECEIVING', 'You are receiving this email because a message you posted on %s forums has been replied to.'); // %s is your site name
 define('_MD_CLICKBELOW', 'Click on the link below to view the thread:');
 define('_MD_WAITFORAPPROVAL', 'Thank you. Your post will be approved before publication.');
 define('_MD_POSTING_LIMITED', 'Why not take a break and come back in %d sec');
@@ -352,7 +352,7 @@ define('_MD_NO_SUCH_FILE', 'File not exist!');
 define('_MD_CANTVOTEOWN', 'You cannot vote on the topic you submitted.<br>All votes are logged and reviewed.');
 define('_MD_VOTEONCE', 'Please do not vote for the same topic more than once.');
 define('_MD_VOTEAPPRE', 'Your vote is appreciated.');
-define('_MD_THANKYOU', 'Thank you for taking the time to vote here at %s');// %s is your site name
+define('_MD_THANKYOU', 'Thank you for taking the time to vote here at %s'); // %s is your site name
 define('_MD_VOTES', 'Votes');
 define('_MD_NOVOTERATE', 'You did not rate this Topic');
 

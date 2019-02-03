@@ -38,14 +38,14 @@ use XoopsModules\Xoopspoll;
 
 class XoopspollCorePreload extends \XoopsPreloadItem
 {
-
     // to add PSR-4 autoloader
+
     /**
      * @param $args
      */
     public static function eventCoreIncludeCommonEnd($args)
     {
-        include __DIR__ . '/autoloader.php';
+        require __DIR__ . '/autoloader.php';
     }
 
     /**

@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\Xoopspoll;
+<?php
+
+namespace XoopsModules\Xoopspoll;
 
 /*
                XOOPS - PHP Content Management System
@@ -23,6 +25,7 @@
  along with this program; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
+
 /**
  * Log class for the XoopsPoll Module
  *
@@ -39,11 +42,9 @@ use XoopsModules\Xoopspoll;
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 /**
- *
  * Log() class definition for Log Objects
  * @author:: zyspec <owners@zyspec.com>
  * @uses  ::   xoops_getModuleHandler poll module handler for class use
- *
  */
 class Log extends \XoopsObject
 {
@@ -138,5 +139,6 @@ class Log extends \XoopsObject
 
         return $log_h;
     }
+
     /**#@-*/
 }

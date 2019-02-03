@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\Xoopspoll;
+<?php
+
+namespace XoopsModules\Xoopspoll;
 
 /*
                XOOPS - PHP Content Management System
@@ -23,6 +25,7 @@
  along with this program; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
+
 /**
  * Poll Option class for the XoopsPoll Module
  *
@@ -35,10 +38,8 @@
  */
 
 use XoopsModules\Xoopspoll;
-use XoopsModules\Xoopspoll\Constants;
 
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
-
 
 /**
  * Class OptionHandler
@@ -50,7 +51,7 @@ class OptionHandler extends \XoopsPersistableObjectHandler
      *
      * @param null|\XoopsDatabase $db
      **/
-    public function __construct(\XoopsDatabase $db)
+    public function __construct(\XoopsDatabase $db = null)
     {
         xoops_load('constants', 'xoopspoll');
         parent::__construct($db, 'xoopspoll_option', Option::class, 'option_id', 'option_text');
@@ -67,7 +68,6 @@ class OptionHandler extends \XoopsPersistableObjectHandler
     }
 
     /**
-     *
      * Update the option vote count for a Option Object
      * @uses xoops_getModuleHandler
      * @uses XoopsPersistableObjectHandler::insert
@@ -92,7 +92,6 @@ class OptionHandler extends \XoopsPersistableObjectHandler
     }
 
     /**
-     *
      * Gets all options for poll ID
      *
      * @param  int    $pid
@@ -112,7 +111,7 @@ class OptionHandler extends \XoopsPersistableObjectHandler
         if (!empty($orderby)) {
             $criteria->setOrder($orderby);
         }
-        $optionObjs =& $this->getAll($criteria);
+        $optionObjs = &$this->getAll($criteria);
         if (empty($optionObjs)) {
             $optionObjs = [];
         }
@@ -121,7 +120,6 @@ class OptionHandler extends \XoopsPersistableObjectHandler
     }
 
     /**
-     *
      * Deletes the option for selected poll
      *
      * @param int $pid
@@ -137,7 +135,6 @@ class OptionHandler extends \XoopsPersistableObjectHandler
     }
 
     /**
-     *
      * Reset the vote counts for the options for selected poll
      *
      * @param int $pid
@@ -153,7 +150,6 @@ class OptionHandler extends \XoopsPersistableObjectHandler
     }
 
     /**
-     *
      * Generates an html select box with options
      * @param  mixed $pid the select box is created for this poll id
      * @return string html select box
@@ -197,13 +193,13 @@ class OptionHandler extends \XoopsPersistableObjectHandler
             $colorSelect->addOptionArray($barcolor_array);
             $colorSelect->setExtra("onchange='showImgSelected(\"option_color_image[{$i}]\", \"option_color[{$i}]\", \"modules/xoopspoll/assets/images/colorbars\", \"\", \"" . $GLOBALS['xoops']->url('') . "\")'");
             $colorLabel = new \XoopsFormLabel('', "<img src='"
-                                                 . $GLOBALS['xoops']->url('modules/xoopspoll' . '/assets/images/colorbars/' . $optObj->getVar('option_color'))
-                                                 . "'"
-                                                 . " name='option_color_image[{$i}]'"
-                                                 . " id='option_color_image[{$i}]'"
-                                                 . " style='width: 30px; height: 15px;'"
-                                                 . " class='alignmiddle'"
-                                                 . " alt=''><br>");
+                                                  . $GLOBALS['xoops']->url('modules/xoopspoll' . '/assets/images/colorbars/' . $optObj->getVar('option_color'))
+                                                  . "'"
+                                                  . " name='option_color_image[{$i}]'"
+                                                  . " id='option_color_image[{$i}]'"
+                                                  . " style='width: 30px; height: 15px;'"
+                                                  . " class='alignmiddle'"
+                                                  . " alt=''><br>");
 
             $optionTray->addElement(new \XoopsFormText('', "option_text[{$i}]", 50, 255, $optObj->getVar('option_text')));
             $optionTray->addElement(new \XoopsFormHidden("option_id[{$i}]", $optObj->getVar('option_id')));

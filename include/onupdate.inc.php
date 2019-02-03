@@ -8,6 +8,7 @@
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 */
+
 /**
  * Xoopspoll install functions.php
  *
@@ -24,9 +25,9 @@ use XoopsModules\Xoopspoll;
 xoops_load('pollUtility', 'xoopspoll');
 
 /**
- * @param XoopsDatabase $db
- * @param               $fromTable
- * @param               $toTable
+ * @param \XoopsDatabase|null $db
+ * @param                     $fromTable
+ * @param                     $toTable
  * @return bool
  */
 function xoopspollChangeTableName(\XoopsDatabase $db, $fromTable, $toTable)
@@ -39,10 +40,10 @@ function xoopspollChangeTableName(\XoopsDatabase $db, $fromTable, $toTable)
     */
     $success = false;
     if (Xoopspoll\Utility::dbTableExists($db, $fromTable) && !Xoopspoll\Utility::dbTableExists($db, $toTable)) {
-        $sql     = sprintf('ALTER TABLE ' . $db->prefix((string)($fromTable)) . ' RENAME ' . $db->prefix('{$toTable}'));
+        $sql     = sprintf('ALTER TABLE ' . $db->prefix((string)$fromTable) . ' RENAME ' . $db->prefix('{$toTable}'));
         $success = $db->queryF($sql);
         if (false === $success) {
-            $moduleHandler   = xoops_getModuleHandler('module');
+            $moduleHandler   = $helper->getHandler('Module');
             $xoopspollModule = $moduleHandler->getByDirname('xoopspoll');
             $xoopspollModule->setErrors(sprintf(_AM_XOOPSPOLL_UPGRADE_FAILED, $fromTable));
         }
@@ -89,7 +90,7 @@ function xoops_module_update_xoopspoll(\XoopsModule $module, &$prev_version)
                     $module->setErrors(_AM_XOOPSPOLL_ERROR_COLUMN . 'description');
                 }
             }
-            /* */
+
             if ($success) {
                 $success = $db->queryF('ALTER TABLE ' . $db->prefix('xoopspoll_desc') . " ADD multilimit TINYINT( 63 ) UNSIGNED DEFAULT '0' NOT NULL AFTER multiple");
                 if (false === $success) {

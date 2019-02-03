@@ -20,11 +20,10 @@
  * @author    ::     John Neill, zyspec <owners@zyspec.com>
  */
 
-use XoopsModules\Xoopspoll;
 use XoopsModules\Newbb;
+use XoopsModules\Xoopspoll;
 
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
-
 
 /**
  * xoopspoll_search()
@@ -56,7 +55,7 @@ function xoopspoll_search($queryArray, $andor, $limit, $offset, $uid)
          * check to see if we want to include polls created with forum (newbb)
          */
         $configHandler = xoops_getHandler('config');
-        /** @var XoopsModuleHandler $moduleHandler */
+        /** @var \XoopsModuleHandler $moduleHandler */
         $moduleHandler      = xoops_getHandler('module');
         $thisModule         = $moduleHandler->getByDirname('xoopspoll');
         $this_module_config = $configHandler->getConfigsByCat(0, $thisModule->getVar('mid'));
@@ -69,7 +68,7 @@ function xoopspoll_search($queryArray, $andor, $limit, $offset, $uid)
                 /** @var NewbbTopicHandler $topicHandler */
                 $topicHandler = Newbb\Helper::getInstance()->getHandler('Topic');
                 $tFields      = ['topic_id', 'poll_id'];
-                $tArray       =& $topicHandler->getAll(new \Criteria('topic_haspoll', 0, '>'), $tFields, false);
+                $tArray       = &$topicHandler->getAll(new \Criteria('topic_haspoll', 0, '>'), $tFields, false);
                 foreach ($tArray as $t) {
                     $pollsWithTopics[$t['poll_id']] = $t['topic_id'];
                 }
@@ -103,7 +102,7 @@ function xoopspoll_search($queryArray, $andor, $limit, $offset, $uid)
                 'image' => 'assets/images/icons/logo_large.png',
                 'link'  => $link,
                 'title' => $poll['question'],
-                'time'  => $poll['start_time']
+                'time'  => $poll['start_time'],
             ];
         }
     }

@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\Xoopspoll;
+<?php
+
+namespace XoopsModules\Xoopspoll;
 
 /*
  You may not change or alter any portion of this comment or credits
@@ -21,7 +23,6 @@
  */
 
 use XoopsModules\Xoopspoll;
-use XoopsModules\Xoopspoll\Constants;
 
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
@@ -78,7 +79,6 @@ class Poll extends \XoopsObject
     }
 
     /**
-     *
      * Poll::Poll()
      * @access public
      * @param null $id
@@ -97,7 +97,6 @@ class Poll extends \XoopsObject
     }
 
     /**
-     *
      * Find out if poll has expired
      * @access public
      * @uses   Poll::getVar()
@@ -114,7 +113,6 @@ class Poll extends \XoopsObject
     }
 
     /**
-     *
      * Determine if user is allowed to vote in this poll
      * @uses   XoopsUser
      * @uses   Poll::getVar()
@@ -173,7 +171,7 @@ class Poll extends \XoopsObject
                         'option_id' => (int)$optionObj->getVar('option_id'),
                         'ip'        => $ip,
                         'user_id'   => $uid,
-                        'time'      => $voteTime
+                        'time'      => $voteTime,
                     ];
                     $log->setVars($logVars);
                     if (false !== $logHandler->insert($log)) {
@@ -181,7 +179,7 @@ class Poll extends \XoopsObject
                     }
                 }
                 // now send voter an email if the poll is set to allow it (if the user is not anon)
-                if (Constants::MAIL_POLL_TO_VOTER === $this->getVar('mail_voter') && (!empty($uid))) {
+                if (Constants::MAIL_POLL_TO_VOTER === $this->getVar('mail_voter') && !empty($uid)) {
                     $this->notifyVoter($GLOBALS['xoopsUser']);
                 }
 
@@ -195,8 +193,8 @@ class Poll extends \XoopsObject
     /**
      * Gets number of comments for this poll
      * @access public
-     * @param integer poll_id
-     * @return integer count of comments for this poll_id
+     * @param int poll_id
+     * @return int count of comments for this poll_id
      */
     public function getComments()
     {
@@ -214,7 +212,6 @@ class Poll extends \XoopsObject
     }
 
     /**
-     *
      * display the poll form
      * @param string $rtnPage   where to send the form result
      * @param string $rtnMethod return method  get|post
@@ -254,7 +251,7 @@ class Poll extends \XoopsObject
         $moduleHandler = xoops_getHandler('module');
         $pollModule    = $moduleHandler->getByDirname('xoopspoll');
 
-        /** @var XoopsModuleHandler $moduleHandler */
+        /** @var \XoopsModuleHandler $moduleHandler */
         $moduleHandler = xoops_getHandler('module');
         $configHandler = xoops_getHandler('config');
         //        $xp_module      = $moduleHandler->getByDirname("xoopspoll");
@@ -274,7 +271,7 @@ class Poll extends \XoopsObject
             'height' => '350px',
             'name'   => 'description',
             //                           'value'  => $myts->stripSlashesGPC($this->getVar('description'))
-            'value'  => $myts->htmlSpecialChars($this->getVar('description'))
+            'value'  => $myts->htmlSpecialChars($this->getVar('description')),
         ];
         $desc_text     = new \XoopsFormEditor(_AM_XOOPSPOLL_POLLDESC, 'description', $editorConfigs);
         $pollForm->addElement($desc_text);
@@ -364,7 +361,6 @@ class Poll extends \XoopsObject
     }
 
     /**
-     *
      * Method determines if current user can view the results of this poll
      * @return mixed visibility of this poll's results (true if visible, msg if not)
      */
@@ -484,8 +480,8 @@ class Poll extends \XoopsObject
      * The following method is provided for backward compatibility with newbb/xforum
      * @deprecated since Xoopspoll 1.40, please use PollHandler & Poll
      */
+
     /**
-     *
      * deletes the object from the database
      * @return mixed results of deleting poll from db
      */
@@ -499,7 +495,6 @@ class Poll extends \XoopsObject
     }
 
     /**
-     *
      * update the vote counter for this poll
      * @returns bool results of update counter
      */
@@ -513,7 +508,6 @@ class Poll extends \XoopsObject
     }
 
     /**
-     *
      * inserts the poll object into the database
      * @return mixed results of inserting poll into db
      */
@@ -527,7 +521,6 @@ class Poll extends \XoopsObject
     }
 
     /**
-     *
      * Setup a static Poll Handler for use by class methods
      */
     private function getStaticPollHandler()
@@ -542,5 +535,6 @@ class Poll extends \XoopsObject
 
         return $pH;
     }
+
     /**#@-*/
 }

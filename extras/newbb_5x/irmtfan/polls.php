@@ -21,9 +21,9 @@
  */
 
 use Xmf\Request;
+use XoopsModules\Newbb;
 use XoopsModules\Xoopspoll;
 use XoopsModules\Xoopspoll\Constants;
-use XoopsModules\Newbb;
 
 require_once __DIR__ . '/header.php';
 
@@ -44,10 +44,10 @@ $goodOps = [
     'delete_ok',
     'restart',
     'restart_ok',
-    'log'
+    'log',
 ];
 $op      = Request::getString('op', 'add');
-$op      = (!in_array($op, $goodOps)) ? 'add' : $op;
+$op      = (!in_array($op, $goodOps, true)) ? 'add' : $op;
 
 //$poll_id  = (isset($_GET['poll_id']))   ? (int)($_GET['poll_id'])   : 0;
 //$poll_id  = (isset($_POST['poll_id']))  ? (int)($_POST['poll_id'])  : $poll_id;
@@ -58,8 +58,8 @@ $topic_id = Request::getInt('topic_id', Request::getInt('topic_id', 0, 'POST'), 
 
 /** {@internal $pollmodules is initialized in ./header.php file} */
 if ('xoopspoll' === $pollmodules) {
-//    xoops_load('constants', 'xoopspoll');
-//    xoops_load('pollUtility', 'xoopspoll');
+    //    xoops_load('constants', 'xoopspoll');
+    //    xoops_load('pollUtility', 'xoopspoll');
 
     xoops_loadLanguage('admin', 'xoopspoll');
     $xpPollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
@@ -335,7 +335,7 @@ switch ($op) {
             $poll_form->addElement($weight_text);
             $multi_yn = new \XoopsFormRadioYN(_MD_POLL_ALLOWMULTI, 'multiple', $poll_obj->getVar('multiple'));
             $poll_form->addElement($multi_yn);
-            $options_arr  =& UmfrageOption::getAllByPollId($poll_id);
+            $options_arr  = &UmfrageOption::getAllByPollId($poll_id);
             $notify_value = 1;
             if (0 !== $poll_obj->getVar('mail_status')) {
                 $notify_value = 0;
@@ -352,8 +352,8 @@ switch ($op) {
                 $color_select->addOptionArray($barcolor_array);
                 $color_select->setExtra("onchange='showImgSelected(\"option_color_image[{$i}]\", \"option_color[" . $i . "]\", \"modules/{$pollmodules}/assets/images/colorbars\", \"\", \"" . XOOPS_URL . "\")'");
                 $color_label = new \XoopsFormLabel('', "<img src='"
-                                                      . $GLOBALS['xoops']->url("modules/{$pollmodules}/assets/images/colorbars/" . $option->getVar('option_color', 'E'))
-                                                      . "' name='option_color_image[{$i}]' id='option_color_image[{$i}]' class='alignbottom' width='30' height='15' alt=''><br>");
+                                                       . $GLOBALS['xoops']->url("modules/{$pollmodules}/assets/images/colorbars/" . $option->getVar('option_color', 'E'))
+                                                       . "' name='option_color_image[{$i}]' id='option_color_image[{$i}]' class='alignbottom' width='30' height='15' alt=''><br>");
                 $option_tray->addElement($color_select);
                 $option_tray->addElement($color_label);
                 unset($color_select, $color_label);
@@ -373,7 +373,6 @@ switch ($op) {
             $poll_form->display();
         }
         break;
-
     case 'save':
     case 'update':
         // check security token
@@ -422,7 +421,7 @@ switch ($op) {
                 'weight'      => Request::getInt('weight', Constants::DEFAULT_WEIGHT, 'POST'),
                 'multiple'    => Request::getInt('multiple', Constants::NOT_MULTIPLE_SELECT_POLL, 'POST'),
                 'multilimit'  => Request::getInt('multilimit', Constants::MULTIPLE_SELECT_LIMITLESS, 'POST'),
-                'anonymous'   => Request::getInt('anonymous', Constants::ANONYMOUS_VOTING_DISALLOWED, 'POST')
+                'anonymous'   => Request::getInt('anonymous', Constants::ANONYMOUS_VOTING_DISALLOWED, 'POST'),
             ];
             $poll_obj->setVars($poll_vars);
             $poll_id = $xpPollHandler->insert($poll_obj);
@@ -541,7 +540,6 @@ switch ($op) {
             redirect_header("viewtopic.php?topic_id={$topic_id}", 2, _MD_POLL_DBUPDATED);
         }
         break;
-
     case 'addmore':
         if ('xoopspoll' === $pollmodules) {
             $poll_obj     = $xpPollHandler->get($poll_id);
@@ -584,7 +582,6 @@ switch ($op) {
         echo '<h4>' . _MD_POLL_POLLCONF . "</h4>\n";
         $poll_form->display();
         break;
-
     case 'savemore':
         // check security token
         if (!$GLOBALS['xoopsSecurity']->check()) {
@@ -629,7 +626,6 @@ switch ($op) {
         xoops_template_clear_module_cache($xoopspoll->getVar('mid'));
         redirect_header("polls.php?op=edit&amp;poll_id={$poll_id}&amp;topic_id={$topic_id}", 2, _MD_POLL_DBUPDATED);
         break;
-
     case 'delete':
         echo '<h4>' . _MD_POLL_POLLCONF . "</h4>\n";
         if ('xoopspoll' === $pollmodules) {
@@ -639,7 +635,6 @@ switch ($op) {
         }
         xoops_confirm(['op' => 'delete_ok', 'topic_id' => $topic_id, 'poll_id' => $poll_id], 'polls.php', sprintf(_MD_POLL_RUSUREDEL, $poll_obj->getVar('question')));
         break;
-
     case 'delete_ok':
         // check security token
         if (!$GLOBALS['xoopsSecurity']->check()) {
@@ -694,7 +689,6 @@ switch ($op) {
         }
         redirect_header("viewtopic.php?topic_id={$topic_id}", 1, _MD_POLL_DBUPDATED);
         break;
-
     case 'restart':
         if ('xoopspoll' === $pollmodules) {
             $default_poll_duration = Constants::DEFAULT_POLL_DURATION;
@@ -716,7 +710,6 @@ switch ($op) {
         $poll_form->display();
 
         break;
-
     case 'restart_ok':
         // check security token
         if (!$GLOBALS['xoopsSecurity']->check()) {
@@ -757,7 +750,7 @@ switch ($op) {
                 xoops_error($poll_obj->getHtmlErrors());
                 exit();
             }
-           if (\Xmf\Request::hasVar('reset', 'POST')) { // reset all vote/voter counters
+            if (\Xmf\Request::hasVar('reset', 'POST')) { // reset all vote/voter counters
                 $xpLogHandler = Xoopspoll\Helper::getInstance()->getHandler('Log');
                 $xpLogHandler->deleteByPollId($poll_id);
                 $xpOptHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');
@@ -769,7 +762,7 @@ switch ($op) {
                 xoops_error($poll_obj->getHtmlErrors());
                 exit();
             }
-           if (\Xmf\Request::hasVar('reset', 'POST')) { // reset all logs
+            if (\Xmf\Request::hasVar('reset', 'POST')) { // reset all logs
                 UmfrageLog::deleteByPollId($poll_id);
                 UmfrageOption::resetCountByPollId($poll_id);
                 $poll_obj->updateCount();
@@ -790,7 +783,6 @@ switch ($op) {
         xoops_template_clear_module_cache($xoopspoll->getVar('mid'));
         redirect_header("viewtopic.php?topic_id={$topic_id}", 1, _MD_POLL_DBUPDATED);
         break;
-
     case 'log':
         if ('xoopspoll' === $pollmodules) {
             redirect_header($GLOBALS['xoops']->url("modules/xoopspoll/admin/main.php?op=log&amp;poll_id={$poll_id}"), 2, _MD_LOG_XOOPSPOLL_ADMIN_REDIRECT);

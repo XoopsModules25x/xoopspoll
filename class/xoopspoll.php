@@ -29,7 +29,7 @@ use XoopsModules\Xoopspoll;
 /**
  * @deprecated
  */
-class Xoopspoll extends \Xoopspoll\Poll
+class xoopspoll extends \Xoopspoll\Poll
 {
     /**
      * @deprecated
@@ -52,7 +52,7 @@ class XoopsPollHandler extends \Xoopspoll\PollHandler
      * @deprecated
      * @param null|\XoopsDatabase $db
      */
-    public function __construct(\XoopsDatabase $db)
+    public function __construct(\XoopsDatabase $db = null)
     {
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __CLASS__ . ' is deprecated since Xoopspoll 1.40, please use Poll and PollHandler classes instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");

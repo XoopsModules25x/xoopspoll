@@ -20,7 +20,7 @@
             extract the xoopspoll folder into the ../modules directory. Install the
             module through Admin -> System Module -> Modules.<br><br>
             Detailed instructions on installing modules are available in the
-            <a href="https://www.gitbook.com/book/xoops/xoops-operations-guide/" target="_blank">XOOPS Operations Manual</a></p>
+            <a href="https://xoops.gitbook.io/xoops-operations-guide/" target="_blank">XOOPS Operations Manual</a></p>
         <p>Additional integration with both the Marquee module and the SmartClone
             XOOPS modules are included in the extras folder. Copy these plugins to the
             corresponding folder in those modules to enable support for the XOOPS poll
@@ -47,7 +47,7 @@
                     <li style='vertical-align: bottom;'>the Polls module and</li>
                     <li class='alignbottom'>the Polls block so that they can see it and vote. Detailed
                         instructions on configuring the access rights for user groups are
-                        available in the <a href="https://www.gitbook.com/book/xoops/xoops-operations-guide/" target="_blank">XOOPS Operations
+                        available in the <a href="https://xoops.gitbook.io/xoops-operations-guide/" target="_blank">XOOPS Operations
                             Manual</a></li>
                 </ul>
             </li>
@@ -93,9 +93,9 @@
     <h4 class="odd">TUTORIAL</h4>
 
     <p class="even">
-        Tutorial has been started, but we might need your help! Please check out the status of the tutorial <a href="https://www.gitbook.com/book/xoops/xoopspoll-tutorial/" target="_blank">here </a>.
+        Tutorial has been started, but we might need your help! Please check out the status of the tutorial <a href="https://xoops.gitbook.io/xoopspoll-tutorial/" target="_blank">here </a>.
         <br><br>To contribute to this Tutorial, <a href="https://github.com/XoopsDocs/xoopspoll-tutorial/" target="_blank">please fork it on GitHub</a>.
-        <br> This document describes our <a href="https://www.gitbook.com/book/xoops/xoops-documentation-process/details/" target="_blank">Documentation Process</a> and it will help you to understand how to contribute.
+        <br> This document describes our <a href="https://xoops.gitbook.io/xoops-documentation-process/details/" target="_blank">Documentation Process</a> and it will help you to understand how to contribute.
         <br><br>
         There are more XOOPS Tutorials, so check them out in our <a href="https://www.gitbook.com/@xoops/" target="_blank">XOOPS Tutorial Repository on GitBook</a>.
     </p>

@@ -21,13 +21,13 @@
  * @return bool
  */
 
-use XoopsModules\Xoopspoll;
 use XoopsModules\Newbb;
+use XoopsModules\Xoopspoll;
 
 function xoops_module_pre_uninstall_xoopspoll(\XoopsModule $module)
 {
     /* make sure that any polls associated with xoopspoll are cleared from newbb */
-    /** @var XoopsModuleHandler $moduleHandler */
+    /** @var \XoopsModuleHandler $moduleHandler */
     $moduleHandler = xoops_getHandler('module');
     $newbbModule   = $moduleHandler->getByDirname('newbb');
     $success       = true;

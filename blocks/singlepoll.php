@@ -18,9 +18,9 @@
  * @since     :: 1.40
  */
 
+use XoopsModules\Newbb;
 use XoopsModules\Xoopspoll;
 use XoopsModules\Xoopspoll\Constants;
-use XoopsModules\Newbb;
 
 xoops_loadLanguage('main', 'xoopspoll');
 xoops_load('pollUtility', 'xoopspoll');
@@ -32,7 +32,6 @@ require_once $GLOBALS['xoops']->path( "modules"
 );
 */
 /**
- *
  * Display a single XOOPS Polls in a block
  *
  * @access public
@@ -42,6 +41,7 @@ require_once $GLOBALS['xoops']->path( "modules"
  * @uses   xoops_getUserTimestamp() function to convert time to user time
  * @uses   formatTimestamp() takes timestamp and converts to human readable format
  * @param        array    options contains settings for block display
+ * @param mixed  $options
  * @return array block keys and values to be used by block template
  */
 function xoopspollBlockSinglepollShow($options)
@@ -50,7 +50,7 @@ function xoopspollBlockSinglepollShow($options)
 
     $configHandler = xoops_getHandler('config');
     $pollHandler   = Xoopspoll\Helper::getInstance()->getHandler('Poll');
-    /** @var XoopsModuleHandler $moduleHandler */
+    /** @var \XoopsModuleHandler $moduleHandler */
     $moduleHandler      = xoops_getHandler('module');
     $thisModule         = $moduleHandler->getByDirname('xoopspoll');
     $this_module_config = $configHandler->getConfigsByCat(0, $thisModule->getVar('mid'));
@@ -70,7 +70,7 @@ function xoopspollBlockSinglepollShow($options)
                 /** @var NewbbTopicHandler $topicHandler */
                 $topicHandler = Newbb\Helper::getInstance()->getHandler('Topic');
                 $tFields      = ['topic_id', 'poll_id'];
-                $tArray       =& $topicHandler->getAll(new \Criteria('topic_haspoll', 0, '>'), $tFields, false);
+                $tArray       = &$topicHandler->getAll(new \Criteria('topic_haspoll', 0, '>'), $tFields, false);
                 if (!empty($tArray)) {
                     $tcriteria = [];
                     foreach ($tArray as $t) {
@@ -108,7 +108,7 @@ function xoopspollBlockSinglepollShow($options)
             $block['showResultsLink'] = $options[2];
             $block['asList']          = $options[3];
             $block['thisModuleDir']   = 'xoopspoll';
-            $block['url']             = 'http' . ((!empty($_SERVER['HTTPS'])) ? 's' : '') . '://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+            $block['url']             = 'http' . (!empty($_SERVER['HTTPS']) ? 's' : '') . '://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
             $block['dispVotes']       = $this_module_config['disp_vote_nums'];
 
             $optHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');
@@ -153,7 +153,7 @@ function xoopspollBlockSinglepollShow($options)
                     'text'    => $optionObj->getVar('option_text'),
                     'count'   => $optionObj->getVar('option_count'),
                     'percent' => sprintf(' %01.1f%%', $percent),
-                    'color'   => $optionObj->getVar('option_color')
+                    'color'   => $optionObj->getVar('option_color'),
                 ];
             }
 
@@ -194,13 +194,13 @@ function xoopspollBlockSinglepollShow($options)
 }
 
 /**
- *
  * Display a form to edit poll block display option
  *
  * @access public
  * @global mixed $GLOBALS ['xoopsUser']
  * @uses   xoops_getModuleHandler() function to get class handler for this modules class(es)
  * @param        array    options contains settings for block display (init in xoopsversion.php and saved in db)
+ * @param mixed  $options
  * @return string HTML form for display by block admin
  */
 function xoopspollBlockSinglepollEdit($options)
@@ -253,7 +253,7 @@ function xoopspollBlockSinglepollEdit($options)
      * now check to see if we want to hide polls that were created using newbb
      */
     $configHandler = xoops_getHandler('config');
-    /** @var XoopsModuleHandler $moduleHandler */
+    /** @var \XoopsModuleHandler $moduleHandler */
     $moduleHandler      = xoops_getHandler('module');
     $thisModule         = $moduleHandler->getByDirname('xoopspoll');
     $this_module_config = $configHandler->getConfigsByCat(0, $thisModule->getVar('mid'));
@@ -264,7 +264,7 @@ function xoopspollBlockSinglepollEdit($options)
             /** @var NewbbTopicHandler $topicHandler */
             $topicHandler = Newbb\Helper::getInstance()->getHandler('Topic');
             $tFields      = ['topic_id', 'poll_id'];
-            $tArray       =& $topicHandler->getAll(new \Criteria('topic_haspoll', 0, '>'), $tFields, false);
+            $tArray       = &$topicHandler->getAll(new \Criteria('topic_haspoll', 0, '>'), $tFields, false);
             if (!empty($tArray)) {
                 $tcriteria = [];
                 foreach ($tArray as $t) {

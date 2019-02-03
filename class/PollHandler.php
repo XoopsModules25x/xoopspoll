@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\Xoopspoll;
+<?php
+
+namespace XoopsModules\Xoopspoll;
 
 /*
  You may not change or alter any portion of this comment or credits
@@ -21,10 +23,8 @@
  */
 
 use XoopsModules\Xoopspoll;
-use XoopsModules\Xoopspoll\Constants;
 
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
-
 
 /**
  * Class PollHandler
@@ -36,13 +36,12 @@ class PollHandler extends \XoopsPersistableObjectHandler
      *
      * @param null|\XoopsDatabase $db
      **/
-    public function __construct(\XoopsDatabase $db)
+    public function __construct(\XoopsDatabase $db = null)
     {
         parent::__construct($db, 'xoopspoll_desc', Poll::class, 'poll_id', 'question');
     }
 
     /**
-     *
      * Update the Vote count from the log and polls
      * @access public
      * @param  obj $pollObj
@@ -65,7 +64,6 @@ class PollHandler extends \XoopsPersistableObjectHandler
     }
 
     /**
-     *
      * Mail the results of poll when expired
      * @param  mixed $pollObj
      * @return array true|false indicating sendmail status
@@ -81,7 +79,7 @@ class PollHandler extends \XoopsPersistableObjectHandler
             $criteria->add(new \Criteria('poll_id', $pollObj->getVar('poll_id'), '='));
             $criteria->setLimit(1);
         }
-        $pollObjs =& $this->getAll($criteria);
+        $pollObjs = &$this->getAll($criteria);
         $tplFile  = 'mail_results.tpl';
         $lang     = 'english';
         if (file_exists($GLOBALS['xoops']->path('modules/xoopspoll/language/' . $GLOBALS['xoopsConfig']['language'] . '/mail_template/' . $tplFile))) {

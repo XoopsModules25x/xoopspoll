@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\Newbb;
+<?php
+
+namespace XoopsModules\Newbb;
 
 /*
  * You may not change or alter any portion of this comment or credits
@@ -18,14 +20,13 @@
  * @author       XOOPS Development Team, phppp (D.J., infomax@gmail.com)
  */
 
-use XoopsModules\Xoopspoll;
 use XoopsModules\Newbb;
+use XoopsModules\Xoopspoll;
 
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
-defined('NEWBB_FUNCTIONS_INI') || include XOOPS_ROOT_PATH . '/modules/newbb/include/functions.ini.php';
+defined('NEWBB_FUNCTIONS_INI') || require XOOPS_ROOT_PATH . '/modules/newbb/include/functions.ini.php';
 //newbb_load_object();
-
 
 /**
  * Class PostHandler
@@ -36,11 +37,10 @@ class PostHandler extends \XoopsPersistableObjectHandler
     /**
      * @param null|\XoopsDatabase $db
      */
-    public function __construct(\XoopsDatabase $db)
+    public function __construct(\XoopsDatabase $db = null)
     {
         parent::__construct($db, 'bb_posts', Post::class, 'post_id', 'subject');
     }
-
 
     /**
      * @param  mixed|null $id
@@ -181,7 +181,7 @@ class PostHandler extends \XoopsPersistableObjectHandler
 
     /**
      * @param  \XoopsObject $post
-     * @param  bool        $force
+     * @param  bool         $force
      * @return bool
      */
     public function insert(\XoopsObject $post, $force = true)
@@ -243,9 +243,9 @@ class PostHandler extends \XoopsPersistableObjectHandler
             $post->destroyVars($post_text_vars);
             if (!$post_id = parent::insert($post, $force)) {
                 return false;
-            } else {
-                $post->unsetNew();
             }
+            $post->unsetNew();
+
             $text_obj->setVar('post_id', $post_id);
             if (!$textHandler->insert($text_obj, $force)) {
                 $this->delete($post);
@@ -283,9 +283,9 @@ class PostHandler extends \XoopsPersistableObjectHandler
             if (!$post_id = parent::insert($post, $force)) {
                 //                xoops_error($post->getErrors());
                 return false;
-            } else {
-                $post->unsetNew();
             }
+            $post->unsetNew();
+
             if (!$textHandler->insert($text_obj, $force)) {
                 $post->setErrors('update post text error');
 
@@ -401,7 +401,7 @@ class PostHandler extends \XoopsPersistableObjectHandler
                     }
 
                     $poll_id = $topic_obj->getVar('poll_id');
-                    /** @var XoopsModuleHandler $moduleHandler */
+                    /** @var \XoopsModuleHandler $moduleHandler */
                     $moduleHandler = xoops_getHandler('module');
                     if ($poll_id > 0) {
                         $poll_moduleHandler = $moduleHandler->getByDirname('xoopspoll');
@@ -518,11 +518,13 @@ class PostHandler extends \XoopsPersistableObjectHandler
 
         return $count;
     }
+
     // END irmtfan enhance getPostCount when there is join (read_mode = 2)
 
     /*
      *@TODO: combining viewtopic.php
      */
+
     /**
      * @param  null $criteria
      * @param  int  $limit
@@ -535,7 +537,7 @@ class PostHandler extends \XoopsPersistableObjectHandler
         $ret = [];
         $sql = 'SELECT p.*, t.* ' . 'FROM ' . $this->db->prefix('bb_posts') . ' AS p ' . 'LEFT JOIN ' . $this->db->prefix('bb_posts_text') . ' AS t ON t.post_id = p.post_id';
         if (!empty($join)) {
-            $sql .= (' ' === substr($join, 0, 1)) ? $join : ' ' . $join;
+            $sql .= (' ' === mb_substr($join, 0, 1)) ? $join : ' ' . $join;
         }
         if (isset($criteria) && is_subclass_of($criteria, 'CriteriaElement')) {
             $sql .= ' ' . $criteria->renderWhere();
@@ -583,7 +585,7 @@ class PostHandler extends \XoopsPersistableObjectHandler
         } else { /* for 4.0+ */
             /* */
             $sql = 'DELETE ' . $this->db->prefix('bb_posts_text') . ' FROM ' . $this->db->prefix('bb_posts_text') . ' ' . 'LEFT JOIN ' . $this->table . ' AS aa ON ' . $this->db->prefix('bb_posts_text') . '.post_id = aa.post_id ' . ' ' . 'WHERE (aa.post_id IS NULL)';
-            /* */
+
             // Alternative for 4.1+
             /*
             $sql = "DELETE bb FROM ".$this->db->prefix("bb_posts_text")." AS bb" . " "

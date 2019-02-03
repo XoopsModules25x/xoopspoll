@@ -21,9 +21,9 @@
  */
 
 use Xmf\Request;
+use XoopsModules\Newbb;
 use XoopsModules\Xoopspoll;
 use XoopsModules\Xoopspoll\Constants;
-use XoopsModules\Newbb;
 
 require_once $GLOBALS['xoops']->path('header.php');
 
@@ -44,10 +44,10 @@ $goodOps = [
     'delete_ok',
     'restart',
     'restart_ok',
-    'log'
+    'log',
 ];
 $op      = Request::getString('op', 'add');
-$op      = (!in_array($op, $goodOps)) ? 'add' : $op;
+$op      = (!in_array($op, $goodOps, true)) ? 'add' : $op;
 
 //$poll_id  = (isset($_GET['poll_id']))   ? (int)($_GET['poll_id'])   : 0;
 //$poll_id  = (isset($_POST['poll_id']))  ? (int)($_POST['poll_id'])  : $poll_id;
@@ -55,12 +55,12 @@ $poll_id = Request::getInt('poll_id', Request::getInt('poll_id', 0, 'POST'), 'GE
 //$topic_id = (isset($_GET['topic_id']))  ? (int)($_GET['topic_id'])  : 0;
 //$topic_id = (isset($_POST['topic_id'])) ? (int)($_POST['topic_id']) : $topic_id;
 $topic_id = Request::getInt('topic_id', Request::getInt('topic_id', 0, 'POST'), 'GET');
-/** @var XoopsModuleHandler $moduleHandler */
+/** @var \XoopsModuleHandler $moduleHandler */
 $moduleHandler = xoops_getHandler('module');
 $xoopspoll     = $moduleHandler->getByDirname('xoopspoll');
 if (is_object($xoopspoll) && $xoopspoll->getVar('isactive')) {
-//    xoops_load('constants', 'xoopspoll');
-//    xoops_load('pollUtility', 'xoopspoll');
+    //    xoops_load('constants', 'xoopspoll');
+    //    xoops_load('pollUtility', 'xoopspoll');
 
     xoops_loadLanguage('admin', 'xoopspoll');
     $xpPollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
@@ -117,7 +117,6 @@ switch ($op) {
         $poll_obj = $xpPollHandler->get($poll_id); // will create poll if poll_id = 0 exist
         $poll_obj->renderForm($_SERVER['PHP_SELF'], 'post', ['topic_id' => $topic_id]);
         break;
-
     case 'save':
     case 'update':
         // check security token
@@ -165,7 +164,7 @@ switch ($op) {
             'weight'      => Request::getInt('weight', Constants::DEFAULT_WEIGHT, 'POST'),
             'multiple'    => Request::getInt('multiple', Constants::NOT_MULTIPLE_SELECT_POLL, 'POST'),
             'multilimit'  => Request::getInt('multilimit', Constants::MULTIPLE_SELECT_LIMITLESS, 'POST'),
-            'anonymous'   => Request::getInt('anonymous', Constants::ANONYMOUS_VOTING_DISALLOWED, 'POST')
+            'anonymous'   => Request::getInt('anonymous', Constants::ANONYMOUS_VOTING_DISALLOWED, 'POST'),
         ];
         $poll_obj->setVars($poll_vars);
         $poll_id = $xpPollHandler->insert($poll_obj);
@@ -230,7 +229,6 @@ switch ($op) {
             redirect_header("viewtopic.php?topic_id={$topic_id}", 2, _MD_POLL_DBUPDATED);
         }
         break;
-
     case 'addmore':
         $poll_obj     = $xpPollHandler->get($poll_id);
         $xpOptHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');
@@ -248,7 +246,6 @@ switch ($op) {
         echo '<h4>' . _MD_POLL_POLLCONF . "</h4>\n";
         $poll_form->display();
         break;
-
     case 'savemore':
         // check security token
         if (!$GLOBALS['xoopsSecurity']->check()) {
@@ -283,13 +280,11 @@ switch ($op) {
         xoops_template_clear_module_cache($xoopspoll->getVar('mid'));
         redirect_header("polls.php?op=edit&amp;poll_id={$poll_id}&amp;topic_id={$topic_id}", 2, _MD_POLL_DBUPDATED);
         break;
-
     case 'delete':
         echo '<h4>' . _MD_POLL_POLLCONF . "</h4>\n";
         $poll_obj = $xpPollHandler->get($poll_id);
         xoops_confirm(['op' => 'delete_ok', 'topic_id' => $topic_id, 'poll_id' => $poll_id], 'polls.php', sprintf(_MD_POLL_RUSUREDEL, $poll_obj->getVar('question')));
         break;
-
     case 'delete_ok':
         // check security token
         if (!$GLOBALS['xoopsSecurity']->check()) {
@@ -327,7 +322,6 @@ switch ($op) {
         }
         redirect_header("viewtopic.php?topic_id={$topic_id}", 1, _MD_POLL_DBUPDATED);
         break;
-
     case 'restart':
         $default_poll_duration = Constants::DEFAULT_POLL_DURATION;
         $poll_form             = new \XoopsThemeForm(_MD_POLL_RESTARTPOLL, 'poll_form', 'polls.php', 'post', true);
@@ -344,7 +338,6 @@ switch ($op) {
         $poll_form->display();
 
         break;
-
     case 'restart_ok':
         // check security token
         if (!$GLOBALS['xoopsSecurity']->check()) {
@@ -391,7 +384,6 @@ switch ($op) {
         xoops_template_clear_module_cache($xoopspoll->getVar('mid'));
         redirect_header("viewtopic.php?topic_id={$topic_id}", 1, _MD_POLL_DBUPDATED);
         break;
-
     case 'log':
         redirect_header($GLOBALS['xoops']->url("modules/xoopspoll/admin/main.php?op=log&amp;poll_id={$poll_id}"), 2, _MD_LOG_XOOPSPOLL_ADMIN_REDIRECT);
         break;

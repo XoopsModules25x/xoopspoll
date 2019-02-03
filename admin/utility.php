@@ -49,19 +49,16 @@ switch ($op) {
         xoops_cp_header();
         $adminObject = \Xmf\Module\Admin::getInstance();
 
-         $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation(basename(__FILE__)));
+        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation(basename(__FILE__)));
 
         $adminObject->addItemButton(_AM_XOOPSPOLL_IMPORT_UMFRAGE, 'utility.php' . '?op=umfrage', $icon = 'download');
         $GLOBALS['xoopsTpl']->assign('addPollButton', $adminObject->displayButton('left'));
-
-
 
         $GLOBALS['xoopsTpl']->assign('umfrageIntro', _AM_XOOPSPOLL_UMFRAGE_INTRO);
         $GLOBALS['xoopsTpl']->display($GLOBALS['xoops']->path('modules/xoopspoll/templates/admin/xoopspoll_utility.tpl'));
 
         require_once __DIR__ . '/admin_header.php';
         break;
-
     /* Import data from umfrage */
     case 'umfrage':
         $ok = Request::getString('ok', Constants::CONFIRM_NOT_OK, 'POST');
@@ -70,16 +67,17 @@ switch ($op) {
                 redirect_header($_SERVER['PHP_SELF'], Constants::REDIRECT_DELAY_MEDIUM, implode('<br>', $GLOBALS['xoopsSecurity']->getErrors()));
             }
             // first check to see if umfrage module is installed and active
-            /** @var XoopsModuleHandler $moduleHandler */
+            /** @var \XoopsModuleHandler $moduleHandler */
             $moduleHandler = xoops_getHandler('module');
             $umModule      = $moduleHandler->getByDirname('umfrage');
+
             try {
                 if (false !== $umModule && $umModule->isactive()) {
                     // make sure the umfrage database tables exist
                     $configHandler  = xoops_getHandler('config');
                     $umModuleConfig = $configHandler->getConfigsByCat(0, $umModule->getVar('mid'));
                     $success        = false;
-                    $umTables       =& $umModule->getInfo('tables');
+                    $umTables       = &$umModule->getInfo('tables');
                     foreach ($umTables as $umTable) {
                         $s = Xoopspoll\Utility::dbTableExists($GLOBALS['xoopsDB'], $umTable);
                         if (!$s) {
@@ -100,7 +98,7 @@ switch ($op) {
                     $typeToVisMap = [
                         1 => Constants::HIDE_NEVER,
                         2 => Constants::HIDE_ALWAYS,
-                        3 => Constants::HIDE_VOTED
+                        3 => Constants::HIDE_VOTED,
                     ];
 
                     $err                = [];
@@ -136,7 +134,7 @@ switch ($op) {
                                 'visibility'  => $visibility,
                                 'weight'      => $umPollObj->getVar('weight'),
                                 'mail_status' => $umPollObj->getVar('mail_status'),
-                                'mail_voter'  => $umPollObj->getVar('mail_voter')
+                                'mail_voter'  => $umPollObj->getVar('mail_voter'),
                             ];
                             $xpObj    = $xpHandler->create();
                             $xpObj->setVars($xpValues);
@@ -154,7 +152,7 @@ switch ($op) {
                                         'poll_id'      => $newXpId,
                                         'option_text'  => $umOptObj->getVar('option_text'),
                                         'option_count' => $umOptObj->getVar('option_count'),
-                                        'option_color' => $umOptObj->getVar('option_color')
+                                        'option_color' => $umOptObj->getVar('option_color'),
                                     ];
                                     $xpOptObj  = $xpOptHandler->create();
                                     $xpOptObj->setVars($optValues);
@@ -176,7 +174,7 @@ switch ($op) {
                                         'option_id' => $optionIdMap[$umLogObj->getVar('option_id')],
                                         'ip'        => $umLogObj->getVar('ip'),
                                         'user_id'   => $umLogObj->getVar('user_id'),
-                                        'time'      => $umLogObj->getVar('time')
+                                        'time'      => $umLogObj->getVar('time'),
                                     ];
                                     $xpLogObj  = $xpLogHandler->create();
                                     $xpLogObj->setVars($logValues);
@@ -198,7 +196,8 @@ switch ($op) {
                 } else {
                     throw new Exception(_AM_XOOPSPOLL_UMFRAGE_FAILED);
                 }
-            } catch (\Exception $e) {
+            }
+            catch (\Exception $e) {
                 xoops_cp_header();
                 $adminObject = \Xmf\Module\Admin::getInstance();
                 echo $adminObject->displayNavigation(basename(__FILE__));

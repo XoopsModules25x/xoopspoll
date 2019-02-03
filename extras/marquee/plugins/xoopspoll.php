@@ -18,6 +18,7 @@
  * @package   ::     marquee
  * @subpackage::  plugins
  */
+
 /**
  * Script to list the recent polls from the xoopspoll module version 1.40
  * @param $limit
@@ -54,7 +55,7 @@ function b_marquee_xoopspoll($limit, $dateformat, $itemssize)
             'category' => '',
             'author'   => $pollValues['user_id'],
             'title'    => $title,
-            'link'     => "<a href='" . $GLOBALS['xoops']->url('modules/xoopspoll/index.php') . "?poll_id={$pollValues['poll_id']}'>{$title}</a>"
+            'link'     => "<a href='" . $GLOBALS['xoops']->url('modules/xoopspoll/index.php') . "?poll_id={$pollValues['poll_id']}'>{$title}</a>",
         ];
         unset($pollValues);
     }

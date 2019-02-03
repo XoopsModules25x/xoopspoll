@@ -23,15 +23,15 @@ use XoopsModules\Xoopspoll;
 
 require_once __DIR__ . '/header.php';
 
-/** @var Xoopspoll\Helper $helper */
+/** @var \Xoopspoll\Helper $helper */
 $helper = Xoopspoll\Helper::getInstance();
 
-if (isset($_POST['submit'])) {
+if (\Xmf\Request::hasVar('submit', 'POST')) {
     foreach (['forum', 'newforum', 'newtopic'] as $getint) {
         ${$getint} = isset($_POST[$getint]) ? \Xmf\Request::getInt($getint, 0, 'POST') : 0;
     }
     $topic_id = [];
-    if (isset($_POST['topic_id']) && !is_array($_POST['topic_id'])) {
+    if (\Xmf\Request::hasVar('topic_id', 'POST') && !is_array($_POST['topic_id'])) {
         $topic_id = [$topic_id];
     } else {
         $topic_id = $_POST['topic_id'];
@@ -81,15 +81,15 @@ $action_array = [
     'sticky',
     'unsticky',
     'digest',
-    'undigest'
+    'undigest',
 ];
 foreach ($action_array as $_action) {
     $action[$_action] = [
         'name'   => $_action,
-        'desc'   => constant(strtoupper("_MD_DESC_{$_action}")),
-        'submit' => constant(strtoupper("_MD_{$_action}")),
+        'desc'   => constant(mb_strtoupper("_MD_DESC_{$_action}")),
+        'submit' => constant(mb_strtoupper("_MD_{$_action}")),
         'sql'    => "topic_{$_action}=1",
-        'msg'    => constant(strtoupper("_MD_TOPIC{$_action}"))
+        'msg'    => constant(mb_strtoupper("_MD_TOPIC{$_action}")),
     ];
 }
 $action['lock']['sql']     = 'topic_status = 1';
@@ -103,7 +103,7 @@ $xoopsConfig['module_cache'][$xoopsModule->getVar('mid')] = 0;
 // irmtfan include header.php after defining $xoopsOption['template_main']
 require_once XOOPS_ROOT_PATH . '/header.php';
 
-if (isset($_POST['submit'])) {
+if (\Xmf\Request::hasVar('submit', 'POST')) {
     $mode = $_POST['mode'];
 
     if ('delete' === $mode) {
@@ -123,7 +123,7 @@ if (isset($_POST['submit'])) {
         // /** @var Newbb\TopicHandler $topicHandler */
         //        $topicHandler = Newbb\Helper::getInstance()->getHandler('Topic');
         $forums     = [];
-        $topics_obj =& $topicHandler->getAll(new \Criteria('topic_id', '(' . implode(',', $topic_id) . ')', 'IN'));
+        $topics_obj = &$topicHandler->getAll(new \Criteria('topic_id', '(' . implode(',', $topic_id) . ')', 'IN'));
         foreach (array_keys($topics_obj) as $id) {
             $topic_obj = $topics_obj[$id];
             $topicHandler->approve($topic_obj);
@@ -132,7 +132,7 @@ if (isset($_POST['submit'])) {
         }
         //irmtfan remove - no need to approve posts manually - see class/post.php approve function
         $criteria_forum = new \Criteria('forum_id', '(' . implode(',', array_keys($forums)) . ')', 'IN');
-        $forums_obj     =& $forumHandler->getAll($criteria_forum);
+        $forums_obj     = &$forumHandler->getAll($criteria_forum);
         foreach (array_keys($forums_obj) as $id) {
             $forumHandler->synchronization($forums_obj[$id]);
         }
@@ -160,7 +160,7 @@ if (isset($_POST['submit'])) {
              . '</a></p>';
     } elseif ('merge' === $mode) {
         $pollmodul = null;
-        /** @var XoopsModuleHandler $moduleHandler */
+        /** @var \XoopsModuleHandler $moduleHandler */
         $moduleHandler = xoops_getHandler('module');
         $pollModule    = $moduleHandler->getByDirname('xoopspoll');
         if (($pollModule instanceof XoopsModule) && $pollModule->isactive()) {
@@ -341,7 +341,7 @@ if (isset($_POST['submit'])) {
 
         $categoryHandler = Newbb\Helper::getInstance()->getHandler('Category');
         $categories      = $categoryHandler->getByPermission('access');
-        $forums          =& $forumHandler->getForumsByCategory(array_keys($categories), 'post', false);
+        $forums          = &$forumHandler->getForumsByCategory(array_keys($categories), 'post', false);
 
         if (count($categories) > 0 && count($forums) > 0) {
             foreach (array_keys($forums) as $key) {
@@ -378,4 +378,4 @@ if (isset($_POST['submit'])) {
 }
 // irmtfan move to footer.php
 require_once __DIR__ . '/footer.php';
-include $GLOBALS['xoops']->path('footer.php');
+require_once $GLOBALS['xoops']->path('footer.php');

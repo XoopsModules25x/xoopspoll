@@ -35,9 +35,9 @@
  **/
 
 use Xmf\Request;
+use XoopsModules\Newbb;
 use XoopsModules\Xoopspoll;
 use XoopsModules\Xoopspoll\Constants;
-use XoopsModules\Newbb;
 
 /**
  * @uses xoops_load() method used to load classes
@@ -45,7 +45,7 @@ use XoopsModules\Newbb;
  * @uses $GLOBALS['xoops']::path gets XOOPS directory information
  * @uses xoops_getModuleHandler() to load handler for this module's class(es)
  */
-require_once  dirname(dirname(__DIR__)) . '/mainfile.php';
+require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 
 xoops_load('constants', 'xoopspoll');
 xoops_load('renderer', 'xoopspoll');
@@ -55,7 +55,7 @@ $pollId = Request::getInt('poll_id', 0);
  * check to see if we want to show polls created by the forum (newbb) module
  */
 if ($GLOBALS['xoopsModuleConfig']['hide_forum_polls']) {
-    /** @var XoopsModuleHandler $moduleHandler */
+    /** @var \XoopsModuleHandler $moduleHandler */
     $moduleHandler = xoops_getHandler('module');
     $newbbModule   = $moduleHandler->getByDirname('newbb');
     if ($newbbModule instanceof XoopsModule && $newbbModule->isactive()) {
@@ -72,11 +72,11 @@ if (empty($pollId)) {
     redirect_header('index.php', Constants::REDIRECT_DELAY_NONE);
 }
 $GLOBALS['xoopsOption']['template_main'] = 'xoopspoll_results.tpl';
-include $GLOBALS['xoops']->path('header.php');
+require $GLOBALS['xoops']->path('header.php');
 
 $pollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
 $pollObj     = $pollHandler->get($pollId);
-if ((!empty($pollObj)) && ($pollObj instanceof Xoopspoll\Poll)) {
+if (!empty($pollObj) && ($pollObj instanceof Xoopspoll\Poll)) {
     /* make sure the poll has started */
     if ($pollObj->getVar('start_time') > time()) {
         redirect_header('index.php', Constants::REDIRECT_DELAY_NONE);
@@ -95,10 +95,10 @@ if ((!empty($pollObj)) && ($pollObj instanceof Xoopspoll\Poll)) {
                                      'disp_votes'     => $GLOBALS['xoopsModuleConfig']['disp_vote_nums'],
                                      'back_link_icon' => \Xmf\Module\Admin::iconUrl('', 16) . '/back.png',
                                      'back_link'      => $GLOBALS['xoops']->url('modules/xoopspoll/index.php'),
-                                     'back_text'      => _BACK
+                                     'back_text'      => _BACK,
                                  ]);
 } else {
     redirect_header('index.php', Constants::REDIRECT_DELAY_MEDIUM, _MD_XOOPSPOLL_ERROR_INVALID_POLLID);
 }
-include $GLOBALS['xoops']->path('include/comment_view.php');
-include $GLOBALS['xoops']->path('footer.php');
+require $GLOBALS['xoops']->path('include/comment_view.php');
+require_once $GLOBALS['xoops']->path('footer.php');

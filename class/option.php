@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\Xoopspoll;
+<?php
+
+namespace XoopsModules\Xoopspoll;
 
 /*
                XOOPS - PHP Content Management System
@@ -23,6 +25,7 @@
  along with this program; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
+
 /**
  * Poll Option class for the XoopsPoll Module
  *
@@ -93,12 +96,13 @@ class Option extends \XoopsObject
     {
         $this->__construct($id);
     }
+
     /**#@+
      * The following method is provided for backward compatibility with newbb/xforum
      * @deprecated since Xoopspoll 1.40, please @see OptionHandler & @see Option
      */
+
     /**
-     *
      * Stores object into the database
      * @uses XoopsPersistableObjectHandler::insert
      * @returns mixed
@@ -113,7 +117,6 @@ class Option extends \XoopsObject
     }
 
     /**
-     *
      * Delete all the poll options for a specific poll
      * @uses XoopsPersistableObjectHandler::deleteAll
      * @param  int $pid is used to delete all options by this id
@@ -130,7 +133,6 @@ class Option extends \XoopsObject
     }
 
     /**
-     *
      * Get all options for a particular poll
      * @uses XoopsPersistableObjectHandler::getAll
      * @param  int $pid
@@ -147,7 +149,6 @@ class Option extends \XoopsObject
     }
 
     /**
-     *
      * Reset the poll's options vote count
      * @param int $pid
      * @uses XoopsPersistableObjectHandler::updateAll
@@ -164,7 +165,6 @@ class Option extends \XoopsObject
     }
 
     /**
-     *
      * Get a static Option Handler to be used to manipulate poll options
      * @uses xoops_getModuleHandler
      * @return mixed handler object returned on success, false on failure
@@ -179,5 +179,6 @@ class Option extends \XoopsObject
 
         return $oHandler;
     }
+
     /**#@-*/
 }

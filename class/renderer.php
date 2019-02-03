@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\Xoopspoll;
+<?php
+
+namespace XoopsModules\Xoopspoll;
 
 /*
                XOOPS - PHP Content Management System
@@ -37,7 +39,6 @@
 
 use Xmf\Request;
 use XoopsModules\Xoopspoll;
-use XoopsModules\Xoopspoll\Constants;
 
 xoops_loadLanguage('main', 'xoopspoll');
 xoops_load('constants', 'xoopspoll');
@@ -84,7 +85,6 @@ class Renderer
     }
 
     /**
-     *
      * create html form to display poll
      * @access public
      * @return string html form for display
@@ -98,11 +98,9 @@ class Renderer
     }
 
     /**
-     *
      * assigns form values to template for display
      * @access public
      * @var    \XoopsTpl $tpl
-     * @return null
      */
     public function assignForm(\XoopsTpl $tpl)
     {
@@ -124,7 +122,7 @@ class Renderer
         foreach ($optionObjs as $optionObj) {
             $options[] = [
                 'input' => "<input type='{$optionType}' " . "name='{$optionName}' " . "value='" . $optionObj->getVar('option_id') . "'>",
-                'text'  => $optionObj->getVar('option_text')
+                'text'  => $optionObj->getVar('option_text'),
             ];
         }
         $uid      = (isset($GLOBALS['xoopsUser'])
@@ -149,20 +147,18 @@ class Renderer
                              'pollId'      => $this->pollObj->getVar('poll_id'),
                              'viewresults' => $GLOBALS['xoops']->url('modules/xoopspoll/pollresults.php') . '?poll_id=' . $this->pollObj->getVar('poll_id'),
                              'options'     => isset($options) ? $options : '',
-                             'description' => $myts->displayTarea($myts->undoHtmlSpecialChars($this->pollObj->getVar('description')), 1)
+                             'description' => $myts->displayTarea($myts->undoHtmlSpecialChars($this->pollObj->getVar('description')), 1),
                          ],
                          'can_vote'     => $can_vote,
                          'action'       => $GLOBALS['xoops']->url('modules/xoopspoll/index.php'),
                          'lang_vote'    => _MD_XOOPSPOLL_VOTE,
-                         'lang_results' => _MD_XOOPSPOLL_RESULTS
+                         'lang_results' => _MD_XOOPSPOLL_RESULTS,
                      ]);
     }
 
     /**
-     *
      * display html results to screen (echo)
      * @access public
-     * @return null
      */
     public function renderResults()
     {
@@ -173,11 +169,9 @@ class Renderer
     }
 
     /**
-     *
      * assigns form results to template
      * @access public
      * @var    \XoopsTpl tpl
-     * @return null
      */
     public function assignResults(\XoopsTpl $tpl)
     {
@@ -205,7 +199,7 @@ class Renderer
             }
 
             /* setup module config handler - required since this is called by newbb too */
-            /** @var XoopsModuleHandler $moduleHandler */
+            /** @var \XoopsModuleHandler $moduleHandler */
             $moduleHandler = xoops_getHandler('module');
             $configHandler = xoops_getHandler('config');
             $xp_module     = $moduleHandler->getByDirname('xoopspoll');
@@ -244,7 +238,7 @@ class Renderer
             'totalVoters' => $totalVoters,
             'vote'        => $vote,
             'options'     => $options,
-            'description' => $this->pollObj->getVar('description') //allow html
+            'description' => $this->pollObj->getVar('description'), //allow html
         ]);
     }
 }

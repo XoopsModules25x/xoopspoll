@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\Xoopspoll\Plugin;
+<?php
+
+namespace XoopsModules\Xoopspoll\Plugin;
 
 /*
  You may not change or alter any portion of this comment or credits

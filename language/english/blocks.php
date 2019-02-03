@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * Module Block Definitions
  *
  * @package   ::    xoopspoll

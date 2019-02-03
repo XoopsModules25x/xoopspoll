@@ -45,11 +45,11 @@
  */
 
 use Xmf\Request;
+use XoopsModules\Newbb;
 use XoopsModules\Xoopspoll;
 use XoopsModules\Xoopspoll\Constants;
-use XoopsModules\Newbb;
 
-require_once  dirname(dirname(__DIR__)) . '/mainfile.php';
+require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 
 xoops_load('constants', 'xoopspoll');
 xoops_load('renderer', 'xoopspoll');
@@ -63,7 +63,7 @@ $url    = Request::getString('url', '');
 
 if (empty($pollId)) {
     $GLOBALS['xoopsOption']['template_main'] = 'xoopspoll_index.tpl';
-    include $GLOBALS['xoops']->path('header.php');
+    require $GLOBALS['xoops']->path('header.php');
     $GLOBALS['xoopsTpl']->assign([
                                      'lang_pollslist'      => _MD_XOOPSPOLL_POLLSLIST,
                                      'lang_pollquestion'   => _MD_XOOPSPOLL_POLLQUESTION,
@@ -76,7 +76,7 @@ if (empty($pollId)) {
                                      'results_link_icon'   => \Xmf\Module\Admin::iconUrl('', 16) . '/open12.gif',
                                      'obscured_icon'       => $GLOBALS['xoops']->url('modules/xoopspoll/assets/images/icons/obscured.png'),
                                      'lang_obscured_alt'   => _MD_XOOPSPOLL_OBSCURED,
-                                     'lang_obscured_title' => _MD_XOOPSPOLL_OBSCURED
+                                     'lang_obscured_title' => _MD_XOOPSPOLL_OBSCURED,
                                  ]);
 
     /* get polls to display on this page */
@@ -89,7 +89,7 @@ if (empty($pollId)) {
      * exclude polls created from a forum
      */
     if ($GLOBALS['xoopsModuleConfig']['hide_forum_polls']) {
-        /** @var XoopsModuleHandler $moduleHandler */
+        /** @var \XoopsModuleHandler $moduleHandler */
         $moduleHandler = xoops_getHandler('module');
         $newbbModule   = $moduleHandler->getByDirname('newbb');
         if ($newbbModule instanceof XoopsModule && $newbbModule->isactive()) {
@@ -158,7 +158,7 @@ if (empty($pollId)) {
         $GLOBALS['xoopsTpl']->append('polls', $polls);
     }
     unset($pollObjs);
-    include $GLOBALS['xoops']->path('footer.php');
+    require $GLOBALS['xoops']->path('footer.php');
 } elseif (!empty($_POST['option_id'])) {
     /* user just tried to vote */
     //    $option_id   = Request::getInt('option_id', 0, 'POST');
@@ -167,7 +167,6 @@ if (empty($pollId)) {
     if ($pollObj instanceof Xoopspoll\Poll) {
         if ($pollObj->getVar('multiple')) {
             $optionId = Request::getArray('option_id', [], 'POST');
-            $optionId = $optionId; // type cast to make sure it's an array
             $optionId = array_map('intval', $optionId); // make sure values are integers
         } else {
             $optionId = Request::getInt('option_id', 0, 'POST');
@@ -222,7 +221,7 @@ if (empty($pollId)) {
         redirect_header($GLOBALS['xoops']->buildUrl('pollresults.php', ['poll_id' => $pollId]), Constants::REDIRECT_DELAY_SHORT, _MD_XOOPSPOLL_SORRYEXPIRED);
     }
     $GLOBALS['xoopsOption']['template_main'] = 'xoopspoll_view.tpl';
-    include $GLOBALS['xoops']->path('header.php');
+    require $GLOBALS['xoops']->path('header.php');
 
     $renderer = new \Xoopspoll\Renderer($pollObj);
     $renderer->assignForm($GLOBALS['xoopsTpl']);
@@ -248,7 +247,7 @@ if (empty($pollId)) {
                                      'lang_results' => _MD_XOOPSPOLL_RESULTS,
                                      'disp_votes'   => $GLOBALS['xoopsModuleConfig']['disp_vote_nums'],
                                      'can_vote'     => $canVote,
-                                     'lang_multi'   => $lang_multi
+                                     'lang_multi'   => $lang_multi,
                                  ]);
-    include $GLOBALS['xoops']->path('footer.php');
+    require $GLOBALS['xoops']->path('footer.php');
 }
