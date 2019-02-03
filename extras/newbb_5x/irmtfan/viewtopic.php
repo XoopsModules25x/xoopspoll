@@ -62,7 +62,7 @@ $page_query = htmlspecialchars(implode('&', array_values($query_array)), ENT_QUO
 unset($query_array);
 
 $forum_id = \Xmf\Request::getInt('forum', 0, 'GET');
-$read     = (!empty($_GET['read']) && in_array($_GET['read'], ['new'], true)) ? $_GET['read'] : '';
+$read     = (!empty($_GET['read']) && 'new' === $_GET['read']) ? $_GET['read'] : '';
 $topic_id = \Xmf\Request::getInt('topic_id', 0, 'GET');
 $post_id  = \Xmf\Request::getInt('post_id', 0, 'GET');
 $move     = isset($_GET['move']) ? mb_strtolower($_GET['move']) : '';
