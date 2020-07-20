@@ -30,7 +30,7 @@ function xoops_module_pre_uninstall_xoopspoll(XoopsModule $module)
     $success       = true;
     if (is_object($newbbModule) && $newbbModule->getVar('isactive')) {
         /** @var NewbbTopicHandler $topicHandler */
-        $topicHandler = xoops_getModuleHandler('topic', 'newbb');
+        $topicHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Topic');
         $criteria      = new Criteria('topic_haspoll', 0, '>');
         $s1            = $topicHandler->updateAll('poll_id', 0, $criteria);  // clear any polls associated with forum topic
         $s2            = $topicHandler->updateAll('topic_haspoll', 0, $criteria); // clear haspoll indicator in forum

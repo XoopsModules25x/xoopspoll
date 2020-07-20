@@ -81,7 +81,7 @@ function xoopspollBlockMultiShow($options)
         $newbbModule = $moduleHandler->getByDirname('newbb');
         if ($newbbModule instanceof XoopsModule && $newbbModule->isactive()) {
             /** @var NewbbTopicHandler $topicHandler */
-            $topicHandler = xoops_getModuleHandler('topic', 'newbb');
+            $topicHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Topic');
             $tFields       = array('topic_id', 'poll_id');
             $tArray        = $topicHandler->getAll(new Criteria('topic_haspoll', 0, '>'), $tFields, false);
             if (!empty($tArray)) {

@@ -45,28 +45,25 @@ $pathImageAdmin = $moduleInfo->getInfo('icons32');
  * Admin Menu
  */
 
-$adminmenu[$i] = array(
+$adminmenu[] = array(
     'title' => _MI_XOOPSPOLL_HOME,
     'link'  => 'admin/index.php',
     'desc'  => _MI_XOOPSPOLL_HOMEDSC,
     'icon'  => "{$pathImageAdmin}" . '/home.png'
 );
-++$i;
-$adminmenu[$i] = array(
+$adminmenu[] = array(
     'title' => _MI_XOOPSPOLL_ADMENU1,
     'link'  => 'admin/main.php',
     'desc'  => _MI_XOOPSPOLL_ADMENU1DSC,
     'icon'  => "{$pathImageAdmin}" . '/poll.png'
 );
-++$i;
-$adminmenu[$i] = array(
+$adminmenu[] = array(
     'title' => _MI_XOOPSPOLL_ADMENU2,
     'link'  => 'admin/utility.php',
     'desc'  => _MI_XOOPSPOLL_ADMENU2DSC,
     'icon'  => "{$pathImageAdmin}" . '/wizard.png'
 );
-++$i;
-$adminmenu[$i] = array(
+$adminmenu[] = array(
     'title' => _MI_XOOPSPOLL_ADABOUT,
     'link'  => 'admin/about.php',
     'desc'  => _MI_XOOPSPOLL_ADABOUTDSC,

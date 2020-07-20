@@ -55,7 +55,7 @@ if ($GLOBALS['xoopsModuleConfig']['hide_forum_polls']) {
     $newbbModule   = $moduleHandler->getByDirname('newbb');
     if ($newbbModule instanceof XoopsModule && $newbbModule->isactive()) {
         /** @var NewbbTopicHandler $topicHandler */
-        $topicHandler = xoops_getModuleHandler('topic', 'newbb');
+        $topicHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Topic');
         $tCount        = $topicHandler->getCount(new Criteria('poll_id', $pollId, '='));
         if (!empty($tCount)) {
             $pollId = 0; // treat it as if no poll requested

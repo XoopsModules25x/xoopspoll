@@ -79,7 +79,7 @@ if (!$topic_id && !$post_id) {
     redirect_header($redirect, 2, _MD_ERRORTOPIC);
 }
 /** @var NewbbTopicHandler $topicHandler */
-$topicHandler = xoops_getModuleHandler('topic', 'newbb');
+$topicHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Topic');
 if (!empty($post_id)) {
     $topic_obj = $topicHandler->getByPost($post_id);
     $topic_id  = $topic_obj->getVar('topic_id');
@@ -96,7 +96,7 @@ if ((!$topic_obj instanceof Topic) || !$topic_id = $topic_obj->getVar('topic_id'
 }
 $forum_id      = $topic_obj->getVar('forum_id');
 /** @var NewbbForumHandler $forumHandler */
-$forumHandler = xoops_getModuleHandler('forum', 'newbb');
+$forumHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Forum');
 $forum_obj     = $forumHandler->get($forum_id);
 
 $isadmin = newbb_isAdmin($forum_obj);
@@ -121,7 +121,7 @@ $topic_is_unread = true;
 $topic_last_post_time_or_id_read = newbb_getRead('topic', $topic_id);
 if (!empty($topic_last_post_time_or_id_read)) {
     if (1 === $GLOBALS['xoopsModuleConfig']['read_mode']) {
-        $postHandler    = xoops_getModuleHandler('post', 'newbb');
+        $postHandler     = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Post');
         $post_obj        =& $postHandler->get($topic_obj->getVar('topic_last_post_id'));
         $topic_is_unread = ($topic_last_post_time_or_id_read < $post_obj->getVar('post_time'));
     }
@@ -144,7 +144,7 @@ if (!$isadmin) {
 }
 
 if (!empty($GLOBALS['xoopsModuleConfig']['enable_karma'])) {
-    $karmaHandler = xoops_getModuleHandler('karma', 'newbb');
+    $karmaHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Karma');
     $user_karma    = $karmaHandler->getUserKarma();
 }
 
@@ -174,7 +174,7 @@ if (!empty($GLOBALS['xoopsModuleConfig']['rss_enable'])) {
 }
 
 if ($GLOBALS['xoopsModuleConfig']['wol_enabled']) {
-    $onlineHandler = xoops_getModuleHandler('online', 'newbb');
+    $onlineHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Online');
     $onlineHandler->init($forum_obj, $topic_obj);
     $xoopsTpl->assign('online', $onlineHandler->show_online());
 }
@@ -457,8 +457,8 @@ $xoopsTpl->assign_by_ref('admin_actions', $admin_actions);
 $xoopsTpl->assign('viewer_level', (int)($isadmin ? 2 : is_object($xoopsUser)));
 
 if ($GLOBALS['xoopsModuleConfig']['show_permissiontable']) {
-    $permHandler     = xoops_getModuleHandler('permission', 'newbb');
-    $permission_table = $permHandler->permission_table($forum_obj, $topic_obj->getVar('topic_status'), $isadmin);
+    $permissionHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Permission');
+    $permission_table  = $permissionHandler->permission_table($forum_obj, $topic_obj->getVar('topic_status'), $isadmin);
     $xoopsTpl->assign_by_ref('permission_table', $permission_table);
 }
 
@@ -726,7 +726,7 @@ $xoopsTpl->assign(array(
 
 // START irmtfan add verifyUser to quick reply
 //check banning
-$moderateHandler = xoops_getModuleHandler('moderate', 'newbb');
+$moderateHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Moderate');
 if (!empty($GLOBALS['xoopsModuleConfig']['quickreply_enabled'])
     && $topicHandler->getPermission($forum_obj, $topic_obj->getVar('topic_status'), 'reply')
     && !$moderateHandler->verifyUser(-1, '', $forum_obj->getVar('forum_id'))

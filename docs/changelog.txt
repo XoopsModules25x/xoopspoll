@@ -12,6 +12,7 @@
 - update Help (mamba)
 - Fix multiple select and reference issues (Geekwright)
 - Add 'value' to template options (slider84/Geekwright)
+- fixed bugs with namespaces in newbb 5.0 (axelf/goffy)
 
 
 1.40 RC1            NOT RELEASED

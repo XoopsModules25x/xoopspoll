@@ -33,12 +33,12 @@ if (!$topic_id) {
 }
 
 /** @var NewbbTopicHandler $topicHandler */
-$topicHandler = xoops_getModuleHandler('topic', 'newbb');
+$topicHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Topic');
 $forum         = $topicHandler->get($topic_id, 'forum_id');
 $forum_new     = !empty($newtopic) ? $topicHandler->get($newtopic, 'forum_id') : 0;
 
 /** @var NewbbForumHandler $forumHandler */
-$forumHandler = xoops_getModuleHandler('forum', 'newbb');
+$forumHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Forum');
 if (!$forumHandler->getPermission($forum, 'moderate')
     || (!empty($forum_new)
         && !$forumHandler->getPermission($forum_new, 'reply'))// The forum for the topic to be merged to
@@ -48,7 +48,7 @@ if (!$forumHandler->getPermission($forum, 'moderate')
 }
 
 if ($xoopsModuleConfig['wol_enabled']) {
-    $onlineHandler = xoops_getModuleHandler('online', 'newbb');
+    $onlineHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Online');
     $onlineHandler->init($forum);
 }
 
@@ -82,7 +82,7 @@ if (isset($_POST['submit'])) {
         $topic_obj->loadFilters('delete');
         echo $action[$mode]['msg'] . "<p><a href='viewforum.php?forum={$forum}'>" . _MD_RETURNTOTHEFORUM . "</a></p><p><a href='index.php'>" . _MD_RETURNFORUMINDEX . '</a></p>';
     } elseif ('merge' === $mode) {
-        $postHandler = xoops_getModuleHandler('post', 'newbb');
+        $postHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Post');
 
         $topic_obj    = $topicHandler->get($topic_id);
         $newtopic_obj = $topicHandler->get($newtopic);
@@ -161,9 +161,9 @@ if (isset($_POST['submit'])) {
         }
         if ('digest' === $mode && $xoopsDB->getAffectedRows()) {
             $topic_obj     = $topicHandler->get($topic_id);
-            $statsHandler = xoops_getModuleHandler('stats', 'newbb');
+            $statsHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Stats');
             $statsHandler->update($topic_obj->getVar('forum_id'), 'digest');
-            $userstatsHandler = xoops_getModuleHandler('userstats', 'newbb');
+            $userstatsHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Userstats');
             if ($user_stat = $userstatsHandler->get($topic_obj->getVar('topic_poster'))) {
                 $user_stat->setVar('user_digests', $user_stat->getVar('user_digests') + 1);
                 $userstatsHandler->insert($user_stat);
@@ -184,7 +184,7 @@ if (isset($_POST['submit'])) {
         echo '<tr><td class="bg3">' . _MD_MOVETOPICTO . '</td><td class="bg1">';
         $box = '<select name="newforum" size="1">';
 
-        $categoryHandler = xoops_getModuleHandler('category', 'newbb');
+        $categoryHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Category');
         $categories       = $categoryHandler->getByPermission('access');
         $forums           = $forumHandler->getForumsByCategory(array_keys($categories), 'post', false);
 
