@@ -8,6 +8,7 @@
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
+
 /**
  * XOOPS Poll module
  *
@@ -22,8 +23,8 @@
  * @uses      xoops_getHandler() used to load information about the module
  * @uses      XoopsModule::getByDirname() to load information if module info not currently present
  */
-if (!isset($GLOBALS['xoopsModule']) || !($GLOBALS['xoopsModule'] instanceof XoopsModule)) {
-    $GLOBALS['xoopsModule'] = XoopsModule::getByDirname('xoopspoll');
+if (!isset($GLOBALS['xoopsModule']) || !($GLOBALS['xoopsModule'] instanceof \XoopsModule)) {
+    $GLOBALS['xoopsModule'] = \XoopsModule::getByDirname('xoopspoll');
 }
 
 /** @var \XoopsModuleHandler $moduleHandler */
@@ -41,7 +42,9 @@ echo "<div class='adminfooter'>\n"
      . "/xoopsmicrobutton.gif' alt='"
      . $xoopsModule->getInfo('author_website_name')
      . "' title='"
-     . $moduleInfo->getInfo('author_website_name')
+     . $moduleInfo->getInfo(
+        'author_website_name'
+    )
      . "'></a>\n"
      . "  </div>\n"
      . "  <div class='center smallsmall italic pad5'>\n"

@@ -23,7 +23,7 @@ require_once __DIR__ . '/header.php';
 require_once XOOPS_ROOT_PATH . '/modules/newbb/include/functions.read.php';
 require_once XOOPS_ROOT_PATH . '/modules/newbb/include/functions.render.php';
 
-/** @var \Xoopspoll\Helper $helper */
+/** @var Xoopspoll\Helper $helper */
 $helper = Xoopspoll\Helper::getInstance();
 
 /*
@@ -46,7 +46,7 @@ $forum_id = \Xmf\Request::getInt('forum', 0, 'GET');
 $move     = isset($_GET['move']) ? mb_strtolower($_GET['move']) : '';
 $start    = \Xmf\Request::getInt('start', 0, 'GET');
 $status   = (!empty($_GET['status'])
-             && in_array($_GET['status'], ['active', 'pending', 'deleted'], true)) ? $_GET['status'] : '';
+             && in_array($_GET['status'], ['active', 'pending', 'deleted'])) ? $_GET['status'] : '';
 $mode     = \Xmf\Request::getInt('mode', (!empty($status) ? 2 : 0), 'GET');
 
 if (!$topic_id && !$post_id) {
@@ -99,13 +99,13 @@ $user_karma   = $karmaHandler->getUserKarma();
 
 $valid_modes     = $helper->getConfig('valid_viewmodes');
 $viewmode_cookie = newbb_getcookie('V');
-if (\Xmf\Request::hasVar('viewmode', 'GET') && in_array($_GET['viewmode'], $valid_modes, true)) {
+if (\Xmf\Request::hasVar('viewmode', 'GET') && in_array($_GET['viewmode'], $valid_modes)) {
     newbb_setcookie('V', $_GET['viewmode'], $forumCookie['expire']);
 }
 $viewmode = isset($_GET['viewmode']) ? $_GET['viewmode'] : (!empty($viewmode_cookie) ? $viewmode_cookie : @$valid_modes[$helper->getConfig('view_mode') - 1]);
-$viewmode = @in_array($viewmode, $valid_modes, true) ? $viewmode : $valid_modes[0];
+$viewmode = @in_array($viewmode, $valid_modes) ? $viewmode : $valid_modes[0];
 $order    = (isset($_GET['order'])
-             && in_array(mb_strtoupper($_GET['order']), ['DESC', 'ASC'], true)) ? $_GET['order'] : 'ASC';
+             && in_array(mb_strtoupper($_GET['order']), ['DESC', 'ASC'])) ? $_GET['order'] : 'ASC';
 
 $total_posts = $topicHandler->getPostCount($topic_obj, $status);
 
@@ -149,12 +149,14 @@ if ($helper->getConfig('wol_enabled')) {
 
 $xoopsTpl->assign('parentforum', $forumHandler->getParents($forum_obj));
 
-$xoopsTpl->assign([
-                      'topic_title'    => '<a href="' . XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname', 'n') . '/viewtopic.php?topic_id=' . $topic_id . '">' . $topic_obj->getFullTitle() . '</a>',
-                      'forum_name'     => $forum_obj->getVar('forum_name'),
-                      'lang_nexttopic' => _MD_NEXTTOPIC,
-                      'lang_prevtopic' => _MD_PREVTOPIC,
-                  ]);
+$xoopsTpl->assign(
+    [
+        'topic_title'    => '<a href="' . XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname', 'n') . '/viewtopic.php?topic_id=' . $topic_id . '">' . $topic_obj->getFullTitle() . '</a>',
+        'forum_name'     => $forum_obj->getVar('forum_name'),
+        'lang_nexttopic' => _MD_NEXTTOPIC,
+        'lang_prevtopic' => _MD_PREVTOPIC,
+    ]
+);
 
 $categoryHandler = Newbb\Helper::getInstance()->getHandler('Category');
 $category_obj    = $categoryHandler->get($forum_obj->getVar('cat_id'), ['cat_title']);
@@ -211,7 +213,7 @@ $xoopsLogger->startTime('XOOPS output module - topic - user - user');
 $viewtopic_users = [];
 if (count($userid_array) > 0) {
     require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->getVar('dirname', 'n') . '/class/user.php';
-    $userHandler         = new NewbbUserHandler($helper->getConfig('groupbar_enabled'), $helper->getConfig('wol_enabled'));
+    $userHandler         = new Newbb\UserHandler($helper->getConfig('groupbar_enabled'), $helper->getConfig('wol_enabled'));
     $userHandler->users  = $users;
     $userHandler->online = $online;
     $viewtopic_users     = $userHandler->getUsers();
@@ -221,15 +223,15 @@ $xoopsLogger->stopTime('XOOPS output module - topic - user - user');
 
 $xoopsLogger->stopTime('XOOPS output module - topic - user');
 
-if ($helper->getConfig('allow_require_reply') && $require_reply) {
+if ($require_reply && $helper->getConfig('allow_require_reply')) {
     if (!empty($helper->getConfig('cache_enabled'))) {
         $viewtopic_posters = newbb_getsession('t' . $topic_id, true);
         if (!is_array($viewtopic_posters) || 0 === count($viewtopic_posters)) {
-            $viewtopic_posters = &$topicHandler->getAllPosters($topic_obj);
+            $viewtopic_posters = $topicHandler->getAllPosters($topic_obj);
             newbb_setsession('t' . $topic_id, $viewtopic_posters);
         }
     } else {
-        $viewtopic_posters = &$topicHandler->getAllPosters($topic_obj);
+        $viewtopic_posters = $topicHandler->getAllPosters($topic_obj);
     }
 } else {
     $viewtopic_posters = [];
@@ -261,14 +263,17 @@ if ('thread' === $viewmode) {
             if ($treeItem['post_id'] === $post_id) {
                 $treeItem['subject'] = '<strong>' . $treeItem['subject'] . '</strong>';
             }
-            $xoopsTpl->append('topic_trees', [
-                'post_id'     => $treeItem['post_id'],
-                'post_time'   => $treeItem['post_time'],
-                'post_image'  => $treeItem['icon'],
-                'post_title'  => $treeItem['subject'],
-                'post_prefix' => $treeItem['prefix'],
-                'poster'      => $treeItem['poster'],
-            ]);
+            $xoopsTpl->append(
+                'topic_trees',
+                [
+                    'post_id'     => $treeItem['post_id'],
+                    'post_time'   => $treeItem['post_time'],
+                    'post_image'  => $treeItem['icon'],
+                    'post_title'  => $treeItem['subject'],
+                    'post_prefix' => $treeItem['prefix'],
+                    'poster'      => $treeItem['poster'],
+                ]
+            );
         }
         unset($postArray);
     }
@@ -372,10 +377,10 @@ if ($helper->getConfig('show_permissiontable')) {
 /** @var \XoopsModuleHandler $moduleHandler */
 $moduleHandler = xoops_getHandler('module');
 $xoopspoll     = $moduleHandler->getByDirname('xoopspoll');
-if (($xoopspoll instanceof XoopsModule) && $xoopspoll->isactive()) {
-    if (($topic_obj->getVar('topic_haspoll')
-         && $topicHandler->getPermission($forum_obj, $topic_obj->getVar('topic_status'), 'vote'))
-        || $topicHandler->getPermission($forum_obj, $topic_obj->getVar('topic_status'), 'addpoll')) {
+if (($xoopspoll instanceof \XoopsModule) && $xoopspoll->isactive()) {
+    if ($topicHandler->getPermission($forum_obj, $topic_obj->getVar('topic_status'), 'addpoll')
+        || ($topic_obj->getVar('topic_haspoll')
+            && $topicHandler->getPermission($forum_obj, $topic_obj->getVar('topic_status'), 'vote'))) {
         /*
                 xoops_load('poll', 'xoopspoll');
                 xoops_load('option', 'xoopspoll');
@@ -383,7 +388,7 @@ if (($xoopspoll instanceof XoopsModule) && $xoopspoll->isactive()) {
                 xoops_load('pollUtility', 'xoopspoll');
                 xoops_load('constants', 'xoopspoll');
         */
-        xoops_load('renderer', 'xoopspoll');
+        //        xoops_load('renderer', 'xoopspoll');
         xoops_loadLanguage('main', 'xoopspoll');
     }
 
@@ -396,25 +401,27 @@ if (($xoopspoll instanceof XoopsModule) && $xoopspoll->isactive()) {
 
         $xpollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
         $poll_obj     = $xpollHandler->get($topic_obj->getVar('poll_id'));
-        if (!empty($poll_obj) && $poll_obj instanceof Poll) {
+        if (!empty($poll_obj) && $poll_obj instanceof \Xoopspoll\Poll) {
             /* check to see if user has rights to view the results */
             $vis_return = $poll_obj->isResultVisible();
-            $isVisible  = (true === $vis_return) ? true : false;
+            $isVisible  = true === $vis_return;
             $visibleMsg = $isVisible ? '' : $vis_return;
 
             /* setup the module config handler */
             $configHandler = xoops_getHandler('config');
             $xp_config     = $configHandler->getConfigsByCat(0, $xoopspoll->getVar('mid'));
 
-            $GLOBALS['xoopsTpl']->assign([
-                                             'is_visible'      => $isVisible,
-                                             'visible_message' => $visibleMsg,
-                                             'disp_votes'      => $xp_config['disp_vote_nums'],
-                                             'lang_vote'       => _MD_XOOPSPOLL_VOTE,
-                                             'lang_results'    => _MD_XOOPSPOLL_RESULTS,
-                                             'back_link'       => '',
-                                         ]);
-            $renderer = new Renderer($poll_obj);
+            $GLOBALS['xoopsTpl']->assign(
+                [
+                    'is_visible'      => $isVisible,
+                    'visible_message' => $visibleMsg,
+                    'disp_votes'      => $xp_config['disp_vote_nums'],
+                    'lang_vote'       => _MD_XOOPSPOLL_VOTE,
+                    'lang_results'    => _MD_XOOPSPOLL_RESULTS,
+                    'back_link'       => '',
+                ]
+            );
+            $renderer = new Newbb\Renderer($poll_obj);
             //check to see if user has voted, show form if not, otherwise get results for form
             $logHandler = Xoopspoll\Helper::getInstance()->getHandler('Log');
             if ($poll_obj->isAllowedToVote()
@@ -499,19 +506,21 @@ if (!empty($helper->getConfig('show_jump'))) {
     require_once XOOPS_ROOT_PATH . '/modules/newbb/include/functions.forum.php';
     $xoopsTpl->assign('forum_jumpbox', newbb_make_jumpbox($forum_id));
 }
-$xoopsTpl->assign([
-                      'lang_forum_index' => sprintf(_MD_FORUMINDEX, htmlspecialchars($xoopsConfig['sitename'], ENT_QUOTES)),
-                      'lang_from'        => _MD_FROM,
-                      'lang_joined'      => _MD_JOINED,
-                      'lang_posts'       => _MD_POSTS,
-                      'lang_poster'      => _MD_POSTER,
-                      'lang_thread'      => _MD_THREAD,
-                      'lang_edit'        => _EDIT,
-                      'lang_delete'      => _DELETE,
-                      'lang_reply'       => _REPLY,
-                      'lang_postedon'    => _MD_POSTEDON,
-                      'lang_groups'      => _MD_GROUPS,
-                  ]);
+$xoopsTpl->assign(
+    [
+        'lang_forum_index' => sprintf(_MD_FORUMINDEX, htmlspecialchars($xoopsConfig['sitename'], ENT_QUOTES)),
+        'lang_from'        => _MD_FROM,
+        'lang_joined'      => _MD_JOINED,
+        'lang_posts'       => _MD_POSTS,
+        'lang_poster'      => _MD_POSTER,
+        'lang_thread'      => _MD_THREAD,
+        'lang_edit'        => _EDIT,
+        'lang_delete'      => _DELETE,
+        'lang_reply'       => _REPLY,
+        'lang_postedon'    => _MD_POSTEDON,
+        'lang_groups'      => _MD_GROUPS,
+    ]
+);
 
 $viewmode_options = [];
 if ('thread' === $viewmode) {
@@ -656,13 +665,16 @@ if (!empty($helper->getConfig('quickreply_enabled'))
     $forum_form->addElement($submit_button);
 
     $toggles = newbb_getcookie('G', true);
-    $display = in_array('qr', $toggles, true) ? 'none;' : 'block;';
-    $xoopsTpl->assign('quickreply', [
-        'show'    => 1,
-        'display' => $display,
-        'icon'    => newbb_displayImage('t_qr'),
-        'form'    => $forum_form->render(),
-    ]);
+    $display = in_array('qr', $toggles) ? 'none;' : 'block;';
+    $xoopsTpl->assign(
+        'quickreply',
+        [
+            'show'    => 1,
+            'display' => $display,
+            'icon'    => newbb_displayImage('t_qr'),
+            'form'    => $forum_form->render(),
+        ]
+    );
     unset($forum_form);
     $xoopsLogger->stopTime('XOOPS output module - topic - quickreply - form');
 } else {
@@ -677,7 +689,8 @@ if ($helper->getConfig('do_tag') && @require_once XOOPS_ROOT_PATH . '/modules/ta
 $xoopsLogger->stopTime('XOOPS output module - topic - tag');
 
 $xoopsLogger->startTime('XOOPS output module - topic - transfer');
-if ($transferbar = @require_once XOOPS_ROOT_PATH . '/Frameworks/transfer/bar.transfer.php') {
+$transferbar = @require_once XOOPS_ROOT_PATH . '/Frameworks/transfer/bar.transfer.php';
+if ($transferbar) {
     $xoopsTpl->assign('transfer', $transferbar);
 }
 $xoopsLogger->stopTime('XOOPS output module - topic - transfer');

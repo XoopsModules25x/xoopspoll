@@ -42,13 +42,13 @@ class UserLanguage extends Newbb\User
             'link' => $GLOBALS['xoops']->url('userinfo.php?uid=' . $user->getVar('uid')),
             'name' => PROFILE,
         ];
-        if (is_object($xoopsUser)) {
+        if (\is_object($xoopsUser)) {
             $userbar[] = [
                 'link' => "javascript:void openWithSelfMain('" . XOOPS_URL . '/pmlite.php?send2=1&amp;to_userid=' . $user->getVar('uid') . "','pmlite', 450, 380);",
                 'name' => _MD_PM,
             ];
         }
-        if ($user->getVar('user_viewemail') || $isadmin) {
+        if ($isadmin || $user->getVar('user_viewemail')) {
             $userbar[] = [
                 'link' => "javascript:void window.open('mailto:" . $user->getVar('email') . "','new');",
                 'name' => _MD_EMAIL,

@@ -1,7 +1,7 @@
 <?php
 /*
                 XOOPS - PHP Content Management System
-                    Copyright (c) 2000-2016 XOOPS.org
+                    Copyright (c) 2000-2020 XOOPS.org
                        <https://xoops.org>
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -51,8 +51,8 @@ use XoopsModules\Xoopspoll\Constants;
 
 require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 
-xoops_load('constants', 'xoopspoll');
-xoops_load('renderer', 'xoopspoll');
+//xoops_load('constants', 'xoopspoll');
+//xoops_load('renderer', 'xoopspoll');
 
 $myts        = \MyTextSanitizer::getInstance();
 $pollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
@@ -64,20 +64,22 @@ $url    = Request::getString('url', '');
 if (empty($pollId)) {
     $GLOBALS['xoopsOption']['template_main'] = 'xoopspoll_index.tpl';
     require $GLOBALS['xoops']->path('header.php');
-    $GLOBALS['xoopsTpl']->assign([
-                                     'lang_pollslist'      => _MD_XOOPSPOLL_POLLSLIST,
-                                     'lang_pollquestion'   => _MD_XOOPSPOLL_POLLQUESTION,
-                                     'lang_pollvoters'     => _MD_XOOPSPOLL_VOTERS,
-                                     'lang_votes'          => _MD_XOOPSPOLL_VOTES,
-                                     'lang_expiration'     => _MD_XOOPSPOLL_EXPIRATION,
-                                     'lang_results'        => _MD_XOOPSPOLL_RESULTS,
-                                     'lang_mustlogin'      => _MD_XOOPSPOLL_MUSTLOGIN,
-                                     'disp_votes'          => $GLOBALS['xoopsModuleConfig']['disp_vote_nums'],
-                                     'results_link_icon'   => \Xmf\Module\Admin::iconUrl('', 16) . '/open12.gif',
-                                     'obscured_icon'       => $GLOBALS['xoops']->url('modules/xoopspoll/assets/images/icons/obscured.png'),
-                                     'lang_obscured_alt'   => _MD_XOOPSPOLL_OBSCURED,
-                                     'lang_obscured_title' => _MD_XOOPSPOLL_OBSCURED,
-                                 ]);
+    $GLOBALS['xoopsTpl']->assign(
+        [
+            'lang_pollslist'      => _MD_XOOPSPOLL_POLLSLIST,
+            'lang_pollquestion'   => _MD_XOOPSPOLL_POLLQUESTION,
+            'lang_pollvoters'     => _MD_XOOPSPOLL_VOTERS,
+            'lang_votes'          => _MD_XOOPSPOLL_VOTES,
+            'lang_expiration'     => _MD_XOOPSPOLL_EXPIRATION,
+            'lang_results'        => _MD_XOOPSPOLL_RESULTS,
+            'lang_mustlogin'      => _MD_XOOPSPOLL_MUSTLOGIN,
+            'disp_votes'          => $GLOBALS['xoopsModuleConfig']['disp_vote_nums'],
+            'results_link_icon'   => \Xmf\Module\Admin::iconUrl('', 16) . '/open12.gif',
+            'obscured_icon'       => $GLOBALS['xoops']->url('modules/xoopspoll/assets/images/icons/obscured.png'),
+            'lang_obscured_alt'   => _MD_XOOPSPOLL_OBSCURED,
+            'lang_obscured_title' => _MD_XOOPSPOLL_OBSCURED,
+        ]
+    );
 
     /* get polls to display on this page */
     $limit    = Request::getInt('limit', Constants::DEFAULT_POLL_PAGE_LIMIT);
@@ -92,7 +94,7 @@ if (empty($pollId)) {
         /** @var \XoopsModuleHandler $moduleHandler */
         $moduleHandler = xoops_getHandler('module');
         $newbbModule   = $moduleHandler->getByDirname('newbb');
-        if ($newbbModule instanceof XoopsModule && $newbbModule->isactive()) {
+        if ($newbbModule instanceof \XoopsModule && $newbbModule->isactive()) {
             /** @var Newbb\TopicHandler $topicHandler */
             $topicHandler = Newbb\Helper::getInstance()->getHandler('Topic');
             $tFields      = ['topic_id', 'poll_id'];
@@ -154,7 +156,7 @@ if (empty($pollId)) {
         }
         $polls['pollVoters'] = (int)$pollObj->getVar('voters');
         $polls['pollVotes']  = (int)$pollObj->getVar('votes');
-        $polls['visible']    = (true === $pollObj->isResultVisible()) ? true : false;
+        $polls['visible']    = true === $pollObj->isResultVisible();
         $GLOBALS['xoopsTpl']->append('polls', $polls);
     }
     unset($pollObjs);
@@ -164,10 +166,10 @@ if (empty($pollId)) {
     //    $option_id   = Request::getInt('option_id', 0, 'POST');
     $mail_author = false;
     $pollObj     = $pollHandler->get($pollId);
-    if ($pollObj instanceof Xoopspoll\Poll) {
+    if ($pollObj instanceof \Xoopspoll\Poll) {
         if ($pollObj->getVar('multiple')) {
             $optionId = Request::getArray('option_id', [], 'POST');
-            $optionId = array_map('intval', $optionId); // make sure values are integers
+            $optionId = array_map('\intval', $optionId); // make sure values are integers
         } else {
             $optionId = Request::getInt('option_id', 0, 'POST');
         }
@@ -197,7 +199,7 @@ if (empty($pollId)) {
                 }
                 /* set anon user vote (and the time they voted) */
                 if (!$GLOBALS['xoopsUser'] instanceof \XoopsUser) {
-                    xoops_load('pollUtility', 'xoopspoll');
+                    //                    xoops_load('pollUtility', 'xoopspoll');
                     Xoopspoll\Utility::setVoteCookie($pollId, $voteTime, 0);
                 }
             } else {
@@ -223,7 +225,7 @@ if (empty($pollId)) {
     $GLOBALS['xoopsOption']['template_main'] = 'xoopspoll_view.tpl';
     require $GLOBALS['xoops']->path('header.php');
 
-    $renderer = new \Xoopspoll\Renderer($pollObj);
+    $renderer = new Xoopspoll\Renderer($pollObj);
     $renderer->assignForm($GLOBALS['xoopsTpl']);
 
     $voteCount = $logHandler->getTotalVotesByPollId($pollId);
@@ -241,13 +243,15 @@ if (empty($pollId)) {
         }
     }
 
-    $GLOBALS['xoopsTpl']->assign([
-                                     'voteCount'    => $voteCount,
-                                     'lang_vote'    => _MD_XOOPSPOLL_VOTE,
-                                     'lang_results' => _MD_XOOPSPOLL_RESULTS,
-                                     'disp_votes'   => $GLOBALS['xoopsModuleConfig']['disp_vote_nums'],
-                                     'can_vote'     => $canVote,
-                                     'lang_multi'   => $lang_multi,
-                                 ]);
+    $GLOBALS['xoopsTpl']->assign(
+        [
+            'voteCount'    => $voteCount,
+            'lang_vote'    => _MD_XOOPSPOLL_VOTE,
+            'lang_results' => _MD_XOOPSPOLL_RESULTS,
+            'disp_votes'   => $GLOBALS['xoopsModuleConfig']['disp_vote_nums'],
+            'can_vote'     => $canVote,
+            'lang_multi'   => $lang_multi,
+        ]
+    );
     require $GLOBALS['xoops']->path('footer.php');
 }

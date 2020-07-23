@@ -1,7 +1,7 @@
 <?php
 /*
                XOOPS - PHP Content Management System
-                   Copyright (c) 2000-2016 XOOPS.org
+                   Copyright (c) 2000-2020 XOOPS.org
                       <https://xoops.org>
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -64,7 +64,7 @@ switch ($op) {
         $ok = Request::getString('ok', Constants::CONFIRM_NOT_OK, 'POST');
         if ($ok) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
-                redirect_header($_SERVER['PHP_SELF'], Constants::REDIRECT_DELAY_MEDIUM, implode('<br>', $GLOBALS['xoopsSecurity']->getErrors()));
+                redirect_header($_SERVER['SCRIPT_NAME'], Constants::REDIRECT_DELAY_MEDIUM, implode('<br>', $GLOBALS['xoopsSecurity']->getErrors()));
             }
             // first check to see if umfrage module is installed and active
             /** @var \XoopsModuleHandler $moduleHandler */
@@ -196,8 +196,7 @@ switch ($op) {
                 } else {
                     throw new Exception(_AM_XOOPSPOLL_UMFRAGE_FAILED);
                 }
-            }
-            catch (\Exception $e) {
+            } catch (\Exception $e) {
                 xoops_cp_header();
                 $adminObject = \Xmf\Module\Admin::getInstance();
                 echo $adminObject->displayNavigation(basename(__FILE__));
@@ -209,7 +208,7 @@ switch ($op) {
             xoops_cp_header();
             $adminObject = \Xmf\Module\Admin::getInstance();
             echo $adminObject->displayNavigation(basename(__FILE__));
-            xoops_confirm(['op' => 'umfrage', 'ok' => 1], $_SERVER['PHP_SELF'], _AM_XOOPSPOLL_RUSUREUMFRAGE);
+            xoops_confirm(['op' => 'umfrage', 'ok' => 1], $_SERVER['SCRIPT_NAME'], _AM_XOOPSPOLL_RUSUREUMFRAGE);
             require_once __DIR__ . '/admin_footer.php';
             exit();
         }

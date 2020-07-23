@@ -6,7 +6,7 @@
  *
  *  ------------------------------------------------------------------------
  *                XOOPS - PHP Content Management System
- *                    Copyright (c) 2000-2016 XOOPS.org
+ *                    Copyright (c) 2000-2020 XOOPS.org
  *                       <https://xoops.org>
  *  ------------------------------------------------------------------------
  *  This program is free software; you can redistribute it and/or modify
@@ -29,6 +29,7 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *  ------------------------------------------------------------------------
  */
+
 /**
  * @copyright::  {@link https://xoops.org/ XOOPS Project}
  * @license  ::  {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
@@ -36,7 +37,7 @@
  * @since    ::  1.0
  * @author   ::  {@link http://www.myweb.ne.jp Kazumi Ono}
  **/
-defined('XOOPS_ROOT_PATH') || die('Restricted access');
+defined('XOOPS_ROOT_PATH') || exit('Restricted access');
 
 require_once __DIR__ . '/preloads/autoloader.php';
 
@@ -66,8 +67,8 @@ $modversion['module_website_name'] = 'XOOPS';
 $modversion['release_file']        = XOOPS_URL . '/modules/' . $modversion['dirname'] . '/docs/changelog.txt';
 $modversion['author_website_url']  = 'http://www.myweb.ne.jp';
 $modversion['author_website_name'] = 'Kazumi Ono';
-$modversion['min_php']             = '5.5';
-$modversion['min_xoops']           = '2.5.9';
+$modversion['min_php']             = '7.2';
+$modversion['min_xoops']           = '2.5.10';
 $modversion['min_admin']           = '1.2';
 $modversion['min_db']              = ['mysql' => '5.5'];
 
@@ -207,7 +208,7 @@ $modversion['config'][] = [
  */
 /*
 xoops_load('XoopsEditorHandler');
-$editorHandler = XoopsEditorHandler::getInstance();
+$editorHandler = \XoopsEditorHandler::getInstance();
 $editorList = array_flip($editorHandler->getList());
 
 $modversion['config'][] = array(

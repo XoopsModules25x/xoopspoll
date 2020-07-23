@@ -16,7 +16,7 @@ namespace XoopsModules\Xoopspoll\Plugin;
  *  userlog module
  *
  * @copyright       XOOPS Project (https://xoops.org)
- * @license         GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+ * @license         GNU GPL 2 (https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
  * @package         newbb class plugin
  * @since           4.31
  * @author          irmtfan (irmtfan@yahoo.com)
@@ -26,9 +26,7 @@ namespace XoopsModules\Xoopspoll\Plugin;
 use Xmf\Request;
 use XoopsModules\Userlog;
 
-// defined('XOOPS_ROOT_PATH') || die('Restricted access');
-
-/**
+ /**
  * Class UserlogPlugin
  * @package XoopsModules\Xoopspoll\Plugin
  */

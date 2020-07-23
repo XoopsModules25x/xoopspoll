@@ -23,7 +23,7 @@ use XoopsModules\Xoopspoll;
 use XoopsModules\Xoopspoll\Constants;
 
 xoops_loadLanguage('main', 'xoopspoll');
-xoops_load('pollUtility', 'xoopspoll');
+//xoops_load('pollUtility', 'xoopspoll');
 /*
 require_once $GLOBALS['xoops']->path( "modules"
                                     . "/xoopspoll"
@@ -62,11 +62,12 @@ function xoopspollBlockSinglepollShow($options)
         /**
          * check to see if we want to include polls created with forum (newbb)
          */
-        if (($thisModule instanceof XoopsModule) && $thisModule->isactive()
-            && $this_module_config['hide_forum_polls']) {
+        if ($this_module_config['hide_forum_polls']
+            && ($thisModule instanceof \XoopsModule)
+            && $thisModule->isactive()) {
             $newbbModule = $moduleHandler->getByDirname('newbb');
-            if ($newbbModule instanceof XoopsModule && $newbbModule->isactive()) {
-                /** @var NewbbTopicHandler $topicHandler */
+            if ($newbbModule instanceof \XoopsModule && $newbbModule->isactive()) {
+                /** @var Newbb\TopicHandler $topicHandler */
                 $topicHandler = Newbb\Helper::getInstance()->getHandler('Topic');
                 $tFields      = ['topic_id', 'poll_id'];
                 $tArray       = &$topicHandler->getAll(new \Criteria('topic_haspoll', 0, '>'), $tFields, false);
@@ -96,8 +97,8 @@ function xoopspollBlockSinglepollShow($options)
         $pollObj = $pollHandler->get((int)$options[1]);
     }
 
-    if ($pollObj instanceof Poll) {
-        if (!$pollObj->hasExpired() || (1 === $options[0])) {
+    if ($pollObj instanceof \Xoopspoll\Poll) {
+        if ((1 === $options[0]) || !$pollObj->hasExpired()) {
             $block['langVote']        = _MD_XOOPSPOLL_VOTE;
             $block['langResults']     = _MD_XOOPSPOLL_RESULTS;
             $block['langExpires']     = _MB_XOOPSPOLL_WILLEXPIRE;
@@ -110,14 +111,14 @@ function xoopspollBlockSinglepollShow($options)
             $block['url']             = 'http' . (!empty($_SERVER['HTTPS']) ? 's' : '') . '://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
             $block['dispVotes']       = $this_module_config['disp_vote_nums'];
 
-            $optHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');
+            $optionHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');
 
             $pollVars = $pollObj->getValues();
             $criteria = new \CriteriaCompo();
             $criteria->add(new \Criteria('poll_id', $pollVars['poll_id'], '='));
             $criteria->setSort('option_id');
-            $optionsObjArray = $optHandler->getAll($criteria);
-            //            $optionsObjArray = $optHandler->getAll($criteria, null, false);
+            $optionsObjArray = $optionHandler->getAll($criteria);
+            //            $optionsObjArray = $optionHandler->getAll($criteria, null, false);
 
             if (Constants::MULTIPLE_SELECT_POLL === $pollVars['multiple']) {
                 $pollOptionType = 'checkbox';
@@ -159,7 +160,7 @@ function xoopspollBlockSinglepollShow($options)
             $xuEndTimestamp     = xoops_getUserTimestamp($pollObj->getVar('end_time'));
             $xuEndFormattedTime = ucfirst(date(_MEDIUMDATESTRING, $xuEndTimestamp));
 
-            $isVisible = (true === $pollObj->isResultVisible()) ? true : false;
+            $isVisible = true === $pollObj->isResultVisible();
 
             $multiple   = $pollVars['multiple'] ? true : false;
             $multiLimit = (int)$pollVars['multilimit'];
@@ -245,8 +246,7 @@ function xoopspollBlockSinglepollEdit($options)
      * Note that you can select polls that have not started yet so they will automatically show
      * up in the block once they have started.  To only allow selection of active polls uncomment
      * the following line in the code - this could be made a module config option if desired
-     */
-    // $criteria->add(new \Criteria('start_time', time(), '<='));
+     */ // $criteria->add(new \Criteria('start_time', time(), '<='));
     /**
      * now check to see if we want to hide polls that were created using newbb
      */
@@ -256,10 +256,10 @@ function xoopspollBlockSinglepollEdit($options)
     $thisModule         = $moduleHandler->getByDirname('xoopspoll');
     $this_module_config = $configHandler->getConfigsByCat(0, $thisModule->getVar('mid'));
 
-    if (($thisModule instanceof XoopsModule) && $thisModule->isactive() && $this_module_config['hide_forum_polls']) {
+    if ($this_module_config['hide_forum_polls'] && ($thisModule instanceof \XoopsModule) && $thisModule->isactive()) {
         $newbbModule = $moduleHandler->getByDirname('newbb');
-        if ($newbbModule instanceof XoopsModule && $newbbModule->isactive()) {
-            /** @var NewbbTopicHandler $topicHandler */
+        if ($newbbModule instanceof \XoopsModule && $newbbModule->isactive()) {
+            /** @var Newbb\TopicHandler $topicHandler */
             $topicHandler = Newbb\Helper::getInstance()->getHandler('Topic');
             $tFields      = ['topic_id', 'poll_id'];
             $tArray       = &$topicHandler->getAll(new \Criteria('topic_haspoll', 0, '>'), $tFields, false);

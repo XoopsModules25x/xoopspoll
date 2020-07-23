@@ -17,21 +17,21 @@
  * @package   ::    xoopspoll
  * @subpackage:: search
  * @since     ::      1.40
- * @author    ::     John Neill, zyspec <owners@zyspec.com>
+ * @author    ::     John Neill, zyspec <zyspec@yahoo.com>
  */
 
 use XoopsModules\Newbb;
 use XoopsModules\Xoopspoll;
 
-// defined('XOOPS_ROOT_PATH') || die('Restricted access');
+
 
 /**
  * xoopspoll_search()
  *
  * @param        $queryArray
- * @param  mixed $andor
- * @param  mixed $limit
- * @param  mixed $offset
+ * @param mixed  $andor
+ * @param mixed  $limit
+ * @param mixed  $offset
  * @param        $uid
  * @return array
  * @internal param mixed $queryarray
@@ -41,12 +41,11 @@ function xoopspoll_search($queryArray, $andor, $limit, $offset, $uid)
 {
     $ret = [];
     if (0 === (int)$uid) {
-        xoops_load('pollUtility', 'xoopspoll');
+        //        xoops_load('pollUtility', 'xoopspoll');
         $pollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
         $pollFields  = ['poll_id', 'user_id', 'question', 'start_time'];
         $criteria    = new \CriteriaCompo();
-        $criteria->add(new \Criteria('start_time', time(), '<=')); // only show polls that have started
-        /**
+        $criteria->add(new \Criteria('start_time', time(), '<=')); // only show polls that have started /**
          * @todo:
          * find out if want to show polls that were created with a forum. If no, then change
          * the link to forum topic_id
@@ -61,11 +60,11 @@ function xoopspoll_search($queryArray, $andor, $limit, $offset, $uid)
         $this_module_config = $configHandler->getConfigsByCat(0, $thisModule->getVar('mid'));
 
         $pollsWithTopics = [];
-        if (($thisModule instanceof XoopsModule) && $thisModule->isactive()
+        if (($thisModule instanceof \XoopsModule) && $thisModule->isactive()
             && $this_module_config['hide_forum_polls']) {
             $newbbModule = $moduleHandler->getByDirname('newbb');
-            if ($newbbModule instanceof XoopsModule && $newbbModule->isactive()) {
-                /** @var NewbbTopicHandler $topicHandler */
+            if ($newbbModule instanceof \XoopsModule && $newbbModule->isactive()) {
+                /** @var Newbb\TopicHandler $topicHandler */
                 $topicHandler = Newbb\Helper::getInstance()->getHandler('Topic');
                 $tFields      = ['topic_id', 'poll_id'];
                 $tArray       = &$topicHandler->getAll(new \Criteria('topic_haspoll', 0, '>'), $tFields, false);

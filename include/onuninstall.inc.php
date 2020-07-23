@@ -16,8 +16,8 @@
  * @license  ::   {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
  * @package  ::   xoopspoll
  * @since    ::     1.40
- * @author   ::    zyspec <owners@zyspec.com>
- * @param  XoopsModule $module
+ * @author   ::    zyspec <zyspec@yahoo.com>
+ * @param XoopsModule $module
  * @return bool
  */
 
@@ -48,13 +48,13 @@ function xoops_module_pre_uninstall_xoopspoll(\XoopsModule $module)
 }
 
 /**
- * @param  XoopsModule $module
+ * @param XoopsModule $module
  * @return bool
  */
 function xoops_module_uninstall_xoopspoll(\XoopsModule $module)
 {
     /* clear the voted cookie(s) for the admin user's machine when module is uninstalled */
-    xoops_load('pollUtility', 'xoopspoll');
+    //    xoops_load('pollUtility', 'xoopspoll');
     $success = Xoopspoll\Utility::setVoteCookie('', null, time() - 3600);
 
     return $success;

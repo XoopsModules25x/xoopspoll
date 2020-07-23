@@ -31,7 +31,7 @@
  * @package   ::    xoopspoll
  * @subpackage:: preloads
  * @since     ::      1.4
- * @author    ::     zyspec <owners@zyspec.com>
+ * @author    ::     zyspec <zyspec@yahoo.com>
  **/
 
 use XoopsModules\Xoopspoll;

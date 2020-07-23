@@ -8,9 +8,9 @@
         <a href="<{$xoops_url}>/modules/<{$xoops_dirname}>/index.php?cat=<{$category.id}>"><{$category.title}></a>
         <{if $parentforum}>
             <{foreach item=forum from=$parentforum}>
-            <span class="delimiter">&raquo;</span>
-            <a href="<{$xoops_url}>/modules/<{$xoops_dirname}>/viewforum.php?forum=<{$forum.forum_id}>"><{$forum.forum_name}></a>
-        <{/foreach}>
+                <span class="delimiter">&raquo;</span>
+                <a href="<{$xoops_url}>/modules/<{$xoops_dirname}>/viewforum.php?forum=<{$forum.forum_id}>"><{$forum.forum_name}></a>
+            <{/foreach}>
         <{/if}>
         <span class="delimiter">&raquo;</span>
         <a href="<{$xoops_url}>/modules/<{$xoops_dirname}>/viewforum.php?forum=<{$forum_id}>"><{$forum_name}></a>
@@ -22,7 +22,7 @@
 <br>
 <{if $tagbar}>
     <div class="taglist pad5">
-        <{includeq file="db:tag_bar.tpl"}>
+        <{include file="db:tag_bar.tpl"}>
     </div>
 <{/if}>
 
@@ -32,15 +32,16 @@
     <div class="align_left pad5">
         <{$smarty.const._MD_BROWSING}>&nbsp;
         <{foreach item=user from=$online.users}>
-        <a href="<{$user.link}>">
-            <{if $user.level eq 2}>
-                <span class="online_admin"><{$user.uname}></span>
-            <{elseif $user.level eq 1}>
-                <span class="online_moderator"><{$user.uname}></span>
-            <{else}>
-                <{$user.uname}>
-            <{/if}>
-        </a>&nbsp;
+            <a href="<{$user.link}>">
+                <{if $user.level eq 2}>
+                    <span class="online_admin"><{$user.uname}></span>
+                <{elseif $user.level eq 1}>
+                    <span class="online_moderator"><{$user.uname}></span>
+                <{else}>
+                    <{$user.uname}>
+                <{/if}>
+            </a>
+            &nbsp;
         <{/foreach}>
         <{if $online.num_anonymous}>
             &nbsp;<{$online.num_anonymous}> <{$smarty.const._MD_ANONYMOUS_USERS}>
@@ -91,9 +92,9 @@
 <{* irmtfan add $mode to not show polls in admin mode *}>
 <{if ($mode lte 1) && $topic_poll}>
     <{  if $topic_pollresult}>
-    <{      includeq file="db:newbb_poll_results.tpl" poll=$poll}>
+    <{      includefile="db:newbb_poll_results.tpl" poll=$poll}>
     <{  else}>
-    <{      includeq file="db:newbb_poll_view.tpl" poll=$poll}>
+    <{      includefile="db:newbb_poll_view.tpl" poll=$poll}>
     <{  /if}>
 <{/if}>
 <div class="clear"></div>
@@ -128,7 +129,7 @@
             <option value="<{$act.link}>"><{$act.name}></option>
             <{ /foreach}>
             <{ /if}>
-            <{if $adminpoll_actions|is_array && count($adminpoll_actions) > 0 }>
+            <{if $adminpoll_actions|is_array && (count($adminpoll_actions)>0)}>
             <option value="">--------</option>
             <option value=""><{$smarty.const._MD_POLLOPTIONADMIN}></option>
             <{ foreach item=actpoll from=$adminpoll_actions}>
@@ -197,11 +198,11 @@
 <{if $post_id == 0}><div id="aktuell"></div><{/if}>
 --*}>
 <{foreach item=topic_post from=$topic_posts}>
-<{  includeq file="db:newbb_thread.tpl" topic_post=$topic_post mode=$mode}>
-<br>
-<br>
-<{foreachelse}>
-<div style="align:center;width:100%;text-align:center;font-size:1.5em;padding:5px;"><{$smarty.const._MD_ERRORPOST}></div>
+    <{  includefile="db:newbb_thread.tpl" topic_post=$topic_post mode=$mode}>
+    <br>
+    <br>
+    <{foreachelse}>
+    <div style="align:center;width:100%;text-align:center;font-size:1.5em;padding:5px;"><{$smarty.const._MD_ERRORPOST}></div>
 <{/foreach}>
 
 <{if $mode gt 1}>
@@ -296,7 +297,7 @@
 <div class="clear"></div>
 <br>
 
-<{includeq file='db:newbb_notification_select.tpl'}>
+<{include file='db:newbb_notification_select.tpl'}>
 <{*-- irmtfan remove
 
 <script type="text/javascript">

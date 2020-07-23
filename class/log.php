@@ -4,7 +4,7 @@ namespace XoopsModules\Xoopspoll;
 
 /*
                XOOPS - PHP Content Management System
-                   Copyright (c) 2000-2016 XOOPS.org
+                   Copyright (c) 2000-2020 XOOPS.org
                       <https://xoops.org>
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -39,11 +39,11 @@ namespace XoopsModules\Xoopspoll;
 
 use XoopsModules\Xoopspoll;
 
-// defined('XOOPS_ROOT_PATH') || die('Restricted access');
+
 
 /**
  * Log() class definition for Log Objects
- * @author:: zyspec <owners@zyspec.com>
+ * @author:: zyspec <zyspec@yahoo.com>
  * @uses  ::   xoops_getModuleHandler poll module handler for class use
  */
 class Log extends \XoopsObject
@@ -58,13 +58,13 @@ class Log extends \XoopsObject
     public function __construct($id = null)
     {
         parent::__construct();
-        $this->initVar('log_id', XOBJ_DTYPE_INT, 0);
-        $this->initVar('poll_id', XOBJ_DTYPE_INT, null, true);
-        $this->initVar('option_id', XOBJ_DTYPE_INT, null, true);
-        $this->initVar('ip', XOBJ_DTYPE_OTHER, null);
-        $this->initVar('user_id', XOBJ_DTYPE_INT, 0);
-        $this->initVar('time', XOBJ_DTYPE_INT, null);
-        if (!empty($id) && is_array($id)) {
+        $this->initVar('log_id', \XOBJ_DTYPE_INT, 0);
+        $this->initVar('poll_id', \XOBJ_DTYPE_INT, null, true);
+        $this->initVar('option_id', \XOBJ_DTYPE_INT, null, true);
+        $this->initVar('ip', \XOBJ_DTYPE_OTHER, null);
+        $this->initVar('user_id', \XOBJ_DTYPE_INT, 0);
+        $this->initVar('time', \XOBJ_DTYPE_INT, null);
+        if (!empty($id) && \is_array($id)) {
             $this->assignVars($id);
         }
     }
@@ -79,13 +79,13 @@ class Log extends \XoopsObject
 
     /**
      * The following method is provided for backward compatibility with newbb
-     * @deprecated since Xoopspoll 1.40, please use LogHandler & Log
      * @param int $pid
      * @return mixed
+     * @deprecated since Xoopspoll 1.40, please use LogHandler & Log
      */
     public static function deleteByPollId($pid)
     {
-        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
+        $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __FUNCTION__ . ' is deprecated since Xoopspoll 1.40, please use Log and LogHandler methods instead.' . " Called from {$trace[0]['file']}line {$trace[0]['line']}");
         $slogHandler = self::getStaticLogHandler();
         $criteria    = new \Criteria('poll_id', (int)$pid, '=');
@@ -99,7 +99,7 @@ class Log extends \XoopsObject
      */
     public static function deleteByOptionId($opt_id)
     {
-        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
+        $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __FUNCTION__ . ' is deprecated since Xoopspoll 1.40, please use Log and LogHandler methods instead.' . " Called from {$trace[0]['file']}line {$trace[0]['line']}");
 
         $slogHandler = self::getStaticLogHandler();
@@ -116,7 +116,7 @@ class Log extends \XoopsObject
      */
     public static function hasVoted($pid, $ip, $uid)
     {
-        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
+        $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __FUNCTION__ . ' is deprecated since Xoopspoll 1.40, please use Log and LogHandler methods instead.' . " Called from {$trace[0]['file']}line {$trace[0]['line']}");
 
         $slogHandler = self::getStaticLogHandler();
@@ -130,7 +130,7 @@ class Log extends \XoopsObject
     private static function getStaticLogHandler()
     {
         static $log_h;
-        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
+        $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __FUNCTION__ . ' is deprecated since Xoopspoll 1.40, please use Log and LogHandler methods instead.' . " Called from {$trace[0]['file']}line {$trace[0]['line']}");
 
         if (!isset($log_h)) {

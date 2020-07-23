@@ -1,7 +1,7 @@
 <?php
 /*
                 XOOPS - PHP Content Management System
-                    Copyright (c) 2000-2016 XOOPS.org
+                    Copyright (c) 2000-2020 XOOPS.org
                        <https://xoops.org>
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -46,30 +46,30 @@ require_once $GLOBALS['xoops']->path( "modules"
                                     . "/pollutility.php"
 );
 */
-xoops_load('pollUtility', 'xoopspoll');
-xoops_load('constants', 'xoopspoll');
+//xoops_load('pollUtility', 'xoopspoll');
+//xoops_load('constants', 'xoopspoll');
 
 /**
  * Display XOOPS polls in a block
  *
  * @access public
+ * @param array  $options block options array
+ * @return array block keys and values to be used by block template
+ * @uses   Criteria
  * @global mixed $GLOBALS ['xoopsUser']
  * @uses   CriteriaCompo
- * @uses   Criteria
- * @param  array $options block options array
- * @return array block keys and values to be used by block template
  */
 function xoopspollBlockMultiShow($options)
 {
-    $block = [];
-
+    $block           = [];
+    $pollOptionArray = [];
     /** @var \XoopsModuleHandler $moduleHandler */
     $moduleHandler      = xoops_getHandler('module');
     $thisModule         = $moduleHandler->getByDirname('xoopspoll');
     $configHandler      = xoops_getHandler('config');
     $this_module_config = $configHandler->getConfigsByCat(0, $thisModule->getVar('mid'));
 
-    $pollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
+    $pollHandler = \XoopsModules\Xoopspoll\Helper::getInstance()->getHandler('Poll');
     $criteria    = new \CriteriaCompo();
     $criteria->add(new \Criteria('display', Constants::DISPLAY_POLL_IN_BLOCK, '='));
     $criteria->add(new \Criteria('start_time', time(), '<='));
@@ -80,11 +80,11 @@ function xoopspollBlockMultiShow($options)
     /**
      * now check to see if we want to hide polls that were created using newbb
      */
-    if (($thisModule instanceof XoopsModule) && $thisModule->isactive() && $this_module_config['hide_forum_polls']) {
+    if ($this_module_config['hide_forum_polls'] && ($thisModule instanceof \XoopsModule) && $thisModule->isactive()) {
         $newbbModule = $moduleHandler->getByDirname('newbb');
-        if ($newbbModule instanceof XoopsModule && $newbbModule->isactive()) {
-            /** @var NewbbTopicHandler $topicHandler */
-            $topicHandler = Newbb\Helper::getInstance()->getHandler('Topic');
+        if ($newbbModule instanceof \XoopsModule && $newbbModule->isactive()) {
+            /** @var Newbb\TopicHandler $topicHandler */
+            $topicHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Topic');
             $tFields      = ['topic_id', 'poll_id'];
             $tArray       = &$topicHandler->getAll(new \Criteria('topic_haspoll', 0, '>'), $tFields, false);
             if (!empty($tArray)) {
@@ -118,15 +118,15 @@ function xoopspollBlockMultiShow($options)
         $block['thisModuleDir'] = 'xoopspoll';
         $block['asList']        = $options[0];
 
-        $optHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');
-        $logHandler = Xoopspoll\Helper::getInstance()->getHandler('Log');
+        $optionHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');
+        $logHandler    = Xoopspoll\Helper::getInstance()->getHandler('Log');
 
         foreach ($pollObjs as $pollObj) {
             $criteria = new \CriteriaCompo();
             $pollVars = $pollObj->getValues();
             $criteria->add(new \Criteria('poll_id', $pollVars['poll_id'], '='));
             $criteria->setSort('option_id');
-            $pollOptionObjs = $optHandler->getAll($criteria);
+            $pollOptionObjs = $optionHandler->getAll($criteria);
             if (Constants::MULTIPLE_SELECT_POLL === $pollVars['multiple']) {
                 $pollOptionType = 'checkbox';
                 $pollOptionName = 'option_id[]';
@@ -159,7 +159,7 @@ function xoopspollBlockMultiShow($options)
             $xuEndTimestamp     = xoops_getUserTimestamp($pollObj->getVar('end_time'));
             $xuEndFormattedTime = ucfirst(date(_MEDIUMDATESTRING, $xuEndTimestamp));
 
-            $isVisible  = (true === $pollObj->isResultVisible()) ? true : false;
+            $isVisible  = true === $pollObj->isResultVisible();
             $multiple   = $pollVars['multiple'] ? true : false;
             $multiLimit = (int)$pollVars['multilimit'];
             $lang_multi = '';

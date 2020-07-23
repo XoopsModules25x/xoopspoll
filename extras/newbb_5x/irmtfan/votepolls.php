@@ -11,7 +11,7 @@
 
 /**
  * @copyright    {@link https://xoops.org/ XOOPS Project}
- * @license      {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license      {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author       XOOPS Development Team
@@ -48,7 +48,7 @@ if (($xoopspoll instanceof \XoopsModule) && $xoopspoll->isactive()) {
     if ('xoopspoll' === $pollmodules) {
         /* xoopspoll module installed & active */
         $pollmodul = 'xoopspoll';
-        xoops_load('constants', 'xoopspoll');
+        //        xoops_load('constants', 'xoopspoll');
         xoops_loadLanguage('main', 'xoopspoll');
         $xpPollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
         $xpLogHandler  = Xoopspoll\Helper::getInstance()->getHandler('Log');
@@ -68,11 +68,11 @@ if (($xoopspoll instanceof \XoopsModule) && $xoopspoll->isactive()) {
 $mail_author = false;
 if ('xoopspoll' === $pollmodules) {
     $pollObj = $xpPollHandler->get($poll_id);
-    if ($pollObj instanceof Poll) {
+    if ($pollObj instanceof \Xoopspoll\Poll) {
         if ($pollObj->getVar('multiple')) {
             $optionId = Request::getInt('option_id', 0, 'POST');
             $optionId = (array)$optionId; // type cast to make sure it's an array
-            $optionId = array_map('intval', $optionId); // make sure values are integers
+            $optionId = array_map('\intval', $optionId); // make sure values are integers
         } else {
             $optionId = $_POST['option_id'];
         }

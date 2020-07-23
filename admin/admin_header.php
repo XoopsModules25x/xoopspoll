@@ -7,6 +7,7 @@
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 */
+
 /**
  * XOOPS Poll module
  *
@@ -50,7 +51,7 @@ $helper->loadLanguage('main');
 
 $myts = \MyTextSanitizer::getInstance();
 
-if (!isset($GLOBALS['xoopsTpl']) || !($GLOBALS['xoopsTpl'] instanceof XoopsTpl)) {
+if (!isset($GLOBALS['xoopsTpl']) || !($GLOBALS['xoopsTpl'] instanceof \XoopsTpl)) {
     require_once $GLOBALS['xoops']->path('class/template.php');
     $xoopsTpl = new \XoopsTpl();
 }

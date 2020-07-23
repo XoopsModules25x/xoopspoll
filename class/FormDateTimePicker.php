@@ -13,16 +13,16 @@ namespace XoopsModules\Xoopspoll;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
  * @copyright ::   &copy; {@link https://xoops.org/ XOOPS Project}
- * @license   ::     {@link http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU GPL 2}
+ * @license   ::     {@link https://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU GPL 2}
  * @package   ::     xoopspoll
  * @subpackage::  class
  * @since     ::       1.40
  * @author    ::      TXMod Xoops (aka timgno) {@link http://www.txmodxoops.org/ TXMod Xoops}
- * @author    ::      zyspec <owners@zyspec.com>
+ * @author    ::      zyspec <zyspec@yahoo.com>
  * @credits::     {@link http://www.trentrichardson.com Trent Richardson}
  */
 
-// defined('XOOPS_ROOT_PATH') || die('Restricted access');
+
 
 /**
  * Creates a text field with jquery ui calendar & time select popup
@@ -43,7 +43,7 @@ class FormDateTimePicker extends \XoopsFormText
      */
     public function __construct($caption, $name, $size, $value)
     {
-        $value = (!is_numeric($value) || (0 === (int)$value)) ? time($value) : (int)$value;
+        $value = (!\is_numeric($value) || (0 === (int)$value)) ? \time($value) : (int)$value;
         $size  = (int)$size;
         $size  = ($size > 0 && $size <= self::MAXSIZE) ? $size : self::MAXSIZE;
         parent::__construct($caption, $name, $size, self::MAXSIZE, $value);
@@ -60,19 +60,19 @@ class FormDateTimePicker extends \XoopsFormText
         $ele_name  = $this->getName();
         $ele_value = $this->getValue(true);
         //        if (is_string($ele_value)) {
-        if (!is_numeric($ele_value)) {
+        if (!\is_numeric($ele_value)) {
             $display_value = $ele_value;
-            $ele_value     = time();
+            $ele_value     = \time();
         } else {
             //            $display_value = '';
             //            $display_value = formatTimestamp($ele_value, 'm');
-            $display_value = ucfirst(date(_MEDIUMDATESTRING, $ele_value));
+            $display_value = \ucfirst(\date(_MEDIUMDATESTRING, $ele_value));
         }
 
-        if (is_object($GLOBALS['xoTheme'])) {
-            $moduleHandler = xoops_getHandler('module');
+        if (\is_object($GLOBALS['xoTheme'])) {
+            $moduleHandler = \xoops_getHandler('module');
             $sys_module    = $moduleHandler->getByDirname('system');
-            $configHandler = xoops_getHandler('config');
+            $configHandler = \xoops_getHandler('config');
             $moduleConfig  = $configHandler->getConfigsByCat(0, $sys_module->getVar('mid'));
             $jq_theme_dir  = $moduleConfig['jquery_theme'];
 
@@ -85,85 +85,89 @@ class FormDateTimePicker extends \XoopsFormText
 
             if (!$included) {
                 $included = true;
-                xoops_loadLanguage('admin', 'xoopspoll');
+                \xoops_loadLanguage('admin', 'xoopspoll');
                 // setup regional date variables
                 $reg_values = "closeText: '"
-                              . _AM_XOOPSPOLL_DTP_CLOSETEXT
+                              . \_AM_XOOPSPOLL_DTP_CLOSETEXT
                               . "',"
                               . "prevText: '"
-                              . _AM_XOOPSPOLL_DTP_PREVTEXT
+                              . \_AM_XOOPSPOLL_DTP_PREVTEXT
                               . "',"
                               . "nextText: '"
-                              . _AM_XOOPSPOLL_DTP_NEXTTEXT
+                              . \_AM_XOOPSPOLL_DTP_NEXTTEXT
                               . "',"
                               . "currentText: '"
-                              . _AM_XOOPSPOLL_DTP_CURRENTTEXT
+                              . \_AM_XOOPSPOLL_DTP_CURRENTTEXT
                               . "',"
                               . 'monthNames: ['
-                              . _AM_XOOPSPOLL_DTP_MONTHNAMES
+                              . \_AM_XOOPSPOLL_DTP_MONTHNAMES
                               . '],'
                               . 'monthNamesShort: ['
-                              . _AM_XOOPSPOLL_DTP_MONTHNAMESSHORT
+                              . \_AM_XOOPSPOLL_DTP_MONTHNAMESSHORT
                               . '],'
                               . 'dayNames: ['
-                              . _AM_XOOPSPOLL_DTP_DAYNAMES
+                              . \_AM_XOOPSPOLL_DTP_DAYNAMES
                               . '],'
                               . 'dayNamesShort: ['
-                              . _AM_XOOPSPOLL_DTP_DAYNAMESSHORT
+                              . \_AM_XOOPSPOLL_DTP_DAYNAMESSHORT
                               . '],'
                               . 'dayNamesMin: ['
-                              . _AM_XOOPSPOLL_DTP_DAYNAMESMIN
+                              . \_AM_XOOPSPOLL_DTP_DAYNAMESMIN
                               . '],'
                               . "weekHeader: '"
-                              . _AM_XOOPSPOLL_DTP_WEEKHEADER
+                              . \_AM_XOOPSPOLL_DTP_WEEKHEADER
                               . "',"
                               . "dateFormat: '"
-                              . _AM_XOOPSPOLL_DTP_DATEFORMAT
+                              . \_AM_XOOPSPOLL_DTP_DATEFORMAT
                               . "',"
                               . "firstDay: '"
-                              . _AM_XOOPSPOLL_DTP_FIRSTDAY
+                              . \_AM_XOOPSPOLL_DTP_FIRSTDAY
                               . "',"
                               . 'isRTL: '
-                              . _AM_XOOPSPOLL_DTP_ISRTL
+                              . \_AM_XOOPSPOLL_DTP_ISRTL
                               . ','
                               . 'showMonthAfterYear: '
-                              . _AM_XOOPSPOLL_DTP_SHOWMONTHAFTERYEAR
+                              . \_AM_XOOPSPOLL_DTP_SHOWMONTHAFTERYEAR
                               . ','
                               . "yearSuffix: '"
-                              . _AM_XOOPSPOLL_DTP_YEARSUFFIX
+                              . \_AM_XOOPSPOLL_DTP_YEARSUFFIX
                               . "',";
                 // set regional time variables
                 $reg_values .= "timeOnlyTitle: '"
-                               . _AM_XOOPSPOLL_DTP_TIMEONLYTITLE
+                               . \_AM_XOOPSPOLL_DTP_TIMEONLYTITLE
                                . "',"
                                . "timeText: '"
-                               . _AM_XOOPSPOLL_DTP_TIMETEXT
+                               . \_AM_XOOPSPOLL_DTP_TIMETEXT
                                . "',"
                                . "hourText: '"
-                               . _AM_XOOPSPOLL_DTP_HOURTEXT
+                               . \_AM_XOOPSPOLL_DTP_HOURTEXT
                                . "',"
                                . "minuteText: '"
-                               . _AM_XOOPSPOLL_DTP_MINUTETEXT
+                               . \_AM_XOOPSPOLL_DTP_MINUTETEXT
                                . "',"
                                . "secondText: '"
-                               . _AM_XOOPSPOLL_DTP_SECONDTEXT
+                               . \_AM_XOOPSPOLL_DTP_SECONDTEXT
                                . "',"
                                . "millisecText: '"
-                               . _AM_XOOPSPOLL_DTP_MILLISECTEXT
+                               . \_AM_XOOPSPOLL_DTP_MILLISECTEXT
                                . "',"
                                . "timeFormat: '"
-                               . _AM_XOOPSPOLL_DTP_TIMEFORMAT
+                               . \_AM_XOOPSPOLL_DTP_TIMEFORMAT
                                . "',"
                                . 'ampm: false,'
                                . 'stepMinute: 5';
 
-                $GLOBALS['xoTheme']->addScript('', '', '
+                $GLOBALS['xoTheme']->addScript(
+                    '',
+                    '',
+                    '
                   $(function() {
                       $( ".datetimepicker" ).datetimepicker({
                           ' . $reg_values . '
                       });
                   });
-        ');
+        '
+                );
             }
         }
 

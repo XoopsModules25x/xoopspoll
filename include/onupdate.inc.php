@@ -16,13 +16,13 @@
  * @license  ::   {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
  * @package  ::   xoopspoll
  * @since    ::     1.40
- * @author   ::    zyspec <owners@zyspec.com>
+ * @author   ::    zyspec <zyspec@yahoo.com>
  */
 
 use XoopsModules\Xoopspoll;
 
-// defined('XOOPS_ROOT_PATH') || die('Restricted access');
-xoops_load('pollUtility', 'xoopspoll');
+
+//xoops_load('pollUtility', 'xoopspoll');
 
 /**
  * @param \XoopsDatabase|null $db
@@ -53,11 +53,11 @@ function xoopspollChangeTableName(\XoopsDatabase $db, $fromTable, $toTable)
 }
 
 /**
- * @param  XoopsModule $module
+ * @param XoopsModule  $module
  * @param              $prev_version
  * @return bool
  */
-function xoops_module_update_xoopspoll(\XoopsModule $module, &$prev_version)
+function xoops_module_update_xoopspoll(\XoopsModule $module, $prev_version)
 {
     // referer check
     $success = false;
@@ -121,7 +121,7 @@ function xoops_module_update_xoopspoll(\XoopsModule $module, &$prev_version)
             $s1      = xoopspollChangeTableName($db, 'mod_xoopspoll_option', 'xoopspoll_option');
             $s2      = xoopspollChangeTableName($db, 'mod_xoopspoll_desc', 'xoopspoll_desc');
             $s3      = xoopspollChangeTableName($db, 'mod_xoopspoll_log', 'xoopspoll_log');
-            $success = ($s1 && $s2 && $s3) ? true : false;
+            $success = ($s1 && $s2 && $s3);
         }
     }
 

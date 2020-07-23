@@ -1,7 +1,7 @@
 <?php
 /*
                XOOPS - PHP Content Management System
-                   Copyright (c) 2000-2016 XOOPS.org
+                   Copyright (c) 2000-2020 XOOPS.org
                       <https://xoops.org>
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -47,8 +47,8 @@ use XoopsModules\Xoopspoll\Constants;
  */
 require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 
-xoops_load('constants', 'xoopspoll');
-xoops_load('renderer', 'xoopspoll');
+//xoops_load('constants', 'xoopspoll');
+//xoops_load('renderer', 'xoopspoll');
 
 $pollId = Request::getInt('poll_id', 0);
 /*
@@ -58,8 +58,8 @@ if ($GLOBALS['xoopsModuleConfig']['hide_forum_polls']) {
     /** @var \XoopsModuleHandler $moduleHandler */
     $moduleHandler = xoops_getHandler('module');
     $newbbModule   = $moduleHandler->getByDirname('newbb');
-    if ($newbbModule instanceof XoopsModule && $newbbModule->isactive()) {
-        /** @var NewbbTopicHandler $topicHandler */
+    if ($newbbModule instanceof \XoopsModule && $newbbModule->isactive()) {
+        /** @var Newbb\TopicHandler $topicHandler */
         $topicHandler = Newbb\Helper::getInstance()->getHandler('Topic');
         $tCount       = $topicHandler->getCount(new \Criteria('poll_id', $pollId, '='));
         if (!empty($tCount)) {
@@ -76,27 +76,29 @@ require $GLOBALS['xoops']->path('header.php');
 
 $pollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
 $pollObj     = $pollHandler->get($pollId);
-if (!empty($pollObj) && ($pollObj instanceof Xoopspoll\Poll)) {
+if (!empty($pollObj) && ($pollObj instanceof \Xoopspoll\Poll)) {
     /* make sure the poll has started */
     if ($pollObj->getVar('start_time') > time()) {
         redirect_header('index.php', Constants::REDIRECT_DELAY_NONE);
     }
 
     /* assign variables to template */
-    $renderer = new \Xoopspoll\Renderer($pollObj);
+    $renderer = new Xoopspoll\Renderer($pollObj);
     $renderer->assignResults($GLOBALS['xoopsTpl']);
 
     $visReturn  = $pollObj->isResultVisible();
-    $isVisible  = (true === $visReturn) ? true : false;
+    $isVisible  = true === $visReturn;
     $visibleMsg = $isVisible ? '' : $visReturn;
 
-    $GLOBALS['xoopsTpl']->assign([
-                                     'visible_msg'    => $visibleMsg,
-                                     'disp_votes'     => $GLOBALS['xoopsModuleConfig']['disp_vote_nums'],
-                                     'back_link_icon' => \Xmf\Module\Admin::iconUrl('', 16) . '/back.png',
-                                     'back_link'      => $GLOBALS['xoops']->url('modules/xoopspoll/index.php'),
-                                     'back_text'      => _BACK,
-                                 ]);
+    $GLOBALS['xoopsTpl']->assign(
+        [
+            'visible_msg'    => $visibleMsg,
+            'disp_votes'     => $GLOBALS['xoopsModuleConfig']['disp_vote_nums'],
+            'back_link_icon' => \Xmf\Module\Admin::iconUrl('', 16) . '/back.png',
+            'back_link'      => $GLOBALS['xoops']->url('modules/xoopspoll/index.php'),
+            'back_text'      => _BACK,
+        ]
+    );
 } else {
     redirect_header('index.php', Constants::REDIRECT_DELAY_MEDIUM, _MD_XOOPSPOLL_ERROR_INVALID_POLLID);
 }

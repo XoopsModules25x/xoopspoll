@@ -445,7 +445,9 @@ define('_MD_NEWBB_GOTOLASTPOST', 'Go to last post');
 define('_MD_EDITEDMSG', 'Reason:');
 define('_MD_DELEDEDMSG', 'Reason for deleting<br><small>(If a reason is provided, the user will receive a message)</small>:');
 define('_MD_DELEDEDMSG_SUBJECT', 'Deletion of your article');
-define('_MD_DELEDEDMSG_BODY', 'Hello %s,
+define(
+    '_MD_DELEDEDMSG_BODY',
+    'Hello %s,
 your post in the forum
 
 %s
@@ -459,7 +461,8 @@ With best greetings
 -------------------------
 Please do not reply to this message!
 %s
-%s');
+%s'
+);
 define('_MD_FORUMHOME', 'Board index');
 define('_MD_NEWBB_SEEWAITREPORT', "There were <span style='color:#ff0000;'><span style='font-weight: bold;'>%s</span> Contributions reported </span>");
 define('NEWBB_PDF_SUBJECT', 'Title: ');
@@ -468,7 +471,7 @@ define('NEWBB_PDF_AUTHOR', 'Author: ');
 define('NEWBB_PDF_DATE', 'Date: ');
 define('NEWBB_PDF_URL', 'Link to Post: ');
 define('_NW_PAGE', 'Site: ');
-define('_AM_NEWBB_NOTOPIC', 'No Posts');
+define('_MD_NEWBB_NOTOPIC', 'No Posts');
 define('_MD_NORSS_DATA', 'No data to display');
 define('_MD_NEWBB_STATS', 'Statistics');
 define('_MD_POSTTIME', 'posted on');

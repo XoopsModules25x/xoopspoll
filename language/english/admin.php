@@ -1,4 +1,5 @@
 <?php
+
 /**
  * XOOPS Poll Administration Language Definitions
  *

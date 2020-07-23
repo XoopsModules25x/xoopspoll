@@ -11,7 +11,7 @@
 
 /**
  * @copyright    {@link https://xoops.org/ XOOPS Project}
- * @license      {@link http://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
+ * @license      {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
  * @package
  * @since
  * @author       XOOPS Development Team,  phppp (D.J., infomax@gmail.com)
@@ -23,7 +23,7 @@ use XoopsModules\Xoopspoll;
 
 require_once __DIR__ . '/header.php';
 
-/** @var \Xoopspoll\Helper $helper */
+/** @var Xoopspoll\Helper $helper */
 $helper = Xoopspoll\Helper::getInstance();
 
 if (\Xmf\Request::hasVar('submit', 'POST')) {
@@ -31,7 +31,7 @@ if (\Xmf\Request::hasVar('submit', 'POST')) {
         ${$getint} = isset($_POST[$getint]) ? \Xmf\Request::getInt($getint, 0, 'POST') : 0;
     }
     $topic_id = [];
-    if (\Xmf\Request::hasVar('topic_id', 'POST') && !is_array($_POST['topic_id'])) {
+    if (!is_array($_POST['topic_id']) && \Xmf\Request::hasVar('topic_id', 'POST')) {
         $topic_id = [$topic_id];
     } else {
         $topic_id = $_POST['topic_id'];
@@ -163,14 +163,14 @@ if (\Xmf\Request::hasVar('submit', 'POST')) {
         /** @var \XoopsModuleHandler $moduleHandler */
         $moduleHandler = xoops_getHandler('module');
         $pollModule    = $moduleHandler->getByDirname('xoopspoll');
-        if (($pollModule instanceof XoopsModule) && $pollModule->isactive()) {
+        if (($pollModule instanceof \XoopsModule) && $pollModule->isactive()) {
             $pollmodul    = 'xoopspoll';
             $xpOptHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');
             $xpLogHandler = Xoopspoll\Helper::getInstance()->getHandler('Log');
         } else {
             //Umfrage
             $pollModule = $moduleHandler->getByDirname('umfrage');
-            if (($pollModule instanceof XoopsModule) && $pollModule->isactive()) {
+            if (($pollModule instanceof \XoopsModule) && $pollModule->isactive()) {
                 $pollmodul = 'umfrage';
             }
         }
@@ -305,7 +305,8 @@ if (\Xmf\Request::hasVar('submit', 'POST')) {
             $statsHandler = Newbb\Helper::getInstance()->getHandler('Stats');
             $statsHandler->update($topic_obj->getVar('forum_id'), 'digest');
             $userstatsHandler = Newbb\Helper::getInstance()->getHandler('Userstats');
-            if ($user_stat = $userstatsHandler->get($topic_obj->getVar('topic_poster'))) {
+            $user_stat        = $userstatsHandler->get($topic_obj->getVar('topic_poster'));
+            if ($user_stat) {
                 $z = $user_stat->getVar('user_digests') + 1;
                 $user_stat->setVar('user_digests', (int)$z);
                 $userstatsHandler->insert($user_stat);
@@ -327,7 +328,7 @@ if (\Xmf\Request::hasVar('submit', 'POST')) {
     }
 } else {  // No submit
     $mode = $_GET['mode'];
-    echo "<form action='" . $_SERVER['PHP_SELF'] . "' method='post'>";
+    echo "<form action='" . $_SERVER['SCRIPT_NAME'] . "' method='post'>";
     echo $GLOBALS['xoopsSecurity']->getTokenHTML();
     echo "<table border='0' cellpadding='1' cellspacing='0' align='center' width='95%'>";
     echo "<tr><td class='bg2'>";
@@ -341,7 +342,7 @@ if (\Xmf\Request::hasVar('submit', 'POST')) {
 
         $categoryHandler = Newbb\Helper::getInstance()->getHandler('Category');
         $categories      = $categoryHandler->getByPermission('access');
-        $forums          = &$forumHandler->getForumsByCategory(array_keys($categories), 'post', false);
+        $forums          = $forumHandler->getForumsByCategory(array_keys($categories), 'post', false);
 
         if (count($categories) > 0 && count($forums) > 0) {
             foreach (array_keys($forums) as $key) {

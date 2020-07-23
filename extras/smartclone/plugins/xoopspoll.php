@@ -3,7 +3,7 @@
 /**
  * @package:: SmartClone
  * @author ::  {@link http://www.smartfactory.ca The SmartFactory}
- * @license:: {@link http://www.gnu.org/licenses/gpl-2.0.html GNU Public License}
+ * @license:: {@link https://www.gnu.org/licenses/gpl-2.0.html GNU Public License}
  */
 
 /**

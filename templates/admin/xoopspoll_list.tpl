@@ -63,16 +63,16 @@
                         <{ html_image file=$pollItem.buttons.log.file href=$pollItem.buttons.log.href
                         alt=$pollItem.buttons.log.alt title=$pollItem.buttons.log.alt}>
                         <{*
-                                <a href='" . $_SERVER['PHP_SELF'] . "?op=edit&amp;poll_id={$id}'>
+                                <a href='" . $_SERVER['SCRIPT_NAME'] . "?op=edit&amp;poll_id={$id}'>
                                   <img src='" . $pathIcon16 . DIRECTORY_SEPARATOR . "edit.png' alt='" . _AM_XOOPSPOLL_EDITPOLL . "' title='" . _AM_XOOPSPOLL_EDITPOLL . "'>
                                 </a>
-                                <a href='" . $_SERVER['PHP_SELF'] . "?op=clone&amp;poll_id={$id}'>
+                                <a href='" . $_SERVER['SCRIPT_NAME'] . "?op=clone&amp;poll_id={$id}'>
                                   <img src='" . $pathIcon16 . DIRECTORY_SEPARATOR . "editcopy.png' alt='" . _AM_XOOPSPOLL_CLONE . "' title='" . _AM_XOOPSPOLL_CLONE."'>
                                 </a>
-                                <a href='" . $_SERVER['PHP_SELF'] . "?op=delete&amp;poll_id={$id}'>
+                                <a href='" . $_SERVER['SCRIPT_NAME'] . "?op=delete&amp;poll_id={$id}'>
                                   <img src='" . $pathIcon16 . DIRECTORY_SEPARATOR . "delete.png' alt='" . _DELETE . "' title='" . _DELETE . "'>
                                 </a>
-                                <a href='" . $_SERVER['PHP_SELF'] . "?op=log&amp;poll_id={$id}'>
+                                <a href='" . $_SERVER['SCRIPT_NAME'] . "?op=log&amp;poll_id={$id}'>
                                   <img src='" . $pathIcon16 . DIRECTORY_SEPARATOR . "search.png' alt='" . _AM_XOOPSPOLL_VIEWLOG . "' title='" . _AM_XOOPSPOLL_VIEWLOG."'>\n"
                                 </a>
                         *}>

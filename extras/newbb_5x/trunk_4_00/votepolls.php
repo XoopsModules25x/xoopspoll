@@ -47,9 +47,9 @@ if (empty($_POST['option_id'])) {
 $moduleHandler = xoops_getHandler('module');
 $xoopspoll     = $moduleHandler->getByDirname('xoopspoll');
 
-if (($xoopspoll instanceof XoopsModule) && $xoopspoll->isactive()) {
+if (($xoopspoll instanceof \XoopsModule) && $xoopspoll->isactive()) {
     /* xoopspoll module installed & active */
-    xoops_load('constants', 'xoopspoll');
+    //    xoops_load('constants', 'xoopspoll');
     xoops_loadLanguage('main', 'xoopspoll');
     $xpPollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
     $xpLogHandler  = Xoopspoll\Helper::getInstance()->getHandler('Log');
@@ -60,11 +60,11 @@ if (($xoopspoll instanceof XoopsModule) && $xoopspoll->isactive()) {
 
 $mail_author = false;
 $pollObj     = $xpPollHandler->get($poll_id);
-if ($pollObj instanceof Poll) {
+if ($pollObj instanceof \Xoopspoll\Poll) {
     if ($pollObj->getVar('multiple')) {
         $optionId = $_POST['option_id'];
         $optionId = (array)$optionId; // type cast to make sure it's an array
-        $optionId = array_map('intval', $optionId); // make sure values are integers
+        $optionId = array_map('\intval', $optionId); // make sure values are integers
     } else {
         $optionId = $_POST['option_id'];
     }

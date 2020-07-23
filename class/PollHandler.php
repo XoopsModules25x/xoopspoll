@@ -19,14 +19,12 @@ namespace XoopsModules\Xoopspoll;
  * @package   ::    xoopspoll
  * @subpackage:: class
  * @since     ::         1.40
- * @author    ::     zyspec <owners@zyspec.com>
+ * @author    ::     zyspec <zyspec@yahoo.com>
  */
 
 use XoopsModules\Xoopspoll;
 
-// defined('XOOPS_ROOT_PATH') || die('Restricted access');
-
-/**
+ /**
  * Class PollHandler
  */
 class PollHandler extends \XoopsPersistableObjectHandler
@@ -44,14 +42,15 @@ class PollHandler extends \XoopsPersistableObjectHandler
     /**
      * Update the Vote count from the log and polls
      * @access public
-     * @param  obj $pollObj
+     * @param \XoopsObject $pollObj
      * @return bool $success
      */
-    public function updateCount(&$pollObj)
+    public function updateCount($pollObj)
     {
         $success = false;
-        if ($pollObj instanceof Poll) {
-            $pollId     = $pollObj->getVar('poll_id');
+        if ($pollObj instanceof \Xoopspoll\Poll) {
+            $pollId = $pollObj->getVar('poll_id');
+            /** @var \XoopsModules\Xoopspoll\LogHandler $logHandler */
             $logHandler = Xoopspoll\Helper::getInstance()->getHandler('Log');
             $votes      = $logHandler->getTotalVotesByPollId($pollId);
             $voters     = $logHandler->getTotalVotersByPollId($pollId);
@@ -65,32 +64,32 @@ class PollHandler extends \XoopsPersistableObjectHandler
 
     /**
      * Mail the results of poll when expired
-     * @param  mixed $pollObj
+     * @param mixed $pollObj
      * @return array true|false indicating sendmail status
      */
     public function mailResults($pollObj = null)
     {
-        xoops_load('constants', 'xoopspoll');
+        //        xoops_load('constants', 'xoopspoll');
 
         $criteria = new \CriteriaCompo();
-        $criteria->add(new \Criteria('end_time', time(), '<'));  // expired polls
+        $criteria->add(new \Criteria('end_time', \time(), '<'));  // expired polls
         $criteria->add(new \Criteria('mail_status', Constants::POLL_NOT_MAILED, '=')); // email not previously sent
-        if (!empty($pollObj) && ($pollObj instanceof Poll)) {
+        if (!empty($pollObj) && ($pollObj instanceof \Xoopspoll\Poll)) {
             $criteria->add(new \Criteria('poll_id', $pollObj->getVar('poll_id'), '='));
             $criteria->setLimit(1);
         }
         $pollObjs = &$this->getAll($criteria);
         $tplFile  = 'mail_results.tpl';
         $lang     = 'english';
-        if (file_exists($GLOBALS['xoops']->path('modules/xoopspoll/language/' . $GLOBALS['xoopsConfig']['language'] . '/mail_template/' . $tplFile))) {
+        if (\file_exists($GLOBALS['xoops']->path('modules/xoopspoll/language/' . $GLOBALS['xoopsConfig']['language'] . '/mail_template/' . $tplFile))) {
             $lang = $GLOBALS['xoopsConfig']['language'];
         }
-        xoops_loadLanguage('main', 'xoopspoll', $lang);
+        \xoops_loadLanguage('main', 'xoopspoll', $lang);
 
         $ret = [];
 
         // setup mailer
-        $xoopsMailer = xoops_getMailer();
+        $xoopsMailer = \xoops_getMailer();
         $xoopsMailer->useMail();
         $xoopsMailer->setTemplateDir($GLOBALS['xoops']->path('modules/xoopspoll/language/' . $lang . '/mail_template/'));
 
@@ -109,13 +108,13 @@ class PollHandler extends \XoopsPersistableObjectHandler
                 $xoopsMailer->setToUsers($author);
                 // initialize variables
                 $xoopsMailer->assign('POLL_QUESTION', $pollValues['question']);
-                $xoopsMailer->assign('POLL_START', formatTimestamp($pollValues['start_time'], 'l', $author->timezone()));
-                $xoopsMailer->assign('POLL_END', formatTimestamp($pollValues['end_time'], 'l', $author->timezone()));
+                $xoopsMailer->assign('POLL_START', \formatTimestamp($pollValues['start_time'], 'l', $author->timezone()));
+                $xoopsMailer->assign('POLL_END', \formatTimestamp($pollValues['end_time'], 'l', $author->timezone()));
                 $xoopsMailer->assign('POLL_VOTES', $pollValues['votes']);
                 $xoopsMailer->assign('POLL_VOTERS', $pollValues['voters']);
                 $xoopsMailer->assign('POLL_ID', $pollValues['poll_id']);
-                $xoopsMailer->setSubject(sprintf(_MD_XOOPSPOLL_YOURPOLLAT, $author->uname(), $GLOBALS['xoopsConfig']['sitename']));
-                if (false !== $xoopsMailer->send(false)) {
+                $xoopsMailer->setSubject(\sprintf(\_MD_XOOPSPOLL_YOURPOLLAT, $author->uname(), $GLOBALS['xoopsConfig']['sitename']));
+                if ($xoopsMailer->send(false)) {
                     $pollObj->setVar('mail_status', Constants::POLL_MAILED);
                     $ret[] = $this->insert($pollObj);
                 } else {
