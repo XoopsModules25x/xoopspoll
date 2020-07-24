@@ -64,7 +64,7 @@ function xoops_module_update_xoopspoll(\XoopsModule $module, $prev_version)
     $ref     = xoops_getenv('HTTP_REFERER');
     if (('' === $ref) || 0 === mb_strpos($ref, $GLOBALS['xoops']->url('modules/system/admin.php'))) {
         /* module specific part */
-        require_once $GLOBALS['xoops']->path('modules/xoopspoll/include/oninstall.inc.php');
+        require_once $GLOBALS['xoops']->path('modules/xoopspoll/include/oninstall.php');
 
         $installedVersion = (int)$prev_version;
         xoops_loadLanguage('admin', 'xoopspoll');

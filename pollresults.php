@@ -29,8 +29,8 @@
  * @copyright ::  {@link https://xoops.org/ XOOPS Project}
  * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
  * @package   ::    xoopspoll
- * @subpackage::     admin
- * @since     ::     1.0
+ * @subpackage:: admin
+ * @since     ::         1.0
  * @author    ::     {@link http://www.myweb.ne.jp/ Kazumi Ono (AKA onokazu)}
  **/
 
@@ -92,10 +92,10 @@ if (!empty($pollObj) && ($pollObj instanceof \Xoopspoll\Poll)) {
 
     $GLOBALS['xoopsTpl']->assign(
         [
-            'visible_msg'    => $visibleMsg,
-            'disp_votes'     => $GLOBALS['xoopsModuleConfig']['disp_vote_nums'],
+                                     'visible_msg'    => $visibleMsg,
+                                     'disp_votes'     => $GLOBALS['xoopsModuleConfig']['disp_vote_nums'],
             'back_link_icon' => \Xmf\Module\Admin::iconUrl('', 16) . '/back.png',
-            'back_link'      => $GLOBALS['xoops']->url('modules/xoopspoll/index.php'),
+                                     'back_link'      => $GLOBALS['xoops']->url('modules/xoopspoll/index.php'),
             'back_text'      => _BACK,
         ]
     );

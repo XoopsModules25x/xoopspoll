@@ -73,7 +73,7 @@ if ('xoopspoll' === $pollmodules) {
     }
 }
 /** @var NewbbTopicHandler $topicHandler */
-$topicHandler = xoops_getModuleHandler('topic', 'newbb');
+$topicHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Topic');
 $topic_obj     = $topicHandler->get($topic_id);
 if ($topic_obj instanceof Topic) {
     $forum_id = $topic_obj->getVar('forum_id');
@@ -82,7 +82,7 @@ if ($topic_obj instanceof Topic) {
 }
 
 /** @var NewbbForumHandler $forumHandler */
-$forumHandler = xoops_getModuleHandler('forum', 'newbb');
+$forumHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Forum');
 $forum_obj     = $forumHandler->get($forum_id);
 if (!$forumHandler->getPermission($forum_obj)) {
     redirect_header('index.php', 2, _MD_NORIGHTTOACCESS);

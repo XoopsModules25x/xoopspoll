@@ -47,10 +47,10 @@ function xoopspollBlockSinglepollShow($options)
 {
     $block = [];
 
-    $configHandler = xoops_getHandler('config');
+    $configHandler      = xoops_getHandler('config');
     $pollHandler   = Xoopspoll\Helper::getInstance()->getHandler('Poll');
     /** @var \XoopsModuleHandler $moduleHandler */
-    $moduleHandler      = xoops_getHandler('module');
+    $moduleHandler = xoops_getHandler('module');
     $thisModule         = $moduleHandler->getByDirname('xoopspoll');
     $this_module_config = $configHandler->getConfigsByCat(0, $thisModule->getVar('mid'));
 
@@ -70,7 +70,7 @@ function xoopspollBlockSinglepollShow($options)
                 /** @var Newbb\TopicHandler $topicHandler */
                 $topicHandler = Newbb\Helper::getInstance()->getHandler('Topic');
                 $tFields      = ['topic_id', 'poll_id'];
-                $tArray       = &$topicHandler->getAll(new \Criteria('topic_haspoll', 0, '>'), $tFields, false);
+                $tArray       = $topicHandler->getAll(new \Criteria('topic_haspoll', 0, '>'), $tFields, false);
                 if (!empty($tArray)) {
                     $tcriteria = [];
                     foreach ($tArray as $t) {
@@ -128,7 +128,7 @@ function xoopspollBlockSinglepollShow($options)
                 $pollOptionName = 'option_id';
             }
 
-            $uid = 0;
+                $uid = 0;
             if (isset($GLOBALS['xoopsUser']) && ($GLOBALS['xoopsUser'] instanceof \XoopsUser)) {
                 $uid = $GLOBALS['xoopsUser']->getVar('uid');
             }
@@ -250,9 +250,9 @@ function xoopspollBlockSinglepollEdit($options)
     /**
      * now check to see if we want to hide polls that were created using newbb
      */
-    $configHandler = xoops_getHandler('config');
+    $configHandler      = xoops_getHandler('config');
     /** @var \XoopsModuleHandler $moduleHandler */
-    $moduleHandler      = xoops_getHandler('module');
+    $moduleHandler = xoops_getHandler('module');
     $thisModule         = $moduleHandler->getByDirname('xoopspoll');
     $this_module_config = $configHandler->getConfigsByCat(0, $thisModule->getVar('mid'));
 
@@ -262,7 +262,7 @@ function xoopspollBlockSinglepollEdit($options)
             /** @var Newbb\TopicHandler $topicHandler */
             $topicHandler = Newbb\Helper::getInstance()->getHandler('Topic');
             $tFields      = ['topic_id', 'poll_id'];
-            $tArray       = &$topicHandler->getAll(new \Criteria('topic_haspoll', 0, '>'), $tFields, false);
+            $tArray       = $topicHandler->getAll(new \Criteria('topic_haspoll', 0, '>'), $tFields, false);
             if (!empty($tArray)) {
                 $tcriteria = [];
                 foreach ($tArray as $t) {
@@ -289,7 +289,7 @@ function xoopspollBlockSinglepollEdit($options)
         foreach ($allPollsArray as $thisPoll) {
             $selected       = ($thisPoll['poll_id'] === $options[1]) ? ' selected' : '';
             $taggedQuestion = ($thisPoll['end_time'] < time()) ? $thisPoll['question'] . '**' : $thisPoll['question'];
-            $form           .= "  <option value='" . $thisPoll['poll_id'] . "'{$selected}>" . $taggedQuestion . "</option>\n";
+            $form .= "  <option value='" . $thisPoll['poll_id'] . "'{$selected}>" . $taggedQuestion . "</option>\n";
         }
         $form .= "</select>\n" . '&nbsp;** - ' . _MB_XOOPSPOLL_EXPIRED_INDICATOR . "\n";
     }

@@ -53,7 +53,7 @@ require_once $GLOBALS['xoops']->path( "modules"
  * Display XOOPS polls in a block
  *
  * @access public
- * @param array  $options block options array
+ * @param  array $options block options array
  * @return array block keys and values to be used by block template
  * @uses   Criteria
  * @global mixed $GLOBALS ['xoopsUser']
@@ -64,7 +64,7 @@ function xoopspollBlockMultiShow($options)
     $block           = [];
     $pollOptionArray = [];
     /** @var \XoopsModuleHandler $moduleHandler */
-    $moduleHandler      = xoops_getHandler('module');
+    $moduleHandler = xoops_getHandler('module');
     $thisModule         = $moduleHandler->getByDirname('xoopspoll');
     $configHandler      = xoops_getHandler('config');
     $this_module_config = $configHandler->getConfigsByCat(0, $thisModule->getVar('mid'));
@@ -82,11 +82,11 @@ function xoopspollBlockMultiShow($options)
      */
     if ($this_module_config['hide_forum_polls'] && ($thisModule instanceof \XoopsModule) && $thisModule->isactive()) {
         $newbbModule = $moduleHandler->getByDirname('newbb');
-        if ($newbbModule instanceof \XoopsModule && $newbbModule->isactive()) {
-            /** @var Newbb\TopicHandler $topicHandler */
-            $topicHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Topic');
-            $tFields      = ['topic_id', 'poll_id'];
-            $tArray       = &$topicHandler->getAll(new \Criteria('topic_haspoll', 0, '>'), $tFields, false);
+        if ($newbbModule instanceof XoopsModule && $newbbModule->isactive()) {
+            /** @var NewbbTopicHandler $topicHandler */
+            $topicHandler = xoops_getModuleHandler('topic', 'newbb');
+            $tFields       = array('topic_id', 'poll_id');
+            $tArray        = $topicHandler->getAll(new Criteria('topic_haspoll', 0, '>'), $tFields, false);
             if (!empty($tArray)) {
                 $tcriteria = [];
                 foreach ($tArray as $t) {
@@ -135,7 +135,7 @@ function xoopspollBlockMultiShow($options)
                 $pollOptionName = 'option_id';
             }
 
-            $uid = 0;
+                $uid = 0;
             if (isset($GLOBALS['xoopsUser']) && ($GLOBALS['xoopsUser'] instanceof \XoopsUser)) {
                 $uid = $GLOBALS['xoopsUser']->getVar('uid');
             }

@@ -1,6 +1,8 @@
-<h5>2.00 Beta 1  [NOT RELEASED]</h5>  Dev: Xoops 2.5.9, PHP 7.2.3
+<h5>2.00 Beta 1  [NOT RELEASED]</h5>  Dev: Xoops 2.5.11, PHP 7.4.8
 <hr>
 - namespaces, autoloading (mamba)
+- fixed bugs with namespaces in newbb 5.0 (axelf/goffy)
+
 WORK IN PROGRESS
 
 

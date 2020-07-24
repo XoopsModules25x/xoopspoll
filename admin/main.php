@@ -100,7 +100,7 @@ switch ($op) {
                 $criteria     = new \CriteriaCompo();
                 $criteria->add(new \Criteria('topic_haspoll', 0, '>'));
                 $pollsWithTopics = [];
-                $topicsWithPolls = &$topicHandler->getAll($criteria, $topicFields, false);
+                $topicsWithPolls = $topicHandler->getAll($criteria, $topicFields, false);
                 foreach ($topicsWithPolls as $pollTopics) {
                     $pollsWithTopics[$pollTopics['poll_id']] = [
                         'topic_id'    => $pollTopics['topic_id'],
@@ -207,7 +207,7 @@ switch ($op) {
         $optionHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');
         $pollHandler   = Xoopspoll\Helper::getInstance()->getHandler('Poll');
         $pollId        = Request::getInt('poll_id', 0);
-        $pollObj       = $pollHandler->get($pollId); // will auto create object if poll_id=0
+        $pollObj     = $pollHandler->get($pollId); // will auto create object if poll_id=0
 
         // display the form
         xoops_cp_header();
@@ -318,7 +318,7 @@ switch ($op) {
         $adminObject->displayNavigation(basename(__FILE__));
         xoops_confirm(
             [
-                'op'      => 'delete_ok',
+                          'op'      => 'delete_ok',
                 'poll_id' => $pollId,
             ],
             $_SERVER['SCRIPT_NAME'],
@@ -350,11 +350,11 @@ switch ($op) {
             /** @var \XoopsModuleHandler $moduleHandler */
             $moduleHandler = xoops_getHandler('module');
             $newbbModule   = $moduleHandler->getByDirname('newbb');
-            if (($newbbModule instanceof \XoopsModule) && $newbbModule->isactive()) {
-                /** @var Newbb\TopicHandler $topicHandler */
-                $topicHandler = Newbb\Helper::getInstance()->getHandler('Topic');
-                $criteria     = new \CriteriaCompo();
-                $criteria->add(new \Criteria('poll_id', $pollId, '='));
+            if (($newbbModule instanceof XoopsModule) && $newbbModule->isactive()) {
+                /** @var NewbbTopicHandler $topicHandler */
+                $topicHandler = xoops_getModuleHandler('topic', 'newbb');
+                $criteria     = new CriteriaCompo();
+                $criteria->add(new Criteria('poll_id', $pollId, '='));
                 /* {@internal the order of the next 2 statements is important! */
                 $topicHandler->updateAll('topic_haspoll', 0, $criteria); // clear poll association
                 $topicHandler->updateAll('poll_id', 0, $criteria); // clear poll_id
@@ -617,8 +617,8 @@ switch ($op) {
                         $pmLink      = $GLOBALS['xoops']->buildUrl(
                             $GLOBALS['xoops']->path('pmlite.php', true),
                             [
-                                'send'        => 1,
-                                'from_userid' => $from_userid,
+                            'send'        => 1,
+                            'from_userid' => $from_userid,
                                 'to_userid'   => $to_userid,
                             ]
                         );
@@ -703,8 +703,8 @@ switch ($op) {
         $pollHandler   = Xoopspoll\Helper::getInstance()->getHandler('Poll');
         $optionHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');
         $pollId        = Request::getInt('poll_id', 0);
-        $pollObj       = $pollHandler->get($pollId);
-        $origValues    = $pollObj->getValues();
+        $pollObj     = $pollHandler->get($pollId);
+        $origValues  = $pollObj->getValues();
         unset($origValues['poll_id']);
         $pollDuration = $origValues['end_time'] - $origValues['start_time'];
         $pollDuration = ($pollDuration > 0) ? $pollDuration : Constants::DEFAULT_POLL_DURATION;

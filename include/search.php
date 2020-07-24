@@ -29,9 +29,9 @@ use XoopsModules\Xoopspoll;
  * xoopspoll_search()
  *
  * @param        $queryArray
- * @param mixed  $andor
- * @param mixed  $limit
- * @param mixed  $offset
+ * @param  mixed $andor
+ * @param  mixed $limit
+ * @param  mixed $offset
  * @param        $uid
  * @return array
  * @internal param mixed $queryarray
@@ -45,17 +45,20 @@ function xoopspoll_search($queryArray, $andor, $limit, $offset, $uid)
         $pollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
         $pollFields  = ['poll_id', 'user_id', 'question', 'start_time'];
         $criteria    = new \CriteriaCompo();
-        $criteria->add(new \Criteria('start_time', time(), '<=')); // only show polls that have started /**
+        $criteria->add(new \Criteria('start_time', time(), '<=')); // only show polls that have started
+
+         /**
          * @todo:
          * find out if want to show polls that were created with a forum. If no, then change
          * the link to forum topic_id
          */
+
         /**
          * check to see if we want to include polls created with forum (newbb)
          */
-        $configHandler = xoops_getHandler('config');
+        $configHandler      = xoops_getHandler('config');
         /** @var \XoopsModuleHandler $moduleHandler */
-        $moduleHandler      = xoops_getHandler('module');
+        $moduleHandler = xoops_getHandler('module');
         $thisModule         = $moduleHandler->getByDirname('xoopspoll');
         $this_module_config = $configHandler->getConfigsByCat(0, $thisModule->getVar('mid'));
 
@@ -67,7 +70,7 @@ function xoopspoll_search($queryArray, $andor, $limit, $offset, $uid)
                 /** @var Newbb\TopicHandler $topicHandler */
                 $topicHandler = Newbb\Helper::getInstance()->getHandler('Topic');
                 $tFields      = ['topic_id', 'poll_id'];
-                $tArray       = &$topicHandler->getAll(new \Criteria('topic_haspoll', 0, '>'), $tFields, false);
+                $tArray       = $topicHandler->getAll(new \Criteria('topic_haspoll', 0, '>'), $tFields, false);
                 foreach ($tArray as $t) {
                     $pollsWithTopics[$t['poll_id']] = $t['topic_id'];
                 }

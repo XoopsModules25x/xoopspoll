@@ -48,7 +48,7 @@ if (!$topic_id && !$post_id) {
 }
 
 /** @var NewbbTopicHandler $topicHandler */
-$topicHandler = xoops_getModuleHandler('topic', 'newbb');
+$topicHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Topic');
 if (!empty($post_id)) {
     $topic_obj = $topicHandler->getByPost($post_id);
 } elseif (!empty($move)) {
@@ -63,7 +63,7 @@ if (!is_object($topic_obj) || !$topic_id = $topic_obj->getVar('topic_id')) {
 }
 $forum_id      = $topic_obj->getVar('forum_id');
 /** @var NewbbForumHandler $forumHandler */
-$forumHandler = xoops_getModuleHandler('forum', 'newbb');
+$forumHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Forum');
 $forum_obj     = $forumHandler->get($forum_id);
 
 $isadmin = newbb_isAdmin($forum_obj);
@@ -87,7 +87,7 @@ if (!$topicHandler->getPermission($forum_obj, $topic_obj->getVar('topic_status')
     redirect_header("viewforum.php?forum={$forum_id}", 2, _MD_NORIGHTTOVIEW);
 }
 
-$karmaHandler = xoops_getModuleHandler('karma', 'newbb');
+$karmaHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Karma');
 $user_karma    = $karmaHandler->getUserKarma();
 
 $valid_modes     = $xoopsModuleConfig['valid_viewmodes'];
@@ -136,7 +136,7 @@ $xoopsTpl->assign('xoops_pagetitle', $xoops_pagetitle);
 $xoopsTpl->assign('xoops_module_header', $xoops_module_header);
 
 if ($xoopsModuleConfig['wol_enabled']) {
-    $onlineHandler = xoops_getModuleHandler('online', 'newbb');
+    $onlineHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Online');
     $onlineHandler->init($forum_obj, $topic_obj);
     $xoopsTpl->assign('online', $onlineHandler->show_online());
 }
@@ -233,7 +233,7 @@ $xoopsLogger->startTime('XOOPS output module - topic - assign');
 
 if ($viewmode === 'thread') {
     if (!empty($post_id)) {
-        $postHandler = xoops_getModuleHandler('post', 'newbb');
+        $postHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Post');
         $currentPost  = $postHandler->get($post_id);
 
         if (!$isadmin && $currentPost->getVar('approved') < 0) {
@@ -356,8 +356,8 @@ $xoopsTpl->assign_by_ref('admin_actions', $admin_actions);
 $xoopsTpl->assign('viewer_level', $isadmin ? 2 : is_object($xoopsUser));
 
 if ($xoopsModuleConfig['show_permissiontable']) {
-    $permHandler     = xoops_getModuleHandler('permission', 'newbb');
-    $permission_table = $permHandler->permission_table($forum_obj, $topic_obj->getVar('topic_status'), $isadmin);
+    $permissionHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Permission');
+    $permission_table  = $permissionHandler->permission_table($forum_obj, $topic_obj->getVar('topic_status'), $isadmin);
     $xoopsTpl->assign_by_ref('permission_table', $permission_table);
 }
 
