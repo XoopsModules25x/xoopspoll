@@ -37,9 +37,106 @@
  * @since    ::  1.0
  * @author   ::  {@link http://www.myweb.ne.jp Kazumi Ono}
  **/
-defined('XOOPS_ROOT_PATH') || exit('Restricted access');
 
 require_once __DIR__ . '/preloads/autoloader.php';
+
+$moduleDirName      = basename(__DIR__);
+$moduleDirNameUpper = mb_strtoupper($moduleDirName);
+
+// ------------------- Informations ------------------- //
+$modversion = [
+    'version'             => 2.01,
+    'module_status'       => 'Beta 1',
+    'release_date'        => '2020/07/21',
+    'name'                => _MI_XOOPSPOLL_NAME,
+    'description'         => _MI_XOOPSPOLL_DESC,
+    'official'            => 0,     //1 indicates official XOOPS module supported by XOOPS Dev Team, 0 means 3rd party supported
+    'author'              => 'Kazumi Ono, modified by Mazarin',
+    'credits'             => 'XOOPS Development Team, Mamba, ZySpec',
+    'author_mail'         => 'author-email',
+    'author_website_url'  => 'https://xoops.org',
+    'author_website_name' => 'XOOPS',
+    'license'             => 'GPL 2.0 or later',
+    'license_url'         => 'www.gnu.org/licenses/gpl-2.0.html/',
+    // ------------------- Folders & Files -------------------
+    'release_info'        => 'Changelog',
+    'release_file'        => XOOPS_URL . "/modules/$moduleDirName/docs/changelog.txt",
+    'manual'              => 'link to manual file',
+    'manual_file'         => XOOPS_URL . "/modules/$moduleDirName/docs/install.txt",
+    // images
+    'image'               => 'assets/images/logoModule.png',
+    'iconsmall'           => 'assets/images/iconsmall.png',
+    'iconbig'             => 'assets/images/iconbig.png',
+    'dirname'             => $moduleDirName,
+    // Local path icons
+    'modicons16'          => 'assets/images/icons/16',
+    'modicons32'          => 'assets/images/icons/32',
+    //About
+    'demo_site_url'       => 'https://xoops.org',
+    'demo_site_name'      => 'XOOPS Demo Site',
+    'support_url'         => 'https://xoops.org/modules/newbb/viewforum.php?forum=28/',
+    'support_name'        => 'Support Forum',
+    'submit_bug'          => 'https://github.com/XoopsModules25x/' . $moduleDirName . '/issues',
+    'module_website_url'  => 'www.xoops.org',
+    'module_website_name' => 'XOOPS Project',
+    // ------------------- Min Requirements -------------------
+    'min_php'             => '7.1',
+    'min_xoops'           => '2.5.10',
+    'min_admin'           => '1.2',
+    'min_db'              => ['mysql' => '5.5'],
+    // ------------------- Admin Menu -------------------
+    'system_menu'         => 1,
+    'hasAdmin'            => 1,
+    'adminindex'          => 'admin/index.php',
+    'adminmenu'           => 'admin/menu.php',
+    // ------------------- Main Menu -------------------
+    'hasMain'             => 1,
+    'sub'                 => [
+        [
+            'name' => _MI_XXXXX_VIEW_SEARCH,
+            'url'  => 'index.php',
+        ],
+    ],
+
+    // ------------------- Install/Update -------------------
+    'onInstall'           => 'include/oninstall.php',
+    'onUpdate'            => 'include/onupdate.php',
+    //  'onUninstall'         => 'include/onuninstall.php',
+    // -------------------  PayPal ---------------------------
+    'paypal'              => [
+        'business'      => 'xoopsfoundation@gmail.com',
+        'item_name'     => 'Donation : ' . _MI_XXXXX_NAME,
+        'amount'        => 0,
+        'currency_code' => 'USD',
+    ],
+    // ------------------- Search ---------------------------
+    'hasSearch'           => 1,
+    'search'              => [
+        'file' => 'include/search.inc.php',
+        'func' => 'pedigree_search',
+    ],
+    // ------------------- Comments -------------------------
+    'hasComments'         => 1,
+    'comments'            => [
+        'pageName'     => 'dog.php',
+        'itemName'     => 'id',
+        'callbackFile' => 'include/comment_functions.php',
+        'callback'     => [
+            'approve' => 'picture_comments_approve',
+            'update'  => 'picture_comments_update',
+        ],
+    ],
+    // ------------------- Mysql -----------------------------
+    'sqlfile'             => ['mysql' => 'sql/mysql.sql'],
+    // ------------------- Tables ----------------------------
+    'tables'              => [
+        $moduleDirName . '_' . 'option',
+        $moduleDirName . '_' . 'desc',
+        $moduleDirName . '_' . 'log',
+    ],
+];
+
+// ------------------- Templates ------------------- //
 
 $modversion['version']       = 2.00;
 $modversion['module_status'] = 'Beta 1';
@@ -204,6 +301,30 @@ $modversion['config'][] = [
 ];
 
 /**
+ * Make Sample button visible?
+ */
+$modversion['config'][] = [
+    'name'        => 'displaySampleButton',
+    'title'       => 'CO_' . $moduleDirNameUpper . '_' . 'SHOW_SAMPLE_BUTTON',
+    'description' => 'CO_' . $moduleDirNameUpper . '_' . 'SHOW_SAMPLE_BUTTON_DESC',
+    'formtype'    => 'yesno',
+    'valuetype'   => 'int',
+    'default'     => 1,
+];
+
+/**
+ * Show Developer Tools?
+ */
+$modversion['config'][] = [
+    'name'        => 'displayDeveloperTools',
+    'title'       => 'CO_' . $moduleDirNameUpper . '_' . 'SHOW_DEV_TOOLS',
+    'description' => 'CO_' . $moduleDirNameUpper . '_' . 'SHOW_DEV_TOOLS_DESC',
+    'formtype'    => 'yesno',
+    'valuetype'   => 'int',
+    'default'     => 0,
+];
+
+/**
  * Select the WYSIWYG Editor
  */
 /*
@@ -220,12 +341,21 @@ $modversion['config'][] = array(
     'options'     => $editorList,
     'default'     => 'dhtmltextarea');
 */
-/**#@-*/
 
-/**
- * Main menu include (1 = yes | 0 = no)
- */
-$modversion['hasMain'] = 1;
+// default admin editor
+xoops_load('XoopsEditorHandler');
+$editorHandler = \XoopsEditorHandler::getInstance();
+$editorList    = array_flip($editorHandler->getList());
+
+$modversion['config'][] = [
+    'name'        => 'editorAdmin',
+    'title'       => '_MI_XOOPSPOLL_EDITOR_ADMIN',
+    'description' => '_MI_XOOPSPOLL_EDITOR_ADMIN_DESC',
+    'formtype'    => 'select',
+    'valuetype'   => 'text',
+    'default'     => 'dhtmltextarea',
+    'options'     => $editorList,
+];
 
 /**
  * Module Comment definitions
