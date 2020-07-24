@@ -36,9 +36,12 @@
  **/
 
 use XoopsModules\Xoopspoll;
+use XoopsModules\Xoopspoll\Common;
 
 require_once __DIR__ . '/admin_header.php';
 xoops_cp_header();
+
+/** @var \XoopsModules\Xoopspoll\Helper $helper */
 
 $adminObject = \Xmf\Module\Admin::getInstance();
 
@@ -60,8 +63,79 @@ $adminObject->addInfoBoxLine(sprintf("<span class='infolabel'>" . _MD_XOOPSPOLL_
 $adminObject->addInfoBoxLine(sprintf("<span class='infolabel'>" . _MD_XOOPSPOLL_TOTALPOLLS . "</span><span class='infotext'>", $totalPolls . '</span>'), '');
 
 /* use templates just in case we want to easily modify display in the future */
-$GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation(basename(__FILE__)));
-$GLOBALS['xoopsTpl']->assign('renderindex', $adminObject->displayIndex());
-$GLOBALS['xoopsTpl']->display($GLOBALS['xoops']->path('modules/xoopspoll/templates/admin/xoopspoll_index.tpl'));
+//$GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation(basename(__FILE__)));
+//$GLOBALS['xoopsTpl']->assign('renderindex', $adminObject->displayIndex());
+//$GLOBALS['xoopsTpl']->display($GLOBALS['xoops']->path('modules/xoopspoll/templates/admin/xoopspoll_index.tpl'));
 
-require_once __DIR__ . '/admin_footer.php';
+$adminObject->displayNavigation(basename(__FILE__));
+
+//------------- Test Data ----------------------------
+
+if ($helper->getConfig('displaySampleButton')) {
+    $yamlFile            = dirname(__DIR__) . '/config/admin.yml';
+    $config              = loadAdminConfig($yamlFile);
+    $displaySampleButton = $config['displaySampleButton'];
+
+    if (1 == $displaySampleButton) {
+        xoops_loadLanguage('admin/modulesadmin', 'system');
+        require_once dirname(__DIR__) . '/testdata/index.php';
+
+        $adminObject->addItemButton(constant('CO_' . $moduleDirNameUpper . '_' . 'ADD_SAMPLEDATA'), '__DIR__ . /../../testdata/index.php?op=load', 'add');
+        $adminObject->addItemButton(constant('CO_' . $moduleDirNameUpper . '_' . 'SAVE_SAMPLEDATA'), '__DIR__ . /../../testdata/index.php?op=save', 'add');
+        //    $adminObject->addItemButton(constant('CO_' . $moduleDirNameUpper . '_' . 'EXPORT_SCHEMA'), '__DIR__ . /../../testdata/index.php?op=exportschema', 'add');
+        $adminObject->addItemButton(constant('CO_' . $moduleDirNameUpper . '_' . 'HIDE_SAMPLEDATA_BUTTONS'), '?op=hide_buttons', 'delete');
+    } else {
+        $adminObject->addItemButton(constant('CO_' . $moduleDirNameUpper . '_' . 'SHOW_SAMPLEDATA_BUTTONS'), '?op=show_buttons', 'add');
+        $displaySampleButton = $config['displaySampleButton'];
+    }
+    $adminObject->displayButton('left', '');
+}
+
+//------------- End Test Data ----------------------------
+
+$adminObject->displayIndex();
+
+/**
+ * @param $yamlFile
+ * @return array|bool
+ */
+function loadAdminConfig($yamlFile)
+{
+    $config = \Xmf\Yaml::readWrapped($yamlFile); // work with phpmyadmin YAML dumps
+    return $config;
+}
+
+/**
+ * @param $yamlFile
+ */
+function hideButtons($yamlFile)
+{
+    $app['displaySampleButton'] = 0;
+    \Xmf\Yaml::save($app, $yamlFile);
+    redirect_header('index.php', 0, '');
+}
+
+/**
+ * @param $yamlFile
+ */
+function showButtons($yamlFile)
+{
+    $app['displaySampleButton'] = 1;
+    \Xmf\Yaml::save($app, $yamlFile);
+    redirect_header('index.php', 0, '');
+}
+
+$op = \Xmf\Request::getString('op', 0, 'GET');
+
+switch ($op) {
+    case 'hide_buttons':
+        hideButtons($yamlFile);
+        break;
+    case 'show_buttons':
+        showButtons($yamlFile);
+        break;
+}
+
+echo $utility::getServerStats();
+
+require __DIR__ . '/admin_footer.php';

@@ -30,15 +30,22 @@
  * required as they are done by cp_header.php}
  */
 
+use Xmf\Module\Admin;
 use XoopsModules\Xoopspoll;
+use XoopsModules\Xoopspoll\Helper;
+
+include dirname(__DIR__) . '/preloads/autoloader.php';
 
 require_once dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php';
 require dirname(__DIR__) . '/include/common.php';
 
 $moduleDirName = basename(dirname(__DIR__));
-/** @var \XoopsModules\Xoopspoll\Helper $helper */
-$helper      = \XoopsModules\Xoopspoll\Helper::getInstance();
-$adminObject = \Xmf\Module\Admin::getInstance();
+
+/** @var Helper $helper */
+$helper = Helper::getInstance();
+
+/** @var Admin $adminObject */
+$adminObject = Admin::getInstance();
 
 $pathIcon16    = \Xmf\Module\Admin::iconUrl('', 16);
 $pathIcon32    = \Xmf\Module\Admin::iconUrl('', 32);
@@ -48,6 +55,7 @@ $pathModIcon32 = $helper->getModule()->getInfo('modicons32');
 $helper->loadLanguage('admin');
 $helper->loadLanguage('modinfo');
 $helper->loadLanguage('main');
+$helper->loadLanguage('common');
 
 $myts = \MyTextSanitizer::getInstance();
 

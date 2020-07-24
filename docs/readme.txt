@@ -8,10 +8,10 @@ The Polls module can be used to display interactive survey forms on your site. E
 Requirements
 ------------------
 
-- PHP version:   5.3.0
-- XOOPS version: 2.5.5
-- MySQL version: 5.0.7 (5.0.9+ recommended)
-- ModuleClasses: 1.1 in /Frameworks (download it from here: http://goo.gl/Bmknt if using XOOPS < 2.5.5)
+- PHP version:   7.1+
+- XOOPS version: 2.5.10+
+- MySQL version: 5.5+
+- ModuleClasses: 1.2 in /Frameworks
 
 Install/uninstall
 ------------------

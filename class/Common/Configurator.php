@@ -57,5 +57,8 @@ class Configurator
         $this->oldFolders      = $config->oldFolders;
         $this->renameTables    = $config->renameTables;
         $this->modCopyright    = $config->modCopyright;
+
+        $this->icons = include dirname(dirname(__DIR__)) . '/config/icons.php';
+        $this->paths = include dirname(dirname(__DIR__)) . '/config/paths.php';
     }
 }
