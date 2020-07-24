@@ -1,5 +1,11 @@
-1.40 RC3         2016-09-18
-=================================
+<h5>2.00 Beta 1  [NOT RELEASED]</h5>  Dev: Xoops 2.5.9, PHP 7.2.3
+<hr>
+- namespaces, autoloading (mamba)
+WORK IN PROGRESS
+
+
+<h5>1.40 RC3         [2016-09-18]</h5>
+<hr>
 - code cosmetics (mamba)
 - removed @version (mamba)
 - addNavigation(basename(__FILE__))  (mamba)
@@ -14,8 +20,8 @@
 - Add 'value' to template options (slider84/Geekwright)
 
 
-1.40 RC1            NOT RELEASED
-=================================
+<h5>1.40 RC1            [NOT RELEASED]</h5>
+<hr>
 - reversed adding "mod_" to tables names (mamba)
 - replaced XoopspollRequest with XoopsRequest (mamba)
 - fix bug #6: wrong check on $_POST variable (slider84/mamba)
@@ -27,13 +33,14 @@
 - fix error if no poll options in NewBB (cesagonchu/mamba)
 
 
-1.40 BETA 2          2014-04-23
-=================================
+<h5>1.40 BETA 2          [2014-04-23]</h5>
+<hr>
 + moved /css and /images to /assets (mamba)
 + renamed template extensions from .html to .tpl (mamba)
 
-1.40 BETA (ZySpec) 2013/05/27
-=================================
+
+<h5>1.40 BETA (ZySpec)    [2013-05-27]</h5>
+<hr>
 + added ability to change poll results visibility
 ++ results always visible
 ++ only see results after voted
@@ -77,20 +84,22 @@
 + improved HTML rendering
 + general code cleanup
 
-1.33 (Mamba) 2011/12/12
-=================================
+<h5>1.33 (Mamba)        [2011-12-12]</h5>
+<hr>
 + removed all icons files and point them to /Frameworks/moduleclasses
 + updated to the latest ModuleAdmin Class
 
-1.32 (Mamba) 2011/04/17 (Internal version)
-=================================
+
+<h5>1.32 (Mamba) [2011-04-17] (Internal version)</h5>
+<hr>
 + converted table views to use standard views
 + added Dashboard
 + changed GUI to standard XOOPS Module GUI
 + included ModuleAdmin class from Mage
 
-1.31 (Mazarin)
-=================================
+
+<h5>1.31 (Mazarin)</h5>
+<hr>
 Further update of the original XoopsPoll module.
 
 Added features:
@@ -107,8 +116,8 @@ Install:
 If upgrading from 1.3, just copy over original files and update module.
 If upgrading from version 1.2 or earlier, please uninstall original version of Xoopspoll and make a fresh install.
 
-1.30 (Mazarin)
-=================================
+<h5>1.30 (Mazarin)</h5>
+<hr>
 
 Small update of the original XoopsPoll module.
 
@@ -124,6 +133,6 @@ Install:
 Due to database changes, please uninstall your old version of XoopsPoll before installing this one (i.e. no update)
 
 
-1.0 (Onokazu)
-=================================
+<h5>1.0 (Onokazu)</h5>
+<hr>
 - Original Release

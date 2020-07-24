@@ -7,11 +7,12 @@
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 */
+
 /**
  * XOOPS Poll module
  * Display module 'About' page in administration interface
  *
- * @copyright ::  {@link http://xoops.org/ XOOPS Project}
+ * @copyright ::  {@link https://xoops.org/ XOOPS Project}
  * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
  * @package   ::    xoopspoll
  * @subpackage:: admin
@@ -22,12 +23,11 @@
  * @uses      ModuleAdmin::addNavigation to set the display page
  * @uses      ModuleAdmin::renderAbout to display the page passing PAYPAL key to method
  */
-
 require_once __DIR__ . '/admin_header.php';
 xoops_cp_header();
 
 $adminObject->displayNavigation(basename(__FILE__));
-\Xmf\Module\Admin::setPaypal('xoopsfoundation@gmail.com');
+$adminObject::setPaypal('xoopsfoundation@gmail.com');
 $adminObject->displayAbout(false);
 
 require_once __DIR__ . '/admin_footer.php';

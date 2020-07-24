@@ -8,10 +8,11 @@
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
+
 /**
  * XOOPS Poll module
  *
- * @copyright ::  {@link http://xoops.org/ XOOPS Project}
+ * @copyright ::  {@link https://xoops.org/ XOOPS Project}
  * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
  * @package   ::    xoopspoll
  * @subpackage:: admin
@@ -22,17 +23,16 @@
  * @uses      xoops_getHandler() used to load information about the module
  * @uses      XoopsModule::getByDirname() to load information if module info not currently present
  */
-
-if (!isset($GLOBALS['xoopsModule']) || !($GLOBALS['xoopsModule'] instanceof XoopsModule)) {
-    $GLOBALS['xoopsModule'] = XoopsModule::getByDirname('xoopspoll');
+if (!isset($GLOBALS['xoopsModule']) || !($GLOBALS['xoopsModule'] instanceof \XoopsModule)) {
+    $GLOBALS['xoopsModule'] = \XoopsModule::getByDirname('xoopspoll');
 }
 
-/** @var XoopsModuleHandler $moduleHandler */
+/** @var \XoopsModuleHandler $moduleHandler */
 $moduleHandler = xoops_getHandler('module');
 $moduleInfo    = $moduleHandler->get($GLOBALS['xoopsModule']->getVar('mid'));
 
 //$pathImageAdmin = '../' . $moduleInfo->getInfo('icons32');
-$pathIcon32      = \Xmf\Module\Admin::iconUrl('', 32);
+$pathIcon32 = \Xmf\Module\Admin::iconUrl('', 32);
 
 echo "<div class='adminfooter'>\n"
      . "  <div class='center'>\n"
@@ -42,8 +42,10 @@ echo "<div class='adminfooter'>\n"
      . "/xoopsmicrobutton.gif' alt='"
      . $xoopsModule->getInfo('author_website_name')
      . "' title='"
-     . $moduleInfo->getInfo('author_website_name')
-     . "' /></a>\n"
+     . $moduleInfo->getInfo(
+        'author_website_name'
+    )
+     . "'></a>\n"
      . "  </div>\n"
      . "  <div class='center smallsmall italic pad5'>\n"
      . '    '

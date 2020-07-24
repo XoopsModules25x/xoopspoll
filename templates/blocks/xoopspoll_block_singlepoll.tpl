@@ -4,7 +4,7 @@
             <thead>
             <tr>
                 <th class='center' colspan='2'>
-                    <input type='hidden' name='poll_id' value='<{$block.id}>'/>
+                    <input type='hidden' name='poll_id' value='<{$block.id}>'>
                     <{$block.question}>
                 </th>
             </tr>
@@ -19,7 +19,7 @@
                         <div class='width90'><img
                                     src='<{$xoops_url}>/modules/xoopspoll/assets/images/colorbars/<{$option.color}>'
                                     style='height: 14px; width: <{$option.percent}>;'
-                                    alt='<{$option.percent}>'/></div>
+                                    alt='<{$option.percent}>'></div>
                     </td>
                 </tr>
                 <{  /foreach}>
@@ -29,7 +29,7 @@
                 <{  foreach item=option from=$block.options}>
                 <tr class='<{cycle values="even,odd"}>'>
                     <td class='center'><input type='<{$block.optionType}>' name='<{$block.optionName}>'
-                                              value='<{$option.id}>'/></td>
+                                              value='<{$option.id}>'></td>
                     <td class='left'><{$option.text}></td>
                 </tr>
                 <{ /foreach}>
@@ -54,11 +54,11 @@
                 <{ /if}>
                 <tr>
                     <td class='foot center' colspan='2'>
-                        <input type='hidden' name='url' value='<{$block.url}>'/>
-                        <input type='submit' value='<{$block.langVote}>'/>&nbsp;
+                        <input type='hidden' name='url' value='<{$block.url}>'>
+                        <input type='submit' value='<{$block.langVote}>'>&nbsp;
                         <{ if $block.showResultsLink && $block.visible && $block.votes}>
                         <input type='button' value='<{$block.langResults}>'
-                               onclick="location='<{$xoops_url}>/modules/xoopspoll/pollresults.php?poll_id=<{$block.id}>'"/>
+                               onclick="location='<{$xoops_url}>/modules/xoopspoll/pollresults.php?poll_id=<{$block.id}>'">
                         <{ /if}>
                     </td>
                 </tr>

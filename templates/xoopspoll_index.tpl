@@ -28,9 +28,9 @@
             <td class='center'><{$polls[i].pollVotes}></td>
             <{ else}>
             <td class='center'><img class='alignmiddle' src='<{$obscured_icon}>' alt='<{$lang_obscured_alt}>'
-                                    title='<{$lang_obscured_title}>'/></td>
+                                    title='<{$lang_obscured_title}>'></td>
             <td class='center'><img class='alignmiddle' src='<{$obscured_icon}>' alt='<{$lang_obscured_alt}>'
-                                    title='<{$lang_obscured_title}>'/></td>
+                                    title='<{$lang_obscured_title}>'></td>
             <{*    <td colspan='2'>&nbsp;</td> *}>
             <{ /if}>
             <{ /if}>
@@ -43,7 +43,7 @@
             <td class='right'><a href='pollresults.php?poll_id=<{$polls[i].pollId}>'><img class='alignmiddle'
                                                                                           src='<{$results_link_icon}>'
                                                                                           alt='<{$lang_results}>'
-                                                                                          title='<{$lang_results}>'/> <{$lang_results}>
+                                                                                          title='<{$lang_results}>'> <{$lang_results}>
                 </a></td>
             <{*    <td class='right'><a href='pollresults.php?poll_id=<{$polls[i].pollId}>'><{$lang_results}></a></td> *}>
             <{ else}>

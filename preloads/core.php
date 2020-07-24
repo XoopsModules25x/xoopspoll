@@ -2,7 +2,7 @@
 /*
                 XOOPS - PHP Content Management System
                     Copyright (c) 2012 XOOPS.org
-                       <http://xoops.org/>
+                       <https://xoops.org>
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
   the Free Software Foundation; either version 2 of the License, or
@@ -26,15 +26,31 @@
 /**
  *  XOOPS Poll Module results mailer preload
  *
- * @copyright ::  {@link http://xoops.org XOOPS Project}
+ * @copyright ::  {@link https://xoops.org XOOPS Project}
  * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
  * @package   ::    xoopspoll
  * @subpackage:: preloads
  * @since     ::      1.4
- * @author    ::     zyspec <owners@zyspec.com>
+ * @author    ::     zyspec <zyspec@yahoo.com>
  **/
-class XoopspollCorePreload extends XoopsPreloadItem
+
+use XoopsModules\Xoopspoll;
+
+/**
+ * Class XoopspollCorePreload
+ */
+class XoopspollCorePreload extends \XoopsPreloadItem
 {
+    // to add PSR-4 autoloader
+
+    /**
+     * @param $args
+     */
+    public static function eventCoreIncludeCommonEnd($args)
+    {
+        require __DIR__ . '/autoloader.php';
+    }
+
     /**
      * plugin class for Xoops preload for index page start
      * @param $args
@@ -43,7 +59,7 @@ class XoopspollCorePreload extends XoopsPreloadItem
     {
         // check once per user session if expired poll email has been sent
         if (empty($_SESSION['pollChecked'])) {
-            $pollHandler = xoops_getModuleHandler('poll', 'xoopspoll');
+            $pollHandler = \XoopsModules\Xoopspoll\Helper::getInstance()->getHandler('Poll');
             $pollHandler->mailResults();  //send the results of any polls that have ended
             unset($pollHandler);
             $_SESSION['pollChecked'] = 1;

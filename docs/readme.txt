@@ -25,7 +25,7 @@ To set up this module you need to:
 
 i)   Configure your preferences for the module (see ‘Preferences’) and optionally the Poll block if you intend to use it (see ‘Blocks’)
 
-ii)	 Enter your poll details – including the question and possible answers
+ii)  Enter your poll details – including the question and possible answers
 
 iii) Check that you have given your user groups the necessary module and block access rights to use this module. Group permissions are set through the Administration Menu -> System -> Groups.
 

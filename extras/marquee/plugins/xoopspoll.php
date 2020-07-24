@@ -18,6 +18,7 @@
  * @package   ::     marquee
  * @subpackage::  plugins
  */
+
 /**
  * Script to list the recent polls from the xoopspoll module version 1.40
  * @param $limit
@@ -25,19 +26,28 @@
  * @param $itemssize
  * @return array
  */
+
+use XoopsModules\Xoopspoll;
+
+/**
+ * @param $limit
+ * @param $dateformat
+ * @param $itemssize
+ * @return array
+ */
 function b_marquee_xoopspoll($limit, $dateformat, $itemssize)
 {
-    include_once $GLOBALS['xoops']->path('modules/marquee/include/functions.php');
-    $block        = array();
-    $myts         = MyTextSanitizer::getInstance();
-    $pollHandler = xoops_getModuleHandler('poll', 'xoopspoll');
-    $criteria     = new CriteriaCompo();
-    $criteria->add(new Criteria('start_time', time(), '<='));
-    $criteria->add(new Criteria('end_time', time(), '>'));
+    require_once $GLOBALS['xoops']->path('modules/marquee/include/functions.php');
+    $block       = [];
+    $myts        = \MyTextSanitizer::getInstance();
+    $pollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
+    $criteria    = new \CriteriaCompo();
+    $criteria->add(new \Criteria('start_time', time(), '<='));
+    $criteria->add(new \Criteria('end_time', time(), '>'));
     $criteria->setLimit((int)$limit);
     $criteria->setSort('start_time');
     $criteria->setOrder('DESC');
-    $pollFields = array('poll_id', 'question', 'start_time', 'user_id');
+    $pollFields = ['poll_id', 'question', 'start_time', 'user_id'];
     $pollObjs   = $pollHandler->getAll($criteria, $pollFields);
     foreach ($pollObjs as $pollObj) {
         $pollValues = $pollObj->getValues();
@@ -46,13 +56,13 @@ function b_marquee_xoopspoll($limit, $dateformat, $itemssize)
             $title = xoops_substr($title, 0, $itemssize + 3);
         }
         $xuStartTimestamp = xoops_getUserTimestamp($pollValues['start_time']);
-        $block[]          = array(
+        $block[]          = [
             'date'     => formatTimestamp($xuStartTimestamp, $dateformat),
             'category' => '',
             'author'   => $pollValues['user_id'],
             'title'    => $title,
-            'link'     => "<a href='" . $GLOBALS['xoops']->url('modules/xoopspoll/index.php') . "?poll_id={$pollValues['poll_id']}'>{$title}</a>"
-        );
+            'link'     => "<a href='" . $GLOBALS['xoops']->url('modules/xoopspoll/index.php') . "?poll_id={$pollValues['poll_id']}'>{$title}</a>",
+        ];
         unset($pollValues);
     }
 

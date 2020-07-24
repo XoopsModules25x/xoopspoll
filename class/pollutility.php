@@ -1,4 +1,7 @@
 <?php
+
+namespace XoopsModules\Xoopspoll;
+
 /*
  Description: Poll Class Definition
 
@@ -9,40 +12,45 @@
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 */
+
 /**
  *  XoopsPoll Utility Class Elements
  *
- * @copyright ::  {@link http://xoops.org/ XOOPS Project}
+ * @copyright ::  {@link https://xoops.org/ XOOPS Project}
  * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
  * @package   ::    xoopspoll
  * @subpackage:: class
  * @since     ::      1.40
  * @access::     public
  */
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-class XoopspollPollUtility
+use XoopsModules\Xoopspoll;
+
+ /**
+ * Class PollUtility
+ * @package XoopsModules\Xoopspoll
+ */
+class PollUtility
 {
     /**
-     *
      * gets the name of the host located at a specific ip address
-     * @param  string $ipAddr the ip address of the host
+     * @param string $ipAddr the ip address of the host
      * @return string host name
      */
     public static function getHostByAddrWithCache(&$ipAddr)
     {
-        static $ipArray = array();
-        $retVal  = $ipAddr;
-        $options = array('flags' => FILTER_FLAG_NO_PRIV_RANGE, FILTER_FLAG_NO_RES_RANGE);
-        if (filter_var($ipAddr, FILTER_VALIDATE_IP, $options)) {
-            if (array_key_exists($ipAddr, $ipArray)) {
+        static $ipArray = [];
+        $retVal  = &$ipAddr;
+        $options = ['flags' => \FILTER_FLAG_NO_PRIV_RANGE, \FILTER_FLAG_NO_RES_RANGE];
+        if (\filter_var($ipAddr, \FILTER_VALIDATE_IP, $options)) {
+            if (\array_key_exists($ipAddr, $ipArray)) {
                 $retVal = $ipArray[$ipAddr];
             } else {
-                $hostAddr = gethostbyaddr($ipAddr);
+                $hostAddr = \gethostbyaddr($ipAddr);
                 if ($hostAddr === $ipAddr) {
-                    $retVal = $ipAddr;
+                    $retVal = &$ipAddr;
                 } else {
-                    $ipArray[$ipAddr] = htmlspecialchars($hostAddr);
+                    $ipArray[$ipAddr] = \htmlspecialchars($hostAddr, \ENT_QUOTES | \ENT_HTML5);
                     $retVal           = $ipArray[$ipAddr];
                 }
             }
@@ -58,18 +66,17 @@ class XoopspollPollUtility
     public static function commentMode()
     {
         static $mConfig;
-        if (!isset($mConfig)) {
-            $mHandler = xoops_getHandler('module');
+        if (null === $mConfig) {
+            $mHandler = \xoops_getHandler('module');
             $mod      = $mHandler->getByDirname('xoopspoll');
-            $cHandler = xoops_getHandler('config');
-            $mConfig  =& $cHandler->getConfigsByCat(0, $mod->getVar('mid'));
+            $cHandler = \xoops_getHandler('config');
+            $mConfig  = $cHandler->getConfigsByCat(0, $mod->getVar('mid'));
         }
 
         return $mConfig['com_rule'];
     }
 
     /**
-     *
      * Creates a visibility array from module default values
      * @return array visibility options available for a poll
      */
@@ -78,16 +85,16 @@ class XoopspollPollUtility
         /**
          * {@internal Do NOT add/delete from $visOptions after the module has been installed}
          */
-        static $visOptions = array();
+        static $visOptions = [];
         if (empty($visOptions)) {
-            xoops_loadLanguage('main', 'xoopspoll');
-            xoops_load('constants', 'xoopspoll');
-            $visOptions = array(
-                XoopspollConstants::HIDE_NEVER  => _MD_XOOPSPOLL_HIDE_NEVER,
-                XoopspollConstants::HIDE_END    => _MD_XOOPSPOLL_HIDE_END,
-                XoopspollConstants::HIDE_VOTED  => _MD_XOOPSPOLL_HIDE_VOTED,
-                XoopspollConstants::HIDE_ALWAYS => _MD_XOOPSPOLL_HIDE_ALWAYS
-            );
+            \xoops_loadLanguage('main', 'xoopspoll');
+            //            xoops_load('constants', 'xoopspoll');
+            $visOptions = [
+                Constants::HIDE_NEVER  => \_MD_XOOPSPOLL_HIDE_NEVER,
+                Constants::HIDE_END    => \_MD_XOOPSPOLL_HIDE_END,
+                Constants::HIDE_VOTED  => \_MD_XOOPSPOLL_HIDE_VOTED,
+                Constants::HIDE_ALWAYS => \_MD_XOOPSPOLL_HIDE_ALWAYS,
+            ];
         }
 
         return $visOptions;
@@ -100,16 +107,20 @@ class XoopspollPollUtility
      * for backward compatibility. Otherwise cookie is named
      * '<dirname>_voted_polls' to allow for module to be cloned using
      * smartClone module.
-     * @param  string $cookieBaseName
+     * @param string $cookieBaseName
      * @return array  contains cookie for polls, empty array if not found
      */
-    public static function getVoteCookie($cookieBaseName = 'voted_polls')
+    public static function getVoteCookie($cookieBaseName = null)
     {
-        $pollDir = basename(dirname(__DIR__));
+        //        $cookieBaseName = null === $cookieBaseName ? 'voted_polls': $cookieBaseName;
+        if (null === $cookieBaseName) {
+            $cookieBaseName = 'voted_polls';
+        }
+        $pollDir = \basename(\dirname(__DIR__));
         if ('xoopspoll' === $pollDir) {
-            $pollCookie = (!empty($_COOKIE[$cookieBaseName])) ? $_COOKIE[$cookieBaseName] : array();
+            $pollCookie = !empty($_COOKIE[$cookieBaseName]) ? $_COOKIE[$cookieBaseName] : [];
         } else {
-            $pollCookie = (!empty($_COOKIE["{$pollDir}_{$cookieBaseName}"])) ? $_COOKIE["{$pollDir}_{$cookieBaseName}"] : array();
+            $pollCookie = !empty($_COOKIE["{$pollDir}_{$cookieBaseName}"]) ? $_COOKIE["{$pollDir}_{$cookieBaseName}"] : [];
         }
 
         return $pollCookie;
@@ -122,18 +133,18 @@ class XoopspollPollUtility
      * for backward compatibility. Otherwise cookie is named
      * '<dirname>_voted_polls' to allow for module to be cloned using
      * smartClone module.
-     * @param  int|string   $index          array index to set in cookie
-     * @param  unknown_type $value          data to store in cookie
-     * @param  int          $expires        time when cookie expires
-     * @param  string       $cookieBaseName name of cookie (without directory prefix)
+     * @param int|string $index          array index to set in cookie
+     * @param string     $value          data to store in cookie
+     * @param int        $expires        time when cookie expires
+     * @param string     $cookieBaseName name of cookie (without directory prefix)
      * @return bool         success in setting cookie
      */
     public static function setVoteCookie($index, $value, $expires = 0, $cookieBaseName = 'voted_polls')
     {
-        $pollDir = basename(dirname(__DIR__));
+        $pollDir = \basename(\dirname(__DIR__));
         $success = false;
         // do a little sanity check on $index and $cookieBaseName
-        if (!is_bool($index) && !empty($cookieBaseName)) {
+        if (!\is_bool($index) && !empty($cookieBaseName)) {
             if ('xoopspoll' === $pollDir) {
                 $cookieName = $cookieBaseName;
             } else {
@@ -141,14 +152,16 @@ class XoopspollPollUtility
             }
             $iVal = (string)$index;
             if (!empty($iVal)) {
-                if ($success = setcookie($cookieName[$index], $value, (int)$expires)) {
+                $success = setcookie($cookieName[$index], $value, (int)$expires);
+                if ($success) {
                     $clientCookie = self::getVoteCookie();
-                    if (!array_key_exists($index, $clientCookie) || $clientCookie[$index] !== $value) {
+                    if (!\array_key_exists($index, $clientCookie) || $clientCookie[$index] !== $value) {
                         $success = false;
                     }
                 }
             } else {  //clear the cookie
-                if ($success = setcookie($cookieName, '', (int)$expires)) {
+                $success = setcookie($cookieName, '', (int)$expires);
+                if ($success) {
                     $clientCookie = self::getVoteCookie();
                     if (!empty($clientCookie)) {
                         $success = false;
@@ -167,21 +180,21 @@ class XoopspollPollUtility
      * for backward compatibility. Otherwise cookie is named
      * '<dirname>_voted_polls' to allow for module to be cloned using
      * smartClone module.
-     * @param XoopsDatabase $db
-     * @param $tablename
+     * @param \XoopsDatabase|null $db
+     * @param                     $tablename
      * @return bool success in setting cookie
      * @internal param int|string $index array index to set in cookie
      * @internal param unknown_type $value data to store in cookie
      * @internal param int $expires time when cookie expires
      * @internal param string $cookieBaseName name of cookie (without directory prefix)
      */
-    public static function dbTableExists(XoopsDatabase $db, $tablename)
+    public static function dbTableExists(\XoopsDatabase $db, $tablename)
     {
-        $tablename = addslashes($tablename);
-        $mytable   = $db->prefix("{$tablename}");
+        $tablename = \addslashes($tablename);
+        $mytable   = $db->prefix((string)$tablename);
         $result    = $db->queryF("SHOW TABLES LIKE '{$mytable}'");
         $found     = $db->getRowsNum($result);
 
-        return empty($found) ? false : true;
+        return !empty($found);
     }
 }

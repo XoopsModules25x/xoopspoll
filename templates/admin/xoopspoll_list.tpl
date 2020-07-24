@@ -5,6 +5,7 @@
     <{$addPollButton}>
     <{$newbbIntro}>
     <form action='<{$self}>' method='post'>
+        <{securityToken}>
         <table class='outer width100 bnone pad3 marg2'>
             <thead>
             <tr>
@@ -21,9 +22,8 @@
             <tfoot>
             <tr class='right bg3'>
                 <td class='center' colspan='2'>
-                    <input type='hidden' name='op' value='quickupdate'/>
-                    <{$securityToken}>
-                    <input type='submit' value='<{$smarty.const._SUBMIT}>'/>
+                    <input type='hidden' name='op' value='quickupdate'>
+                    <input type='submit' value='<{$smarty.const._SUBMIT}>'>
                 </td>
                 <td colspan='6'>&nbsp;</td>
             </tr>
@@ -32,12 +32,12 @@
             <{foreach item=pollItem from=$pollItems }>
                 <tr class='<{cycle values="odd,even"}>'>
                     <td class='center'>
-                        <input type='hidden' name='poll_id[<{$pollItem.id}>]' value='<{$pollItem.id}>'/>
-                        <input type='checkbox' name='display[<{$pollItem.id}>]' value='1'<{$pollItem.checked}> />
+                        <input type='hidden' name='poll_id[<{$pollItem.id}>]' value='<{$pollItem.id}>'>
+                        <input type='checkbox' name='display[<{$pollItem.id}>]' value='1'<{$pollItem.checked}>>
                     </td>
                     <td>
                         <input type='text' name='weight[<{$pollItem.id}>]' value='<{$pollItem.weight}>' size='6'
-                               maxlength='5'/>
+                               maxlength='5'>
                     </td>
 
                     <td>
@@ -63,17 +63,17 @@
                         <{ html_image file=$pollItem.buttons.log.file href=$pollItem.buttons.log.href
                         alt=$pollItem.buttons.log.alt title=$pollItem.buttons.log.alt}>
                         <{*
-                                <a href='" . $_SERVER['PHP_SELF'] . "?op=edit&amp;poll_id={$id}'>
-                                  <img src='" . $pathIcon16 . DIRECTORY_SEPARATOR . "edit.png' alt='" . _AM_XOOPSPOLL_EDITPOLL . "' title='" . _AM_XOOPSPOLL_EDITPOLL . "' />
+                                <a href='" . $_SERVER['SCRIPT_NAME'] . "?op=edit&amp;poll_id={$id}'>
+                                  <img src='" . $pathIcon16 . DIRECTORY_SEPARATOR . "edit.png' alt='" . _AM_XOOPSPOLL_EDITPOLL . "' title='" . _AM_XOOPSPOLL_EDITPOLL . "'>
                                 </a>
-                                <a href='" . $_SERVER['PHP_SELF'] . "?op=clone&amp;poll_id={$id}'>
-                                  <img src='" . $pathIcon16 . DIRECTORY_SEPARATOR . "editcopy.png' alt='" . _AM_XOOPSPOLL_CLONE . "' title='" . _AM_XOOPSPOLL_CLONE."' />
+                                <a href='" . $_SERVER['SCRIPT_NAME'] . "?op=clone&amp;poll_id={$id}'>
+                                  <img src='" . $pathIcon16 . DIRECTORY_SEPARATOR . "editcopy.png' alt='" . _AM_XOOPSPOLL_CLONE . "' title='" . _AM_XOOPSPOLL_CLONE."'>
                                 </a>
-                                <a href='" . $_SERVER['PHP_SELF'] . "?op=delete&amp;poll_id={$id}'>
-                                  <img src='" . $pathIcon16 . DIRECTORY_SEPARATOR . "delete.png' alt='" . _DELETE . "' title='" . _DELETE . "' />
+                                <a href='" . $_SERVER['SCRIPT_NAME'] . "?op=delete&amp;poll_id={$id}'>
+                                  <img src='" . $pathIcon16 . DIRECTORY_SEPARATOR . "delete.png' alt='" . _DELETE . "' title='" . _DELETE . "'>
                                 </a>
-                                <a href='" . $_SERVER['PHP_SELF'] . "?op=log&amp;poll_id={$id}'>
-                                  <img src='" . $pathIcon16 . DIRECTORY_SEPARATOR . "search.png' alt='" . _AM_XOOPSPOLL_VIEWLOG . "' title='" . _AM_XOOPSPOLL_VIEWLOG."' />\n"
+                                <a href='" . $_SERVER['SCRIPT_NAME'] . "?op=log&amp;poll_id={$id}'>
+                                  <img src='" . $pathIcon16 . DIRECTORY_SEPARATOR . "search.png' alt='" . _AM_XOOPSPOLL_VIEWLOG . "' title='" . _AM_XOOPSPOLL_VIEWLOG."'>\n"
                                 </a>
                         *}>
                     </td>

@@ -1,4 +1,5 @@
 <form action='<{$action}>' method='post'>
+    <{securityToken}><{*//mb*}>
     <table class='outer center width90' style='margin: auto;'>
         <thead>
         <tr>
@@ -26,12 +27,12 @@
         <{/if}>
         <tr>
             <td class='center foot' colspan='2'>
-                <input type="hidden" name="poll_id" value="<{$poll.pollId}>"/>
+                <input type="hidden" name="poll_id" value="<{$poll.pollId}>">
                 <{ if $can_vote}>
-                <input type='submit' value='<{$lang_vote}>'/>&nbsp;
+                <input type='submit' value='<{$lang_vote}>'>&nbsp;
                 <{ /if}>
                 <{ if ($voteCount > 0)}>
-                <input type='button' value='<{$lang_results}>' onclick="location='<{$poll.viewresults}>'"/>
+                <input type='button' value='<{$lang_results}>' onclick="location='<{$poll.viewresults}>'">
                 <{ /if}>
             </td>
         </tr>
