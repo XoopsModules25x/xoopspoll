@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ![alt XOOPS CMS](http://xoops.org/images/logoXoops4GithubRepository.png)
 ## XoopsPoll module for [XOOPS CMS 2.5.8+](https://xoops.org)
 [![Software License](https://img.shields.io/badge/license-GPL-brightgreen.svg?style=flat)](LICENSE)
@@ -20,4 +21,8 @@ Please visit us on http://xoops.org
 The upcoming "next generation" version of XOOPS CMS is being crafted on GitHub at: https://github.com/XOOPS
 
 
+=======
+#xoopspoll
+[![Software License](https://img.shields.io/badge/license-GPL-brightgreen.svg?style=flat)](LICENSE) 
+>>>>>>> a60f2d3... Adding GPL Label
 
