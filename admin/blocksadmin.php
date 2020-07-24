@@ -12,12 +12,17 @@
  * @link            https://www.xoops.org
  * @license         GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
  */
+
 use Xmf\Request;
+use XoopsModules\Xoopspoll\Helper;
 
 require __DIR__ . '/admin_header.php';
 
 $moduleDirName = basename(dirname(__DIR__));
 $moduleDirNameUpper = mb_strtoupper($moduleDirName); //$capsDirName
+
+/** @var Helper $helper */
+$helper = Helper::getInstance();
 
 $helper->loadLanguage('blocksadmin');
 
