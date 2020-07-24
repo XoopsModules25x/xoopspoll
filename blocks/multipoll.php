@@ -82,9 +82,9 @@ function xoopspollBlockMultiShow($options)
      */
     if ($this_module_config['hide_forum_polls'] && ($thisModule instanceof \XoopsModule) && $thisModule->isactive()) {
         $newbbModule = $moduleHandler->getByDirname('newbb');
-        if ($newbbModule instanceof XoopsModule && $newbbModule->isactive()) {
-            /** @var NewbbTopicHandler $topicHandler */
-            $topicHandler = xoops_getModuleHandler('topic', 'newbb');
+        if ($newbbModule instanceof \XoopsModule && $newbbModule->isactive()) {
+            /** @var Newbb\TopicHandler $topicHandler */
+            $topicHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Topic');
             $tFields       = array('topic_id', 'poll_id');
             $tArray        = $topicHandler->getAll(new Criteria('topic_haspoll', 0, '>'), $tFields, false);
             if (!empty($tArray)) {

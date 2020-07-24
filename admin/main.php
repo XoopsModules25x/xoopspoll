@@ -352,7 +352,7 @@ switch ($op) {
             $newbbModule   = $moduleHandler->getByDirname('newbb');
             if (($newbbModule instanceof XoopsModule) && $newbbModule->isactive()) {
                 /** @var NewbbTopicHandler $topicHandler */
-                $topicHandler = xoops_getModuleHandler('topic', 'newbb');
+                $topicHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Topic');
                 $criteria     = new CriteriaCompo();
                 $criteria->add(new Criteria('poll_id', $pollId, '='));
                 /* {@internal the order of the next 2 statements is important! */
