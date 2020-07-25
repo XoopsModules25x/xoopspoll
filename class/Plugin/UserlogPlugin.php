@@ -42,7 +42,7 @@ class UserlogPlugin extends Userlog\Plugin\PluginAbstract implements Userlog\Plu
      * 'item_name' => 'topic_id';
      * 'allow_bookmark' => 1;
      *
-     * @return array $item["item_name"] name of the item, $item["item_id"] id of the item
+     * @return array|bool $item["item_name"] name of the item, $item["item_id"] id of the item
      */
     public function item($subscribe_from)
     {
