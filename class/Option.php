@@ -113,7 +113,6 @@ class Option extends \XoopsObject
 
     /**
      * Delete all the poll options for a specific poll
-     * @uses XoopsPersistableObjectHandler::deleteAll
      * @param  int   $pid is used to delete all options by this id
      * @return mixed results of deleting objects from database
      * @uses XoopsPersistableObjectHandler::deleteAll
@@ -121,7 +120,7 @@ class Option extends \XoopsObject
     public function deleteByPollId($pid)
     {
         $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use PollHandler::' . __METHOD__ . ' instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
+        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use PollHandler::deleteAll instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
         $criteria    = new \Criteria('poll_id', (int)$pid, '=');
 
         return $this->optHandler->deleteAll($criteria);
@@ -129,15 +128,14 @@ class Option extends \XoopsObject
 
     /**
      * Get all options for a particular poll
-     * @uses XoopsPersistableObjectHandler::getAll
-     * @param  unknown $pid
+     * @param  int $pid
      * @return mixed   results of getting objects from database
      * @uses XoopsPersistableObjectHandler::getAll
      */
     public function getAllByPollId($pid)
     {
         $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use PollHandler::' . __METHOD__ . ' instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
+        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use PollHandler::getAll instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
         $criteria    = new \Criteria('poll_id', (int)$pid, '=');
 
         return $this->optHandler->getAll($criteria);
@@ -146,14 +144,13 @@ class Option extends \XoopsObject
     /**
      * Reset the poll's options vote count
      * @param unknown_type $pid
-     * @uses XoopsPersistableObjectHandler::updateAll
      * @return mixed results of the object(s) update
      * @uses XoopsPersistableObjectHandler::updateAll
      */
     public function resetCountByPollId($pid)
     {
         $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use PollHandler::' . __METHOD__ . ' instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
+        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use PollHandler::updateAll instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
         $soptHandler = $this->getStaticOptHandler();
         $criteria    = new \Criteria('poll_id', (int)$pid, '=');
 
