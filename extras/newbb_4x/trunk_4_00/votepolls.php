@@ -59,7 +59,7 @@ if ($pollObj instanceof \XoopspollPoll) {
     if ($pollObj->getVar('multiple')) {
         $optionId = $_POST['option_id'];
         $optionId = (array)$optionId; // type cast to make sure it's an array
-        $optionId = array_map('intval', $optionId); // make sure values are integers
+        $optionId = array_map('\intval', $optionId); // make sure values are integers
     } else {
         $optionId = $_POST['option_id'];
     }

@@ -434,7 +434,7 @@ switch ($op) {
 
             // now get the options
             $optionIdArray    = XoopsRequest::getArray('option_id', [], 'POST');
-            $optionIdArray    = array_map('intval', $optionIdArray);
+            $optionIdArray    = array_map('\intval', $optionIdArray);
             $optionTextArray  = XoopsRequest::getArray('option_text', [], 'POST');
             $optionColorArray = XoopsRequest::getArray('option_color', [], 'POST');
 
