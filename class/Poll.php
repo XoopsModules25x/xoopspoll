@@ -399,7 +399,7 @@ class Poll extends \XoopsObject
     /**
      * Send copy of vote to the user at time of vote (if selected)
      *
-     * @param \XoopsUser $user the Xoops user object for this user
+     * @param null $user the Xoops user object for this user
      * @return bool      send status
      */
     public function notifyVoter($user = null)

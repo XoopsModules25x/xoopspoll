@@ -38,8 +38,9 @@ class PollHandler extends \XoopsPersistableObjectHandler
     /**
      * PollHandler::__construct()
      *
-     * @param null|\XoopsDatabase $db
-     **/
+     * @param null|\XoopsDatabase                 $db
+     * @param \XoopsModules\Xoopspoll\Helper|null $helper
+     */
     public function __construct(\XoopsDatabase $db = null, Helper $helper = null)
     {
         if (null === $helper) {

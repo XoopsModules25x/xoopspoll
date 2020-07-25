@@ -54,8 +54,9 @@ class OptionHandler extends \XoopsPersistableObjectHandler
     /**
      * PollOptionHandler::__construct()
      *
-     * @param null|\XoopsDatabase $db
-     **/
+     * @param null|\XoopsDatabase                 $db
+     * @param \XoopsModules\Xoopspoll\Helper|null $helper
+     */
     public function __construct(\XoopsDatabase $db = null, Helper $helper = null)
     {
         if (null === $helper) {

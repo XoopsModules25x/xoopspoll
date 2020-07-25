@@ -52,7 +52,8 @@ class LogHandler extends \XoopsPersistableObjectHandler
      * LogHandler::__construct()
      *
      * @param null|\XoopsDatabase $db
-     **/
+     * @param null                $helper
+     */
     public function __construct(\XoopsDatabase $db = null, $helper = null)
     {
         parent::__construct($db, 'xoopspoll_log', Log::class, 'log_id');

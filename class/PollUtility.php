@@ -107,7 +107,7 @@ class PollUtility
      * for backward compatibility. Otherwise cookie is named
      * '<dirname>_voted_polls' to allow for module to be cloned using
      * smartClone module.
-     * @param string $cookieBaseName
+     * @param null $cookieBaseName
      * @return array  contains cookie for polls, empty array if not found
      */
     public static function getVoteCookie($cookieBaseName = null)

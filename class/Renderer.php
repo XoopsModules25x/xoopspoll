@@ -58,6 +58,7 @@ class Renderer
 
     /**
      * @param null $poll
+     * @param null $helper
      */
     public function __construct($poll = null, $helper = null)
     {
