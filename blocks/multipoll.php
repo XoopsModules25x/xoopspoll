@@ -49,8 +49,6 @@ require_once $GLOBALS['xoops']->path( "modules"
                                     . "/pollutility.php"
 );
 */
-//xoops_load('pollUtility', 'xoopspoll');
-//xoops_load('constants', 'xoopspoll');
 
 /**
  * Display XOOPS polls in a block

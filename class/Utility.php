@@ -65,7 +65,6 @@ class Utility extends Common\SysUtility
         static $visOptions = [];
         if (empty($visOptions)) {
             \xoops_loadLanguage('main', 'xoopspoll');
-            //            xoops_load('constants', 'xoopspoll');
             $visOptions = [
                 Constants::HIDE_NEVER  => \_MD_XOOPSPOLL_HIDE_NEVER,
                 Constants::HIDE_END    => \_MD_XOOPSPOLL_HIDE_END,

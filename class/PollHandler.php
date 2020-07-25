@@ -81,8 +81,6 @@ class PollHandler extends \XoopsPersistableObjectHandler
      */
     public function mailResults($pollObj = null)
     {
-        //        xoops_load('constants', 'xoopspoll');
-
         $criteria = new \CriteriaCompo();
         $criteria->add(new \Criteria('end_time', \time(), '<'));  // expired polls
         $criteria->add(new \Criteria('mail_status', Constants::POLL_NOT_MAILED, '=')); // email not previously sent

@@ -59,9 +59,6 @@ $topic_id = Request::getInt('topic_id', Request::getInt('topic_id', 0, 'POST'), 
 $moduleHandler = xoops_getHandler('module');
 $xoopspoll     = $moduleHandler->getByDirname('xoopspoll');
 if (is_object($xoopspoll) && $xoopspoll->getVar('isactive')) {
-    //    xoops_load('constants', 'xoopspoll');
-    //    xoops_load('pollUtility', 'xoopspoll');
-
     xoops_loadLanguage('admin', 'xoopspoll');
     $xpPollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
 } else {

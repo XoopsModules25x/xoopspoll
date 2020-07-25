@@ -165,7 +165,6 @@ class LogHandler extends \XoopsPersistableObjectHandler
         $uid   = (int)$uid;
         $pid   = (int)$pid;
         $voted = true;
-        //        xoops_load('pollUtility', 'xoopspoll');
         $voted_polls = Utility::getVoteCookie();
         //        $voted_polls = [];  //TESTING HACK TO BYPASS COOKIES
         $pollHandler = Helper::getInstance()->getHandler('Poll');

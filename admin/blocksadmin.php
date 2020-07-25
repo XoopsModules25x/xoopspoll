@@ -293,7 +293,6 @@ if ($GLOBALS['xoopsUser']->isAdmin($xoopsModule->mid())) {
         xoops_loadLanguage('admin/blocksadmin', 'system');
         xoops_loadLanguage('admin/groups', 'system');
 
-        //        mpu_adm_menu();
         $myblock = new \XoopsBlock($bid);
         $db = \XoopsDatabaseFactory::getDatabaseConnection();
         $sql = 'SELECT module_id FROM ' . $db->prefix('block_module_link') . ' WHERE block_id=' . (int)$bid;
@@ -324,7 +323,6 @@ if ($GLOBALS['xoopsUser']->isAdmin($xoopsModule->mid())) {
         echo '<a href="blocksadmin.php">' . _AM_BADMIN . '</a>&nbsp;<span style="font-weight:bold;">&raquo;&raquo;</span>&nbsp;' . _AM_SYSTEM_BLOCKS_CLONEBLOCK . '<br><br>';
         require_once __DIR__ . '/blockform.php';
         $form->display();
-        //        xoops_cp_footer();
         require_once __DIR__ . '/admin_footer.php';
         exit();
     }
@@ -432,7 +430,7 @@ if ($GLOBALS['xoopsUser']->isAdmin($xoopsModule->mid())) {
         xoops_loadLanguage('admin', 'system');
         xoops_loadLanguage('admin/blocksadmin', 'system');
         xoops_loadLanguage('admin/groups', 'system');
-        //        mpu_adm_menu();
+
         $myblock = new \XoopsBlock($bid);
         $db = \XoopsDatabaseFactory::getDatabaseConnection();
         $sql = 'SELECT module_id FROM ' . $db->prefix('block_module_link') . ' WHERE block_id=' . (int)$bid;
@@ -463,7 +461,6 @@ if ($GLOBALS['xoopsUser']->isAdmin($xoopsModule->mid())) {
         echo '<a href="blocksadmin.php">' . _AM_BADMIN . '</a>&nbsp;<span style="font-weight:bold;">&raquo;&raquo;</span>&nbsp;' . _AM_SYSTEM_BLOCKS_EDITBLOCK . '<br><br>';
         require_once __DIR__ . '/blockform.php';
         $form->display();
-        //        xoops_cp_footer();
         require_once __DIR__ . '/admin_footer.php';
         exit();
     }

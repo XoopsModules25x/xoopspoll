@@ -39,7 +39,6 @@ class Poll extends \XoopsObject
         parent::__construct();
         //        $timestamp = xoops_getUserTimestamp(time());
         $current_timestamp = \time();
-        //        xoops_load('constants', 'xoopspoll');
         $this->initVar('poll_id', \XOBJ_DTYPE_INT, null, false);
         $this->initVar('question', \XOBJ_DTYPE_TXTBOX, null, true, 255);
         $this->initVar('description', \XOBJ_DTYPE_TXTAREA, null, false);
@@ -212,10 +211,7 @@ class Poll extends \XoopsObject
      */
     public function renderForm($rtnPage, $rtnMethod = 'post', $addHidden = [])
     {
-        //        xoops_load('constants', 'xoopspoll');
-        //        xoops_load('pollUtility', 'xoopspoll');
         \xoops_load('xoopsformloader');
-        //        xoops_load('FormDateTimePicker', 'xoopspoll');
         $myts = \MyTextSanitizer::getInstance();
 
         $rtnMethod = mb_strtolower($rtnMethod);

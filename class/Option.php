@@ -71,7 +71,6 @@ class Option extends \XoopsObject
     public function __construct($id = null)
     {
         parent::__construct();
-        //        xoops_load('constants', 'xoopspoll');
         //        $this->db = \XoopsDatabaseFactory::getDatabaseConnection();
         $this->initVar('option_id', \XOBJ_DTYPE_INT, null, false);
         $this->initVar('poll_id', \XOBJ_DTYPE_INT, null, true);

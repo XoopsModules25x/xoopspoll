@@ -478,14 +478,6 @@ if ($pollmodules) {
         || ($topic_obj->getVar('topic_haspoll')
             && $topicHandler->getPermission($forum_obj, $topic_obj->getVar('topic_status'), 'vote'))) {
         if ('xoopspoll' === $pollmodules) {
-            /*
-                        xoops_load('poll', 'xoopspoll');
-                        xoops_load('option', 'xoopspoll');
-                        xoops_load('log', 'xoopspoll');
-                        xoops_load('pollUtility', 'xoopspoll');
-                        xoops_load('constants', 'xoopspoll');
-            */
-            //            xoops_load('renderer', 'xoopspoll');
             xoops_loadLanguage('main', 'xoopspoll');
         } else {
             @require $GLOBALS['xoops']->path('modules/umfrage/class/umfrage.php');

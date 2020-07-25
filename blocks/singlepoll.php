@@ -27,7 +27,7 @@ use XoopsModules\Xoopspoll\{
 };
 
 xoops_loadLanguage('main', 'xoopspoll');
-//xoops_load('pollUtility', 'xoopspoll');
+
 /*
 require_once $GLOBALS['xoops']->path( "modules"
                                     . "/xoopspoll"

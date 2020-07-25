@@ -43,7 +43,6 @@ use XoopsModules\Xoopspoll\{
 
 require_once __DIR__ . '/admin_header.php';
 
-//xoops_load('pollUtility', 'xoopspoll');
 $helper = Helper::getInstance();
 
 $op = Request::getString('op', 'list');

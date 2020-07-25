@@ -83,7 +83,6 @@ switch ($op) {
         $pollObjs   = $pollHandler->getAll($criteria);
         $pollsCount = count($pollObjs);
 
-        //    $GLOBALS['xoopsOption']['template_main'] = 'xoopspoll_list.html';
         xoops_cp_header();
         $adminObject = \Xmf\Module\Admin::getInstance();
 
@@ -368,7 +367,6 @@ switch ($op) {
         redirect_header($_SERVER['SCRIPT_NAME'], Constants::REDIRECT_DELAY_SHORT, _AM_XOOPSPOLL_DBUPDATED);
         break;
     case 'restart':
-        //        xoops_load('FormDateTimePicker', 'xoopspoll');
         $pollId      = Request::getInt('poll_id', 0);
         $pollHandler = $helper->getHandler('Poll');
         $pollObj     = $pollHandler->get($pollId);

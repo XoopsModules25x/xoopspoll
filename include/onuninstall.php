@@ -56,7 +56,6 @@ function xoops_module_pre_uninstall_xoopspoll(\XoopsModule $module)
 function xoops_module_uninstall_xoopspoll(\XoopsModule $module)
 {
     /* clear the voted cookie(s) for the admin user's machine when module is uninstalled */
-    //    xoops_load('pollUtility', 'xoopspoll');
     $success = Utility::setVoteCookie('', null, time() - 3600);
 
     return $success;

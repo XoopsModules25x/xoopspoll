@@ -49,7 +49,6 @@ $xoopspoll     = $moduleHandler->getByDirname('xoopspoll');
 
 if (($xoopspoll instanceof \XoopsModule) && $xoopspoll->isactive()) {
     /* xoopspoll module installed & active */
-    //    xoops_load('constants', 'xoopspoll');
     xoops_loadLanguage('main', 'xoopspoll');
     $xpPollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
     $xpLogHandler  = Xoopspoll\Helper::getInstance()->getHandler('Log');
@@ -94,7 +93,6 @@ if ($pollObj instanceof Xoopspoll\Poll) {
             }
             /* set anon user vote (and the time they voted) */
             if (!$GLOBALS['xoopsUser'] instanceof \XoopsUser) {
-                //                xoops_load('pollUtility', 'xoopspoll');
                 Xoopspoll\Utility::setVoteCookie($poll_id, $voteTime, 0);
             }
         } else {

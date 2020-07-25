@@ -25,8 +25,6 @@ use XoopsModules\Xoopspoll\{
 };
 
 
-//xoops_load('pollUtility', 'xoopspoll');
-
 /**
  * @param \XoopsDatabase|null $db
  * @param                     $fromTable
