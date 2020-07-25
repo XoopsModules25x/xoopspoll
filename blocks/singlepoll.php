@@ -285,7 +285,7 @@ function xoopspollBlockSinglepollEdit($options)
     $allPollsArray = $pollHandler->getAll($criteria, $pollFields, false);
 
     // next get a list of all available polls for select box
-    $form .= '<tr><td>' . _MB_XOOPSPOLL_POLLS . ":</td><td style='text-align: left; left-margin: 1em;'>\n";
+    $form .= '<tr><td>' . _MB_XOOPSPOLL_POLLS . ":</td><td style='text-align: left; margin-left: 1em;'>\n";
     if (empty($allPollsArray)) {
         $form .= "<span class='errorMsg'>" . _MB_XOOPSPOLL_NONE_ACTIVE . '</span>';
     } else {
