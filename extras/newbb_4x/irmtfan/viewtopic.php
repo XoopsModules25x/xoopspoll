@@ -122,7 +122,7 @@ $topic_last_post_time_or_id_read = newbb_getRead('topic', $topic_id);
 if (!empty($topic_last_post_time_or_id_read)) {
     if (1 === $GLOBALS['xoopsModuleConfig']['read_mode']) {
         $postHandler     = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Post');
-        $post_obj        =& $postHandler->get($topic_obj->getVar('topic_last_post_id'));
+        $post_obj        = $postHandler->get($topic_obj->getVar('topic_last_post_id'));
         $topic_is_unread = ($topic_last_post_time_or_id_read < $post_obj->getVar('post_time'));
     }
     if (2 === $GLOBALS['xoopsModuleConfig']['read_mode']) {

@@ -28,7 +28,7 @@ class User_language extends User
     /**
      * @return array|null
      */
-    public function &getUserbar()
+    public function getUserbar()
     {
         global $xoopsModuleConfig, $xoopsUser, $isadmin;
         if (empty($GLOBALS['xoopsModuleConfig']['userbar_enabled'])) {
