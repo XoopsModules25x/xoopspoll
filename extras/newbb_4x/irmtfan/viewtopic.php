@@ -52,7 +52,7 @@ foreach ($query_vars as $var) {
         $query_array[$var] = "{$var}={$_GET[$var]}";
     }
 }
-$page_query = htmlspecialchars(implode('&', array_values($query_array)), ENT_QUOTES | ENT_HTML5);
+$page_query = htmlspecialchars(implode('&', $query_array), ENT_QUOTES | ENT_HTML5);
 unset($query_array);
 
 $forum_id = !empty($_GET['forum']) ? (int)$_GET['forum'] : 0;

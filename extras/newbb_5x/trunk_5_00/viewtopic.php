@@ -38,7 +38,7 @@ foreach ($query_vars as $var) {
     }
     $query_array[$var] = "{$var}={$_GET[$var]}";
 }
-$page_query = htmlspecialchars(implode('&', array_values($query_array)), ENT_QUOTES | ENT_HTML5);
+$page_query = htmlspecialchars(implode('&', $query_array), ENT_QUOTES | ENT_HTML5);
 unset($query_array);
 
 $topic_id = Request::getInt('topic_id', 0, 'GET');
