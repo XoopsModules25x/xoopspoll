@@ -39,11 +39,11 @@ if ($GLOBALS['xoopsUser']->isAdmin($xoopsModule->mid())) {
         }
     }
     /*
-    if (\Xmf\Request::hasVar('op', 'GET')) {
+    if (Request::hasVar('op', 'GET')) {
         if ('edit' === $_GET['op'] || 'delete' === $_GET['op'] || 'delete_ok' === $_GET['op'] || 'clone' === $_GET['op']
             || 'edit' === $_GET['op']) {
             $op  = $_GET['op'];
-            $bid = \Xmf\Request::getInt('bid', 0, 'GET');
+            $bid = Request::getInt('bid', 0, 'GET');
         }
     */
 

@@ -23,12 +23,12 @@ use XoopsModules\Xoopspoll\Constants;
 
 require_once __DIR__ . '/header.php';
 
-$poll_id  = \Xmf\Request::getInt('poll_id', 0, 'GET');
-$poll_id  = \Xmf\Request::getInt('poll_id', $poll_id, 'POST');
-$topic_id = \Xmf\Request::getInt('topic_id', 0, 'GET');
-$topic_id = \Xmf\Request::getInt('topic_id', $topic_id, 'POST');
-$forum    = \Xmf\Request::getInt('forum', 0, 'GET');
-$forum    = \Xmf\Request::getInt('forum', $forum, 'POST');
+$poll_id  = Request::getInt('poll_id', 0, 'GET');
+$poll_id  = Request::getInt('poll_id', $poll_id, 'POST');
+$topic_id = Request::getInt('topic_id', 0, 'GET');
+$topic_id = Request::getInt('topic_id', $topic_id, 'POST');
+$forum    = Request::getInt('forum', 0, 'GET');
+$forum    = Request::getInt('forum', $forum, 'POST');
 
 /** @var Newbb\TopicHandler $topicHandler */
 $topicHandler = Newbb\Helper::getInstance()->getHandler('Topic');

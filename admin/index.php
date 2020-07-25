@@ -35,6 +35,7 @@
  * @author    ::     XOOPS Module Team
  **/
 
+use Xmf\Request;
 use XoopsModules\Xoopspoll\{
     Common,
     Helper
@@ -127,7 +128,7 @@ function showButtons($yamlFile)
     redirect_header('index.php', 0, '');
 }
 
-$op = \Xmf\Request::getString('op', 0, 'GET');
+$op = Request::getString('op', 0, 'GET');
 
 switch ($op) {
     case 'hide_buttons':

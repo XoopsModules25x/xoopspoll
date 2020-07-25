@@ -26,12 +26,12 @@ require_once __DIR__ . '/header.php';
 /** @var Xoopspoll\Helper $helper */
 $helper = Xoopspoll\Helper::getInstance();
 
-if (\Xmf\Request::hasVar('submit', 'POST')) {
+if (Request::hasVar('submit', 'POST')) {
     foreach (['forum', 'newforum', 'newtopic'] as $getint) {
-        ${$getint} = isset($_POST[$getint]) ? \Xmf\Request::getInt($getint, 0, 'POST') : 0;
+        ${$getint} = isset($_POST[$getint]) ? Request::getInt($getint, 0, 'POST') : 0;
     }
     $topic_id = [];
-    if (!is_array($_POST['topic_id']) && \Xmf\Request::hasVar('topic_id', 'POST')) {
+    if (!is_array($_POST['topic_id']) && Request::hasVar('topic_id', 'POST')) {
         $topic_id = [$topic_id];
     } else {
         $topic_id = $_POST['topic_id'];
@@ -103,7 +103,7 @@ $xoopsConfig['module_cache'][$xoopsModule->getVar('mid')] = 0;
 // irmtfan include header.php after defining $xoopsOption['template_main']
 require_once XOOPS_ROOT_PATH . '/header.php';
 
-if (\Xmf\Request::hasVar('submit', 'POST')) {
+if (Request::hasVar('submit', 'POST')) {
     $mode = $_POST['mode'];
 
     if ('delete' === $mode) {

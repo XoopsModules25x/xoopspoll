@@ -122,7 +122,7 @@ switch ($op) {
         }
 
         /* make sure there's at least one option */
-        $option_text   = \Xmf\Request::getString('option_text', '', 'POST');
+        $option_text   = Request::getString('option_text', '', 'POST');
         $option_string = trim(is_array($option_text) ? implode('', $option_text) : $option_text);
         if (empty($option_string)) {
             // irmtfan - issue with javascript:history.go(-1)
@@ -248,7 +248,7 @@ switch ($op) {
             redirect_header($_SERVER['SCRIPT_NAME'], 2, implode('<br>', $GLOBALS['xoopsSecurity']->getErrors()));
         }
 
-        $option_text   = \Xmf\Request::getString('option_text', '', 'POST');
+        $option_text   = Request::getString('option_text', '', 'POST');
         $option_string = trim(is_array($option_text) ? implode('', $option_text) : $option_text);
         if (empty($option_string)) {
             // irmtfan - issue with javascript:history.go(-1)
@@ -257,7 +257,7 @@ switch ($op) {
 
         $xpOptHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');
         $i            = 0;
-        $option_color = \Xmf\Request::getString('option_color', null, 'POST');
+        $option_color = Request::getString('option_color', null, 'POST');
         foreach ($option_text as $optxt) {
             $optxt = trim($optxt);
             if ('' !== $optxt) {
@@ -344,7 +344,7 @@ switch ($op) {
         $poll_mailed           = Constants::POLL_MAILED;
         $poll_not_mailed       = Constants::POLL_NOT_MAILED;
 
-        $end_time = \Xmf\Request::getInt('end_time', 0, 'POST');
+        $end_time = Request::getInt('end_time', 0, 'POST');
         if (!empty($end_time)) {
             $timezone = ($GLOBALS['xoopsUser'] instanceof \XoopsUser) ? $GLOBALS['xoopsUser']->getVar('timezone') : null;
             //        $poll_obj->setVar("end_time", userTimeToServerTime(strtotime($end_time), $timezone));
@@ -365,7 +365,7 @@ switch ($op) {
             xoops_error($poll_obj->getHtmlErrors());
             exit();
         }
-        if (\Xmf\Request::hasVar('reset', 'POST')) { // reset all vote/voter counters
+        if (Request::hasVar('reset', 'POST')) { // reset all vote/voter counters
             $xpLogHandler = Xoopspoll\Helper::getInstance()->getHandler('Log');
             $xpLogHandler->deleteByPollId($poll_id);
             $xpOptHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');

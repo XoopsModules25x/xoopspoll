@@ -16,6 +16,7 @@
  * @author          Taiwen Jiang <phppp@users.sourceforge.net>
  */
 
+use Xmf\Request;
 use XoopsModules\Newbb;
 use XoopsModules\Xoopspoll;
 
@@ -40,14 +41,14 @@ foreach ($query_vars as $var) {
 $page_query = htmlspecialchars(implode('&', array_values($query_array)), ENT_QUOTES | ENT_HTML5);
 unset($query_array);
 
-$topic_id = \Xmf\Request::getInt('topic_id', 0, 'GET');
-$post_id  = \Xmf\Request::getInt('post_id', 0, 'GET');
-$forum_id = \Xmf\Request::getInt('forum', 0, 'GET');
+$topic_id = Request::getInt('topic_id', 0, 'GET');
+$post_id  = Request::getInt('post_id', 0, 'GET');
+$forum_id = Request::getInt('forum', 0, 'GET');
 $move     = isset($_GET['move']) ? mb_strtolower($_GET['move']) : '';
-$start    = \Xmf\Request::getInt('start', 0, 'GET');
+$start    = Request::getInt('start', 0, 'GET');
 $status   = (!empty($_GET['status'])
              && in_array($_GET['status'], ['active', 'pending', 'deleted'])) ? $_GET['status'] : '';
-$mode     = \Xmf\Request::getInt('mode', (!empty($status) ? 2 : 0), 'GET');
+$mode     = Request::getInt('mode', (!empty($status) ? 2 : 0), 'GET');
 
 if (!$topic_id && !$post_id) {
     $redirect = empty($forum_id) ? 'index.php' : "viewforum.php?forum={$forum_id}";
@@ -99,7 +100,7 @@ $user_karma   = $karmaHandler->getUserKarma();
 
 $valid_modes     = $helper->getConfig('valid_viewmodes');
 $viewmode_cookie = newbb_getcookie('V');
-if (\Xmf\Request::hasVar('viewmode', 'GET') && in_array($_GET['viewmode'], $valid_modes)) {
+if (Request::hasVar('viewmode', 'GET') && in_array($_GET['viewmode'], $valid_modes)) {
     newbb_setcookie('V', $_GET['viewmode'], $forumCookie['expire']);
 }
 $viewmode = $_GET['viewmode'] ?? (!empty($viewmode_cookie) ? $viewmode_cookie : @$valid_modes[$helper->getConfig('view_mode') - 1]);

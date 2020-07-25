@@ -25,7 +25,7 @@ require_once __DIR__ . '/header.php';
 /** @var Xoopspoll\Helper $helper */
 $helper = Xoopspoll\Helper::getInstance();
 
-if (\Xmf\Request::hasVar('submit', 'POST')) {
+if (Request::hasVar('submit', 'POST')) {
     foreach (['forum', 'topic_id', 'newforum', 'newtopic'] as $getint) {
         ${$getint} = (int)(@$_POST[$getint]);
     }
@@ -80,7 +80,7 @@ $action['digest']['sql']   = 'topic_digest = 1, digest_time = ' . time();
 $xoopsConfig['module_cache'][$xoopsModule->getVar('mid')] = 0;
 require_once XOOPS_ROOT_PATH . '/header.php';
 
-if (\Xmf\Request::hasVar('submit', 'POST')) {
+if (Request::hasVar('submit', 'POST')) {
     $mode = $_POST['mode'];
     if ('delete' === $mode) {
         $topic_obj = $topicHandler->get($topic_id);

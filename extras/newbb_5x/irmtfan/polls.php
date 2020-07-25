@@ -226,7 +226,7 @@ switch ($op) {
         $description = (isset($_POST['description'])) ? htmlspecialchars($_POST['description']) : '';
         $poll_obj->setVar("description", $description);
 
-       if (\Xmf\Request::hasVar('end_time', 'POST')) {
+       if (Request::hasVar('end_time', 'POST')) {
             $timezone = ($GLOBALS['xoopsUser'] instanceof \XoopsUser) ? $GLOBALS['xoopsUser']->getVar("timezone") : null;
             //$poll_obj->setVar("end_time", userTimeToServerTime(strtotime($_POST['end_time']), $timezone));
             //Hack by irmtfan
@@ -253,7 +253,7 @@ switch ($op) {
         } else { // Umfrage
             $new_poll_id = $poll_obj->store();
         }
-        $option_color = \Xmf\Request::getString('option_color', null, 'POST');
+        $option_color = Request::getString('option_color', null, 'POST');
         if (!empty($new_poll_id)) {
             $i = 0;
             foreach ($option_text as $optxt) {
@@ -500,8 +500,8 @@ switch ($op) {
                 break;
             }
             $i            = 0;
-            $option_id    = \Xmf\Request::getString('option_id', null, 'POST');
-            $option_color = \Xmf\Request::getString('option_color', null, 'POST');
+            $option_id    = Request::getString('option_id', null, 'POST');
+            $option_color = Request::getString('option_color', null, 'POST');
             foreach ($option_id as $opid) {
                 $option_obj      = new \UmfrageOption($opid);
                 $option_text[$i] = trim($option_text[$i]);
@@ -585,7 +585,7 @@ switch ($op) {
             redirect_header($_SERVER['SCRIPT_NAME'], 2, implode('<br>', $GLOBALS['xoopsSecurity']->getErrors()));
         }
 
-        $option_text   = \Xmf\Request::getString('option_text', '', 'POST');
+        $option_text   = Request::getString('option_text', '', 'POST');
         $option_string = trim(is_array($option_text) ? implode('', $option_text) : $option_text);
         if (empty($option_string)) {
             // irmtfan - issue with javascript:history.go(-1)
@@ -596,7 +596,7 @@ switch ($op) {
             $xpOptHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');
         }
         $i            = 0;
-        $option_color = \Xmf\Request::getString('option_color', null, 'POST');
+        $option_color = Request::getString('option_color', null, 'POST');
         foreach ($option_text as $optxt) {
             $optxt = trim($optxt);
             if ('' !== $optxt) {
@@ -724,7 +724,7 @@ switch ($op) {
             $poll_mailed           = POLL_MAILED;
         }
 
-        $end_time = \Xmf\Request::getInt('end_time', 0, 'POST');
+        $end_time = Request::getInt('end_time', 0, 'POST');
         if (!empty($end_time)) {
             $timezone = ($GLOBALS['xoopsUser'] instanceof \XoopsUser) ? $GLOBALS['xoopsUser']->getVar('timezone') : null;
             //        $poll_obj->setVar("end_time", userTimeToServerTime(strtotime($end_time), $timezone));
@@ -746,7 +746,7 @@ switch ($op) {
                 xoops_error($poll_obj->getHtmlErrors());
                 exit();
             }
-            if (\Xmf\Request::hasVar('reset', 'POST')) { // reset all vote/voter counters
+            if (Request::hasVar('reset', 'POST')) { // reset all vote/voter counters
                 $xpLogHandler = Xoopspoll\Helper::getInstance()->getHandler('Log');
                 $xpLogHandler->deleteByPollId($poll_id);
                 $xpOptHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');
@@ -758,7 +758,7 @@ switch ($op) {
                 xoops_error($poll_obj->getHtmlErrors());
                 exit();
             }
-            if (\Xmf\Request::hasVar('reset', 'POST')) { // reset all logs
+            if (Request::hasVar('reset', 'POST')) { // reset all logs
                 \UmfrageLog::deleteByPollId($poll_id);
                 \UmfrageOption::resetCountByPollId($poll_id);
                 $poll_obj->updateCount();

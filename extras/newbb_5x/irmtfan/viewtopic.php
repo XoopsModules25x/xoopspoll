@@ -38,6 +38,7 @@
  * @author   ::     phppp (D.J.) <infomax@gmail.com>
  */
 
+use Xmf\Request;
 use XoopsModules\Newbb;
 use XoopsModules\Xoopspoll;
 
@@ -61,15 +62,15 @@ foreach ($query_vars as $var) {
 $page_query = htmlspecialchars(implode('&', array_values($query_array)), ENT_QUOTES | ENT_HTML5);
 unset($query_array);
 
-$forum_id = \Xmf\Request::getInt('forum', 0, 'GET');
+$forum_id = Request::getInt('forum', 0, 'GET');
 $read     = (!empty($_GET['read']) && 'new' === $_GET['read']) ? $_GET['read'] : '';
-$topic_id = \Xmf\Request::getInt('topic_id', 0, 'GET');
-$post_id  = \Xmf\Request::getInt('post_id', 0, 'GET');
+$topic_id = Request::getInt('topic_id', 0, 'GET');
+$post_id  = Request::getInt('post_id', 0, 'GET');
 $move     = isset($_GET['move']) ? mb_strtolower($_GET['move']) : '';
-$start    = \Xmf\Request::getInt('start', 0, 'GET');
+$start    = Request::getInt('start', 0, 'GET');
 $status   = (!empty($_GET['status'])
              && in_array($_GET['status'], ['active', 'pending', 'deleted'])) ? $_GET['status'] : '';
-$mode     = \Xmf\Request::getInt('mode', (!empty($status) ? 2 : 0), 'GET');
+$mode     = Request::getInt('mode', (!empty($status) ? 2 : 0), 'GET');
 $order    = (!empty($_GET['order']) && in_array($_GET['order'], ['ASC', 'DESC'])) ? $_GET['order'] : '';
 
 if ('' === $order) {

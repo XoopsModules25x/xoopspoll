@@ -20,6 +20,7 @@ namespace XoopsModules\Newbb;
  * @author       XOOPS Development Team, phppp (D.J., infomax@gmail.com)
  */
 
+use Xmf\Request;
 use XoopsModules\Newbb;
 
 
@@ -493,7 +494,7 @@ class Post extends \XoopsObject
         // START irmtfan add highlight feature
         // Hightlighting searched words
         $post_title = $this->getVar('subject');
-        if (!empty($_GET['keywords']) && \Xmf\Request::hasVar('keywords', 'GET')) {
+        if (!empty($_GET['keywords']) && Request::hasVar('keywords', 'GET')) {
             $keywords   = $myts->htmlSpecialChars(\trim(\urldecode($_GET['keywords'])));
             $post_text  = \newbb_highlightText($post_text, $keywords);
             $post_title = \newbb_highlightText($post_title, $keywords);
