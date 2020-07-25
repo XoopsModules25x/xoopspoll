@@ -205,7 +205,6 @@ switch ($op) {
         $xoopsTpl->display($helper->path('templates/admin/xoopspoll_list.tpl'));
         require_once __DIR__ . '/admin_footer.php';
         exit();
-        break;
     case 'edit':
     case 'add':
         $optionHandler = $helper->getHandler('Option');
@@ -330,7 +329,6 @@ switch ($op) {
         require_once __DIR__ . '/admin_footer.php';
         //    xoops_cp_footer();
         exit();
-        break;
     case 'delete_ok':
         if (!$GLOBALS['xoopsSecurity']->check()) {
             redirect_header($_SERVER['SCRIPT_NAME'], Constants::REDIRECT_DELAY_MEDIUM, implode('<br>', $GLOBALS['xoopsSecurity']->getErrors()));
@@ -401,7 +399,6 @@ switch ($op) {
         $pollForm->display();
         require_once __DIR__ . '/admin_footer.php';
         exit();
-        break;
     case 'restart_ok':
         if (!$GLOBALS['xoopsSecurity']->check()) {
             redirect_header($_SERVER['SCRIPT_NAME'], Constants::REDIRECT_DELAY_MEDIUM, implode('<br>', $GLOBALS['xoopsSecurity']->getErrors()));

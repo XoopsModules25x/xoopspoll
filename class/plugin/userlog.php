@@ -42,7 +42,6 @@ class XoopspollUserlogPlugin extends \Userlog_Module_Plugin_Abstract implements 
             case 'index.php':
             case 'pollresults.php':
                 return ['item_name' => 'poll_id', 'item_id' => $poll_id];
-                break;
         }
 
         return false;
