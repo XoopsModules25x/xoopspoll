@@ -145,7 +145,7 @@ $xoopsTpl->assign('xoops_module_header', $xoops_module_header);
 if ($helper->getConfig('wol_enabled')) {
     $onlineHandler = Newbb\Helper::getInstance()->getHandler('Online');
     $onlineHandler->init($forum_obj, $topic_obj);
-    $xoopsTpl->assign('online', $onlineHandler->show_online());
+    $xoopsTpl->assign('online', $onlineHandler->showOnline());
 }
 
 $xoopsTpl->assign('parentforum', $forumHandler->getParents($forum_obj));
@@ -368,8 +368,8 @@ $xoopsTpl->assign_by_ref('admin_actions', $admin_actions);
 $xoopsTpl->assign('viewer_level', $isadmin ? 2 : is_object($xoopsUser));
 
 if ($helper->getConfig('show_permissiontable')) {
-    $permHandler      = Newbb\Helper::getInstance()->getHandler('Permission');
-    $permission_table = $permHandler->permission_table($forum_obj, $topic_obj->getVar('topic_status'), $isadmin);
+    $permissionHandler      = Newbb\Helper::getInstance()->getHandler('Permission');
+    $permission_table = $permissionHandler->getPermissionTable($forum_obj, $topic_obj->getVar('topic_status'), $isadmin);
     $xoopsTpl->assign_by_ref('permission_table', $permission_table);
 }
 
