@@ -141,10 +141,10 @@ class Renderer
         $tpl->assign(
             [
                 'poll'         => [
-                             'question'    => $myts->htmlSpecialChars($this->pollObj->getVar('question')),
-                             'pollId'      => $this->pollObj->getVar('poll_id'),
-                             'viewresults' => $GLOBALS['xoops']->url('modules/xoopspoll/pollresults.php') . '?poll_id=' . $this->pollObj->getVar('poll_id'),
-                             'options'     => isset($options) ? $options : '',
+                    'question'    => $myts->htmlSpecialChars($this->pollObj->getVar('question')),
+                    'pollId'      => $this->pollObj->getVar('poll_id'),
+                    'viewresults' => $GLOBALS['xoops']->url('modules/xoopspoll/pollresults.php') . '?poll_id=' . $this->pollObj->getVar('poll_id'),
+                    'options'     => $options ?? '',
                     'description' => $myts->displayTarea($myts->undoHtmlSpecialChars($this->pollObj->getVar('description')), 1),
                 ],
                          'can_vote'     => $can_vote,

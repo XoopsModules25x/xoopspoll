@@ -102,7 +102,7 @@ $viewmode_cookie = newbb_getcookie('V');
 if (\Xmf\Request::hasVar('viewmode', 'GET') && in_array($_GET['viewmode'], $valid_modes)) {
     newbb_setcookie('V', $_GET['viewmode'], $forumCookie['expire']);
 }
-$viewmode = isset($_GET['viewmode']) ? $_GET['viewmode'] : (!empty($viewmode_cookie) ? $viewmode_cookie : @$valid_modes[$helper->getConfig('view_mode') - 1]);
+$viewmode = $_GET['viewmode'] ?? (!empty($viewmode_cookie) ? $viewmode_cookie : @$valid_modes[$helper->getConfig('view_mode') - 1]);
 $viewmode = @in_array($viewmode, $valid_modes) ? $viewmode : $valid_modes[0];
 $order    = (isset($_GET['order'])
              && in_array(mb_strtoupper($_GET['order']), ['DESC', 'ASC'])) ? $_GET['order'] : 'ASC';
