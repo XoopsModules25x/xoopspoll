@@ -99,7 +99,7 @@ if ('xoopspoll' === $pollmodules) {
                         $msg = _MD_XOOPSPOLL_THANKSFORVOTE;
                     } else {
                         /* there was a problem registering the vote */
-                        redirect_header($GLOBALS['xoops']->buildUrl('index.php', array('poll_id' => $poll_id)), XoopspollConstants::REDIRECT_DELAY_MEDIUM, _MD_XOOPSPOLL_VOTE_ERROR);
+                        redirect_header($GLOBALS['xoops']->buildUrl('index.php', ['poll_id' => $poll_id]), XoopspollConstants::REDIRECT_DELAY_MEDIUM, _MD_XOOPSPOLL_VOTE_ERROR);
                     }
                 } else {
                     $msg = _MD_XOOPSPOLL_ALREADYVOTED;
@@ -127,7 +127,7 @@ if ('xoopspoll' === $pollmodules) {
                                                        XoopspollConstants::REDIRECT_DELAY_MEDIUM,
                                                        $msg);
         */
-        redirect_header($GLOBALS['xoops']->buildUrl('viewtopic.php', array('topic_id' => $topic_id)), XoopspollConstants::REDIRECT_DELAY_MEDIUM, $msg);
+        redirect_header($GLOBALS['xoops']->buildUrl('viewtopic.php', ['topic_id' => $topic_id]), XoopspollConstants::REDIRECT_DELAY_MEDIUM, $msg);
     }
 } else { //Umfrage
     $poll = new Umfrage($poll_id);

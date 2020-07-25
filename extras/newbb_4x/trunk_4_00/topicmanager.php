@@ -18,11 +18,11 @@
 include __DIR__ . '/header.php';
 
 if (isset($_POST['submit'])) {
-    foreach (array('forum', 'topic_id', 'newforum', 'newtopic') as $getint) {
+    foreach (['forum', 'topic_id', 'newforum', 'newtopic'] as $getint) {
         ${$getint} = (int)(@$_POST[$getint]);
     }
 } else {
-    foreach (array('forum', 'topic_id') as $getint) {
+    foreach (['forum', 'topic_id'] as $getint) {
         ${$getint} = (int)(@$_GET[$getint]);
     }
 }
@@ -52,15 +52,15 @@ if ($xoopsModuleConfig['wol_enabled']) {
     $onlineHandler->init($forum);
 }
 
-$action_array = array('merge', 'delete', 'move', 'lock', 'unlock', 'sticky', 'unsticky', 'digest', 'undigest');
+$action_array = ['merge', 'delete', 'move', 'lock', 'unlock', 'sticky', 'unsticky', 'digest', 'undigest'];
 foreach ($action_array as $_action) {
-    $action[$_action] = array(
+    $action[$_action] = [
         'name'   => $_action,
         'desc'   => constant(strtoupper("_MD_DESC_{$_action}")),
         'submit' => constant(strtoupper("_MD_{$_action}")),
         'sql'    => "topic_{$_action}=1",
         'msg'    => constant(strtoupper("_MD_TOPIC{$_action}"))
-    );
+    ];
 }
 $action['lock']['sql']     = 'topic_status = 1';
 $action['unlock']['sql']   = 'topic_status = 0';

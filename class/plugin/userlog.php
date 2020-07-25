@@ -41,7 +41,7 @@ class XoopspollUserlogPlugin extends Userlog_Module_Plugin_Abstract implements U
         switch ($subscribe_from) {
             case 'index.php':
             case 'pollresults.php':
-                return array('item_name' => 'poll_id', 'item_id' => $poll_id);
+                return ['item_name' => 'poll_id', 'item_id' => $poll_id];
                 break;
         }
 

@@ -22,8 +22,8 @@ require_once XOOPS_ROOT_PATH . '/modules/newbb/include/functions.render.php';
 /*
  * Build the page query
  */
-$query_vars  = array('post_id', 'topic_id', 'status', 'order', 'start', 'move', 'mode', 'viewmode');
-$query_array = array();
+$query_vars  = ['post_id', 'topic_id', 'status', 'order', 'start', 'move', 'mode', 'viewmode'];
+$query_array = [];
 foreach ($query_vars as $var) {
     if (empty($_GET[$var])) {
         continue;
@@ -39,7 +39,7 @@ $forum_id = !empty($_GET['forum']) ? (int)$_GET['forum'] : 0;
 $move     = isset($_GET['move']) ? strtolower($_GET['move']) : '';
 $start    = !empty($_GET['start']) ? (int)$_GET['start'] : 0;
 $status   = (!empty($_GET['status'])
-             && in_array($_GET['status'], array('active', 'pending', 'deleted'))) ? $_GET['status'] : '';
+             && in_array($_GET['status'], ['active', 'pending', 'deleted'])) ? $_GET['status'] : '';
 $mode     = !empty($_GET['mode']) ? (int)$_GET['mode'] : (!empty($status) ? 2 : 0);
 
 if (!$topic_id && !$post_id) {
@@ -98,7 +98,7 @@ if (isset($_GET['viewmode']) && in_array($_GET['viewmode'], $valid_modes)) {
 $viewmode = isset($_GET['viewmode']) ? $_GET['viewmode'] : (!empty($viewmode_cookie) ? $viewmode_cookie : @$valid_modes[$xoopsModuleConfig['view_mode'] - 1]);
 $viewmode = @in_array($viewmode, $valid_modes) ? $viewmode : $valid_modes[0];
 $order    = (isset($_GET['order'])
-             && in_array(strtoupper($_GET['order']), array('DESC', 'ASC'))) ? $_GET['order'] : 'ASC';
+             && in_array(strtoupper($_GET['order']), ['DESC', 'ASC'])) ? $_GET['order'] : 'ASC';
 
 $total_posts = $topicHandler->getPostCount($topic_obj, $status);
 
@@ -143,16 +143,18 @@ if ($xoopsModuleConfig['wol_enabled']) {
 
 $xoopsTpl->assign('parentforum', $forumHandler->getParents($forum_obj));
 
-$xoopsTpl->assign(array(
+$xoopsTpl->assign(
+    [
                       'topic_title'    => '<a href="' . XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname', 'n') . '/viewtopic.php?topic_id=' . $topic_id . '">' . $topic_obj->getFullTitle() . '</a>',
                       'forum_name'     => $forum_obj->getVar('forum_name'),
                       'lang_nexttopic' => _MD_NEXTTOPIC,
                       'lang_prevtopic' => _MD_PREVTOPIC
-                  ));
+    ]
+);
 
 $categoryHandler = xoops_getModuleHandler('category');
-$category_obj     = $categoryHandler->get($forum_obj->getVar('cat_id'), array('cat_title'));
-$xoopsTpl->assign('category', array('id' => $forum_obj->getVar('cat_id'), 'title' => $category_obj->getVar('cat_title')));
+$category_obj     = $categoryHandler->get($forum_obj->getVar('cat_id'), ['cat_title']);
+$xoopsTpl->assign('category', ['id' => $forum_obj->getVar('cat_id'), 'title' => $category_obj->getVar('cat_title')]);
 
 $xoopsTpl->assign('topic_id', $topic_id);
 $xoopsTpl->assign('forum_id', $forum_id);
@@ -178,7 +180,7 @@ if ($topicHandler->getPermission($forum_obj, $topic_obj->getVar('topic_status'),
     $xoopsTpl->assign('forum_reply', "<a href=\"reply.php?topic_id={$topic_id}\">{$t_reply}</a>");
 }
 
-$poster_array  = array();
+$poster_array  = [];
 $require_reply = false;
 foreach ($postsArray as $eachpost) {
     if ($eachpost->getVar('uid') > 0) {
@@ -188,21 +190,21 @@ foreach ($postsArray as $eachpost) {
         $require_reply = true;
     }
 }
-$userid_array = array();
-$online       = array();
+$userid_array = [];
+$online       = [];
 if (count($poster_array) > 0) {
     $memberHandler = xoops_getHandler('member');
     $userid_array   = array_keys($poster_array);
     //$user_criteria = "(" . implode(",", $userid_array) . ")";
     $users = $memberHandler->getUsers(new Criteria('uid', '(' . implode(',', $userid_array) . ')', 'IN'), true);
 } else {
-    $users = array();
+    $users = [];
 }
 
 $xoopsLogger->startTime('XOOPS output module - topic - user');
 
 $xoopsLogger->startTime('XOOPS output module - topic - user - user');
-$viewtopic_users = array();
+$viewtopic_users = [];
 if (count($userid_array) > 0) {
     require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->getVar('dirname', 'n') . '/class/user.php';
     $userHandler         = new NewbbUserHandler($xoopsModuleConfig['groupbar_enabled'], $xoopsModuleConfig['wol_enabled']);
@@ -226,7 +228,7 @@ if ($xoopsModuleConfig['allow_require_reply'] && $require_reply) {
         $viewtopic_posters = $topicHandler->getAllPosters($topic_obj);
     }
 } else {
-    $viewtopic_posters = array();
+    $viewtopic_posters = [];
 }
 
 $xoopsLogger->startTime('XOOPS output module - topic - assign');
@@ -255,14 +257,15 @@ if ($viewmode === 'thread') {
             if ($treeItem['post_id'] === $post_id) {
                 $treeItem['subject'] = '<strong>' . $treeItem['subject'] . '</strong>';
             }
-            $xoopsTpl->append('topic_trees', array(
+            $xoopsTpl->append('topic_trees', [
                 'post_id'     => $treeItem['post_id'],
                 'post_time'   => $treeItem['post_time'],
                 'post_image'  => $treeItem['icon'],
                 'post_title'  => $treeItem['subject'],
                 'post_prefix' => $treeItem['prefix'],
                 'poster'      => $treeItem['poster']
-            ));
+            ]
+            );
         }
         unset($postArray);
     }
@@ -284,7 +287,7 @@ $xoopsLogger->stopTime('XOOPS output module - topic - assign');
 
 $xoopsTpl->assign('topic_print_link', "print.php?form=1&amp;{$page_query}");
 
-$admin_actions = array();
+$admin_actions = [];
 
 $ad_merge    = '';
 $ad_move     = '';
@@ -297,59 +300,59 @@ $ad_digest   = '';
 $ad_undigest = '';
 
 $link_string             = XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname', 'n') . '/topicmanager.php?mode=%s&amp;topic_id=' . $topic_id;
-$admin_actions['merge']  = array(
+$admin_actions['merge']  = [
     'link'  => sprintf($link_string, 'merge'),
     'name'  => _MD_MERGETOPIC,
     'image' => $ad_merge
-);
-$admin_actions['move']   = array(
+];
+$admin_actions['move']   = [
     'link'  => sprintf($link_string, 'move'),
     'name'  => _MD_MOVETOPIC,
     'image' => $ad_move
-);
-$admin_actions['delete'] = array(
+];
+$admin_actions['delete'] = [
     'link'  => sprintf($link_string, 'delete'),
     'name'  => _MD_DELETETOPIC,
     'image' => $ad_delete
-);
+];
 if (!$topic_obj->getVar('topic_status')) {
-    $admin_actions['lock'] = array(
+    $admin_actions['lock'] = [
         'link'  => sprintf($link_string, 'lock'),
         'image' => $ad_lock,
         'name'  => _MD_LOCKTOPIC
-    );
+    ];
 } else {
-    $admin_actions['unlock'] = array(
+    $admin_actions['unlock'] = [
         'link'  => sprintf($link_string, 'unlock'),
         'image' => $ad_unlock,
         'name'  => _MD_UNLOCKTOPIC
-    );
+    ];
 }
 if (!$topic_obj->getVar('topic_sticky')) {
-    $admin_actions['sticky'] = array(
+    $admin_actions['sticky'] = [
         'link'  => sprintf($link_string, 'sticky'),
         'image' => $ad_sticky,
         'name'  => _MD_STICKYTOPIC
-    );
+    ];
 } else {
-    $admin_actions['unsticky'] = array(
+    $admin_actions['unsticky'] = [
         'link'  => sprintf($link_string, 'unsticky'),
         'image' => $ad_unsticky,
         'name'  => _MD_UNSTICKYTOPIC
-    );
+    ];
 }
 if (!$topic_obj->getVar('topic_digest')) {
-    $admin_actions['digest'] = array(
+    $admin_actions['digest'] = [
         'link'  => sprintf($link_string, 'digest'),
         'image' => $ad_digest,
         'name'  => _MD_DIGESTTOPIC
-    );
+    ];
 } else {
-    $admin_actions['undigest'] = array(
+    $admin_actions['undigest'] = [
         'link'  => sprintf($link_string, 'undigest'),
         'image' => $ad_undigest,
         'name'  => _MD_UNDIGESTTOPIC
-    );
+    ];
 }
 $xoopsTpl->assign_by_ref('admin_actions', $admin_actions);
 
@@ -403,14 +406,16 @@ if (($xoopspoll instanceof XoopsModule) && $xoopspoll->isactive()) {
             $configHandler = xoops_getHandler('config');
             $xp_config      = $configHandler->getConfigsByCat(0, $xoopspoll->getVar('mid'));
 
-            $GLOBALS['xoopsTpl']->assign(array(
+            $GLOBALS['xoopsTpl']->assign(
+                [
                                              'is_visible'      => $isVisible,
                                              'visible_message' => $visibleMsg,
                                              'disp_votes'      => $xp_config['disp_vote_nums'],
                                              'lang_vote'       => _MD_XOOPSPOLL_VOTE,
                                              'lang_results'    => _MD_XOOPSPOLL_RESULTS,
                                              'back_link'       => ''
-                                         ));
+                ]
+            );
             $renderer = new XoopspollRenderer($poll_obj);
             //check to see if user has voted, show form if not, otherwise get results for form
             $logHandler = xoops_getModuleHandler('log', 'xoopspoll');
@@ -443,22 +448,22 @@ if (($xoopspoll instanceof XoopsModule) && $xoopspoll->isactive()) {
             $poll_delete  = '';
             $poll_restart = '';
 
-            $adminpoll_actions                = array();
-            $adminpoll_actions['editpoll']    = array(
+            $adminpoll_actions                = [];
+            $adminpoll_actions['editpoll']    = [
                 'link'  => XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname', 'n') . '/polls.php?op=edit&amp;poll_id=' . $topic_obj->getVar('poll_id') . '&amp;topic_id=' . $topic_id,
                 'image' => $poll_edit,
                 'name'  => _MD_EDITPOLL
-            );
-            $adminpoll_actions['deletepoll']  = array(
+            ];
+            $adminpoll_actions['deletepoll']  = [
                 'link'  => XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname', 'n') . '/polls.php?op=delete&amp;poll_id=' . $topic_obj->getVar('poll_id') . '&amp;topic_id=' . $topic_id,
                 'image' => $poll_delete,
                 'name'  => _MD_DELETEPOLL
-            );
-            $adminpoll_actions['restartpoll'] = array(
+            ];
+            $adminpoll_actions['restartpoll'] = [
                 'link'  => XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname', 'n') . '/polls.php?op=restart&amp;poll_id=' . $topic_obj->getVar('poll_id') . '&amp;topic_id=' . $topic_id . '&amp;forum=' . $forum_id,
                 'image' => $poll_restart,
                 'name'  => _MD_RESTARTPOLL
-            );
+            ];
 
             $xoopsTpl->assign_by_ref('adminpoll_actions', $adminpoll_actions);
         }
@@ -498,7 +503,8 @@ if (!empty($xoopsModuleConfig['show_jump'])) {
     require_once XOOPS_ROOT_PATH . '/modules/newbb/include/functions.forum.php';
     $xoopsTpl->assign('forum_jumpbox', newbb_make_jumpbox($forum_id));
 }
-$xoopsTpl->assign(array(
+$xoopsTpl->assign(
+    [
                       'lang_forum_index' => sprintf(_MD_FORUMINDEX, htmlspecialchars($xoopsConfig['sitename'], ENT_QUOTES)),
                       'lang_from'        => _MD_FROM,
                       'lang_joined'      => _MD_JOINED,
@@ -510,57 +516,58 @@ $xoopsTpl->assign(array(
                       'lang_reply'       => _REPLY,
                       'lang_postedon'    => _MD_POSTEDON,
                       'lang_groups'      => _MD_GROUPS
-                  ));
+    ]
+);
 
-$viewmode_options = array();
+$viewmode_options = [];
 if ($viewmode === 'thread') {
-    $viewmode_options[] = array(
+    $viewmode_options[] = [
         'link'  => XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname', 'n') . '/viewtopic.php?viewmode=flat&amp;topic_id=' . $topic_id,
         'title' => _FLAT
-    );
-    $viewmode_options[] = array(
+    ];
+    $viewmode_options[] = [
         'link'  => XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname', 'n') . '/viewtopic.php?viewmode=compact&amp;topic_id=' . $topic_id,
         'title' => _MD_COMPACT
-    );
+    ];
 } elseif ($viewmode === 'compact') {
-    $viewmode_options[] = array(
+    $viewmode_options[] = [
         'link'  => XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname', 'n') . '/viewtopic.php?viewmode=thread&amp;topic_id=' . $topic_id,
         'title' => _THREADED
-    );
-    $viewmode_options[] = array(
+    ];
+    $viewmode_options[] = [
         'link'  => XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname', 'n') . '/viewtopic.php?viewmode=flat&amp;order={$order_current}&amp;topic_id=' . $topic_id,
         'title' => _FLAT
-    );
+    ];
     if ($order === 'DESC') {
-        $viewmode_options[] = array(
+        $viewmode_options[] = [
             'link'  => XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname', 'n') . '/viewtopic.php?viewmode=compact&amp;order=ASC&amp;topic_id=' . $topic_id,
             'title' => _OLDESTFIRST
-        );
+        ];
     } else {
-        $viewmode_options[] = array(
+        $viewmode_options[] = [
             'link'  => XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname', 'n') . '/viewtopic.php?viewmode=compact&amp;order=DESC&amp;topic_id=' . $topic_id,
             'title' => _NEWESTFIRST
-        );
+        ];
     }
 } else {
-    $viewmode_options[] = array(
+    $viewmode_options[] = [
         'link'  => XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname', 'n') . '/viewtopic.php?viewmode=thread&amp;topic_id=' . $topic_id,
         'title' => _THREADED
-    );
-    $viewmode_options[] = array(
+    ];
+    $viewmode_options[] = [
         'link'  => XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname', 'n') . '/viewtopic.php?viewmode=compact&amp;order={$order_current}&amp;topic_id=' . $topic_id,
         'title' => _MD_COMPACT
-    );
+    ];
     if ($order === 'DESC') {
-        $viewmode_options[] = array(
+        $viewmode_options[] = [
             'link'  => XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname', 'n') . '/viewtopic.php?viewmode=flat&amp;order=ASC&amp;status={$status}&amp;topic_id=' . $topic_id,
             'title' => _OLDESTFIRST
-        );
+        ];
     } else {
-        $viewmode_options[] = array(
+        $viewmode_options[] = [
             'link'  => XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname', 'n') . '/viewtopic.php?viewmode=flat&amp;order=DESC&amp;status={$status}&amp;topic_id=' . $topic_id,
             'title' => _NEWESTFIRST
-        );
+        ];
     }
 }
 switch ($status) {
@@ -625,7 +632,7 @@ if (!empty($xoopsModuleConfig['quickreply_enabled'])
     }
 
     $quickform                 = 'textarea';
-    $editor_configs            = array();
+    $editor_configs            = [];
     $editor_configs['caption'] = _MD_MESSAGEC;
     $editor_configs['name']    = 'message';
     $editor_configs['rows']    = 10;
@@ -657,16 +664,17 @@ if (!empty($xoopsModuleConfig['quickreply_enabled'])
 
     $toggles = newbb_getcookie('G', true);
     $display = in_array('qr', $toggles) ? 'none;' : 'block;';
-    $xoopsTpl->assign('quickreply', array(
+    $xoopsTpl->assign('quickreply', [
         'show'    => 1,
         'display' => $display,
         'icon'    => newbb_displayImage('t_qr'),
         'form'    => $forum_form->render()
-    ));
+    ]
+    );
     unset($forum_form);
     $xoopsLogger->stopTime('XOOPS output module - topic - quickreply - form');
 } else {
-    $xoopsTpl->assign('quickreply', array('show' => 0));
+    $xoopsTpl->assign('quickreply', ['show' => 0]);
 }
 $xoopsLogger->stopTime('XOOPS output module - topic - quickreply');
 

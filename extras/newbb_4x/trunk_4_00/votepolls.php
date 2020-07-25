@@ -82,7 +82,7 @@ if ($pollObj instanceof XoopspollPoll) {
                     $msg = _MD_XOOPSPOLL_THANKSFORVOTE;
                 } else {
                     /* there was a problem registering the vote */
-                    redirect_header($GLOBALS['xoops']->buildUrl('index.php', array('poll_id' => $poll_id)), XoopspollConstants::REDIRECT_DELAY_MEDIUM, _MD_XOOPSPOLL_VOTE_ERROR);
+                    redirect_header($GLOBALS['xoops']->buildUrl('index.php', ['poll_id' => $poll_id]), XoopspollConstants::REDIRECT_DELAY_MEDIUM, _MD_XOOPSPOLL_VOTE_ERROR);
                 }
             } else {
                 $msg = _MD_XOOPSPOLL_ALREADYVOTED;
@@ -105,7 +105,7 @@ if ($pollObj instanceof XoopspollPoll) {
 if (null !== $url) {
     redirect_header($url, XoopspollConstants::REDIRECT_DELAY_MEDIUM, $msg);
 } else {
-    redirect_header($GLOBALS['xoops']->buildUrl('viewtopic.php', array('topic_id' => $topic_id)), XoopspollConstants::REDIRECT_DELAY_MEDIUM, $msg);
+    redirect_header($GLOBALS['xoops']->buildUrl('viewtopic.php', ['topic_id' => $topic_id]), XoopspollConstants::REDIRECT_DELAY_MEDIUM, $msg);
 }
 // irmtfan - simple url
 redirect_header("viewtopic.php?topic_id={$topic_id}", 1, $msg);
