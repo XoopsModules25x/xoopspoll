@@ -52,7 +52,7 @@ foreach ($query_vars as $var) {
         $query_array[$var] = "{$var}={$_GET[$var]}";
     }
 }
-$page_query = htmlspecialchars(implode('&', array_values($query_array)));
+$page_query = htmlspecialchars(implode('&', array_values($query_array)), ENT_QUOTES | ENT_HTML5);
 unset($query_array);
 
 $forum_id = !empty($_GET['forum']) ? (int)$_GET['forum'] : 0;
@@ -240,7 +240,7 @@ if ($topicHandler->getPermission($forum_obj, $topic_obj->getVar('topic_status'),
         $xoopsTpl->assign('topic_lock', _MD_TOPICLOCKED);
     }
     if (!empty($GLOBALS['xoopsModuleConfig']['show_reg']) && !is_object($xoopsUser)) {
-        $xoopsTpl->assign('forum_register', '<a href="' . XOOPS_URL . '/user.php?xoops_redirect=' . htmlspecialchars($xoopsRequestUri) . '">' . _MD_REGTOPOST . '</a>');
+        $xoopsTpl->assign('forum_register', '<a href="' . XOOPS_URL . '/user.php?xoops_redirect=' . htmlspecialchars($xoopsRequestUri, ENT_QUOTES | ENT_HTML5) . '">' . _MD_REGTOPOST . '</a>');
     }
 }
 // irmtfan for backward compatibility assign forum_post_or_register smarty again.

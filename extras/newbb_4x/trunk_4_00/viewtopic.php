@@ -30,7 +30,7 @@ foreach ($query_vars as $var) {
     }
     $query_array[$var] = "{$var}={$_GET[$var]}";
 }
-$page_query = htmlspecialchars(implode('&', array_values($query_array)));
+$page_query = htmlspecialchars(implode('&', array_values($query_array)), ENT_QUOTES | ENT_HTML5);
 unset($query_array);
 
 $topic_id = isset($_GET['topic_id']) ? (int)$_GET['topic_id'] : 0;
@@ -171,7 +171,7 @@ if ($topicHandler->getPermission($forum_obj, $topic_obj->getVar('topic_status'),
     if ($topic_obj->getVar('topic_status')) {
         $xoopsTpl->assign('forum_post_or_register', _MD_TOPICLOCKED);
     } elseif (!is_object($xoopsUser)) {
-        $xoopsTpl->assign('forum_post_or_register', '<a href="' . XOOPS_URL . '/user.php?xoops_redirect=' . htmlspecialchars($xoopsRequestUri) . '">' . _MD_REGTOPOST . '</a>');
+        $xoopsTpl->assign('forum_post_or_register', '<a href="' . XOOPS_URL . '/user.php?xoops_redirect=' . htmlspecialchars($xoopsRequestUri, ENT_QUOTES | ENT_HTML5) . '">' . _MD_REGTOPOST . '</a>');
     }
 } else {
     $xoopsTpl->assign('forum_post_or_register', '');
