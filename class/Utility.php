@@ -2,10 +2,6 @@
 
 namespace XoopsModules\Xoopspoll;
 
-use XoopsModules\Xoopspoll;
-use XoopsModules\Xoopspoll\Common;
-use XoopsModules\Xoopspoll\Constants;
-
 /**
  * Class Utility
  */

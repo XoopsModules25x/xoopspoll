@@ -26,7 +26,9 @@ namespace XoopsModules\Xoopspoll\Common;
 use MyTextSanitizer;
 use XoopsFormDhtmlTextArea;
 use XoopsFormTextArea;
-use XoopsModules\Xoopspoll;
+use XoopsModules\Xoopspoll\{
+    Helper
+};
 
 /**
  * Class SysUtility

@@ -46,17 +46,20 @@
 
 use Xmf\Request;
 use XoopsModules\Newbb;
-use XoopsModules\Xoopspoll;
-use XoopsModules\Xoopspoll\Constants;
+use XoopsModules\Xoopspoll\{
+    Constants,
+    Helper,
+    Poll,
+    Renderer,
+    Utility
+};
 
 require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 
-//xoops_load('constants', 'xoopspoll');
-//xoops_load('renderer', 'xoopspoll');
-
+$helper = Helper::getInstance();
 $myts        = \MyTextSanitizer::getInstance();
-$pollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
-$logHandler  = Xoopspoll\Helper::getInstance()->getHandler('Log');
+$pollHandler = $helper->getHandler('Poll');
+$logHandler  = $helper->getHandler('Log');
 
 $pollId = Request::getInt('poll_id', 0);
 $url    = Request::getString('url', '');
@@ -166,7 +169,7 @@ if (empty($pollId)) {
     //    $option_id   = Request::getInt('option_id', 0, 'POST');
     $mail_author = false;
     $pollObj     = $pollHandler->get($pollId);
-    if ($pollObj instanceof \Xoopspoll\Poll) {
+    if ($pollObj instanceof Poll) {
         if ($pollObj->getVar('multiple')) {
             $optionId = Request::getArray('option_id', [], 'POST');
             $optionId = array_map('\intval', $optionId); // make sure values are integers
@@ -200,7 +203,7 @@ if (empty($pollId)) {
                 /* set anon user vote (and the time they voted) */
                 if (!$GLOBALS['xoopsUser'] instanceof \XoopsUser) {
                     //                    xoops_load('pollUtility', 'xoopspoll');
-                    Xoopspoll\Utility::setVoteCookie($pollId, $voteTime, 0);
+                    Utility::setVoteCookie($pollId, $voteTime, 0);
                 }
             } else {
                 $msg = _MD_XOOPSPOLL_CANNOTVOTE;
@@ -225,7 +228,7 @@ if (empty($pollId)) {
     $GLOBALS['xoopsOption']['template_main'] = 'xoopspoll_view.tpl';
     require $GLOBALS['xoops']->path('header.php');
 
-    $renderer = new Xoopspoll\Renderer($pollObj);
+    $renderer = new Renderer($pollObj, $helper);
     $renderer->assignForm($GLOBALS['xoopsTpl']);
 
     $voteCount = $logHandler->getTotalVotesByPollId($pollId);

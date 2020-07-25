@@ -684,14 +684,6 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
     }
 
     /**
-     * @param $db
-     */
-    public function NewbbPostHandler(XoopsDatabase $db)
-    {
-        $this->__construct($db);
-    }
-
-    /**
      * @param  mixed|null $id
      * @return null|XoopsObject
      */

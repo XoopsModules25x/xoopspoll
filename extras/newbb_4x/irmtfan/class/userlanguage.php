@@ -24,13 +24,6 @@ class User_language extends User
     {
         parent::__construct($user);
     }
-    /**
-     * @param $user
-     */
-    public function User_language(&$user)
-    {
-        $this->__construct($user);
-    }
 
     /**
      * @return array|null

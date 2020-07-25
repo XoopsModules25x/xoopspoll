@@ -19,13 +19,17 @@
  * @since     ::      1.40
  * @author    ::     Mage, Mamba
  *
- * @uses      ModuleAdmin
- * @uses      ModuleAdmin::addNavigation to set the display page
- * @uses      ModuleAdmin::renderAbout to display the page passing PAYPAL key to method
+ * @uses      Xmf\Module\Admin
+ * @uses      Xmf\Module\Admin::displayNavigation to set the display page
+ * @uses      Xmf\Module\Admin::displayAbout to display the page passing PAYPAL key to method
  */
+
+use Xmf\Module\Admin;
+
 require_once __DIR__ . '/admin_header.php';
 xoops_cp_header();
 
+/** @var Admin $adminObject */
 $adminObject->displayNavigation(basename(__FILE__));
 $adminObject::setPaypal('xoopsfoundation@gmail.com');
 $adminObject->displayAbout(false);

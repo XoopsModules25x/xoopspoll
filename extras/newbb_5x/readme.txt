@@ -1,7 +1,7 @@
-SUPPORT OF CBB 4.0 (trunk):
+SUPPORT OF CBB 5.0 (trunk):
 ===========================
-In the directory /extras/newbb_4x/trunk_4_00 are the files for the official CBB
-(NewBB) 4.00 from the SVN trunk to use xoopspoll. Simply copy the files into the
+In the directory /extras/newbb_5x/trunk_5_00 are the files for the official
+NewBB 5.00 from the Github trunk to use xoopspoll. Simply copy the files into the
 newbb directory of your installation.
 
 SUPPORT OF CBB 4.31 (irmtfan branch):

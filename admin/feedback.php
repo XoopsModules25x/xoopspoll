@@ -20,13 +20,15 @@
  */
 
 use Xmf\Request;
-use XoopsModules\Xoopspoll\Common;
+use XoopsModules\Xoopspoll\{
+    Common
+};
 
 include __DIR__ . '/admin_header.php';
 
 $adminObject = \Xmf\Module\Admin::getInstance();
 
-$feedback = new \XoopsModules\Xoopspoll\Common\ModuleFeedback();
+$feedback = new Common\ModuleFeedback();
 
 // It recovered the value of argument op in URL$
 $op            = Request::getString('op', 'list');

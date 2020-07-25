@@ -32,7 +32,7 @@ class FormDateTimePicker extends \XoopsFormText
     /**
      * Contains the maximum field size
      */
-    const MAXSIZE = 25;
+    public const MAXSIZE = 25;
 
     /**
      * Constructor to build FormDateTimePicker object

@@ -37,7 +37,9 @@ namespace XoopsModules\Xoopspoll;
  * @author    ::  {@link http://www.myweb.ne.jp/ Kazumi Ono (AKA onokazu)}
  **/
 
-use XoopsModules\Xoopspoll;
+use XoopsModules\Xoopspoll\{
+    Helper
+};
 
 
 
@@ -69,13 +71,6 @@ class Log extends \XoopsObject
         }
     }
 
-    /**
-     * @param null $id
-     */
-    public function Log($id = null)
-    {
-        $this->__construct($id);
-    }
 
     /**
      * The following method is provided for backward compatibility with newbb
@@ -134,7 +129,7 @@ class Log extends \XoopsObject
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __FUNCTION__ . ' is deprecated since Xoopspoll 1.40, please use Log and LogHandler methods instead.' . " Called from {$trace[0]['file']}line {$trace[0]['line']}");
 
         if (!isset($log_h)) {
-            $log_h = Xoopspoll\Helper::getInstance()->getHandler('Log');
+            $log_h = Helper::getInstance()->getHandler('Log');
         }
 
         return $log_h;

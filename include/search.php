@@ -21,7 +21,9 @@
  */
 
 use XoopsModules\Newbb;
-use XoopsModules\Xoopspoll;
+use XoopsModules\Xoopspoll\{
+    Helper
+};
 
 
 
@@ -42,7 +44,7 @@ function xoopspoll_search($queryArray, $andor, $limit, $offset, $uid)
     $ret = [];
     if (0 === (int)$uid) {
         //        xoops_load('pollUtility', 'xoopspoll');
-        $pollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
+        $pollHandler = Helper::getInstance()->getHandler('Poll');
         $pollFields  = ['poll_id', 'user_id', 'question', 'start_time'];
         $criteria    = new \CriteriaCompo();
         $criteria->add(new \Criteria('start_time', time(), '<=')); // only show polls that have started

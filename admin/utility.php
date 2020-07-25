@@ -35,12 +35,16 @@
  */
 
 use Xmf\Request;
-use XoopsModules\Xoopspoll;
-use XoopsModules\Xoopspoll\Constants;
+use XoopsModules\Xoopspoll\{
+    Constants,
+    Helper,
+    Utility
+};
 
 require_once __DIR__ . '/admin_header.php';
 
 //xoops_load('pollUtility', 'xoopspoll');
+$helper = Helper::getInstance();
 
 $op = Request::getString('op', 'list');
 switch ($op) {
@@ -55,7 +59,7 @@ switch ($op) {
         $GLOBALS['xoopsTpl']->assign('addPollButton', $adminObject->displayButton('left'));
 
         $GLOBALS['xoopsTpl']->assign('umfrageIntro', _AM_XOOPSPOLL_UMFRAGE_INTRO);
-        $GLOBALS['xoopsTpl']->display($GLOBALS['xoops']->path('modules/xoopspoll/templates/admin/xoopspoll_utility.tpl'));
+        $GLOBALS['xoopsTpl']->display($helper->path('templates/admin/xoopspoll_utility.tpl'));
 
         require_once __DIR__ . '/admin_header.php';
         break;
@@ -79,7 +83,7 @@ switch ($op) {
                     $success        = false;
                     $umTables       = &$umModule->getInfo('tables');
                     foreach ($umTables as $umTable) {
-                        $s = Xoopspoll\Utility::dbTableExists($GLOBALS['xoopsDB'], $umTable);
+                        $s = Utility::dbTableExists($GLOBALS['xoopsDB'], $umTable);
                         if (!$s) {
                             throw new Exception("Could not find the umfrage db table ({$umTable})");
                         }
@@ -90,9 +94,9 @@ switch ($op) {
                     require_once $GLOBALS['xoops']->path('modules/umfrage/class/umfrageoption.php');
                     require_once $GLOBALS['xoops']->path('modules/umfrage/class/umfragelog.php');
 
-                    $xpHandler    = Xoopspoll\Helper::getInstance()->getHandler('Poll');
-                    $xpOptHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');
-                    $xpLogHandler = Xoopspoll\Helper::getInstance()->getHandler('Log');
+                    $xpHandler    = $helper->getHandler('Poll');
+                    $xpOptHandler = $helper->getHandler('Option');
+                    $xpLogHandler = $helper->getHandler('Log');
 
                     // maps umfrage_desc : polltype to xoopspoll_desc : visibility
                     $typeToVisMap = [

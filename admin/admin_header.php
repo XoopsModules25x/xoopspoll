@@ -31,8 +31,9 @@
  */
 
 use Xmf\Module\Admin;
-use XoopsModules\Xoopspoll;
-use XoopsModules\Xoopspoll\Helper;
+use XoopsModules\Xoopspoll\{
+    Helper
+};
 
 include dirname(__DIR__) . '/preloads/autoloader.php';
 

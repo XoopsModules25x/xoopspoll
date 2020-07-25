@@ -36,8 +36,12 @@
 
 use Xmf\Request;
 use XoopsModules\Newbb;
-use XoopsModules\Xoopspoll;
-use XoopsModules\Xoopspoll\Constants;
+use XoopsModules\Xoopspoll\{
+    Constants,
+    Helper,
+    Poll,
+    Renderer
+};
 
 /**
  * @uses xoops_load() method used to load classes
@@ -47,10 +51,8 @@ use XoopsModules\Xoopspoll\Constants;
  */
 require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 
-//xoops_load('constants', 'xoopspoll');
-//xoops_load('renderer', 'xoopspoll');
-
 $pollId = Request::getInt('poll_id', 0);
+$helper = Helper::getInstance();
 /*
  * check to see if we want to show polls created by the forum (newbb) module
  */
@@ -74,16 +76,16 @@ if (empty($pollId)) {
 $GLOBALS['xoopsOption']['template_main'] = 'xoopspoll_results.tpl';
 require $GLOBALS['xoops']->path('header.php');
 
-$pollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
+$pollHandler = $helper->getHandler('Poll');
 $pollObj     = $pollHandler->get($pollId);
-if (!empty($pollObj) && ($pollObj instanceof \Xoopspoll\Poll)) {
+if (!empty($pollObj) && ($pollObj instanceof Poll)) {
     /* make sure the poll has started */
     if ($pollObj->getVar('start_time') > time()) {
         redirect_header('index.php', Constants::REDIRECT_DELAY_NONE);
     }
 
     /* assign variables to template */
-    $renderer = new Xoopspoll\Renderer($pollObj);
+    $renderer = new Renderer($pollObj, $helper);
     $renderer->assignResults($GLOBALS['xoopsTpl']);
 
     $visReturn  = $pollObj->isResultVisible();

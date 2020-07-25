@@ -38,7 +38,10 @@ namespace XoopsModules\Xoopspoll;
 
 
 
-use XoopsModules\Xoopspoll;
+use XoopsModules\Xoopspoll\{
+    Helper,
+    Utility
+};
 
 /**
  * Class LogHandler
@@ -50,20 +53,11 @@ class LogHandler extends \XoopsPersistableObjectHandler
      *
      * @param null|\XoopsDatabase $db
      **/
-    public function __construct(\XoopsDatabase $db = null)
+    public function __construct(\XoopsDatabase $db = null, $helper = null)
     {
         parent::__construct($db, 'xoopspoll_log', Log::class, 'log_id');
     }
 
-    /**
-     * LogHandler::LogHandler()
-     *
-     * @param mixed $db
-     **/
-    public function LogHandler($db)
-    {
-        $this->__construct($db);
-    }
 
     /**
      * Delete all log entries by Option ID
@@ -171,9 +165,9 @@ class LogHandler extends \XoopsPersistableObjectHandler
         $pid   = (int)$pid;
         $voted = true;
         //        xoops_load('pollUtility', 'xoopspoll');
-        $voted_polls = Xoopspoll\Utility::getVoteCookie();
+        $voted_polls = Utility::getVoteCookie();
         //        $voted_polls = [];  //TESTING HACK TO BYPASS COOKIES
-        $pollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
+        $pollHandler = Helper::getInstance()->getHandler('Poll');
         $pollObj     = $pollHandler->get($pid);
         if ($pollObj) {
             $pollStarttime = $pollObj->getVar('start_time');

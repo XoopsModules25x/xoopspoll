@@ -37,7 +37,9 @@ namespace XoopsModules\Xoopspoll;
  * @author    ::  {@link http://www.myweb.ne.jp/ Kazumi Ono (AKA onokazu)}
  */
 
-use XoopsModules\Xoopspoll;
+use XoopsModules\Xoopspoll\{
+    Helper
+};
 
  /**
  * Class OptionHandler
@@ -45,24 +47,24 @@ use XoopsModules\Xoopspoll;
 class OptionHandler extends \XoopsPersistableObjectHandler
 {
     /**
+     * @var \XoopsModules\Xoopspoll\Helper
+     */
+    protected $helper;
+
+    /**
      * PollOptionHandler::__construct()
      *
      * @param null|\XoopsDatabase $db
      **/
-    public function __construct(\XoopsDatabase $db = null)
+    public function __construct(\XoopsDatabase $db = null, Helper $helper = null)
     {
-        //        xoops_load('constants', 'xoopspoll');
-        parent::__construct($db, 'xoopspoll_option', Option::class, 'option_id', 'option_text');
-    }
+        if (null === $helper) {
+            $this->helper = Helper::getInstance();
+        } else {
+            $this->helper = $helper;
+        }
 
-    /**
-     * OptionHandler::OptionHandler()
-     *
-     * @param mixed $db
-     **/
-    public function OptionHandler($db)
-    {
-        $this->__construct($db);
+        parent::__construct($db, 'xoopspoll_option', Option::class, 'option_id', 'option_text');
     }
 
     /**
@@ -79,7 +81,7 @@ class OptionHandler extends \XoopsPersistableObjectHandler
         if ($optionObj instanceof Option) {
             $option_id = $optionObj->getVar('option_id');
             if (!isset($logHandler)) {
-                $logHandler = Xoopspoll\Helper::getInstance()->getHandler('Log');
+                $logHandler = $this->helper::getInstance()->getHandler('Log');
             }
             $votes = $logHandler->getTotalVotesByOptionId($option_id);
             $optionObj->setVar('option_count', $votes);

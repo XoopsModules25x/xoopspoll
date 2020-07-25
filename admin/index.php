@@ -35,17 +35,19 @@
  * @author    ::     XOOPS Module Team
  **/
 
-use XoopsModules\Xoopspoll;
-use XoopsModules\Xoopspoll\Common;
+use XoopsModules\Xoopspoll\{
+    Common,
+    Helper
+};
 
 require_once __DIR__ . '/admin_header.php';
 xoops_cp_header();
 
-/** @var \XoopsModules\Xoopspoll\Helper $helper */
+/** @var Helper $helper */
 
 $adminObject = \Xmf\Module\Admin::getInstance();
 
-$pollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
+$pollHandler = Helper::getInstance()->getHandler('Poll');
 $totalPolls  = $pollHandler->getCount();
 $criteria    = new \CriteriaCompo();
 $criteria->add(new \Criteria('start_time', time(), '<='));

@@ -28,12 +28,12 @@
         <tr>
             <td class='center foot' colspan='2'>
                 <input type="hidden" name="poll_id" value="<{$poll.pollId}>">
-                <{ if $can_vote}>
+                <{if $can_vote}>
                 <input type='submit' value='<{$lang_vote}>'>&nbsp;
-                <{ /if}>
-                <{ if ($voteCount > 0)}>
+                <{/if}>
+                <{if ($voteCount > 0)}>
                 <input type='button' value='<{$lang_results}>' onclick="location='<{$poll.viewresults}>'">
-                <{ /if}>
+                <{/if}>
             </td>
         </tr>
         </tfoot>

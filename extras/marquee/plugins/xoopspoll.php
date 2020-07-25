@@ -27,7 +27,10 @@
  * @return array
  */
 
-use XoopsModules\Xoopspoll;
+use XoopsModules\Xoopspoll\{
+    Helper,
+    PollHandler
+};
 
 /**
  * @param $limit
@@ -40,7 +43,8 @@ function b_marquee_xoopspoll($limit, $dateformat, $itemssize)
     require_once $GLOBALS['xoops']->path('modules/marquee/include/functions.php');
     $block       = [];
     $myts        = \MyTextSanitizer::getInstance();
-    $pollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
+    /** @var PollHandler $pollHandler */
+    $pollHandler = Helper::getInstance()->getHandler('Poll');
     $criteria    = new \CriteriaCompo();
     $criteria->add(new \Criteria('start_time', time(), '<='));
     $criteria->add(new \Criteria('end_time', time(), '>'));

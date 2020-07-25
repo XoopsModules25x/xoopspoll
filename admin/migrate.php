@@ -30,7 +30,9 @@
 // ------------------------------------------------------------------------- //
 
 use Xmf\Request;
-use XoopsModules\Xoopspoll;
+use XoopsModules\Xoopspoll\{
+    Common
+};
 
 require_once __DIR__ . '/admin_header.php';
 xoops_cp_header();
@@ -53,11 +55,11 @@ EOF;
 
 //XoopsLoad::load('migrate', 'newbb');
 
-/** @var Xoopspoll\Common\Configurator $configurator */
-$configurator = new Xoopspoll\Common\Configurator();
+/** @var Common\Configurator $configurator */
+$configurator = new Common\Configurator();
 
-/** @var \XoopsModules\Xoopspoll\Common\Migrate $migrator */
-$migrator = new \XoopsModules\Xoopspoll\Common\Migrate($configurator);
+/** @var Common\Migrate $migrator */
+$migrator = new Common\Migrate($configurator);
 
 $op = Request::getCmd('op', 'show');
 $opShow = Request::getCmd('show', null, 'POST');

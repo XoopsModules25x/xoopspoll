@@ -17,7 +17,11 @@
  * @author       XOOPS Development Team
  */
 
-use XoopsModules\Xoopspoll;
+use XoopsModules\Xoopspoll\{
+    Common,
+    Helper,
+    Utility
+};
 
 require dirname(__DIR__) . '/preloads/autoloader.php';
 
@@ -25,12 +29,12 @@ $moduleDirName      = basename(dirname(__DIR__));
 $moduleDirNameUpper = mb_strtoupper($moduleDirName); //$capsDirName
 
 /** @var \XoopsDatabase $db */
-/** @var Xoopspoll\Helper $helper */
-/** @var Xoopspoll\Utility $utility */
+/** @var Helper $helper */
+/** @var Utility $utility */
 $db      = \XoopsDatabaseFactory::getDatabaseConnection();
-$helper  = Xoopspoll\Helper::getInstance();
-$utility = new Xoopspoll\Utility();
-//$configurator = new Xoopspoll\Common\Configurator();
+$helper  = Helper::getInstance();
+$utility = new Utility();
+//$configurator = new Common\Configurator();
 
 $helper->loadLanguage('common');
 

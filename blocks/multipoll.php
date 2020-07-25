@@ -35,8 +35,11 @@
  **/
 
 use XoopsModules\Newbb;
-use XoopsModules\Xoopspoll;
-use XoopsModules\Xoopspoll\Constants;
+use XoopsModules\Xoopspoll\{
+    Constants,
+    Helper,
+    Utility
+};
 
 xoops_loadLanguage('main', 'xoopspoll');
 /*
@@ -69,7 +72,7 @@ function xoopspollBlockMultiShow($options)
     $configHandler      = xoops_getHandler('config');
     $this_module_config = $configHandler->getConfigsByCat(0, $thisModule->getVar('mid'));
 
-    $pollHandler = \XoopsModules\Xoopspoll\Helper::getInstance()->getHandler('Poll');
+    $pollHandler = Helper::getInstance()->getHandler('Poll');
     $criteria    = new \CriteriaCompo();
     $criteria->add(new \Criteria('display', Constants::DISPLAY_POLL_IN_BLOCK, '='));
     $criteria->add(new \Criteria('start_time', time(), '<='));
@@ -118,8 +121,8 @@ function xoopspollBlockMultiShow($options)
         $block['thisModuleDir'] = 'xoopspoll';
         $block['asList']        = $options[0];
 
-        $optionHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');
-        $logHandler    = Xoopspoll\Helper::getInstance()->getHandler('Log');
+        $optionHandler = Helper::getInstance()->getHandler('Option');
+        $logHandler    = Helper::getInstance()->getHandler('Log');
 
         foreach ($pollObjs as $pollObj) {
             $criteria = new \CriteriaCompo();
@@ -183,7 +186,7 @@ function xoopspollBlockMultiShow($options)
                 'totalVotes'  => sprintf(_MD_XOOPSPOLL_TOTALVOTES, $totalVotes),
                 'comments'    => $pollObj->getComments($pollVars['poll_id']),
                 'endTime'     => $xuEndFormattedTime,
-                'commentMode' => Xoopspoll\Utility::commentMode(),
+                'commentMode' => Utility::commentMode(),
             ];
             $block['polls'][] = $poll;
             unset($pollOptionArray, $poll, $pollVars);

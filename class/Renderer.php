@@ -38,11 +38,9 @@ namespace XoopsModules\Xoopspoll;
  */
 
 use Xmf\Request;
-use XoopsModules\Xoopspoll;
 
-\xoops_loadLanguage('main', 'xoopspoll');
-//xoops_load('constants', 'xoopspoll');
-//xoops_load('pollUtility', 'xoopspoll');
+Helper::getInstance()->loadLanguage('main');
+
 
 /**
  * Class Renderer
@@ -54,34 +52,32 @@ class Renderer
     protected $pollHandler;
     protected $optionHandler;
     protected $logHandler;
+    protected $helper;
 
     // constructor(s)
 
     /**
      * @param null $poll
      */
-    public function __construct($poll = null)
+    public function __construct($poll = null, $helper = null)
     {
+        if (null === $helper) {
+            $this->helper = Helper::getInstance();
+        } else {
+            $this->helper = $helper;
+        }
         // setup handlers
-        $this->pollHandler   = Xoopspoll\Helper::getInstance()->getHandler('Poll');
-        $this->optionHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');
-        $this->logHandler    = Xoopspoll\Helper::getInstance()->getHandler('Log');
+        $this->pollHandler   =  $this->helper->getHandler('Poll');
+        $this->optionHandler =  $this->helper->getHandler('Option');
+        $this->logHandler    =  $this->helper->getHandler('Log');
 
-        if ($poll instanceof \Xoopspoll\Poll) {
+        if ($poll instanceof Poll) {
             $this->pollObj = $poll;
         } elseif (!empty($poll) && ((int)$poll > 0)) {
             $this->pollObj = $this->pollHandler->get((int)$poll);
         } else {
             $this->pollObj = $this->pollHandler->create();
         }
-    }
-
-    /**
-     * @param null $poll
-     */
-    public function Renderer($poll = null)
-    {
-        $this->__construct($poll);
     }
 
     /**
@@ -183,7 +179,7 @@ class Renderer
         $xuStartTimestamp = \xoops_getUserTimestamp($this->pollObj->getVar('start_time'));
         $xuStartFormatted = \ucfirst(\date(_MEDIUMDATESTRING, $xuStartTimestamp));
 
-        //        $logHandler = Xoopspoll\Helper::getInstance()->getHandler('Log');
+        //        $logHandler =  $this->helper->getHandler('Log');
         $criteria = new \CriteriaCompo();
         $criteria->add(new \Criteria('poll_id', $this->pollObj->getVar('poll_id'), '='));
         $criteria->setSort('option_id');

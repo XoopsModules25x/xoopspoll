@@ -41,11 +41,11 @@
                     </td>
 
                     <td>
-                        <{ if ("" != $pollItem.topic_title)}>
-                        <{ html_image file=$pollItem.buttons.forum.file href=$pollItem.buttons.forum.href
+                        <{if ("" != $pollItem.topic_title)}>
+                        <{html_image file=$pollItem.buttons.forum.file href=$pollItem.buttons.forum.href
                         alt=$pollItem.buttons.forum.alt title=$pollItem.buttons.forum.alt}>&nbsp;
-                        <{ /if}>
-                        <{ $pollItem.question}>
+                        <{/if}>
+                        <{$pollItem.question}>
                     </td>
 
                     <{*      <td><{$pollItem.question}></td> *}>
@@ -54,13 +54,13 @@
                     <td class='center'><{$pollItem.xuStartFormattedTime}></td>
                     <td class='center'><{$pollItem.end}></td>
                     <td class='center'>
-                        <{ html_image file=$pollItem.buttons.edit.file href=$pollItem.buttons.edit.href
+                        <{html_image file=$pollItem.buttons.edit.file href=$pollItem.buttons.edit.href
                         alt=$pollItem.buttons.edit.alt title=$pollItem.buttons.edit.alt}>
-                        <{ html_image file=$pollItem.buttons.clone.file href=$pollItem.buttons.clone.href
+                        <{html_image file=$pollItem.buttons.clone.file href=$pollItem.buttons.clone.href
                         alt=$pollItem.buttons.clone.alt title=$pollItem.buttons.clone.alt}>
-                        <{ html_image file=$pollItem.buttons.delete.file href=$pollItem.buttons.delete.href
+                        <{html_image file=$pollItem.buttons.delete.file href=$pollItem.buttons.delete.href
                         alt=$pollItem.buttons.delete.alt title=$pollItem.buttons.delete.alt}>
-                        <{ html_image file=$pollItem.buttons.log.file href=$pollItem.buttons.log.href
+                        <{html_image file=$pollItem.buttons.log.file href=$pollItem.buttons.log.href
                         alt=$pollItem.buttons.log.alt title=$pollItem.buttons.log.alt}>
                         <{*
                                 <a href='" . $_SERVER['SCRIPT_NAME'] . "?op=edit&amp;poll_id={$id}'>

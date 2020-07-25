@@ -37,7 +37,9 @@ namespace XoopsModules\Xoopspoll;
  * @author    ::  {@link http://www.myweb.ne.jp/ Kazumi Ono (AKA onokazu)}
  */
 
-use XoopsModules\Xoopspoll;
+use XoopsModules\Xoopspoll\{
+    Helper
+};
 
  /**
  * Class Option
@@ -91,17 +93,9 @@ class Option extends \XoopsObject
         }
     }
 
-    /**
-     * @param int|null $id poll id
-     * @return void
-     * @deprecated since PHP4 died - use __construct
-     */
-    public function Option($id = null)
-    {
-        $this->__construct($id);
-    }
+
     /**#@+
-     * @deprecated since Xoopspoll 1.40, please @see XoopspollOptionHandler & @see XoopspollOption
+     * @deprecated since Xoopspoll 1.40, please @see OptionHandler & @see Option
      */
     /**
      *
@@ -177,7 +171,7 @@ class Option extends \XoopsObject
         static $optionHandler;
 
         if (!isset($optionHandler)) {
-            $optionHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');
+            $optionHandler = Helper::getInstance()->getHandler('Option');
     }
 
         return $optionHandler;

@@ -19,8 +19,12 @@
  */
 
 use XoopsModules\Newbb;
-use XoopsModules\Xoopspoll;
-use XoopsModules\Xoopspoll\Constants;
+use XoopsModules\Xoopspoll\{
+    Constants,
+    Helper,
+    Poll,
+    Utility
+};
 
 xoops_loadLanguage('main', 'xoopspoll');
 //xoops_load('pollUtility', 'xoopspoll');
@@ -48,7 +52,7 @@ function xoopspollBlockSinglepollShow($options)
     $block = [];
 
     $configHandler      = xoops_getHandler('config');
-    $pollHandler   = Xoopspoll\Helper::getInstance()->getHandler('Poll');
+    $pollHandler   = Helper::getInstance()->getHandler('Poll');
     /** @var \XoopsModuleHandler $moduleHandler */
     $moduleHandler = xoops_getHandler('module');
     $thisModule         = $moduleHandler->getByDirname('xoopspoll');
@@ -97,7 +101,7 @@ function xoopspollBlockSinglepollShow($options)
         $pollObj = $pollHandler->get((int)$options[1]);
     }
 
-    if ($pollObj instanceof \Xoopspoll\Poll) {
+    if ($pollObj instanceof Poll) {
         if ((1 === $options[0]) || !$pollObj->hasExpired()) {
             $block['langVote']        = _MD_XOOPSPOLL_VOTE;
             $block['langResults']     = _MD_XOOPSPOLL_RESULTS;
@@ -111,7 +115,7 @@ function xoopspollBlockSinglepollShow($options)
             $block['url']             = 'http' . (!empty($_SERVER['HTTPS']) ? 's' : '') . '://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
             $block['dispVotes']       = $this_module_config['disp_vote_nums'];
 
-            $optionHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');
+            $optionHandler = Helper::getInstance()->getHandler('Option');
 
             $pollVars = $pollObj->getValues();
             $criteria = new \CriteriaCompo();
@@ -134,7 +138,7 @@ function xoopspollBlockSinglepollShow($options)
             }
 
             $totalVotes       = $pollVars['votes'];
-            $logHandler       = Xoopspoll\Helper::getInstance()->getHandler('Log');
+            $logHandler       = Helper::getInstance()->getHandler('Log');
             $hasVoted         = $logHandler->hasVoted($pollVars['poll_id'], xoops_getenv('REMOTE_ADDR'), $uid) ? true : false;
             $canVote          = (!$hasVoted) && $pollObj->isAllowedToVote();
             $pollOptionsArray = [];
@@ -184,7 +188,7 @@ function xoopspollBlockSinglepollShow($options)
             $block['totalVotes']  = sprintf(_MD_XOOPSPOLL_TOTALVOTES, $totalVotes);
             $block['endTime']     = $xuEndFormattedTime; // formatted output for current user
             $block['comments']    = $pollObj->getComments($pollVars['poll_id']);
-            $block['commentMode'] = Xoopspoll\Utility::commentMode();
+            $block['commentMode'] = Utility::commentMode();
 
             unset($optionsObjArray, $pollOptionsArray, $pollObj, $pollVars, $timeArray);
         }
@@ -236,7 +240,7 @@ function xoopspollBlockSinglepollEdit($options)
             . "<input type='radio' name='options[0]' value='0'{$chk0no} id='no'>\n"
             . "</td></tr>\n";
 
-    $pollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
+    $pollHandler = Helper::getInstance()->getHandler('Poll');
     $pollFields  = ['poll_id', 'start_time', 'end_time', 'question', 'weight'];
     $criteria    = new \CriteriaCompo();
     //    $criteria->add(new \Criteria('end_time', time(), '>'));

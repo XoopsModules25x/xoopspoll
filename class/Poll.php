@@ -22,7 +22,6 @@ namespace XoopsModules\Xoopspoll;
  * @author    ::     zyspec <zyspec@yahoo.com>
  */
 
-use XoopsModules\Xoopspoll;
 
  /**
  * Class Poll
@@ -73,21 +72,11 @@ class Poll extends \XoopsObject
             if (\is_array($id)) {
                 $this->assignVars($id);
             } else {
-                $pollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
+                $pollHandler = Helper::getInstance()->getHandler('Poll');
                 $this->assignVars($pollHandler->getAll(new \Criteria('id', $id, '=')), null, false);
                 unset($pollHandler);
             }
         }
-    }
-
-    /**
-     * Poll::Poll()
-     * @access public
-     * @param null $id
-     */
-    public function Poll($id = null)
-    {
-        $this->__construct($id);
     }
 
     /**
@@ -153,8 +142,8 @@ class Poll extends \XoopsObject
         if (!empty($optionId) && $this->isAllowedToVote()) {
             $voteTime      = empty($time) ? \time() : (int)$time;
             $uid           = ($GLOBALS['xoopsUser'] instanceof \XoopsUser) ? $GLOBALS['xoopsUser']->uid() : 0;
-            $logHandler    = Xoopspoll\Helper::getInstance()->getHandler('Log');
-            $optionHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');
+            $logHandler    = Helper::getInstance()->getHandler('Log');
+            $optionHandler = Helper::getInstance()->getHandler('Option');
             $optsIdArray   = (array)$optionId; // type cast to make sure it's an array
             $optsIdArray   = \array_map('\intval', $optsIdArray); // make sure values are integers
             /* check to make sure voter hasn't selected too many options */
@@ -291,9 +280,9 @@ class Poll extends \XoopsObject
         $xuEndTimestamp     = \xoops_getUserTimestamp($this->getVar('end_time'));
 
         /* display start/end time fields on form */
-        $startTimeText = new Xoopspoll\FormDateTimePicker("<div class='bold'>" . \_AM_XOOPSPOLL_START_TIME . '<br>' . "<span class='x-small'>" . \_AM_XOOPSPOLL_FORMAT . '<br>' . \sprintf(\_AM_XOOPSPOLL_CURRENTTIME, $xuCurrentFormatted) . '</span></div>', 'xu_start_time', 20, $xuStartTimestamp);
+        $startTimeText = new FormDateTimePicker("<div class='bold'>" . \_AM_XOOPSPOLL_START_TIME . '<br>' . "<span class='x-small'>" . \_AM_XOOPSPOLL_FORMAT . '<br>' . \sprintf(\_AM_XOOPSPOLL_CURRENTTIME, $xuCurrentFormatted) . '</span></div>', 'xu_start_time', 20, $xuStartTimestamp);
         if (!$this->hasExpired()) {
-            $endTimeText = new Xoopspoll\FormDateTimePicker("<div class='bold middle'>" . \_AM_XOOPSPOLL_EXPIRATION . '</div>', 'xu_end_time', 20, $xuEndTimestamp);
+            $endTimeText = new FormDateTimePicker("<div class='bold middle'>" . \_AM_XOOPSPOLL_EXPIRATION . '</div>', 'xu_end_time', 20, $xuEndTimestamp);
         } else {
             /*
                         $extra = "";
@@ -332,7 +321,7 @@ class Poll extends \XoopsObject
         $multiLimit = new \XoopsFormText(\_AM_XOOPSPOLL_MULTI_LIMIT . '<br><small>' . \_AM_XOOPSPOLL_MULTI_LIMIT_DESC . '</small>', 'multilimit', 6, 5, $this->getVar('multilimit'));
         $pollForm->addElement($multiLimit);
 
-        $optionHandler = Xoopspoll\Helper::getInstance()->getHandler('Option');
+        $optionHandler = Helper::getInstance()->getHandler('Option');
         $optionTray    = $optionHandler->renderOptionFormTray($this->getVar('poll_id'));
         $pollForm->addElement($optionTray);
 
@@ -343,7 +332,7 @@ class Poll extends \XoopsObject
          * {@internal Do NOT add/delete from $vis_options after the module has been installed}
          */
         \xoops_loadLanguage('main', 'xoopspoll');
-        $visSelect->addOptionArray(Xoopspoll\Utility::getVisibilityArray());
+        $visSelect->addOptionArray(Utility::getVisibilityArray());
         $pollForm->addElement($visSelect);
         $notifyValue = (Constants::POLL_MAILED !== $this->getVar('mail_status')) ? Constants::NOTIFICATION_ENABLED : Constants::NOTIFICATION_DISABLED;
         $pollForm->addElement(new \XoopsFormRadioYN(\_AM_XOOPSPOLL_NOTIFY, 'notify', $notifyValue));
@@ -388,7 +377,7 @@ class Poll extends \XoopsObject
                 }
                 break;
             case Constants::HIDE_VOTED: // hide the results until user votes
-                $logHandler = Xoopspoll\Helper::getInstance()->getHandler('Log');
+                $logHandler = Helper::getInstance()->getHandler('Log');
                 $uid        = (($GLOBALS['xoopsUser'] instanceof \XoopsUser)
                                && ($GLOBALS['xoopsUser']->getVar('uid') > 0)) ? $GLOBALS['xoopsUser']->getVar('uid') : 0;
                 if ($this->isAllowedToVote()
@@ -419,9 +408,10 @@ class Poll extends \XoopsObject
             \xoops_loadLanguage('main', 'xoopspoll');
             $xoopsMailer = \xoops_getMailer();
             $xoopsMailer->useMail();
+            $helper = Helper::getInstance();
 
             $language         = $GLOBALS['xoopsConfig']['language'];
-            $templateDir      = $GLOBALS['xoops']->path('modules/xoopspoll/language/' . $language . '/mail_template/');
+            $templateDir      = $helper->path('language/' . $language . '/mail_template/');
             $templateFilename = 'mail_voter.tpl';
             if (!\file_exists($templateDir . $templateFilename)) {
                 $language = 'english';
@@ -536,7 +526,7 @@ class Poll extends \XoopsObject
         static $pH;
 
         if (!isset($pH)) {
-            $pH = Xoopspoll\Helper::getInstance()->getHandler('Poll');
+            $pH = Helper::getInstance()->getHandler('Poll');
         }
 
         return $pH;
