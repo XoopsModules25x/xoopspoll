@@ -34,5 +34,5 @@
  *
  * @uses     $GLOBALS['xoops']::path gets XOOPS directory information
  */
-require_once dirname(dirname(__DIR__)) . '/mainfile.php';
+require_once dirname(__DIR__, 2) . '/mainfile.php';
 require $GLOBALS['xoops']->path('include/comment_edit.php');
