@@ -90,7 +90,7 @@ if (!empty($post_id)) {
     $topic_obj = $topicHandler->get($topic_id);
 }
 
-if ((!$topic_obj instanceof Topic) || !$topic_id = $topic_obj->getVar('topic_id')) {
+if ((!$topic_obj instanceof \Topic) || !$topic_id = $topic_obj->getVar('topic_id')) {
     $redirect = empty($forum_id) ? XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname') . '/index.php' : XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname') . "/viewforum.php?forum={$forum_id}";
     redirect_header($redirect, 2, _MD_ERRORTOPIC);
 }
@@ -275,7 +275,7 @@ if (count($poster_array) > 0) {
 $viewtopic_users = [];
 if (count($userid_array) > 0) {
     require $GLOBALS['xoops']->path('modules/' . $xoopsModule->getVar('dirname', 'n') . '/class/user.php');
-    $userHandler         = new NewbbUserHandler($GLOBALS['xoopsModuleConfig']['groupbar_enabled'], $GLOBALS['xoopsModuleConfig']['wol_enabled']);
+    $userHandler         = new \NewbbUserHandler($GLOBALS['xoopsModuleConfig']['groupbar_enabled'], $GLOBALS['xoopsModuleConfig']['wol_enabled']);
     $userHandler->users  = $users;
     $userHandler->online = $online;
     $viewtopic_users      = $userHandler->getUsers();
@@ -499,7 +499,7 @@ if ($pollmodules) {
         if ('xoopspoll' === $pollmodules) {
             $xpollHandler = xoops_getModuleHandler('poll', 'xoopspoll');
             $poll_obj     = $xpollHandler->get($topic_obj->getVar('poll_id'));
-            if (!empty($poll_obj) && $poll_obj instanceof XoopspollPoll) {
+            if (!empty($poll_obj) && $poll_obj instanceof \XoopspollPoll) {
 
                 /* check to see if user has rights to view the results */
                 $vis_return = $poll_obj->isResultVisible();
@@ -520,7 +520,7 @@ if ($pollmodules) {
                                                  'back_link'       => ''
                     ]
                 );
-                $renderer = new XoopspollRenderer($poll_obj);
+                $renderer = new \XoopspollRenderer($poll_obj);
                 //                $renderer->assignResults($GLOBALS['xoopsTpl']);
                 // check to see if user has voted, show form if not, otherwise get results for form
 
@@ -546,9 +546,9 @@ if ($pollmodules) {
                 }
             }
         } else { //Umfrage
-            $poll_obj = new Umfrage($topic_obj->getVar('poll_id'));
+            $poll_obj = new \Umfrage($topic_obj->getVar('poll_id'));
             $hasEnded = $poll_obj->getVar('end_time') < time() ? true : false;
-            $renderer = new UmfrageRenderer($poll);
+            $renderer = new \UmfrageRenderer($poll);
             $xoopsTpl->assign('lang_alreadyvoted2', _PL_ALREADYVOTED2);
             $xoopsTpl->assign('has_ended', $hasEnded);
             $xoopsTpl->assign('polltype', $poll_obj->getVar('polltype'));
@@ -569,7 +569,7 @@ if ($pollmodules) {
 
             $hasvoted = 0;
             if ($uid > 0) {
-                if (UmfrageLog::hasVoted($topic_obj->getVar('poll_id'), xoops_getenv('REMOTE_ADDR'), $uid)) {
+                if (\UmfrageLog::hasVoted($topic_obj->getVar('poll_id'), xoops_getenv('REMOTE_ADDR'), $uid)) {
                     $hasvoted = 1;
                 }
             } else {
@@ -586,7 +586,7 @@ if ($pollmodules) {
                 ]
             );
 
-            if (UmfrageLog::hasVoted($topic_obj->getVar('poll_id'), $_SERVER['REMOTE_ADDR'], $uid)
+            if (\UmfrageLog::hasVoted($topic_obj->getVar('poll_id'), $_SERVER['REMOTE_ADDR'], $uid)
                 || $poll_obj->getVar('end_time') < time()
             ) {
                 $renderer->assignResults($xoopsTpl);

@@ -75,7 +75,7 @@ if ('xoopspoll' === $pollmodules) {
 /** @var NewbbTopicHandler $topicHandler */
 $topicHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Topic');
 $topic_obj     = $topicHandler->get($topic_id);
-if ($topic_obj instanceof Topic) {
+if ($topic_obj instanceof \Topic) {
     $forum_id = $topic_obj->getVar('forum_id');
 } else {
     redirect_header('index.php', 2, _MD_POLLMODULE_ERROR . ': ' . _MD_FORUMNOEXIST);
@@ -109,7 +109,7 @@ if (!newbb_isAdmin($forum_obj)) {
             if ('xoopspoll' === $pollmodules) {
                 $poll_obj = $xpPollHandler->get($poll_id);
             } else { //Umfrage
-                $poll_obj = new Umfrage($poll_id);
+                $poll_obj = new \Umfrage($poll_id);
             }
             if ($GLOBALS['xoopsUser']->getVar('uid') === $poll_obj->getVar('user_id')) {
                 $perm = true;
@@ -308,9 +308,9 @@ switch ($op) {
             $poll_obj->renderForm($_SERVER['PHP_SELF'], 'post', ['topic_id' => $topic_id]);
         } else { // Umfrage
             if (empty($poll_id)) {
-                $poll_obj = new Umfrage();
+                $poll_obj = new \Umfrage();
             } else {
-                $poll_obj = new Umfrage($poll_id);
+                $poll_obj = new \Umfrage($poll_id);
             }
             $poll_form    = new XoopsThemeForm(_MD_POLL_EDITPOLL, 'poll_form', 'polls.php', 'post', true);
             $author_label = new XoopsFormLabel(_MD_POLL_AUTHOR,
@@ -336,7 +336,7 @@ switch ($op) {
             $poll_form->addElement($weight_text);
             $multi_yn = new XoopsFormRadioYN(_MD_POLL_ALLOWMULTI, 'multiple', $poll_obj->getVar('multiple'));
             $poll_form->addElement($multi_yn);
-            $options_arr  =& UmfrageOption::getAllByPollId($poll_id);
+            $options_arr  =& \UmfrageOption::getAllByPollId($poll_id);
             $notify_value = 1;
             if (0 !== $poll_obj->getVar('mail_status')) {
                 $notify_value = 0;
@@ -479,7 +479,7 @@ switch ($op) {
             //        xoops_template_clear_module_cache($xoopspoll->getVar('mid'));
             //        redirect_header("viewtopic.php?topic_id={$topic_id}", XoopspollConstants::REDIRECT_DELAY_SHORT, _MD_POLL_DBUPDATED);
         } else { // Umfrage
-            $poll_obj = new Umfrage($poll_id);
+            $poll_obj = new \Umfrage($poll_id);
             $poll_obj->setVar('question', @$_POST['question']);
             $poll_obj->setVar('description', @$_POST['description']);
             $end_time = XoopsRequest::getString('end_time', '', 'POST');
@@ -508,7 +508,7 @@ switch ($op) {
             $option_id    = empty($_POST['option_id']) ? null : $_POST['option_id'];
             $option_color = empty($_POST['option_color']) ? null : $_POST['option_color'];
             foreach ($option_id as $opid) {
-                $option_obj      = new UmfrageOption($opid);
+                $option_obj      = new \UmfrageOption($opid);
                 $option_text[$i] = trim($option_text[$i]);
                 if ('' !== $option_text[$i]) {
                     $option_obj->setVar('option_text', $option_text[$i]);
@@ -516,7 +516,7 @@ switch ($op) {
                     $option_obj->store();
                 } else {
                     if (false !== $option_obj->delete()) {
-                        UmfrageLog::deleteByOptionId($option->getVar('option_id'));
+                        \UmfrageLog::deleteByOptionId($option->getVar('option_id'));
                     }
                 }
                 ++$i;
@@ -548,7 +548,7 @@ switch ($op) {
             $poll_obj     = $xpPollHandler->get($poll_id);
             $xpOptHandler = xoops_getModuleHandler('option', 'xoopspoll');
         } else { // Umfrage
-            $poll_obj = new Umfrage($poll_id);
+            $poll_obj = new \Umfrage($poll_id);
         }
         $question = $poll_obj->getVar('question');
         unset($poll_obj);
@@ -616,7 +616,7 @@ switch ($op) {
                     $option_obj->setVar('option_color', $option_color[$i]);
                     $xpOptHandler->insert($option_obj);
                 } else { // Umfrage
-                    $option_obj = new UmfrageOption();
+                    $option_obj = new \UmfrageOption();
                     $option_obj->setVar('option_text', $optxt);
                     $option_obj->setVar('poll_id', $poll_id);
                     $option_obj->setVar('option_color', $option_color[$i]);
@@ -637,7 +637,7 @@ switch ($op) {
         if ('xoopspoll' === $pollmodules) {
             $poll_obj = $xpPollHandler->get($poll_id);
         } else {
-            $poll_obj = new Umfrage($poll_id);
+            $poll_obj = new \Umfrage($poll_id);
         }
         xoops_confirm(['op' => 'delete_ok', 'topic_id' => $topic_id, 'poll_id' => $poll_id], 'polls.php', sprintf(_MD_POLL_RUSUREDEL, $poll_obj->getVar('question')));
         break;
@@ -660,11 +660,11 @@ switch ($op) {
                 $msg = $xpPollHandler->getHtmlErrors();
             }
         } else {
-            $poll_obj = new Umfrage($poll_id);
+            $poll_obj = new \Umfrage($poll_id);
             $status   = $poll_obj->delete();
             if (false !== $status) {
-                UmfrageOption::deleteByPollId($poll_id);
-                UmfrageLog::deleteByPollId($poll_id);
+                \UmfrageOption::deleteByPollId($poll_id);
+                \UmfrageLog::deleteByPollId($poll_id);
             } else {
                 $msg = $poll_obj->getHtmlErrors();
             }

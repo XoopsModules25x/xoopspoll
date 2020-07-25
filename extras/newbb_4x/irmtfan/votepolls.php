@@ -72,7 +72,7 @@ if (($xoopspoll instanceof XoopsModule) && $xoopspoll->isactive()) {
 $mail_author = false;
 if ('xoopspoll' === $pollmodules) {
     $pollObj = $xpPollHandler->get($poll_id);
-    if ($pollObj instanceof XoopspollPoll) {
+    if ($pollObj instanceof \XoopspollPoll) {
         if ($pollObj->getVar('multiple')) {
             $optionId = XoopsRequest::getInt('option_id', 0, 'POST');
             $optionId = (array)$optionId; // type cast to make sure it's an array
@@ -107,7 +107,7 @@ if ('xoopspoll' === $pollmodules) {
                 /* set anon user vote (and the time they voted) */
                 if (!$GLOBALS['xoopsUser'] instanceof XoopsUser) {
                     xoops_load('pollUtility', 'xoopspoll');
-                    XoopspollPollUtility::setVoteCookie($poll_id, $voteTime, 0);
+                    \XoopspollPollUtility::setVoteCookie($poll_id, $voteTime, 0);
                 }
             } else {
                 $msg = _MD_XOOPSPOLL_CANNOTVOTE;
@@ -130,9 +130,9 @@ if ('xoopspoll' === $pollmodules) {
         redirect_header($GLOBALS['xoops']->buildUrl('viewtopic.php', ['topic_id' => $topic_id]), XoopspollConstants::REDIRECT_DELAY_MEDIUM, $msg);
     }
 } else { //Umfrage
-    $poll = new Umfrage($poll_id);
+    $poll = new \Umfrage($poll_id);
     if (is_object($xoopsUser)) {
-        if (UmfrageLog::hasVoted($poll_id, $_SERVER['REMOTE_ADDR'], $xoopsUser->getVar('uid'))) {
+        if (\UmfrageLog::hasVoted($poll_id, $_SERVER['REMOTE_ADDR'], $xoopsUser->getVar('uid'))) {
             $msg = _PL_ALREADYVOTED;
             setcookie("bb_polls[$poll_id]", 1);
         } else {
@@ -143,7 +143,7 @@ if ('xoopspoll' === $pollmodules) {
             setcookie("bb_polls[$poll_id]", 1);
         }
     } else {
-        if (UmfrageLog::hasVoted($poll_id, $_SERVER['REMOTE_ADDR'])) {
+        if (\UmfrageLog::hasVoted($poll_id, $_SERVER['REMOTE_ADDR'])) {
             $msg = _PL_ALREADYVOTED;
             setcookie("bb_polls[$poll_id]", 1);
         } else {

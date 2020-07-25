@@ -60,7 +60,7 @@ if (($xoopspoll instanceof \XoopsModule) && $xoopspoll->isactive()) {
 
 $mail_author = false;
 $pollObj     = $xpPollHandler->get($poll_id);
-if ($pollObj instanceof \Xoopspoll\Poll) {
+if ($pollObj instanceof Xoopspoll\Poll) {
     if ($pollObj->getVar('multiple')) {
         $optionId = $_POST['option_id'];
         $optionId = (array)$optionId; // type cast to make sure it's an array

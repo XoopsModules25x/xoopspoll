@@ -55,7 +55,7 @@ if (($xoopspoll instanceof XoopsModule) && $xoopspoll->isactive()) {
 
 $mail_author = false;
 $pollObj     = $xpPollHandler->get($poll_id);
-if ($pollObj instanceof XoopspollPoll) {
+if ($pollObj instanceof \XoopspollPoll) {
     if ($pollObj->getVar('multiple')) {
         $optionId = $_POST['option_id'];
         $optionId = (array)$optionId; // type cast to make sure it's an array
@@ -90,7 +90,7 @@ if ($pollObj instanceof XoopspollPoll) {
             /* set anon user vote (and the time they voted) */
             if (!$GLOBALS['xoopsUser'] instanceof XoopsUser) {
                 xoops_load('pollUtility', 'xoopspoll');
-                XoopspollPollUtility::setVoteCookie($poll_id, $voteTime, 0);
+                \XoopspollPollUtility::setVoteCookie($poll_id, $voteTime, 0);
             }
         } else {
             $msg = _MD_XOOPSPOLL_CANNOTVOTE;

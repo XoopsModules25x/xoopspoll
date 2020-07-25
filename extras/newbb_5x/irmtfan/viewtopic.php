@@ -504,7 +504,7 @@ if ($pollmodules) {
         if ('xoopspoll' === $pollmodules) {
             $xpollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
             $poll_obj     = $xpollHandler->get($topic_obj->getVar('poll_id'));
-            if (!empty($poll_obj) && $poll_obj instanceof \Xoopspoll\Poll) {
+            if (!empty($poll_obj) && $poll_obj instanceof Xoopspoll\Poll) {
                 /* check to see if user has rights to view the results */
                 $vis_return = $poll_obj->isResultVisible();
                 $isVisible  = true === $vis_return;
@@ -549,9 +549,9 @@ if ($pollmodules) {
                 }
             }
         } else { //Umfrage
-            $poll_obj = new Umfrage($topic_obj->getVar('poll_id'));
+            $poll_obj = new \Umfrage($topic_obj->getVar('poll_id'));
             $hasEnded = $poll_obj->getVar('end_time') < time();
-            $renderer = new UmfrageRenderer($poll);
+            $renderer = new \UmfrageRenderer($poll);
             $xoopsTpl->assign('lang_alreadyvoted2', _PL_ALREADYVOTED2);
             $xoopsTpl->assign('has_ended', $hasEnded);
             $xoopsTpl->assign('polltype', $poll_obj->getVar('polltype'));
@@ -572,7 +572,7 @@ if ($pollmodules) {
 
             $hasvoted = 0;
             if ($uid > 0) {
-                if (UmfrageLog::hasVoted($topic_obj->getVar('poll_id'), xoops_getenv('REMOTE_ADDR'), $uid)) {
+                if (\UmfrageLog::hasVoted($topic_obj->getVar('poll_id'), xoops_getenv('REMOTE_ADDR'), $uid)) {
                     $hasvoted = 1;
                 }
             } else {
@@ -589,7 +589,7 @@ if ($pollmodules) {
                 ]
             );
 
-            if (UmfrageLog::hasVoted($topic_obj->getVar('poll_id'), $_SERVER['REMOTE_ADDR'], $uid)
+            if (\UmfrageLog::hasVoted($topic_obj->getVar('poll_id'), $_SERVER['REMOTE_ADDR'], $uid)
                 || $poll_obj->getVar('end_time') < time()) {
                 $renderer->assignResults($xoopsTpl);
                 //pollresults($forumtopic->getVar('poll_id'));

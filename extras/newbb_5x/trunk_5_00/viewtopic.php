@@ -401,7 +401,7 @@ if (($xoopspoll instanceof \XoopsModule) && $xoopspoll->isactive()) {
 
         $xpollHandler = Xoopspoll\Helper::getInstance()->getHandler('Poll');
         $poll_obj     = $xpollHandler->get($topic_obj->getVar('poll_id'));
-        if (!empty($poll_obj) && $poll_obj instanceof \Xoopspoll\Poll) {
+        if (!empty($poll_obj) && $poll_obj instanceof Xoopspoll\Poll) {
             /* check to see if user has rights to view the results */
             $vis_return = $poll_obj->isResultVisible();
             $isVisible  = true === $vis_return;

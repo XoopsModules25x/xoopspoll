@@ -207,7 +207,7 @@ $xoopsLogger->startTime('XOOPS output module - topic - user - user');
 $viewtopic_users = [];
 if (count($userid_array) > 0) {
     require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->getVar('dirname', 'n') . '/class/user.php';
-    $userHandler         = new NewbbUserHandler($xoopsModuleConfig['groupbar_enabled'], $xoopsModuleConfig['wol_enabled']);
+    $userHandler         = new \NewbbUserHandler($xoopsModuleConfig['groupbar_enabled'], $xoopsModuleConfig['wol_enabled']);
     $userHandler->users  = $users;
     $userHandler->online = $online;
     $viewtopic_users      = $userHandler->getUsers();
@@ -395,7 +395,7 @@ if (($xoopspoll instanceof XoopsModule) && $xoopspoll->isactive()) {
 
         $xpollHandler = xoops_getModuleHandler('poll', 'xoopspoll');
         $poll_obj     = $xpollHandler->get($topic_obj->getVar('poll_id'));
-        if (!empty($poll_obj) && $poll_obj instanceof XoopspollPoll) {
+        if (!empty($poll_obj) && $poll_obj instanceof \XoopspollPoll) {
 
             /* check to see if user has rights to view the results */
             $vis_return = $poll_obj->isResultVisible();
@@ -416,7 +416,7 @@ if (($xoopspoll instanceof XoopsModule) && $xoopspoll->isactive()) {
                                              'back_link'       => ''
                 ]
             );
-            $renderer = new XoopspollRenderer($poll_obj);
+            $renderer = new \XoopspollRenderer($poll_obj);
             //check to see if user has voted, show form if not, otherwise get results for form
             $logHandler = xoops_getModuleHandler('log', 'xoopspoll');
             if ($poll_obj->isAllowedToVote()

@@ -426,10 +426,10 @@ class PostHandler extends \XoopsPersistableObjectHandler
                                 require_once $GLOBALS['xoops']->path('modules/umfrage/class/umfragelog.php');
                                 require_once $GLOBALS['xoops']->path('modules/umfrage/class/umfragerenderer.php');
 
-                                $poll = new Umfrage($poll_id);
+                                $poll = new \Umfrage($poll_id);
                                 if (false !== $poll->delete()) {
-                                    UmfrageOption::deleteByPollId($poll_id);
-                                    UmfrageLog::deleteByPollId($poll_id);
+                                    \UmfrageOption::deleteByPollId($poll_id);
+                                    \UmfrageLog::deleteByPollId($poll_id);
                                     \xoops_comment_delete($GLOBALS['xoopsModule']->getVar('mid'), $poll_id);
                                 }
                             }
