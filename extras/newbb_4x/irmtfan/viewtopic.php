@@ -56,7 +56,7 @@ $page_query = htmlspecialchars(implode('&', $query_array), ENT_QUOTES | ENT_HTML
 unset($query_array);
 
 $forum_id = !empty($_GET['forum']) ? (int)$_GET['forum'] : 0;
-$read     = (!empty($_GET['read']) && in_array($_GET['read'], ['new'])) ? $_GET['read'] : '';
+$read     = (!empty($_GET['read']) && 'new' == $_GET['read']) ? $_GET['read'] : '';
 $topic_id = isset($_GET['topic_id']) ? (int)$_GET['topic_id'] : 0;
 $post_id  = !empty($_GET['post_id']) ? (int)$_GET['post_id'] : 0;
 $move     = isset($_GET['move']) ? strtolower($_GET['move']) : '';
