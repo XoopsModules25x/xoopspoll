@@ -510,12 +510,12 @@ switch ($op) {
             foreach ($option_id as $opid) {
                 $option_obj      = new UmfrageOption($opid);
                 $option_text[$i] = trim($option_text[$i]);
-                if ($option_text[$i] !== '') {
+                if ('' !== $option_text[$i]) {
                     $option_obj->setVar('option_text', $option_text[$i]);
                     $option_obj->setVar('option_color', $option_color[$i]);
                     $option_obj->store();
                 } else {
-                    if ($option_obj->delete() !== false) {
+                    if (false !== $option_obj->delete()) {
                         UmfrageLog::deleteByOptionId($option->getVar('option_id'));
                     }
                 }
@@ -560,7 +560,7 @@ switch ($op) {
             $option_tray    = new XoopsFormElementTray(_MD_POLL_POLLOPTIONS, '');
             $barcolor_array = XoopsLists::getImgListAsArray($GLOBALS['xoops']->path("modules/{$pollmodules}/assets/images/colorbars/"));
             for ($i = 0; $i < 10; ++$i) {
-                $current_bar = (current($barcolor_array) !== 'blank.gif') ? current($barcolor_array) : next($barcolor_array);
+                $current_bar = ('blank.gif' !== current($barcolor_array)) ? current($barcolor_array) : next($barcolor_array);
                 $option_text = new XoopsFormText('', 'option_text[]', 50, 255);
                 $option_tray->addElement($option_text);
                 $color_select = new XoopsFormSelect('', "option_color[{$i}]", $current_bar);
@@ -601,7 +601,7 @@ switch ($op) {
             redirect_header($_SERVER['HTTP_REFERER'], 2, _MD_ERROROCCURED . ': ' . _MD_POLL_POLLOPTIONS . ' !');
         }
 
-        if ($pollmodules === 'xoopspoll') {
+        if ('xoopspoll' === $pollmodules) {
             $xpOptHandler = xoops_getModuleHandler('option', 'xoopspoll');
         }
         $i            = 0;

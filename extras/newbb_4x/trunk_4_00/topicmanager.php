@@ -180,7 +180,7 @@ if (isset($_POST['submit'])) {
     echo "<tr class='bg3' align='left'>";
     echo "<td colspan='2' align='center'>" . $action[$mode]['desc'] . '</td></tr>';
 
-    if ($mode === 'move') {
+    if ('move' === $mode) {
         echo '<tr><td class="bg3">' . _MD_MOVETOPICTO . '</td><td class="bg1">';
         $box = '<select name="newforum" size="1">';
 
@@ -209,7 +209,7 @@ if (isset($_POST['submit'])) {
         echo $box;
         echo '</select></td></tr>';
     }
-    if ($mode === 'merge') {
+    if ('merge' === $mode) {
         echo '<tr><td class="bg3">' . _MD_MERGETOPICTO . '</td><td class="bg1">';
         echo _MD_TOPIC . " ID-{$topic_id} -> ID: <input name='newtopic' value='' />";
         echo '</td></tr>';

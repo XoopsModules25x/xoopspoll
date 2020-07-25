@@ -84,7 +84,7 @@ if (!empty($post_id)) {
     $topic_obj = $topicHandler->getByPost($post_id);
     $topic_id  = $topic_obj->getVar('topic_id');
 } elseif (!empty($move)) {
-    $topic_obj = $topicHandler->getByMove($topic_id, ($move === 'prev') ? -1 : 1, $forum_id);
+    $topic_obj = $topicHandler->getByMove($topic_id, ('prev' === $move) ? -1 : 1, $forum_id);
     $topic_id  = $topic_obj->getVar('topic_id');
 } else {
     $topic_obj = $topicHandler->get($topic_id);
@@ -226,7 +226,7 @@ $xoopsTpl->assign(
         'post_id'        => $post_id,
         'topic_id'       => $topic_id,
         'forum_id'       => $forum_id,
-        'order_current'  => ($order === 'DESC') ? 'DESC' : 'ASC'
+        'order_current'  => ('DESC' === $order) ? 'DESC' : 'ASC'
     ]
 );
 
@@ -285,7 +285,7 @@ unset($users);
 if ($GLOBALS['xoopsModuleConfig']['allow_require_reply'] && $require_reply) {
     if (!empty($GLOBALS['xoopsModuleConfig']['cache_enabled'])) {
         $viewtopic_posters = newbb_getsession('t' . $topic_id, true);
-        if (!is_array($viewtopic_posters) || count($viewtopic_posters) === 0) {
+        if (!is_array($viewtopic_posters) || 0 === count($viewtopic_posters)) {
             $viewtopic_posters = $topicHandler->getAllPosters($topic_obj);
             newbb_setsession('t' . $topic_id, $viewtopic_posters);
         }
@@ -342,7 +342,7 @@ if ($total_posts > $GLOBALS['xoopsModuleConfig']['posts_per_page']) {
     //    if (isset($GLOBALS['xoopsModuleConfig']['do_rewrite']) && $GLOBALS['xoopsModuleConfig']['do_rewrite'] == 1) $nav->url = XOOPS_URL . $nav->url;
     if ('select' === $GLOBALS['xoopsModuleConfig']['pagenav_display']) {
         $navi = $nav->renderSelect();
-    } elseif ($GLOBALS['xoopsModuleConfig']['pagenav_display'] === 'bild') {
+    } elseif ('bild' === $GLOBALS['xoopsModuleConfig']['pagenav_display']) {
         $navi = $nav->renderImageNav(4);
     } else {
         $navi = $nav->renderNav(4);
