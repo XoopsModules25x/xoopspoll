@@ -1,0 +1,126 @@
+xoopspoll_option:
+    options: 'ENGINE=MyISAM DEFAULT CHARSET=utf8mb4'
+    columns:
+        -
+            name: option_id
+            attributes: ' int(10) unsigned  NOT NULL auto_increment'
+        -
+            name: poll_id
+            attributes: ' mediumint(8) unsigned  NOT NULL  DEFAULT ''0'' '
+        -
+            name: option_text
+            attributes: ' varchar(255)  NOT NULL  DEFAULT '''' '
+        -
+            name: option_count
+            attributes: ' smallint(5) unsigned  NOT NULL  DEFAULT ''0'' '
+        -
+            name: option_color
+            attributes: ' varchar(25)  NOT NULL  DEFAULT '''' '
+    keys:
+        poll_id:
+            columns: poll_id
+            unique: false
+        PRIMARY:
+            columns: option_id
+            unique: true
+xoopspoll_desc:
+    options: 'ENGINE=MyISAM DEFAULT CHARSET=utf8mb4'
+    columns:
+        -
+            name: poll_id
+            attributes: ' mediumint(8) unsigned  NOT NULL auto_increment'
+        -
+            name: question
+            attributes: ' varchar(255)  NOT NULL  DEFAULT '''' '
+        -
+            name: description
+            attributes: ' tinytext  NOT NULL '
+        -
+            name: user_id
+            attributes: ' int(5) unsigned  NOT NULL  DEFAULT ''0'' '
+        -
+            name: start_time
+            attributes: ' int(10) unsigned  NOT NULL  DEFAULT ''0'' '
+        -
+            name: end_time
+            attributes: ' int(10) unsigned  NOT NULL  DEFAULT ''0'' '
+        -
+            name: votes
+            attributes: ' smallint(5) unsigned  NOT NULL  DEFAULT ''0'' '
+        -
+            name: voters
+            attributes: ' smallint(5) unsigned  NOT NULL  DEFAULT ''0'' '
+        -
+            name: multiple
+            attributes: ' tinyint(1) unsigned  NOT NULL  DEFAULT ''0'' '
+        -
+            name: multilimit
+            attributes: ' tinyint(63) unsigned  NOT NULL  DEFAULT ''0'' '
+        -
+            name: anonymous
+            attributes: ' tinyint(1) unsigned  NOT NULL  DEFAULT ''0'' '
+        -
+            name: display
+            attributes: ' tinyint(1) unsigned  NOT NULL  DEFAULT ''0'' '
+        -
+            name: visibility
+            attributes: ' int(3) unsigned  NOT NULL  DEFAULT ''0'' '
+        -
+            name: weight
+            attributes: ' smallint(5) unsigned  NOT NULL  DEFAULT ''0'' '
+        -
+            name: mail_status
+            attributes: ' tinyint(1) unsigned  NOT NULL  DEFAULT ''0'' '
+        -
+            name: mail_voter
+            attributes: ' tinyint(1) unsigned  NOT NULL  DEFAULT ''0'' '
+    keys:
+        display:
+            columns: 'display, start_time, end_time'
+            unique: false
+        end_time:
+            columns: end_time
+            unique: false
+        mailer:
+            columns: 'end_time, mail_status'
+            unique: false
+        PRIMARY:
+            columns: poll_id
+            unique: true
+        question:
+            columns: 'question, description'
+            unique: false
+xoopspoll_log:
+    options: 'ENGINE=MyISAM DEFAULT CHARSET=utf8mb4'
+    columns:
+        -
+            name: log_id
+            attributes: ' int(10) unsigned  NOT NULL auto_increment'
+        -
+            name: poll_id
+            attributes: ' mediumint(8) unsigned  NOT NULL  DEFAULT ''0'' '
+        -
+            name: option_id
+            attributes: ' int(10) unsigned  NOT NULL  DEFAULT ''0'' '
+        -
+            name: ip
+            attributes: ' char(15)  NOT NULL  DEFAULT '''' '
+        -
+            name: user_id
+            attributes: ' int(5) unsigned  NOT NULL  DEFAULT ''0'' '
+        -
+            name: time
+            attributes: ' int(10) unsigned  NOT NULL  DEFAULT ''0'' '
+    keys:
+        poll_id:
+            columns: poll_id
+            unique: false
+        poll_id_ip:
+            columns: 'poll_id, ip, time'
+            unique: false
+        poll_id_user_id:
+            columns: 'poll_id, user_id, time'
+            unique: false
+        PRIMARY:
+            columns: log_id
+            unique: true

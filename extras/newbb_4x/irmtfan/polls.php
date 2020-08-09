@@ -29,7 +29,7 @@ xoops_load('XoopsRequest');
 
 // irmtfan correct the way and typo=addmor -> addmore
 $op      = 'add';
-$goodOps = array(
+$goodOps = [
     'add',
     'save',
     'edit',
@@ -41,7 +41,7 @@ $goodOps = array(
     'restart',
     'restart_ok',
     'log'
-);
+];
 $op      = XoopsRequest::getString('op', 'add');
 $op      = (!in_array($op, $goodOps)) ? 'add' : $op;
 
@@ -73,16 +73,16 @@ if ('xoopspoll' === $pollmodules) {
     }
 }
 /** @var NewbbTopicHandler $topicHandler */
-$topicHandler = xoops_getModuleHandler('topic', 'newbb');
+$topicHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Topic');
 $topic_obj     = $topicHandler->get($topic_id);
-if ($topic_obj instanceof Topic) {
+if ($topic_obj instanceof \Topic) {
     $forum_id = $topic_obj->getVar('forum_id');
 } else {
     redirect_header('index.php', 2, _MD_POLLMODULE_ERROR . ': ' . _MD_FORUMNOEXIST);
 }
 
 /** @var NewbbForumHandler $forumHandler */
-$forumHandler = xoops_getModuleHandler('forum', 'newbb');
+$forumHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Forum');
 $forum_obj     = $forumHandler->get($forum_id);
 if (!$forumHandler->getPermission($forum_obj)) {
     redirect_header('index.php', 2, _MD_NORIGHTTOACCESS);
@@ -109,7 +109,7 @@ if (!newbb_isAdmin($forum_obj)) {
             if ('xoopspoll' === $pollmodules) {
                 $poll_obj = $xpPollHandler->get($poll_id);
             } else { //Umfrage
-                $poll_obj = new Umfrage($poll_id);
+                $poll_obj = new \Umfrage($poll_id);
             }
             if ($GLOBALS['xoopsUser']->getVar('uid') === $poll_obj->getVar('user_id')) {
                 $perm = true;
@@ -305,12 +305,12 @@ switch ($op) {
         if ('xoopspoll' === $pollmodules) {
             echo '<h4>' . _MD_POLL_EDITPOLL . "</h4>\n";
             $poll_obj = $xpPollHandler->get($poll_id); // will create poll if poll_id = 0 exist
-            $poll_obj->renderForm($_SERVER['PHP_SELF'], 'post', array('topic_id' => $topic_id));
+            $poll_obj->renderForm($_SERVER['PHP_SELF'], 'post', ['topic_id' => $topic_id]);
         } else { // Umfrage
             if (empty($poll_id)) {
-                $poll_obj = new Umfrage();
+                $poll_obj = new \Umfrage();
             } else {
-                $poll_obj = new Umfrage($poll_id);
+                $poll_obj = new \Umfrage($poll_id);
             }
             $poll_form    = new XoopsThemeForm(_MD_POLL_EDITPOLL, 'poll_form', 'polls.php', 'post', true);
             $author_label = new XoopsFormLabel(_MD_POLL_AUTHOR,
@@ -336,7 +336,7 @@ switch ($op) {
             $poll_form->addElement($weight_text);
             $multi_yn = new XoopsFormRadioYN(_MD_POLL_ALLOWMULTI, 'multiple', $poll_obj->getVar('multiple'));
             $poll_form->addElement($multi_yn);
-            $options_arr  =& UmfrageOption::getAllByPollId($poll_id);
+            $options_arr  =& \UmfrageOption::getAllByPollId($poll_id);
             $notify_value = 1;
             if (0 !== $poll_obj->getVar('mail_status')) {
                 $notify_value = 0;
@@ -410,7 +410,7 @@ switch ($op) {
                 $startTimestamp = $poll_obj->getVar('start_time'); //don't change start time
             }
 
-            $poll_vars = array(
+            $poll_vars = [
                 'user_id'     => XoopsRequest::getInt('user_id', $GLOBALS['xoopsUser']->uid(), 'POST'),
                 'question'    => XoopsRequest::getString('question', null, 'POST'),
                 'description' => XoopsRequest::getText('description', null, 'POST'),
@@ -424,7 +424,7 @@ switch ($op) {
                 'multiple'    => XoopsRequest::getInt('multiple', XoopspollConstants::NOT_MULTIPLE_SELECT_POLL, 'POST'),
                 'multilimit'  => XoopsRequest::getInt('multilimit', XoopspollConstants::MULTIPLE_SELECT_LIMITLESS, 'POST'),
                 'anonymous'   => XoopsRequest::getInt('anonymous', XoopspollConstants::ANONYMOUS_VOTING_DISALLOWED, 'POST')
-            );
+            ];
             $poll_obj->setVars($poll_vars);
             $poll_id = $xpPollHandler->insert($poll_obj);
             if (!$poll_id) {
@@ -433,10 +433,10 @@ switch ($op) {
             }
 
             // now get the options
-            $optionIdArray    = XoopsRequest::getArray('option_id', array(), 'POST');
-            $optionIdArray    = array_map('intval', $optionIdArray);
-            $optionTextArray  = XoopsRequest::getArray('option_text', array(), 'POST');
-            $optionColorArray = XoopsRequest::getArray('option_color', array(), 'POST');
+            $optionIdArray    = XoopsRequest::getArray('option_id', [], 'POST');
+            $optionIdArray    = array_map('\intval', $optionIdArray);
+            $optionTextArray  = XoopsRequest::getArray('option_text', [], 'POST');
+            $optionColorArray = XoopsRequest::getArray('option_color', [], 'POST');
 
             foreach ($optionIdArray as $key => $oId) {
                 if (!empty($oId) && ($option_obj = $xpOptHandler->get($oId))) {
@@ -479,7 +479,7 @@ switch ($op) {
             //        xoops_template_clear_module_cache($xoopspoll->getVar('mid'));
             //        redirect_header("viewtopic.php?topic_id={$topic_id}", XoopspollConstants::REDIRECT_DELAY_SHORT, _MD_POLL_DBUPDATED);
         } else { // Umfrage
-            $poll_obj = new Umfrage($poll_id);
+            $poll_obj = new \Umfrage($poll_id);
             $poll_obj->setVar('question', @$_POST['question']);
             $poll_obj->setVar('description', @$_POST['description']);
             $end_time = XoopsRequest::getString('end_time', '', 'POST');
@@ -508,15 +508,15 @@ switch ($op) {
             $option_id    = empty($_POST['option_id']) ? null : $_POST['option_id'];
             $option_color = empty($_POST['option_color']) ? null : $_POST['option_color'];
             foreach ($option_id as $opid) {
-                $option_obj      = new UmfrageOption($opid);
+                $option_obj      = new \UmfrageOption($opid);
                 $option_text[$i] = trim($option_text[$i]);
-                if ($option_text[$i] !== '') {
+                if ('' !== $option_text[$i]) {
                     $option_obj->setVar('option_text', $option_text[$i]);
                     $option_obj->setVar('option_color', $option_color[$i]);
                     $option_obj->store();
                 } else {
-                    if ($option_obj->delete() !== false) {
-                        UmfrageLog::deleteByOptionId($option->getVar('option_id'));
+                    if (false !== $option_obj->delete()) {
+                        \UmfrageLog::deleteByOptionId($option->getVar('option_id'));
                     }
                 }
                 ++$i;
@@ -548,7 +548,7 @@ switch ($op) {
             $poll_obj     = $xpPollHandler->get($poll_id);
             $xpOptHandler = xoops_getModuleHandler('option', 'xoopspoll');
         } else { // Umfrage
-            $poll_obj = new Umfrage($poll_id);
+            $poll_obj = new \Umfrage($poll_id);
         }
         $question = $poll_obj->getVar('question');
         unset($poll_obj);
@@ -560,7 +560,7 @@ switch ($op) {
             $option_tray    = new XoopsFormElementTray(_MD_POLL_POLLOPTIONS, '');
             $barcolor_array = XoopsLists::getImgListAsArray($GLOBALS['xoops']->path("modules/{$pollmodules}/assets/images/colorbars/"));
             for ($i = 0; $i < 10; ++$i) {
-                $current_bar = (current($barcolor_array) !== 'blank.gif') ? current($barcolor_array) : next($barcolor_array);
+                $current_bar = ('blank.gif' !== current($barcolor_array)) ? current($barcolor_array) : next($barcolor_array);
                 $option_text = new XoopsFormText('', 'option_text[]', 50, 255);
                 $option_tray->addElement($option_text);
                 $color_select = new XoopsFormSelect('', "option_color[{$i}]", $current_bar);
@@ -593,7 +593,7 @@ switch ($op) {
             redirect_header($_SERVER['PHP_SELF'], 2, implode('<br>', $GLOBALS['xoopsSecurity']->getErrors()));
         }
 
-        $option_text   = isset($_POST['option_text']) ? $_POST['option_text'] : '';
+        $option_text   = $_POST['option_text'] ?? '';
         $option_string = is_array($option_text) ? implode('', $option_text) : $option_text;
         $option_string = trim($option_string);
         if (empty($option_string)) {
@@ -601,7 +601,7 @@ switch ($op) {
             redirect_header($_SERVER['HTTP_REFERER'], 2, _MD_ERROROCCURED . ': ' . _MD_POLL_POLLOPTIONS . ' !');
         }
 
-        if ($pollmodules === 'xoopspoll') {
+        if ('xoopspoll' === $pollmodules) {
             $xpOptHandler = xoops_getModuleHandler('option', 'xoopspoll');
         }
         $i            = 0;
@@ -616,7 +616,7 @@ switch ($op) {
                     $option_obj->setVar('option_color', $option_color[$i]);
                     $xpOptHandler->insert($option_obj);
                 } else { // Umfrage
-                    $option_obj = new UmfrageOption();
+                    $option_obj = new \UmfrageOption();
                     $option_obj->setVar('option_text', $optxt);
                     $option_obj->setVar('poll_id', $poll_id);
                     $option_obj->setVar('option_color', $option_color[$i]);
@@ -637,9 +637,9 @@ switch ($op) {
         if ('xoopspoll' === $pollmodules) {
             $poll_obj = $xpPollHandler->get($poll_id);
         } else {
-            $poll_obj = new Umfrage($poll_id);
+            $poll_obj = new \Umfrage($poll_id);
         }
-        xoops_confirm(array('op' => 'delete_ok', 'topic_id' => $topic_id, 'poll_id' => $poll_id), 'polls.php', sprintf(_MD_POLL_RUSUREDEL, $poll_obj->getVar('question')));
+        xoops_confirm(['op' => 'delete_ok', 'topic_id' => $topic_id, 'poll_id' => $poll_id], 'polls.php', sprintf(_MD_POLL_RUSUREDEL, $poll_obj->getVar('question')));
         break;
 
     case 'delete_ok':
@@ -660,11 +660,11 @@ switch ($op) {
                 $msg = $xpPollHandler->getHtmlErrors();
             }
         } else {
-            $poll_obj = new Umfrage($poll_id);
+            $poll_obj = new \Umfrage($poll_id);
             $status   = $poll_obj->delete();
             if (false !== $status) {
-                UmfrageOption::deleteByPollId($poll_id);
-                UmfrageLog::deleteByPollId($poll_id);
+                \UmfrageOption::deleteByPollId($poll_id);
+                \UmfrageLog::deleteByPollId($poll_id);
             } else {
                 $msg = $poll_obj->getHtmlErrors();
             }

@@ -4,7 +4,7 @@
             <thead>
             <tr>
                 <th class='center' colspan='2'>
-                    <input type='hidden' name='poll_id' value='<{$poll.id}>'/>
+                    <input type='hidden' name='poll_id' value='<{$poll.id}>'>
                     <{$poll.question}>
                 </th>
             </tr>
@@ -19,17 +19,17 @@
                             <{$option.percent}><{if $block.dispVotes}> (<{$option.count}>)<{/if}><br>
                             <div class='width90'><img
                                         src='<{$xoops_url}>/modules/xoopspoll/assets/images/colorbars/<{$option.color}>'
-                                        style='height: 14px; width: <{$option.percent}>;' alt=''/></div>
+                                        style='height: 14px; width: <{$option.percent}>;' alt=''></div>
                         </td>
                     </tr>
                 <{/foreach}>
             <{elseif (!$poll.hasExpired && $poll.canVote)}>
                 <{* Show input form *}>
-                <{  if $block.asList}>
+                <{if $block.asList}>
                 <{foreach item=option from=$poll.options}>
                     <tr class='<{cycle values='even,odd'}>'>
                         <td class='center'><input type='<{$poll.optionType}>' name='<{$poll.optionName}>'
-                                                  value='<{$option.id}>'/></td>
+                                                  value='<{$option.id}>'></td>
                         <td class='left'><{$option.text}></td>
                     </tr>
                 <{/foreach}>
@@ -38,21 +38,21 @@
                         <td colspan='2' class='center smallsmall'><{$poll.lang_multi}></td>
                     </tr>
                 <{/if}>
-                <{  else}>
+                <{else}>
                 <tr>
                     <td class='even center' colspan='2'>
                         <{*     <{html_options name=$poll.optionName"<{if $poll.multiple}> multiple=$poll.multiple <{/if}>" options=$poll.options}> *}>
                         <select name='<{$poll.optionName}>'<{if $poll.multiple}> multiple='multiple'<{/if}>>
-                            <{ foreach item=option from=$poll.options}>
+                            <{foreach item=option from=$poll.options}>
                             <option value='<{$option.id}>'><{$option.text}></option>
-                            <{ /foreach}>
-                            <{ if ("" != $poll.lang_multi)}>
+                            <{/foreach}>
+                            <{if ("" != $poll.lang_multi)}>
                             <div class='floatcenter1 smallsmall'><{$poll.lang_multi}></div>
-                            <{ /if}>
+                            <{/if}>
                         </select>
                     </td>
                 </tr>
-                <{  /if}>
+                <{/if}>
             <{else}>
                 <{* Show hidden msg *}>
                 <tr class='even'>
@@ -61,18 +61,18 @@
             <{/if}>
             <{* <{if ($poll.hasExpired OR $poll.hasVoted>0)}>
               <tr>
-               <td class='foot center' colspan='2'><input type='button' value='<{$block.langResults}>' onclick="location='<{$xoops_url}>/modules/<{$block.thisModuleDir}>/pollresults.php?poll_id=<{$poll.id}>'" /></td>
+               <td class='foot center' colspan='2'><input type='button' value='<{$block.langResults}>' onclick="location='<{$xoops_url}>/modules/<{$block.thisModuleDir}>/pollresults.php?poll_id=<{$poll.id}>'"></td>
                </tr>
             <{else}> *}>
             <{if (!$poll.hasExpired && !$poll.hasVoted)}>
                 <tr>
                     <td class='foot center' colspan='2'>
                         <input type='hidden' name='url' value='<{$block.url}>'>
-                        <input type='submit' value='<{$block.langVote}>'/>&nbsp;
-                        <{ if $poll.votes}>
+                        <input type='submit' value='<{$block.langVote}>'>&nbsp;
+                        <{if $poll.votes}>
                         <input type='button' value='<{$block.langResults}>'
-                               onclick="location='<{$xoops_url}>/modules/<{$block.thisModuleDir}>/pollresults.php?poll_id=<{$poll.id}>'"/>
-                        <{ /if}>
+                               onclick="location='<{$xoops_url}>/modules/<{$block.thisModuleDir}>/pollresults.php?poll_id=<{$poll.id}>'">
+                        <{/if}>
                     </td>
                 </tr>
             <{/if}>
@@ -92,14 +92,14 @@
             <{if ($poll.commentMode > 0)}>
                 <tr>
                     <td class='foot center' colspan='2'>
-                        <{ if (1 == $poll.comments)}>
+                        <{if (1 == $poll.comments)}>
                         <a href='<{$xoops_url}>/modules/xoopspoll/pollresults.php?poll_id=<{$poll.id}>'><{$poll.comments}> <{$block.langComment}></a>
-                        <{ elseif ($poll.comments > 1)}>
+                        <{elseif ($poll.comments > 1)}>
                         <a href='<{$xoops_url}>/modules/xoopspoll/pollresults.php?poll_id=<{$poll.id}>'><{$poll.comments}> <{$block.langComments}></a>
-                        <{ else}>
+                        <{else}>
                         <a href='<{$xoops_url}>/modules/xoopspoll/pollresults.php?poll_id=<{$poll.id}>'><{$block.langComments}>
                             ?</a>
-                        <{ /if}>
+                        <{/if}>
                     </td>
                 </tr>
             <{/if}>

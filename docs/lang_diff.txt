@@ -25,7 +25,7 @@ define("_AM_XOOPSPOLL_ABOUT_DESCRIPTION",          "Description: ");
 define("_AM_XOOPSPOLL_ADMIN_ABOUT",          "About");
 
 // text in admin footer
-define("_AM_XOOPSPOLL_ADMIN_FOOTER",                 "<div class='right smallsmall italic pad5'><b>" . $xoopsModule->getVar("name") . "</b> is maintained by the <a class='tooltip' rel='external' href='http://xoops.org/' title='Visit XOOPS Community'>XOOPS Community</a></div>");
+define("_AM_XOOPSPOLL_ADMIN_FOOTER",                 "<div class='right smallsmall italic pad5'><b>" . $xoopsModule->getVar("name") . "</b> is maintained by the <a class='tooltip' rel='external' href='https://xoops.org/' title='Visit XOOPS Community'>XOOPS Community</a></div>");
 
 //xoopspoll.php
 

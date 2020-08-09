@@ -7,7 +7,7 @@
         <span class="delimiter">&raquo;</span>
         <a href="<{$xoops_url}>/modules/<{$xoops_dirname}>/index.php?cat=<{$category.id}>"><{$category.title}></a>
         <{if $parentforum}>
-            <{foreachq item=forum from=$parentforum}>
+            <{foreach item=forum from=$parentforum}>
             <span class="delimiter">&raquo;</span>
             <a href="<{$xoops_url}>/modules/<{$xoops_dirname}>/viewforum.php?forum=<{$forum.forum_id}>"><{$forum.forum_name}></a>
         <{/foreach}>
@@ -31,7 +31,7 @@
 <{if $online}>
     <div class="align_left pad5">
         <{$smarty.const._MD_BROWSING}>&nbsp;
-        <{foreachq item=user from=$online.users}>
+        <{foreach item=user from=$online.users}>
         <a href="<{$user.link}>">
             <{if $user.level eq 2}>
                 <span class="online_admin"><{$user.uname}></span>
@@ -90,11 +90,11 @@
 <br>
 <{* irmtfan add $mode to not show polls in admin mode *}>
 <{if ($mode lte 1) && $topic_poll}>
-    <{  if $topic_pollresult}>
-    <{      includeq file="db:newbb_poll_results.tpl" poll=$poll}>
-    <{  else}>
-    <{      includeq file="db:newbb_poll_view.tpl" poll=$poll}>
-    <{  /if}>
+    <{if $topic_pollresult}>
+    <{includeq file="db:newbb_poll_results.tpl" poll=$poll}>
+    <{else}>
+    <{includeq file="db:newbb_poll_view.tpl" poll=$poll}>
+    <{/if}>
 <{/if}>
 <div class="clear"></div>
 <br>
@@ -123,21 +123,21 @@
                 onchange="if(this.options[this.selectedIndex].value.length >0 ) { window.document.location=this.options[this.selectedIndex].value;}"
         >
             <option value=""><{$smarty.const._MD_TOPICOPTION}></option>
-            <{ if $viewer_level gt 1}>
-            <{ foreachq item=act from=$admin_actions}>
+            <{if $viewer_level gt 1}>
+            <{foreach item=act from=$admin_actions}>
             <option value="<{$act.link}>"><{$act.name}></option>
-            <{ /foreach}>
-            <{ /if}>
-            <{ if count($adminpoll_actions) > 0}>
+            <{/foreach}>
+            <{/if}>
+            <{if count($adminpoll_actions) > 0}>
             <option value="">--------</option>
             <option value=""><{$smarty.const._MD_POLLOPTIONADMIN}></option>
-            <{ foreachq item=actpoll from=$adminpoll_actions}>
+            <{foreach item=actpoll from=$adminpoll_actions}>
             <option value="<{$actpoll.link}>"><{$actpoll.name}></option>
-            <{ /foreach}>
-            <{ /if}>
+            <{/foreach}>
+            <{/if}>
         </select>
         <{*     -- irmtfan user should not see rating if no permission -- *}>
-        <{ if $rating_enable && $forum_post && $forum_reply}>
+        <{if $rating_enable && $forum_post && $forum_reply}>
         <select
                 name="rate" id="rate"
                 onchange="if(this.options[this.selectedIndex].value.length >0 ) { window.document.location=this.options[this.selectedIndex].value;}"
@@ -149,19 +149,19 @@
             <option value="<{$xoops_url}>/modules/<{$xoops_dirname}>/ratethread.php?topic_id=<{$topic_id}>&amp;forum=<{$forum_id}>&amp;rate=2"><{$smarty.const._MD_RATE2}></option>
             <option value="<{$xoops_url}>/modules/<{$xoops_dirname}>/ratethread.php?topic_id=<{$topic_id}>&amp;forum=<{$forum_id}>&amp;rate=1"><{$smarty.const._MD_RATE1}></option>
         </select>
-        <{ /if}>
+        <{/if}>
 
         <select
                 name="viewmode" id="viewmode"
                 onchange="if(this.options[this.selectedIndex].value.length >0 ) { window.location=this.options[this.selectedIndex].value;}"
         >
             <option value=""><{$smarty.const._MD_VIEWMODE}></option>
-            <{ foreachq item=act from=$viewmode_options}>
+            <{foreach item=act from=$viewmode_options}>
             <option value="<{$act.link}>"><{$act.title}></option>
-            <{ /foreach}>
+            <{/foreach}>
         </select>
         <!-- START irmtfan add topic search -->
-        <{ if $mode lte 1}>
+        <{if $mode lte 1}>
         <form id="search-topic" action="<{$xoops_url}>/modules/<{$xoops_dirname}>/search.php" method="get">
             <fieldset>
                 <input name="term" id="term" type="text" size="15" value="<{$smarty.const._MD_SEARCHTOPIC}>..."
@@ -176,7 +176,7 @@
                 <input type="submit" class="formButton" value="<{$smarty.const._MD_SEARCH}>"/>
             </fieldset>
         </form>
-        <{ /if}>
+        <{/if}>
         <!-- END irmtfan add topic search -->
     </div>
     <{* -- irmtfan hardcode removed style="float: right; text-align:right;" --*}>
@@ -196,12 +196,12 @@
 <{*-- irmtfan remove here and move to the newbb_thread.html
 <{if $post_id == 0}><div id="aktuell"></div><{/if}>
 --*}>
-<{foreachq item=topic_post from=$topic_posts}>
-<{  includeq file="db:newbb_thread.tpl" topic_post=$topic_post mode=$mode}>
+<{foreach item=topic_post from=$topic_posts}>
+<{includeq file="db:newbb_thread.tpl" topic_post=$topic_post mode=$mode}>
 <br>
 <br>
 <{foreachelse}>
-<div style="align:center;width:100%;text-align:center;font-size:1.5em;padding:5px;"><{$smarty.const._MD_ERRORPOST}></div>
+<div style="text-align:center;width:100%;font-size:1.5em;padding:5px;"><{$smarty.const._MD_ERRORPOST}></div>
 <{/foreach}>
 
 <{if $mode gt 1}>
@@ -214,12 +214,12 @@
         <a href="<{$xoops_url}>/modules/<{$xoops_dirname}>/index.php"><{$smarty.const._MD_FORUMHOME}></a>
         <span class="delimiter">&raquo;</span>
         <a href="<{$xoops_url}>/modules/<{$xoops_dirname}>/index.php?cat=<{$category.id}>"><{$category.title}></a>
-        <{ if $parentforum}>
-        <{ foreachq item=forum from=$parentforum}>
+        <{if $parentforum}>
+        <{foreach item=forum from=$parentforum}>
         <span class="delimiter">&raquo;</span>
         <a href="<{$xoops_url}>/modules/<{$xoops_dirname}>/viewforum.php?forum=<{$forum.forum_id}>"><{$forum.forum_name}></a>
-        <{ /foreach}>
-        <{ /if}>
+        <{/foreach}>
+        <{/if}>
         <span class="delimiter">&raquo;</span>
         <a href="<{$xoops_url}>/modules/<{$xoops_dirname}>/viewforum.php?forum=<{$forum_id}>"><{$forum_name}></a>
         <span class="delimiter">&raquo;</span>
@@ -273,9 +273,9 @@
 <div>
     <{*-- irmtfan hardcode removed style="float: left; text-align: left;" --*}>
     <div class="icon_left">
-        <{ foreachq item=perm from=$permission_table}>
+        <{foreach item=perm from=$permission_table}>
         <div><{$perm}></div>
-        <{ /foreach}>
+        <{/foreach}>
     </div>
     <{*-- irmtfan hardcode removed style="float: right; text-align: right;" --*}>
     <div class="icon_right">

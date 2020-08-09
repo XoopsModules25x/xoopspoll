@@ -8,10 +8,10 @@ The Polls module can be used to display interactive survey forms on your site. E
 Requirements
 ------------------
 
-- PHP version:   5.3.0
-- XOOPS version: 2.5.5
-- MySQL version: 5.0.7 (5.0.9+ recommended)
-- ModuleClasses: 1.1 in /Frameworks (download it from here: http://goo.gl/Bmknt if using XOOPS < 2.5.5)
+- PHP version:   7.1+
+- XOOPS version: 2.5.10+
+- MySQL version: 5.5+
+- ModuleClasses: 1.2 in /Frameworks
 
 Install/uninstall
 ------------------
@@ -25,7 +25,7 @@ To set up this module you need to:
 
 i)   Configure your preferences for the module (see ‘Preferences’) and optionally the Poll block if you intend to use it (see ‘Blocks’)
 
-ii)	 Enter your poll details – including the question and possible answers
+ii)  Enter your poll details – including the question and possible answers
 
 iii) Check that you have given your user groups the necessary module and block access rights to use this module. Group permissions are set through the Administration Menu -> System -> Groups.
 

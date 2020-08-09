@@ -20,7 +20,7 @@
  */
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-class XoopspollUserlogPlugin extends Userlog_Module_Plugin_Abstract implements UserlogPluginInterface
+class XoopspollUserlogPlugin extends \Userlog_Module_Plugin_Abstract implements \UserlogPluginInterface
 {
     /**
      * @param string $subscribe_from Name of the script
@@ -32,7 +32,7 @@ class XoopspollUserlogPlugin extends Userlog_Module_Plugin_Abstract implements U
      * 'item_name' => 'topic_id';
      * 'allow_bookmark' => 1;
      *
-     * @return array $item["item_name"] name of the item, $item["item_id"] id of the item
+     * @return array|bool $item["item_name"] name of the item, $item["item_id"] id of the item
      */
     public function item($subscribe_from)
     {
@@ -41,8 +41,7 @@ class XoopspollUserlogPlugin extends Userlog_Module_Plugin_Abstract implements U
         switch ($subscribe_from) {
             case 'index.php':
             case 'pollresults.php':
-                return array('item_name' => 'poll_id', 'item_id' => $poll_id);
-                break;
+                return ['item_name' => 'poll_id', 'item_id' => $poll_id];
         }
 
         return false;

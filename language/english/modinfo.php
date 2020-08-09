@@ -69,3 +69,20 @@ define('_MI_XOOPSPOLL_ADABOUT', 'About');
 define('_MI_XOOPSPOLL_ADABOUTDSC', 'Learn more about the XOOPS Poll Module');
 //define('_MI_XOOPSPOLL_ADMIN_HELP', 'Help');
 /**#@-*/
+
+//Config
+define('MI_XOOPSPOLL_EDITOR_ADMIN', 'Editor: Admin');
+define('MI_XOOPSPOLL_EDITOR_ADMIN_DESC', 'Select the Editor to use by the Admin');
+define('MI_XOOPSPOLL_EDITOR_USER', 'Editor: User');
+define('MI_XOOPSPOLL_EDITOR_USER_DESC', 'Select the Editor to use by the User');
+
+//Help
+define('_MI_XOOPSPOLL_DIRNAME', basename(dirname(__DIR__, 2)));
+define('_MI_XOOPSPOLL_HELP_HEADER', __DIR__ . '/help/helpheader.tpl');
+define('_MI_XOOPSPOLL_BACK_2_ADMIN', 'Back to Administration of ');
+define('_MI_XOOPSPOLL_OVERVIEW', 'Overview');
+
+//help multi-page
+define('_MI_XOOPSPOLL_DISCLAIMER', 'Disclaimer');
+define('_MI_XOOPSPOLL_LICENSE', 'License');
+define('_MI_XOOPSPOLL_SUPPORT', 'Support');

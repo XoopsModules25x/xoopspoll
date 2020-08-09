@@ -341,7 +341,7 @@ class Post extends XoopsObject
         mod_loadFunctions('render', 'newbb');
 
         $uid           = ($GLOBALS['xoopsUser'] instanceof XoopsUser) ? $GLOBALS['xoopsUser']->getVar('uid') : 0;
-        $karmaHandler = xoops_getModuleHandler('karma', 'newbb');
+        $karmaHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Karma');
         $user_karma    = $karmaHandler->getUserKarma();
 
         $post               = array();
@@ -524,7 +524,7 @@ class Post extends XoopsObject
 
         if ($GLOBALS['xoopsModuleConfig']['enable_permcheck']) {
             /** @var NewbbTopicHandler $topicHandler */
-            $topicHandler = xoops_getModuleHandler('topic', 'newbb');
+            $topicHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Topic');
             $topic_status  = $topic_obj->getVar('topic_status');
             if ($topicHandler->getPermission($forum_id, $topic_status, 'edit')) {
                 $edit_ok = ($isadmin || ($this->checkIdentity() && $this->checkTimelimit('edit_timelimit')));
@@ -684,14 +684,6 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
     }
 
     /**
-     * @param $db
-     */
-    public function NewbbPostHandler(XoopsDatabase $db)
-    {
-        $this->__construct($db);
-    }
-
-    /**
      * @param  mixed|null $id
      * @return null|XoopsObject
      */
@@ -773,7 +765,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
         $this->insert($post, true);
 
         /** @var NewbbTopicHandler $topicHandler */
-        $topicHandler = xoops_getModuleHandler('topic', 'newbb');
+        $topicHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Topic');
         $topic_obj     = $topicHandler->get($post->getVar('topic_id'));
         if ($topic_obj->getVar('topic_last_post_id') < $post->getVar('post_id')) {
             $topic_obj->setVar('topic_last_post_id', $post->getVar('post_id'));
@@ -786,7 +778,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
         $topicHandler->insert($topic_obj, true);
 
         /** @var NewbbForumHandler $forumHandler */
-        $forumHandler = xoops_getModuleHandler('forum', 'newbb');
+        $forumHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Forum');
         $forum_obj     = $forumHandler->get($post->getVar('forum_id'));
         if ($forum_obj->getVar('forum_last_post_id') < $post->getVar('post_id')) {
             $forum_obj->setVar('forum_last_post_id', $post->getVar('post_id'));
@@ -809,7 +801,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
         }
 
         // Update forum stats
-        $statsHandler = xoops_getModuleHandler('stats', 'newbb');
+        $statsHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Stats');
         $statsHandler->update($post->getVar('forum_id'), 'post');
         if ($post->isTopic()) {
             $statsHandler->update($post->getVar('forum_id'), 'topic');
@@ -832,7 +824,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
         }
 
         /** @var NewbbTopicHandler $topicHandler */
-        $topicHandler = xoops_getModuleHandler('topic', 'newbb');
+        $topicHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Topic');
         // Verify the topic ID
         if ($topic_id = $post->getVar('topic_id')) {
             $topic_obj = $topicHandler->get($topic_id);
@@ -849,7 +841,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
             $post->setNew();
             $topic_obj = $topicHandler->create();
         }
-        $textHandler   = xoops_getModuleHandler('text', 'newbb');
+        $textHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Text');
         $post_text_vars = array('post_text', 'post_edit', 'dohtml', 'doxcode', 'dosmiley', 'doimage', 'dobr');
         if ($post->isNew()) {
             if (!$topic_id = $post->getVar('topic_id')) {
@@ -1027,7 +1019,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
 
         if ($post->isTopic()) {
             /** @var NewbbTopicHandler $topicHandler */
-            $topicHandler = xoops_getModuleHandler('topic', 'newbb');
+            $topicHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Topic');
             $topic_obj     = $topicHandler->get($post->getVar('topic_id'));
             if (is_object($topic_obj) && $topic_obj->getVar('approved') > 0 && empty($force)) {
                 $topiccount_toupdate = 1;

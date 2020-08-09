@@ -1,0 +1,48 @@
+-
+    option_id: '1'
+    poll_id: '1'
+    option_text: Excellent!
+    option_count: '1'
+    option_color: aqua.gif
+-
+    option_id: '2'
+    poll_id: '1'
+    option_text: Cool
+    option_count: '0'
+    option_color: blue.gif
+-
+    option_id: '3'
+    poll_id: '1'
+    option_text: 'Hmm... not bad'
+    option_count: '0'
+    option_color: brown.gif
+-
+    option_id: '4'
+    poll_id: '1'
+    option_text: 'What is this?'
+    option_count: '0'
+    option_color: darkgreen.gif
+-
+    option_id: '11'
+    poll_id: '3'
+    option_text: 'Hmm... not bad'
+    option_count: '0'
+    option_color: brown.gif
+-
+    option_id: '10'
+    poll_id: '3'
+    option_text: Cool
+    option_count: '0'
+    option_color: blue.gif
+-
+    option_id: '9'
+    poll_id: '3'
+    option_text: Excellent!
+    option_count: '1'
+    option_color: aqua.gif
+-
+    option_id: '12'
+    poll_id: '3'
+    option_text: 'What is this?'
+    option_count: '0'
+    option_color: darkgreen.gif
