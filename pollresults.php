@@ -34,10 +34,10 @@
  * @author    ::     {@link http://www.myweb.ne.jp/ Kazumi Ono (AKA onokazu)}
  **/
 
+use Xmf\Module\Admin;
 use Xmf\Request;
 use XoopsModules\Newbb;
-use XoopsModules\Xoopspoll\{
-    Constants,
+use XoopsModules\Xoopspoll\{Constants,
     Helper,
     Poll,
     Renderer
@@ -49,7 +49,7 @@ use XoopsModules\Xoopspoll\{
  * @uses $GLOBALS['xoops']::path gets XOOPS directory information
  * @uses xoops_getModuleHandler() to load handler for this module's class(es)
  */
-require_once dirname(__DIR__, 2) . '/mainfile.php';
+require_once \dirname(__DIR__, 2) . '/mainfile.php';
 
 $pollId = Request::getInt('poll_id', 0);
 $helper = Helper::getInstance();
@@ -94,10 +94,10 @@ if (!empty($pollObj) && ($pollObj instanceof Poll)) {
 
     $GLOBALS['xoopsTpl']->assign(
         [
-                                     'visible_msg'    => $visibleMsg,
-                                     'disp_votes'     => $GLOBALS['xoopsModuleConfig']['disp_vote_nums'],
-            'back_link_icon' => \Xmf\Module\Admin::iconUrl('', 16) . '/back.png',
-                                     'back_link'      => $GLOBALS['xoops']->url('modules/xoopspoll/index.php'),
+            'visible_msg'    => $visibleMsg,
+            'disp_votes'     => $GLOBALS['xoopsModuleConfig']['disp_vote_nums'],
+            'back_link_icon' => Admin::iconUrl('', 16) . '/back.png',
+            'back_link'      => $GLOBALS['xoops']->url('modules/xoopspoll/index.php'),
             'back_text'      => _BACK,
         ]
     );

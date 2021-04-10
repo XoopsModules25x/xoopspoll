@@ -1,4 +1,4 @@
-![alt XOOPS CMS](https://xoops.org/images/logoXoops4GithubRepository.png)
+![alt XOOPS CMS](https://xoops.org/images/logoXoopsPhp8.png)
 ## XoopsPoll module for [XOOPS CMS 2.5.9+](https://xoops.org)
 
 [![XOOPS CMS Module](https://img.shields.io/badge/XOOPS%20CMS-Module-blue.svg)](https://xoops.org)
@@ -8,7 +8,7 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/grade/85a08057185d440e9ca996303d3e3c26)](https://www.codacy.com/app/mambax7/xoopspoll_2)
 [![Code Climate](https://img.shields.io/codeclimate/github/mambax7/xoopspoll.svg?style=flat)](https://codeclimate.com/github/XoopsModules25x/xoopspoll)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/62de8735-2c10-41b8-9faa-d4cfac041975/mini.png)](https://insight.sensiolabs.com/projects/62de8735-2c10-41b8-9faa-d4cfac041975)
-[![Latest Pre-Resease](https://img.shields.io/github/tag/XoopsModules25x/xoopspoll.svg?style=flat)](https://github.com/XoopsModules25x/xoopspoll/tags/)
+[![Latest Pre-Release](https://img.shields.io/github/tag/XoopsModules25x/xoopspoll.svg?style=flat)](https://github.com/XoopsModules25x/xoopspoll/tags/)
 [![Latest Version](https://img.shields.io/github/release/XoopsModules25x/xoopspoll.svg?style=flat)](https://github.com/XoopsModules25x/xoopspoll/releases/)
 
 **XoopsPolls** module for [XOOPS CMS](https://xoops.org) can be used to display interactive survey forms on your site. Each poll can display a question on which visitors can ‘vote’.

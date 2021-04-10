@@ -15,15 +15,11 @@ namespace XoopsModules\Newbb;
 /**
  * @copyright    {@link https://xoops.org/ XOOPS Project}
  * @license      {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
- * @package
- * @since
- * @author       XOOPS Development Team, phppp (D.J., infomax@gmail.com)
+ * @author      XOOPS Development Team, phppp (D.J., infomax@gmail.com)
  */
 
 use XoopsModules\Newbb;
 use XoopsModules\Xoopspoll;
-
-
 
 \defined('NEWBB_FUNCTIONS_INI') || require XOOPS_ROOT_PATH . '/modules/newbb/include/functions.ini.php';
 //newbb_load_object();
@@ -83,14 +79,15 @@ class PostHandler extends \XoopsPersistableObjectHandler
                   . ' ORDER BY p.post_time DESC';
         $result = $this->db->query($sql, $limit, 0);
         $ret    = [];
-        while (false !== ($myrow = $this->db->fetchArray($result))) {
-            $post = $this->create(false);
-            $post->assignVars($myrow);
+        if ($result) {
+            while (false !== ($myrow = $this->db->fetchArray($result))) {
+                $post = $this->create(false);
+                $post->assignVars($myrow);
 
-            $ret[$myrow['post_id']] = $post;
-            unset($post);
+                $ret[$myrow['post_id']] = $post;
+                unset($post);
+            }
         }
-
         return $ret;
     }
 
@@ -509,7 +506,7 @@ class PostHandler extends \XoopsPersistableObjectHandler
         // LEFT JOIN
         $sql .= $join;
         // WHERE
-        if (isset($criteria) && $criteria instanceof \CriteriaElement) {
+        if (\is_object($criteria) && is_subclass_of($criteria,  \CriteriaElement::class)) {
             $sql .= ' ' . $criteria->renderWhere();
         }
         if (!$result = $this->db->query($sql)) {
@@ -542,24 +539,21 @@ class PostHandler extends \XoopsPersistableObjectHandler
         if (!empty($join)) {
             $sql .= (0 === mb_strpos($join, ' ')) ? $join : ' ' . $join;
         }
-        if (isset($criteria) && $criteria instanceof \CriteriaElement) {
+        if (\is_object($criteria) && is_subclass_of($criteria,  \CriteriaElement::class)) {
             $sql .= ' ' . $criteria->renderWhere();
             if ('' !== $criteria->getSort()) {
                 $sql .= ' ORDER BY ' . $criteria->getSort() . ' ' . $criteria->getOrder();
             }
         }
         $result = $this->db->query($sql, (int)$limit, (int)$start);
-        if (!$result) {
-            //            xoops_error($this->db->error());
-            return $ret;
+        if ($result) {
+            while (false !== ($myrow = $this->db->fetchArray($result))) {
+                $post = $this->create(false);
+                $post->assignVars($myrow);
+                $ret[$myrow['post_id']] = $post;
+                unset($post);
+            }
         }
-        while (false !== ($myrow = $this->db->fetchArray($result))) {
-            $post = $this->create(false);
-            $post->assignVars($myrow);
-            $ret[$myrow['post_id']] = $post;
-            unset($post);
-        }
-
         return $ret;
     }
 

@@ -44,19 +44,19 @@
  * @uses     redirect_header() function used to send user to another location after completing task(s)
  */
 
+use Xmf\Module\Admin;
 use Xmf\Request;
 use XoopsModules\Newbb;
-use XoopsModules\Xoopspoll\{
-    Constants,
+use XoopsModules\Xoopspoll\{Constants,
     Helper,
     Poll,
     Renderer,
     Utility
 };
 
-require_once dirname(__DIR__, 2) . '/mainfile.php';
+require_once \dirname(__DIR__, 2) . '/mainfile.php';
 
-$helper = Helper::getInstance();
+$helper      = Helper::getInstance();
 $myts        = \MyTextSanitizer::getInstance();
 $pollHandler = $helper->getHandler('Poll');
 $logHandler  = $helper->getHandler('Log');
@@ -69,17 +69,17 @@ if (empty($pollId)) {
     require $GLOBALS['xoops']->path('header.php');
     $GLOBALS['xoopsTpl']->assign(
         [
-                                     'lang_pollslist'      => _MD_XOOPSPOLL_POLLSLIST,
-                                     'lang_pollquestion'   => _MD_XOOPSPOLL_POLLQUESTION,
-                                     'lang_pollvoters'     => _MD_XOOPSPOLL_VOTERS,
-                                     'lang_votes'          => _MD_XOOPSPOLL_VOTES,
-                                     'lang_expiration'     => _MD_XOOPSPOLL_EXPIRATION,
-                                     'lang_results'        => _MD_XOOPSPOLL_RESULTS,
-                                     'lang_mustlogin'      => _MD_XOOPSPOLL_MUSTLOGIN,
-                                     'disp_votes'          => $GLOBALS['xoopsModuleConfig']['disp_vote_nums'],
-            'results_link_icon'   => \Xmf\Module\Admin::iconUrl('', 16) . '/open12.gif',
-                                     'obscured_icon'       => $GLOBALS['xoops']->url('modules/xoopspoll/assets/images/icons/obscured.png'),
-                                     'lang_obscured_alt'   => _MD_XOOPSPOLL_OBSCURED,
+            'lang_pollslist'      => _MD_XOOPSPOLL_POLLSLIST,
+            'lang_pollquestion'   => _MD_XOOPSPOLL_POLLQUESTION,
+            'lang_pollvoters'     => _MD_XOOPSPOLL_VOTERS,
+            'lang_votes'          => _MD_XOOPSPOLL_VOTES,
+            'lang_expiration'     => _MD_XOOPSPOLL_EXPIRATION,
+            'lang_results'        => _MD_XOOPSPOLL_RESULTS,
+            'lang_mustlogin'      => _MD_XOOPSPOLL_MUSTLOGIN,
+            'disp_votes'          => $GLOBALS['xoopsModuleConfig']['disp_vote_nums'],
+            'results_link_icon'   => Admin::iconUrl('', 16) . '/open12.gif',
+            'obscured_icon'       => $GLOBALS['xoops']->url('modules/xoopspoll/assets/images/icons/obscured.png'),
+            'lang_obscured_alt'   => _MD_XOOPSPOLL_OBSCURED,
             'lang_obscured_title' => _MD_XOOPSPOLL_OBSCURED,
         ]
     );
@@ -247,11 +247,11 @@ if (empty($pollId)) {
 
     $GLOBALS['xoopsTpl']->assign(
         [
-                                     'voteCount'    => $voteCount,
-                                     'lang_vote'    => _MD_XOOPSPOLL_VOTE,
-                                     'lang_results' => _MD_XOOPSPOLL_RESULTS,
-                                     'disp_votes'   => $GLOBALS['xoopsModuleConfig']['disp_vote_nums'],
-                                     'can_vote'     => $canVote,
+            'voteCount'    => $voteCount,
+            'lang_vote'    => _MD_XOOPSPOLL_VOTE,
+            'lang_results' => _MD_XOOPSPOLL_RESULTS,
+            'disp_votes'   => $GLOBALS['xoopsModuleConfig']['disp_vote_nums'],
+            'can_vote'     => $canVote,
             'lang_multi'   => $lang_multi,
         ]
     );

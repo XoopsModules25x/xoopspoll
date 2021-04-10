@@ -37,11 +37,10 @@ namespace XoopsModules\Xoopspoll;
  * @author    ::  {@link http://www.myweb.ne.jp/ Kazumi Ono (AKA onokazu)}
  */
 
-use XoopsModules\Xoopspoll\{
-    Helper
+use XoopsModules\Xoopspoll\{Helper
 };
 
- /**
+/**
  * Class OptionHandler
  */
 class OptionHandler extends \XoopsPersistableObjectHandler
@@ -59,11 +58,7 @@ class OptionHandler extends \XoopsPersistableObjectHandler
      */
     public function __construct(\XoopsDatabase $db = null, Helper $helper = null)
     {
-        if (null === $helper) {
-            $this->helper = Helper::getInstance();
-        } else {
-            $this->helper = $helper;
-        }
+$this->helper = $helper ?? Helper::getInstance();
 
         parent::__construct($db, 'xoopspoll_option', Option::class, 'option_id', 'option_text');
     }

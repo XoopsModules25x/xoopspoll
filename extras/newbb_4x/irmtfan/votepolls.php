@@ -25,6 +25,8 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 //  ------------------------------------------------------------------------ //
 
+use XoopsModules\Newbb\Helper;
+
 require_once __DIR__ . '/header.php';
 xoops_load('XoopsRequest');
 
@@ -36,8 +38,8 @@ $forum    = isset($_GET['forum']) ? (int)$_GET['forum'] : 0;
 $forum    = isset($_POST['forum']) ? (int)$_POST['forum'] : $forum;
 
 /** @var NewbbTopicHandler $topicHandler */
-$topicHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Topic');
-$topic_obj     = $topicHandler->get($topic_id);
+$topicHandler = Helper::getInstance()->getHandler('Topic');
+$topic_obj    = $topicHandler->get($topic_id);
 if (!$topicHandler->getPermission($topic_obj->getVar('forum_id'), $topic_obj->getVar('topic_status'), 'vote')) {
     // irmtfan - issue with javascript:history.go(-1)
     redirect_header($_SERVER['HTTP_REFERER'], 2, _NOPERM);

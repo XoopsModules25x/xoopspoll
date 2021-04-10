@@ -1,4 +1,5 @@
 <?php
+
 //
 if (defined('MAIN_DEFINED')) {
     return;
@@ -312,8 +313,10 @@ define('_MD_DESC_DELETE', 'Once you press the delete button at the bottom of thi
 // irmtfan add restore to viewtopic
 define('_MD_DESC_RESTORE', 'Once you press the restore button at the bottom of this form the topic you have selected, and all its related posts, will be restored.');
 define('_MD_DESC_MOVE', 'Once you press the move button at the bottom of this form the topic you have selected, and its related posts, will be moved to the forum you have selected.');
-define('_MD_DESC_MERGE',
-       'Once you press the merge button at the bottom of this form the topic you have selected, and its related posts, will be merged to the topic you have selected.<br><strong>The destination topic ID must be smaller than current one</strong>.');
+define(
+    '_MD_DESC_MERGE',
+    'Once you press the merge button at the bottom of this form the topic you have selected, and its related posts, will be merged to the topic you have selected.<br><strong>The destination topic ID must be smaller than current one</strong>.'
+);
 define('_MD_DESC_LOCK', 'Once you press the lock button at the bottom of this form the topic you have selected will be locked. You may unlock it at a later time if you like.');
 define('_MD_DESC_UNLOCK', 'Once you press the unlock button at the bottom of this form the topic you have selected will be unlocked. You may lock it again at a later time if you like.');
 define('_MD_DESC_STICKY', 'Once you press the Sticky button at the bottom of this form the topic you have selected will be Stickyed. You may unSticky it again at a later time if you like.');
@@ -446,7 +449,9 @@ define('_MD_NEWBB_GOTOLASTPOST', 'Go to last post');
 define('_MD_EDITEDMSG', 'Reason:');
 define('_MD_DELEDEDMSG', 'Reason for deleting<br><small>(If a reason is provided, the user will receive a message)</small>:');
 define('_MD_DELEDEDMSG_SUBJECT', 'Deletion of your article');
-define('_MD_DELEDEDMSG_BODY', 'Hello %s,
+define(
+    '_MD_DELEDEDMSG_BODY',
+    'Hello %s,
 your post in the forum
 
 %s
@@ -460,7 +465,8 @@ With best greetings
 -------------------------
 Please do not reply to this message!
 %s
-%s');
+%s'
+);
 define('_MD_FORUMHOME', 'Board index');
 define('_MD_NEWBB_SEEWAITREPORT', "There were <span style='color:#ff0000;'><span style='font-weight: bold;'>%s</span> Contributions reported </span>");
 define('NEWBB_PDF_SUBJECT', 'Title: ');
@@ -507,7 +513,7 @@ define('_MD_SEARCHTOPIC', 'Search Topic');
 define('_MD_SHOWSEARCH', 'Show results:');
 define('_MD_SEARCHPOSTTEXT', 'Posts text');
 define('_MD_SELECT_STARTLAG', 'Start lag of selected text');
-define('_MD_SELECT_STARTLAG_DESC', 'Select text from X characters before the first keyword');
+define('_MD_SELECT_STARTLAG_DESC', 'SELECT text FROM X characters BEFORE the FIRST keyword');
 define('_MD_SELECT_LENGTH', 'Length of selected text');
 define('_MD_SELECT_HTML', 'Strip all html from result?');
 define('_MD_SELECT_EXCLUDE', 'Exclude these tags:');

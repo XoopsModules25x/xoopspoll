@@ -19,8 +19,7 @@
  */
 
 use XoopsModules\Newbb;
-use XoopsModules\Xoopspoll\{
-    Constants,
+use XoopsModules\Xoopspoll\{Constants,
     Helper,
     Poll,
     Utility
@@ -51,10 +50,11 @@ function xoopspollBlockSinglepollShow($options)
 {
     $block = [];
 
-    $configHandler      = xoops_getHandler('config');
+    /** @var \XoopsConfigHandler $configHandler */
+    $configHandler = xoops_getHandler('config');
     $pollHandler   = Helper::getInstance()->getHandler('Poll');
     /** @var \XoopsModuleHandler $moduleHandler */
-    $moduleHandler = xoops_getHandler('module');
+    $moduleHandler      = xoops_getHandler('module');
     $thisModule         = $moduleHandler->getByDirname('xoopspoll');
     $this_module_config = $configHandler->getConfigsByCat(0, $thisModule->getVar('mid'));
 
@@ -132,7 +132,7 @@ function xoopspollBlockSinglepollShow($options)
                 $pollOptionName = 'option_id';
             }
 
-                $uid = 0;
+            $uid = 0;
             if (isset($GLOBALS['xoopsUser']) && ($GLOBALS['xoopsUser'] instanceof \XoopsUser)) {
                 $uid = $GLOBALS['xoopsUser']->getVar('uid');
             }
@@ -250,13 +250,17 @@ function xoopspollBlockSinglepollEdit($options)
      * Note that you can select polls that have not started yet so they will automatically show
      * up in the block once they have started.  To only allow selection of active polls uncomment
      * the following line in the code - this could be made a module config option if desired
-     */ // $criteria->add(new \Criteria('start_time', time(), '<='));
+     */
+
+    // $criteria->add(new \Criteria('start_time', time(), '<='));
+
     /**
      * now check to see if we want to hide polls that were created using newbb
      */
-    $configHandler      = xoops_getHandler('config');
+    /** @var \XoopsConfigHandler $configHandler */
+    $configHandler = xoops_getHandler('config');
     /** @var \XoopsModuleHandler $moduleHandler */
-    $moduleHandler = xoops_getHandler('module');
+    $moduleHandler      = xoops_getHandler('module');
     $thisModule         = $moduleHandler->getByDirname('xoopspoll');
     $this_module_config = $configHandler->getConfigsByCat(0, $thisModule->getVar('mid'));
 
@@ -293,7 +297,7 @@ function xoopspollBlockSinglepollEdit($options)
         foreach ($allPollsArray as $thisPoll) {
             $selected       = ($thisPoll['poll_id'] === $options[1]) ? ' selected' : '';
             $taggedQuestion = ($thisPoll['end_time'] < time()) ? $thisPoll['question'] . '**' : $thisPoll['question'];
-            $form .= "  <option value='" . $thisPoll['poll_id'] . "'{$selected}>" . $taggedQuestion . "</option>\n";
+            $form           .= "  <option value='" . $thisPoll['poll_id'] . "'{$selected}>" . $taggedQuestion . "</option>\n";
         }
         $form .= "</select>\n" . '&nbsp;** - ' . _MB_XOOPSPOLL_EXPIRED_INDICATOR . "\n";
     }

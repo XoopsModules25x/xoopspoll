@@ -22,8 +22,7 @@
  */
 
 use XoopsModules\Newbb;
-use XoopsModules\Xoopspoll\{
-    Utility
+use XoopsModules\Xoopspoll\{Utility
 };
 
 /**

@@ -21,19 +21,16 @@
  */
 
 use XoopsModules\Newbb;
-use XoopsModules\Xoopspoll\{
-    Helper
+use XoopsModules\Xoopspoll\{Helper
 };
-
-
 
 /**
  * xoopspoll_search()
  *
  * @param        $queryArray
- * @param  mixed $andor
- * @param  mixed $limit
- * @param  mixed $offset
+ * @param mixed  $andor
+ * @param mixed  $limit
+ * @param mixed  $offset
  * @param        $uid
  * @return array
  * @internal param mixed $queryarray
@@ -48,7 +45,7 @@ function xoopspoll_search($queryArray, $andor, $limit, $offset, $uid)
         $criteria    = new \CriteriaCompo();
         $criteria->add(new \Criteria('start_time', time(), '<=')); // only show polls that have started
 
-         /**
+        /**
          * @todo:
          * find out if want to show polls that were created with a forum. If no, then change
          * the link to forum topic_id
@@ -57,9 +54,10 @@ function xoopspoll_search($queryArray, $andor, $limit, $offset, $uid)
         /**
          * check to see if we want to include polls created with forum (newbb)
          */
-        $configHandler      = xoops_getHandler('config');
+        /** @var \XoopsConfigHandler $configHandler */
+        $configHandler = xoops_getHandler('config');
         /** @var \XoopsModuleHandler $moduleHandler */
-        $moduleHandler = xoops_getHandler('module');
+        $moduleHandler      = xoops_getHandler('module');
         $thisModule         = $moduleHandler->getByDirname('xoopspoll');
         $this_module_config = $configHandler->getConfigsByCat(0, $thisModule->getVar('mid'));
 

@@ -34,14 +34,14 @@
  * @author    :: XOOPS Module Team
  */
 
-use XoopsModules\Xoopspoll\{
-    Common,
+use XoopsModules\Xoopspoll\{Common,
     Helper
 };
+use Xmf\Module\Admin;
 
 include dirname(__DIR__) . '/preloads/autoloader.php';
 
-$moduleDirName = basename(dirname(__DIR__));
+$moduleDirName      = \basename(\dirname(__DIR__));
 $moduleDirNameUpper = mb_strtoupper($moduleDirName);
 
 /** @var Helper $helper */
@@ -49,9 +49,10 @@ $helper = Helper::getInstance();
 $helper->loadLanguage('common');
 $helper->loadLanguage('feedback');
 
-$pathIcon32 = \Xmf\Module\Admin::menuIconPath('');
-if (is_object($helper->getModule())) {
-    $pathModIcon32 = $helper->getModule()->getInfo('modicons32');
+$pathIcon32 = Admin::menuIconPath('');
+$pathModIcon32 = XOOPS_URL .   '/modules/' . $moduleDirName . '/assets/images/icons/32/';
+if (is_object($helper->getModule()) && false !== $helper->getModule()->getInfo('modicons32')) {
+    $pathModIcon32 = $helper->url($helper->getModule()->getInfo('modicons32'));
 }
 
 /**
@@ -81,15 +82,15 @@ $adminmenu[] = [
 // Blocks Admin
 $adminmenu[] = [
     'title' => constant('CO_' . $moduleDirNameUpper . '_' . 'BLOCKS'),
-    'link' => 'admin/blocksadmin.php',
-    'icon' => $pathIcon32 . '/block.png',
+    'link'  => 'admin/blocksadmin.php',
+    'icon'  => $pathIcon32 . '/block.png',
 ];
 
 if (is_object($helper->getModule()) && $helper->getConfig('displayDeveloperTools')) {
     $adminmenu[] = [
         'title' => constant('CO_' . $moduleDirNameUpper . '_' . 'ADMENU_MIGRATE'),
-        'link' => 'admin/migrate.php',
-        'icon' => $pathIcon32 . '/database_go.png',
+        'link'  => 'admin/migrate.php',
+        'icon'  => $pathIcon32 . '/database_go.png',
     ];
 }
 

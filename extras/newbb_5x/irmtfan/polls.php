@@ -489,10 +489,10 @@ switch ($op) {
             $poll_obj->setVar('multiple', (int)(@$_POST['multiple']));
             if (!empty($_POST['notify']) && $end_time > time()) {
                 // if notify, set mail status to 'not mailed'
-                $poll_obj->setVar('mail_status', POLL_NOT_MAILED);
+                $poll_obj->setVar('mail_status', Constants::POLL_NOT_MAILED);
             } else {
                 // if not notify, set mail status to already "mailed"
-                $poll_obj->setVar('mail_status', POLL_MAILED);
+                $poll_obj->setVar('mail_status', Constants::POLL_MAILED);
             }
 
             if (!$poll_obj->store()) {
@@ -720,8 +720,8 @@ switch ($op) {
         } else { // Umfrage
             $poll_obj              = new \Umfrage($poll_id);
             $default_poll_duration = (86400 * 10);
-            $poll_not_mailed       = POLL_NOT_MAILED;
-            $poll_mailed           = POLL_MAILED;
+            $poll_not_mailed       = Constants::POLL_NOT_MAILED;
+            $poll_mailed           = Constants::POLL_MAILED;
         }
 
         $end_time = Request::getInt('end_time', 0, 'POST');

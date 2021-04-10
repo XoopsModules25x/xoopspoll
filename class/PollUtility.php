@@ -26,7 +26,7 @@ namespace XoopsModules\Xoopspoll;
 
 use XoopsModules\Xoopspoll;
 
- /**
+/**
  * Class PollUtility
  * @package XoopsModules\Xoopspoll
  */

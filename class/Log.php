@@ -37,11 +37,8 @@ namespace XoopsModules\Xoopspoll;
  * @author    ::  {@link http://www.myweb.ne.jp/ Kazumi Ono (AKA onokazu)}
  **/
 
-use XoopsModules\Xoopspoll\{
-    Helper
+use XoopsModules\Xoopspoll\{Helper
 };
-
-
 
 /**
  * Log() class definition for Log Objects
@@ -70,7 +67,6 @@ class Log extends \XoopsObject
             $this->assignVars($id);
         }
     }
-
 
     /**
      * The following method is provided for backward compatibility with newbb
@@ -134,6 +130,5 @@ class Log extends \XoopsObject
 
         return $log_h;
     }
-
     /**#@-*/
 }

@@ -35,6 +35,7 @@
  **/
 
 use XoopsModules\Xoopspoll;
+use XoopsModules\Xoopspoll\Helper;
 
 /**
  * Class XoopspollCorePreload
@@ -42,7 +43,6 @@ use XoopsModules\Xoopspoll;
 class XoopspollCorePreload extends \XoopsPreloadItem
 {
     // to add PSR-4 autoloader
-
     /**
      * @param $args
      */
@@ -59,7 +59,7 @@ class XoopspollCorePreload extends \XoopsPreloadItem
     {
         // check once per user session if expired poll email has been sent
         if (empty($_SESSION['pollChecked'])) {
-            $pollHandler = \XoopsModules\Xoopspoll\Helper::getInstance()->getHandler('Poll');
+            $pollHandler = Helper::getInstance()->getHandler('Poll');
             $pollHandler->mailResults();  //send the results of any polls that have ended
             unset($pollHandler);
             $_SESSION['pollChecked'] = 1;

@@ -22,8 +22,9 @@ namespace XoopsModules\Xoopspoll;
  * @author    ::     zyspec <zyspec@yahoo.com>
  */
 
+xoops_loadLanguage('admin', basename(dirname(__DIR__)));
 
- /**
+/**
  * Class Poll
  * @package XoopsModules\Xoopspoll
  */
@@ -259,8 +260,8 @@ class Poll extends \XoopsObject
             'width'  => '100%',
             'height' => '350px',
             'name'   => 'description',
-            //                           'value'  => $myts->stripSlashesGPC($this->getVar('description'))
-            'value'  => $myts->htmlSpecialChars($this->getVar('description')),
+            //                           'value'  => ($this->getVar('description'))
+            'value'  => htmlspecialchars($this->getVar('description')),
         ];
         $desc_text     = new \XoopsFormEditor(\_AM_XOOPSPOLL_POLLDESC, 'description', $editorConfigs);
         $pollForm->addElement($desc_text);
@@ -527,6 +528,5 @@ class Poll extends \XoopsObject
 
         return $pH;
     }
-
     /**#@-*/
 }

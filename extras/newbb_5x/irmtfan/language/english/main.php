@@ -509,7 +509,7 @@ define('_MD_SEARCHTOPIC', 'Search Topic');
 define('_MD_SHOWSEARCH', 'Show results:');
 define('_MD_SEARCHPOSTTEXT', 'Posts text');
 define('_MD_SELECT_STARTLAG', 'Start lag of selected text');
-define('_MD_SELECT_STARTLAG_DESC', 'Select text from X characters before the first keyword');
+define('_MD_SELECT_STARTLAG_DESC', 'SELECT text FROM X characters BEFORE the FIRST keyword');
 define('_MD_SELECT_LENGTH', 'Length of selected text');
 define('_MD_SELECT_HTML', 'Strip all html from result?');
 define('_MD_SELECT_EXCLUDE', 'Exclude these tags:');

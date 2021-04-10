@@ -15,15 +15,11 @@ namespace XoopsModules\Newbb;
 /**
  * @copyright    {@link https://xoops.org/ XOOPS Project}
  * @license      {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
- * @package
- * @since
- * @author       XOOPS Development Team, phppp (D.J., infomax@gmail.com)
+ * @author      XOOPS Development Team, phppp (D.J., infomax@gmail.com)
  */
 
 use Xmf\Request;
 use XoopsModules\Newbb;
-
-
 
 \defined('NEWBB_FUNCTIONS_INI') || require XOOPS_ROOT_PATH . '/modules/newbb/include/functions.ini.php';
 newbb_load_object();
@@ -312,8 +308,8 @@ class Post extends \XoopsObject
         if ($post_edits && \is_array($post_edits)) {
             foreach ($post_edits as $postedit) {
                 $edit_time = (int)$postedit['edit_time'];
-                $edit_user = $myts->stripSlashesGPC($postedit['edit_user']);
-                $edit_msg  = !empty($postedit['edit_msg']) ? $myts->stripSlashesGPC($postedit['edit_msg']) : '';
+                $edit_user = ($postedit['edit_user']);
+                $edit_msg  = !empty($postedit['edit_msg']) ? ($postedit['edit_msg']) : '';
                 // Start irmtfan add option to do only the latest edit when do_latestedit=0 (Alfred)
                 if (empty($GLOBALS['xoopsModuleConfig']['do_latestedit'])) {
                     $post_edit = '';
@@ -443,7 +439,7 @@ class Post extends \XoopsObject
         static $name_anonymous;
 
         if (!isset($name_anonymous)) {
-            $name_anonymous = $myts->htmlSpecialChars($GLOBALS['xoopsConfig']['anonymous']);
+            $name_anonymous = htmlspecialchars($GLOBALS['xoopsConfig']['anonymous']);
         }
 
         //        mod_loadFunctions('time', 'newbb');
@@ -495,7 +491,7 @@ class Post extends \XoopsObject
         // Hightlighting searched words
         $post_title = $this->getVar('subject');
         if (!empty($_GET['keywords']) && Request::hasVar('keywords', 'GET')) {
-            $keywords   = $myts->htmlSpecialChars(\trim(\urldecode($_GET['keywords'])));
+            $keywords   = htmlspecialchars(\trim(\urldecode($_GET['keywords'])));
             $post_text  = \newbb_highlightText($post_text, $keywords);
             $post_title = \newbb_highlightText($post_title, $keywords);
         }

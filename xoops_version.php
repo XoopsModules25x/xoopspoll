@@ -80,7 +80,7 @@ $modversion = [
     'module_website_url'  => 'www.xoops.org',
     'module_website_name' => 'XOOPS Project',
     // ------------------- Min Requirements -------------------
-    'min_php'             => '7.1',
+    'min_php'             => '7.2',
     'min_xoops'           => '2.5.10',
     'min_admin'           => '1.2',
     'min_db'              => ['mysql' => '5.5'],
@@ -111,8 +111,8 @@ $modversion = [
     // ------------------- Comments -------------------------
     'hasComments'         => 1,
     'comments'            => [
-        'pageName'     => 'pollresults.php',
-        'itemName'     => 'poll_id',
+        'pageName' => 'pollresults.php',
+        'itemName' => 'poll_id',
     ],
     // ------------------- Mysql -----------------------------
     'sqlfile'             => ['mysql' => 'sql/mysql.sql'],
@@ -125,7 +125,6 @@ $modversion = [
 ];
 
 // ------------------- Templates ------------------- //
-
 $modversion['templates'] = [
     ['file' => 'xoopspoll_index.tpl', 'description' => _MI_XOOPSPOLL_INDEX_DSC],
     ['file' => 'xoopspoll_view.tpl', 'description' => _MI_XOOPSPOLL_VIEW_DSC],
@@ -144,7 +143,6 @@ $modversion['helpsection'] = [
     ['name' => _MI_XOOPSPOLL_LICENSE, 'link' => 'page=license'],
     ['name' => _MI_XOOPSPOLL_SUPPORT, 'link' => 'page=support'],
 ];
-
 
 /**
  * Search definitions

@@ -1,4 +1,5 @@
 <?php
+
 //
 if (defined('MAIN_DEFINED')) {
     return;
@@ -337,8 +338,10 @@ define('_MD_UNDIGEST', 'unDigest');
 
 define('_MD_DESC_DELETE', 'Once you press the delete button at the bottom of this form the topic you have selected, and all its related posts, will be <strong>permanently</strong> removed.');
 define('_MD_DESC_MOVE', 'Once you press the move button at the bottom of this form the topic you have selected, and its related posts, will be moved to the forum you have selected.');
-define('_MD_DESC_MERGE',
-       'Once you press the merge button at the bottom of this form the topic you have selected, and its related posts, will be merged to the topic you have selected.<br><strong>The destination topic ID must be smaller than current one</strong>.');
+define(
+    '_MD_DESC_MERGE',
+    'Once you press the merge button at the bottom of this form the topic you have selected, and its related posts, will be merged to the topic you have selected.<br><strong>The destination topic ID must be smaller than current one</strong>.'
+);
 define('_MD_DESC_LOCK', 'Once you press the lock button at the bottom of this form the topic you have selected will be locked. You may unlock it at a later time if you like.');
 define('_MD_DESC_UNLOCK', 'Once you press the unlock button at the bottom of this form the topic you have selected will be unlocked. You may lock it again at a later time if you like.');
 define('_MD_DESC_STICKY', 'Once you press the Sticky button at the bottom of this form the topic you have selected will be Stickyed. You may unSticky it again at a later time if you like.');

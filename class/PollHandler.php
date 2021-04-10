@@ -24,8 +24,7 @@ namespace XoopsModules\Xoopspoll;
  * @author    ::     zyspec <zyspec@yahoo.com>
  */
 
-
- /**
+/**
  * Class PollHandler
  */
 class PollHandler extends \XoopsPersistableObjectHandler
@@ -43,11 +42,7 @@ class PollHandler extends \XoopsPersistableObjectHandler
      */
     public function __construct(\XoopsDatabase $db = null, Helper $helper = null)
     {
-        if (null === $helper) {
-            $this->helper = Helper::getInstance();
-        } else {
-            $this->helper = $helper;
-        }
+$this->helper = $helper ?? Helper::getInstance();
         parent::__construct($db, 'xoopspoll_desc', Poll::class, 'poll_id', 'question');
     }
 

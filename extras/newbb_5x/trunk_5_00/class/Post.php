@@ -19,7 +19,7 @@
 use XoopsModules\Newbb;
 use XoopsModules\Xoopspoll;
 
- /**
+/**
  * Class post
  */
 class Post extends \XoopsObject
@@ -311,7 +311,7 @@ class Post extends \XoopsObject
         if ($post_edits && is_array($post_edits)) {
             foreach ($post_edits as $postedit) {
                 $edit_time = (int)$postedit['edit_time'];
-                $edit_user = $myts->stripSlashesGPC($postedit['edit_user']);
+                $edit_user = ($postedit['edit_user']);
                 $post_edit .= _MD_EDITEDBY . ' ' . $edit_user . ' ' . _MD_ON . ' ' . formatTimestamp($edit_time) . '<br>';
             }
         }
@@ -349,6 +349,7 @@ class Post extends \XoopsObject
         } else {
             $post['text'] = $post_text . '<br>' . $this->displayAttachment();
         }
+        /** @var \XoopsMemberHandler $memberHandler */
         $memberHandler = xoops_getHandler('member');
         $eachposter    = $memberHandler->getUser($this->getVar('uid'));
         if (is_object($eachposter) && $eachposter->isActive()) {
@@ -432,7 +433,7 @@ class Post extends \XoopsObject
         static $name_anonymous;
 
         if (!isset($name_anonymous)) {
-            $name_anonymous = $myts->htmlSpecialChars($GLOBALS['xoopsConfig']['anonymous']);
+            $name_anonymous = htmlspecialchars($GLOBALS['xoopsConfig']['anonymous']);
         }
 
         require_once XOOPS_ROOT_PATH . '/modules/newbb/include/functions.time.php';
@@ -626,14 +627,15 @@ class PostHandler extends \XoopsPersistableObjectHandler
                   . ' ORDER BY p.post_time DESC';
         $result = $this->db->query($sql, $limit, 0);
         $ret    = [];
-        while (false !== ($myrow = $this->db->fetchArray($result))) {
-            $post = $this->create(false);
-            $post->assignVars($myrow);
+        if ($result) {
+            while (false !== ($myrow = $this->db->fetchArray($result))) {
+                $post = $this->create(false);
+                $post->assignVars($myrow);
 
-            $ret[$myrow['post_id']] = $post;
-            unset($post);
+                $ret[$myrow['post_id']] = $post;
+                unset($post);
+            }
         }
-
         return $ret;
     }
 
@@ -705,6 +707,7 @@ class PostHandler extends \XoopsPersistableObjectHandler
 
         // Update user stats
         if ($post->getVar('uid') > 0) {
+            /** @var \XoopsMemberHandler $memberHandler */
             $memberHandler = xoops_getHandler('member');
             $poster        = $memberHandler->getUser($post->getVar('uid'));
             if (is_object($poster) && $post->getVar('uid') == $poster->getVar('uid')) {
@@ -963,6 +966,7 @@ class PostHandler extends \XoopsPersistableObjectHandler
         if ($postcount_toupdate > 0) {
             // Update user stats
             if ($post->getVar('uid') > 0) {
+                /** @var \XoopsMemberHandler $memberHandler */
                 $memberHandler = xoops_getHandler('member');
                 $poster        = $memberHandler->getUser($post->getVar('uid'));
                 if (is_object($poster) && $post->getVar('uid') == $poster->getVar('uid')) {
@@ -1008,24 +1012,21 @@ class PostHandler extends \XoopsPersistableObjectHandler
         if (!empty($join)) {
             $sql .= $join;
         }
-        if (isset($criteria) && $criteria instanceof \CriteriaElement) {
+        if (\is_object($criteria) && is_subclass_of($criteria,  \CriteriaElement::class)) {
             $sql .= ' ' . $criteria->renderWhere();
             if ('' != $criteria->getSort()) {
                 $sql .= ' ORDER BY ' . $criteria->getSort() . ' ' . $criteria->getOrder();
             }
         }
         $result = $this->db->query($sql, (int)$limit, (int)$start);
-        if (!$result) {
-            //xoops_error($this->db->error());
-            return $ret;
+        if ($result) {
+            while (false !== ($myrow = $this->db->fetchArray($result))) {
+                $post = $this->create(false);
+                $post->assignVars($myrow);
+                $ret[$myrow['post_id']] = $post;
+                unset($post);
+            }
         }
-        while (false !== ($myrow = $this->db->fetchArray($result))) {
-            $post = $this->create(false);
-            $post->assignVars($myrow);
-            $ret[$myrow['post_id']] = $post;
-            unset($post);
-        }
-
         return $ret;
     }
 

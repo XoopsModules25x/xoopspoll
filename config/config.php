@@ -10,14 +10,14 @@
  */
 
 /**
- * @copyright    XOOPS Project https://xoops.org/
+ * @copyright    XOOPS Project (https://xoops.org)
  * @license      GNU GPL 2 or later (https://www.gnu.org/licenses/gpl-2.0.html)
- * @package
- * @since
- * @author       XOOPS Development Team
+ * @author      XOOPS Development Team
  */
 
-$moduleDirName      = basename(dirname(__DIR__));
+use Xmf\Module\Admin;
+
+$moduleDirName      = \basename(\dirname(__DIR__));
 $moduleDirNameUpper = mb_strtoupper($moduleDirName);
 
 return (object)[
@@ -83,7 +83,6 @@ return (object)[
         //            'totalsubmitted'  => $helper->getHandler('Item')->getItemsCount(-1, [Constants::PUBLISHER_STATUS_SUBMITTED]),
     ],
 
-
     'editorConfigs' => [
         //                           'editor' => $GLOBALS['xoopsModuleConfig']['useeditor'],
         //                           'editor' => $xp_config['useeditor'],
@@ -93,12 +92,11 @@ return (object)[
         'width'  => '100%',
         'height' => '350px',
         'name'   => 'description',
-        //                           'value'  => $myts->stripSlashesGPC($this->getVar('description'))
-        'value'  => $myts->htmlSpecialChars($this->getVar('description')),
+        //                           'value'  => ($this->getVar('description'))
+        'value'  => htmlspecialchars($this->getVar('description')),
     ],
 
-
     'modCopyright' => "<a href='https://xoops.org' title='XOOPS Project' target='_blank'>
-                     <img src='" . \Xmf\Module\Admin::iconUrl('xoopsmicrobutton.gif') . "' alt='XOOPS Project'></a>",
+                     <img src='" . Admin::iconUrl('xoopsmicrobutton.gif') . "' alt='XOOPS Project'></a>",
 ];
 

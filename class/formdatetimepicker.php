@@ -22,8 +22,6 @@ namespace XoopsModules\Xoopspoll;
  * @credits::     {@link http://www.trentrichardson.com Trent Richardson}
  */
 
-
-
 /**
  * Creates a text field with jquery ui calendar & time select popup
  */
@@ -32,7 +30,7 @@ class FormDateTimePicker extends \XoopsFormText
     /**
      * Contains the maximum field size
      */
-    public const MAXSIZE = 25;
+    const MAXSIZE = 25;
 
     /**
      * Constructor to build FormDateTimePicker object

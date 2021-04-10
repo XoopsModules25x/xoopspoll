@@ -35,8 +35,7 @@
  **/
 
 use XoopsModules\Newbb;
-use XoopsModules\Xoopspoll\{
-    Constants,
+use XoopsModules\Xoopspoll\{Constants,
     Helper,
     Utility
 };
@@ -54,7 +53,7 @@ require_once $GLOBALS['xoops']->path( "modules"
  * Display XOOPS polls in a block
  *
  * @access public
- * @param  array $options block options array
+ * @param array  $options block options array
  * @return array block keys and values to be used by block template
  * @uses   Criteria
  * @global mixed $GLOBALS ['xoopsUser']
@@ -66,7 +65,8 @@ function xoopspollBlockMultiShow($options)
     $pollOptionArray = [];
     /** @var \XoopsModuleHandler $moduleHandler */
     $moduleHandler = xoops_getHandler('module');
-    $thisModule         = $moduleHandler->getByDirname('xoopspoll');
+    $thisModule    = $moduleHandler->getByDirname('xoopspoll');
+    /** @var \XoopsConfigHandler $configHandler */
     $configHandler      = xoops_getHandler('config');
     $this_module_config = $configHandler->getConfigsByCat(0, $thisModule->getVar('mid'));
 
@@ -86,8 +86,8 @@ function xoopspollBlockMultiShow($options)
         if ($newbbModule instanceof \XoopsModule && $newbbModule->isactive()) {
             /** @var Newbb\TopicHandler $topicHandler */
             $topicHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Topic');
-            $tFields       = ['topic_id', 'poll_id'];
-            $tArray        = $topicHandler->getAll(new Criteria('topic_haspoll', 0, '>'), $tFields, false);
+            $tFields      = ['topic_id', 'poll_id'];
+            $tArray       = $topicHandler->getAll(new Criteria('topic_haspoll', 0, '>'), $tFields, false);
             if (!empty($tArray)) {
                 $tcriteria = [];
                 foreach ($tArray as $t) {
@@ -136,7 +136,7 @@ function xoopspollBlockMultiShow($options)
                 $pollOptionName = 'option_id';
             }
 
-                $uid = 0;
+            $uid = 0;
             if (isset($GLOBALS['xoopsUser']) && ($GLOBALS['xoopsUser'] instanceof \XoopsUser)) {
                 $uid = $GLOBALS['xoopsUser']->getVar('uid');
             }

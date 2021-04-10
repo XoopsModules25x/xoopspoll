@@ -8,7 +8,6 @@ namespace XoopsModules\Xoopspoll;
 class Utility extends Common\SysUtility
 {
     //--------------- Custom module methods -----------------------------
-
     /**
      * gets the name of the host located at a specific ip address
      * @param string $ipAddr the ip address of the host

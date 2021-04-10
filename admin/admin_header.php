@@ -31,16 +31,15 @@
  */
 
 use Xmf\Module\Admin;
-use XoopsModules\Xoopspoll\{
-    Helper
+use XoopsModules\Xoopspoll\{Helper
 };
 
 include dirname(__DIR__) . '/preloads/autoloader.php';
 
-require_once dirname(__DIR__, 3) . '/include/cp_header.php';
+require dirname(__DIR__, 3) . '/include/cp_header.php';
 require dirname(__DIR__) . '/include/common.php';
 
-$moduleDirName = basename(dirname(__DIR__));
+$moduleDirName = \basename(\dirname(__DIR__));
 
 /** @var Helper $helper */
 $helper = Helper::getInstance();

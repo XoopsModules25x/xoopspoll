@@ -30,9 +30,12 @@
 // ------------------------------------------------------------------------- //
 
 use Xmf\Request;
-use XoopsModules\Xoopspoll\{
-    Common
+use XoopsModules\Xoopspoll\{Common
 };
+
+use Xmf\Module\Admin;
+
+/** @var Admin $adminObject */
 
 require_once __DIR__ . '/admin_header.php';
 xoops_cp_header();
@@ -59,13 +62,13 @@ $configurator = new Common\Configurator();
 
 $migrator = new Common\Migrate($configurator);
 
-$op = Request::getCmd('op', 'show');
-$opShow = Request::getCmd('show', null, 'POST');
+$op        = Request::getCmd('op', 'show');
+$opShow    = Request::getCmd('show', null, 'POST');
 $opMigrate = Request::getCmd('migrate', null, 'POST');
-$opSchema = Request::getCmd('schema', null, 'POST');
-$op = !empty($opShow) ? 'show' : $op;
-$op = !empty($opMigrate) ? 'migrate' : $op;
-$op = !empty($opSchema) ? 'schema' : $op;
+$opSchema  = Request::getCmd('schema', null, 'POST');
+$op        = !empty($opShow) ? 'show' : $op;
+$op        = !empty($opMigrate) ? 'migrate' : $op;
+$op        = !empty($opSchema) ? 'schema' : $op;
 
 $message = '';
 

@@ -104,7 +104,8 @@ if ((!$topic_obj instanceof Newbb\Topic) || !$topic_id = $topic_obj->getVar('top
 $forum_id = $topic_obj->getVar('forum_id');
 /** @var Newbb\ForumHandler $forumHandler */
 $forumHandler = Newbb\Helper::getInstance()->getHandler('Forum');
-$forum_obj    = $forumHandler->get($forum_id);
+/** @var Newbb\Forum $forum_obj */
+$forum_obj = $forumHandler->get($forum_id);
 
 $isadmin = newbb_isAdmin($forum_obj);
 
@@ -274,6 +275,7 @@ foreach ($postsArray as $eachpost) {
 $userid_array = [];
 $online       = [];
 if (count($poster_array) > 0) {
+    /** @var \XoopsMemberHandler $memberHandler */
     $memberHandler = xoops_getHandler('member');
     $userid_array  = array_keys($poster_array);
     $user_criteria = '(' . implode(',', $userid_array) . ')';
@@ -470,8 +472,8 @@ $xoopsTpl->assign('viewer_level', (int)($isadmin ? 2 : is_object($xoopsUser)));
 
 if ($GLOBALS['xoopsModuleConfig']['show_permissiontable']) {
     /** @var Newbb\PermissionHandler $permHandler */
-    $permissionHandler      = Newbb\Helper::getInstance()->getHandler('Permission');
-    $permission_table = $permissionHandler->getPermissionTable($forum_obj, $topic_obj->getVar('topic_status'), $isadmin);
+    $permissionHandler = Newbb\Helper::getInstance()->getHandler('Permission');
+    $permission_table  = $permissionHandler->getPermissionTable($forum_obj, $topic_obj->getVar('topic_status'), $isadmin);
     $xoopsTpl->assign_by_ref('permission_table', $permission_table);
 }
 
@@ -507,6 +509,7 @@ if ($pollmodules) {
                 $visibleMsg = $isVisible ? '' : $vis_return;
 
                 /* setup the module config handler */
+                /** @var \XoopsConfigHandler $configHandler */
                 $configHandler = xoops_getHandler('config');
                 $xp_config     = $configHandler->getConfigsByCat(0, $xoopspoll->getVar('mid'));
 
@@ -548,7 +551,7 @@ if ($pollmodules) {
             $poll_obj = new \Umfrage($topic_obj->getVar('poll_id'));
             $hasEnded = $poll_obj->getVar('end_time') < time();
             $renderer = new \UmfrageRenderer($poll);
-            $xoopsTpl->assign('lang_alreadyvoted2', _PL_ALREADYVOTED2);
+            $xoopsTpl->assign('lang_alreadyvoted2', _MD_XOOPSPOLL_ALREADYVOTED);
             $xoopsTpl->assign('has_ended', $hasEnded);
             $xoopsTpl->assign('polltype', $poll_obj->getVar('polltype'));
             switch ($poll_obj->getVar('polltype')) {
@@ -745,8 +748,9 @@ if (!empty($GLOBALS['xoopsModuleConfig']['quickreply_enabled'])
     // END irmtfan add verifyUser to quick reply
     $forum_form = new \XoopsThemeForm(_MD_POSTREPLY, 'quick_reply', $GLOBALS['xoops']->url('modules/' . $xoopsModule->getVar('dirname', 'n') . '/post.php'), 'post', true);
     if (!$xoopsUser instanceof \XoopsUser) {
-        //$configHandler = xoops_getHandler('config');
-        $user_tray = new \XoopsFormElementTray(_MD_ACCOUNT);
+        ///** @var \XoopsConfigHandler $configHandler */
+        $configHandler = xoops_getHandler('config');
+        $user_tray     = new \XoopsFormElementTray(_MD_ACCOUNT);
         $user_tray->addElement(new \XoopsFormText(_MD_NAME, 'uname', 26, 255));
         $user_tray->addElement(new \XoopsFormPassword(_MD_PASSWORD, 'pass', 10, 32));
         $login_checkbox = new \XoopsFormCheckBox('', 'login', 1);

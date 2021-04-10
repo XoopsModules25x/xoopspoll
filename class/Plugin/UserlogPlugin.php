@@ -26,7 +26,7 @@ namespace XoopsModules\Xoopspoll\Plugin;
 use Xmf\Request;
 use XoopsModules\Userlog;
 
- /**
+/**
  * Class UserlogPlugin
  * @package XoopsModules\Xoopspoll\Plugin
  */

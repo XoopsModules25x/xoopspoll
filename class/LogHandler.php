@@ -25,6 +25,7 @@ namespace XoopsModules\Xoopspoll;
  along with this program; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
+
 /**
  * Log class for the XoopsPoll Module
  *
@@ -36,10 +37,7 @@ namespace XoopsModules\Xoopspoll;
  * @author    ::  {@link http://www.myweb.ne.jp/ Kazumi Ono (AKA onokazu)}
  **/
 
-
-
-use XoopsModules\Xoopspoll\{
-    Helper,
+use XoopsModules\Xoopspoll\{Helper,
     Utility
 };
 
@@ -58,7 +56,6 @@ class LogHandler extends \XoopsPersistableObjectHandler
     {
         parent::__construct($db, 'xoopspoll_log', Log::class, 'log_id');
     }
-
 
     /**
      * Delete all log entries by Option ID
@@ -162,9 +159,9 @@ class LogHandler extends \XoopsPersistableObjectHandler
      */
     public function hasVoted($pid, $ip, $uid = 0)
     {
-        $uid   = (int)$uid;
-        $pid   = (int)$pid;
-        $voted = true;
+        $uid         = (int)$uid;
+        $pid         = (int)$pid;
+        $voted       = true;
         $voted_polls = Utility::getVoteCookie();
         //        $voted_polls = [];  //TESTING HACK TO BYPASS COOKIES
         $pollHandler = Helper::getInstance()->getHandler('Poll');

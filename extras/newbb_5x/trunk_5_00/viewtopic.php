@@ -200,6 +200,7 @@ foreach ($postsArray as $eachpost) {
 $userid_array = [];
 $online       = [];
 if (count($poster_array) > 0) {
+    /** @var \XoopsMemberHandler $memberHandler */
     $memberHandler = xoops_getHandler('member');
     $userid_array  = array_keys($poster_array);
     //$user_criteria = "(" . implode(",", $userid_array) . ")";
@@ -368,8 +369,8 @@ $xoopsTpl->assign_by_ref('admin_actions', $admin_actions);
 $xoopsTpl->assign('viewer_level', $isadmin ? 2 : is_object($xoopsUser));
 
 if ($helper->getConfig('show_permissiontable')) {
-    $permissionHandler      = Newbb\Helper::getInstance()->getHandler('Permission');
-    $permission_table = $permissionHandler->getPermissionTable($forum_obj, $topic_obj->getVar('topic_status'), $isadmin);
+    $permissionHandler = Newbb\Helper::getInstance()->getHandler('Permission');
+    $permission_table  = $permissionHandler->getPermissionTable($forum_obj, $topic_obj->getVar('topic_status'), $isadmin);
     $xoopsTpl->assign_by_ref('permission_table', $permission_table);
 }
 
@@ -401,6 +402,7 @@ if (($xoopspoll instanceof \XoopsModule) && $xoopspoll->isactive()) {
             $visibleMsg = $isVisible ? '' : $vis_return;
 
             /* setup the module config handler */
+            /** @var \XoopsConfigHandler $configHandler */
             $configHandler = xoops_getHandler('config');
             $xp_config     = $configHandler->getConfigsByCat(0, $xoopspoll->getVar('mid'));
 
@@ -613,6 +615,7 @@ if (!empty($helper->getConfig('quickreply_enabled'))
         require_once XOOPS_ROOT_PATH . '/class/xoopsform/formtext.php';
         require_once XOOPS_ROOT_PATH . '/class/xoopsform/formelementtray.php';
         require_once XOOPS_ROOT_PATH . '/Frameworks/captcha/formcaptcha.php';
+        /** @var \XoopsConfigHandler $configHandler */
         $configHandler = xoops_getHandler('config');
         $user_tray     = new \XoopsFormElementTray(_MD_ACCOUNT);
         $user_tray->addElement(new \XoopsFormText(_MD_NAME, 'uname', 26, 255));

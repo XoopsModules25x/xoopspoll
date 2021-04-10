@@ -19,11 +19,9 @@
  * @author   ::    zyspec <zyspec@yahoo.com>
  */
 
-use XoopsModules\Xoopspoll\{
-    Helper,
+use XoopsModules\Xoopspoll\{Helper,
     Utility
 };
-
 
 /**
  * @param \XoopsDatabase|null $db
@@ -39,7 +37,7 @@ function xoopspollChangeTableName(\XoopsDatabase $db, $fromTable, $toTable)
         $fromThisTable = $db->prefix("{$fromTable}");
         $toThisTable = $db->prefix("{$toTable}");
     */
-    $helper = Helper::getInstance();
+    $helper  = Helper::getInstance();
     $success = false;
     if (Utility::dbTableExists($db, $fromTable) && !Utility::dbTableExists($db, $toTable)) {
         $sql     = sprintf('ALTER TABLE ' . $db->prefix((string)$fromTable) . ' RENAME ' . $db->prefix('{$toTable}'));
@@ -55,7 +53,7 @@ function xoopspollChangeTableName(\XoopsDatabase $db, $fromTable, $toTable)
 }
 
 /**
- * @param \XoopsModule  $module
+ * @param \XoopsModule $module
  * @param              $prev_version
  * @return bool
  */
@@ -64,7 +62,7 @@ function xoops_module_update_xoopspoll(\XoopsModule $module, $prev_version)
     // referer check
     $success = false;
     $ref     = xoops_getenv('HTTP_REFERER');
-    $helper = Helper::getInstance();
+    $helper  = Helper::getInstance();
     if (('' === $ref) || 0 === mb_strpos($ref, $GLOBALS['xoops']->url('modules/system/admin.php'))) {
         /* module specific part */
         require_once $helper->path('include/oninstall.php');

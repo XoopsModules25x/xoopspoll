@@ -34,9 +34,9 @@
  * @author    :: XOOPS Module Team
  */
 
+use Xmf\Module\Admin;
 use Xmf\Request;
-use XoopsModules\Xoopspoll\{
-    Constants,
+use XoopsModules\Xoopspoll\{Constants,
     Helper,
     Utility
 };
@@ -50,7 +50,7 @@ switch ($op) {
     case 'list':
     default:
         xoops_cp_header();
-        $adminObject = \Xmf\Module\Admin::getInstance();
+        $adminObject = Admin::getInstance();
 
         $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation(basename(__FILE__)));
 
@@ -77,6 +77,7 @@ switch ($op) {
             try {
                 if (false !== $umModule && $umModule->isactive()) {
                     // make sure the umfrage database tables exist
+                    /** @var \XoopsConfigHandler $configHandler */
                     $configHandler  = xoops_getHandler('config');
                     $umModuleConfig = $configHandler->getConfigsByCat(0, $umModule->getVar('mid'));
                     $success        = false;
@@ -201,7 +202,7 @@ switch ($op) {
                 }
             } catch (\Exception $e) {
                 xoops_cp_header();
-                $adminObject = \Xmf\Module\Admin::getInstance();
+                $adminObject = Admin::getInstance();
                 echo $adminObject->displayNavigation(basename(__FILE__));
                 echo "<div class='floatcenter1'>" . xoops_error($e->getMessage(), _AM_XOOPSPOLL_IMPORT_FAILED) . "</div>\n";
                 require_once __DIR__ . '/admin_footer.php';
@@ -209,7 +210,7 @@ switch ($op) {
             }
         } else {
             xoops_cp_header();
-            $adminObject = \Xmf\Module\Admin::getInstance();
+            $adminObject = Admin::getInstance();
             echo $adminObject->displayNavigation(basename(__FILE__));
             xoops_confirm(['op' => 'umfrage', 'ok' => 1], $_SERVER['SCRIPT_NAME'], _AM_XOOPSPOLL_RUSUREUMFRAGE);
             require_once __DIR__ . '/admin_footer.php';

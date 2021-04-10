@@ -27,8 +27,7 @@
  * @return array
  */
 
-use XoopsModules\Xoopspoll\{
-    Helper,
+use XoopsModules\Xoopspoll\{Helper,
     PollHandler
 };
 
@@ -41,8 +40,8 @@ use XoopsModules\Xoopspoll\{
 function b_marquee_xoopspoll($limit, $dateformat, $itemssize)
 {
     require_once $GLOBALS['xoops']->path('modules/marquee/include/functions.php');
-    $block       = [];
-    $myts        = \MyTextSanitizer::getInstance();
+    $block = [];
+    $myts  = \MyTextSanitizer::getInstance();
     /** @var PollHandler $pollHandler */
     $pollHandler = Helper::getInstance()->getHandler('Poll');
     $criteria    = new \CriteriaCompo();
@@ -55,7 +54,7 @@ function b_marquee_xoopspoll($limit, $dateformat, $itemssize)
     $pollObjs   = $pollHandler->getAll($criteria, $pollFields);
     foreach ($pollObjs as $pollObj) {
         $pollValues = $pollObj->getValues();
-        $title      = $myts->htmlSpecialChars($pollValues['question']);
+        $title      = htmlspecialchars($pollValues['question']);
         if ((int)$itemssize > 0) {
             $title = xoops_substr($title, 0, $itemssize + 3);
         }

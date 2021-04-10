@@ -13,26 +13,26 @@
  * Feedback plugin for xoops modules
  *
  * @copyright      XOOPS Project  (https://xoops.org)
- * @license        GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
+ * @license        GNU GPL 2 or later (https://www.gnu.org/licenses/gpl-2.0.html)
  * @author         Michael Beck <mambax7@gmailc.com>
  * @author         Wedega - Email:<webmaster@wedega.com>
  * @author         Fernando Santos (topet05) <fernando@mastop.com.br>
  */
 
+use Xmf\Module\Admin;
 use Xmf\Request;
-use XoopsModules\Xoopspoll\{
-    Common
+use XoopsModules\Xoopspoll\{Common
 };
 
 include __DIR__ . '/admin_header.php';
 
-$adminObject = \Xmf\Module\Admin::getInstance();
+$adminObject = Admin::getInstance();
 
 $feedback = new Common\ModuleFeedback();
 
 // It recovered the value of argument op in URL$
-$op            = Request::getString('op', 'list');
-$moduleDirName = $GLOBALS['xoopsModule']->getVar('dirname');
+$op                 = Request::getString('op', 'list');
+$moduleDirName      = $GLOBALS['xoopsModule']->getVar('dirname');
 $moduleDirNameUpper = mb_strtoupper($moduleDirName);
 xoops_loadLanguage('feedback', $moduleDirName);
 
@@ -98,4 +98,4 @@ switch ($op) {
 
         break;
 }
-require __DIR__ . '/admin_footer.php';
+require_once __DIR__ . '/admin_footer.php';

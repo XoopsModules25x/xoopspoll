@@ -41,7 +41,6 @@ use Xmf\Request;
 
 Helper::getInstance()->loadLanguage('main');
 
-
 /**
  * Class Renderer
  */
@@ -53,7 +52,6 @@ class Renderer
     protected $optionHandler;
     protected $logHandler;
     protected $helper;
-
     // constructor(s)
 
     /**
@@ -62,15 +60,11 @@ class Renderer
      */
     public function __construct($poll = null, $helper = null)
     {
-        if (null === $helper) {
-            $this->helper = Helper::getInstance();
-        } else {
-            $this->helper = $helper;
-        }
+$this->helper = $helper ?? Helper::getInstance();
         // setup handlers
-        $this->pollHandler   =  $this->helper->getHandler('Poll');
-        $this->optionHandler =  $this->helper->getHandler('Option');
-        $this->logHandler    =  $this->helper->getHandler('Log');
+        $this->pollHandler   = $this->helper->getHandler('Poll');
+        $this->optionHandler = $this->helper->getHandler('Option');
+        $this->logHandler    = $this->helper->getHandler('Log');
 
         if ($poll instanceof Poll) {
             $this->pollObj = $poll;
@@ -122,7 +116,7 @@ class Renderer
                 'text'  => $optionObj->getVar('option_text'),
             ];
         }
-        $uid = (isset($GLOBALS['xoopsUser'])
+        $uid      = (isset($GLOBALS['xoopsUser'])
                      && \is_object($GLOBALS['xoopsUser'])) ? $GLOBALS['xoopsUser']->getVar('uid') : 0;
         $can_vote = false;
         if ($this->pollObj->isAllowedToVote()
@@ -131,7 +125,7 @@ class Renderer
         }
         /*
                 $tpl->assign('poll', array(
-                                       'question'     => $myts->htmlSpecialChars($this->pollObj->getVar('question')),
+                                       'question'     => htmlspecialchars($this->pollObj->getVar('question')),
                                        'pollId'       => $this->pollObj->getVar('poll_id'),
                                        'viewresults'  => $GLOBALS['xoops']->url("modules/xoopspoll/pollresults.php") . "?poll_id=" . $this->pollObj->getVar('poll_id'),
                                        'options'      => $options,
@@ -141,14 +135,14 @@ class Renderer
         $tpl->assign(
             [
                 'poll'         => [
-                    'question'    => $myts->htmlSpecialChars($this->pollObj->getVar('question')),
+                    'question'    => htmlspecialchars($this->pollObj->getVar('question')),
                     'pollId'      => $this->pollObj->getVar('poll_id'),
                     'viewresults' => $GLOBALS['xoops']->url('modules/xoopspoll/pollresults.php') . '?poll_id=' . $this->pollObj->getVar('poll_id'),
                     'options'     => $options ?? '',
                     'description' => $myts->displayTarea($myts->undoHtmlSpecialChars($this->pollObj->getVar('description')), 1),
                 ],
-                         'can_vote'     => $can_vote,
-                         'action'       => $GLOBALS['xoops']->url('modules/xoopspoll/index.php'),
+                'can_vote'     => $can_vote,
+                'action'       => $GLOBALS['xoops']->url('modules/xoopspoll/index.php'),
                 'lang_vote'    => \_MD_XOOPSPOLL_VOTE,
                 'lang_results' => \_MD_XOOPSPOLL_RESULTS,
             ]
@@ -201,9 +195,9 @@ class Renderer
             /** @var \XoopsModuleHandler $moduleHandler */
             $moduleHandler = \xoops_getHandler('module');
             $configHandler = \xoops_getHandler('config');
-            $xp_module      = $moduleHandler->getByDirname('xoopspoll');
-            $module_id      = $xp_module->getVar('mid');
-            $xp_config      = $configHandler->getConfigsByCat(0, $module_id);
+            $xp_module     = $moduleHandler->getByDirname('xoopspoll');
+            $module_id     = $xp_module->getVar('mid');
+            $xp_config     = $configHandler->getConfigsByCat(0, $module_id);
 
             if ($xp_config['disp_vote_nums']) {
                 $options[$i]['percent'] = \sprintf(' %01.1f%% (%d)', $percent, $optionVars['option_count']);
@@ -212,13 +206,13 @@ class Renderer
             }
             $options[$i]['text']  = $optionVars['option_text'];
             $options[$i]['total'] = $optionVars['option_count'];
-            $options[$i]['value'] = (int) $percent;
+            $options[$i]['value'] = (int)$percent;
             ++$i;
             unset($optionVars);
         }
-        $uid = (isset($GLOBALS['xoopsUser'])
+        $uid  = (isset($GLOBALS['xoopsUser'])
                  && \is_object($GLOBALS['xoopsUser'])) ? $GLOBALS['xoopsUser']->getVar('uid') : 0;
-            $vote = null;
+        $vote = null;
         if (!$this->pollObj->hasExpired() && $this->pollObj->isAllowedToVote()
             && !$this->logHandler->hasVoted($this->pollObj->getVar('poll_id'), \xoops_getenv('REMOTE_ADDR'), $uid)) {
             $vote = "<a href='" . $GLOBALS['xoops']->url('modules/xoopspoll/index.php') . '?poll_id=' . $this->pollObj->getVar('poll_id') . "'>" . \_MD_XOOPSPOLL_VOTE_NOW . '</a>';
@@ -233,13 +227,13 @@ class Renderer
         $tpl->assign(
             'poll',
             [
-            'question'    => $myts->htmlSpecialChars($this->pollObj->getVar('question')),
-            'end_text'    => $xuEndFormatted,
-            'start_text'  => $xuStartFormatted,
-            'totalVotes'  => $totalVotes,
-            'totalVoters' => $totalVoters,
-            'vote'        => $vote,
-            'options'     => $options,
+                'question'    => htmlspecialchars($this->pollObj->getVar('question')),
+                'end_text'    => $xuEndFormatted,
+                'start_text'  => $xuStartFormatted,
+                'totalVotes'  => $totalVotes,
+                'totalVoters' => $totalVoters,
+                'vote'        => $vote,
+                'options'     => $options,
                 'description' => $this->pollObj->getVar('description'), //allow html
             ]
         );
