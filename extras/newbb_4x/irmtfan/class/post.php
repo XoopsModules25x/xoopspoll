@@ -745,7 +745,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
      * @param $post
      * @return mixed
      */
-    public function getPostForPDF(&$post)
+    public function getPostForPDF($post)
     {
         return $post->getPostBody(true);
     }
@@ -754,7 +754,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
      * @param $post
      * @return mixed
      */
-    public function getPostForPrint(&$post)
+    public function getPostForPrint($post)
     {
         return $post->getPostBody();
     }
@@ -1006,7 +1006,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
      * @param bool  $force
      * @return bool
      */
-    private function _delete(&$post, $force = false)
+    private function _delete($post, $force = false)
     {
         if ((!$post instanceof Post) || (0 === $post->getVar('post_id'))) {
             return false;
