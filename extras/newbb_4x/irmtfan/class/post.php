@@ -179,7 +179,7 @@ class Post extends XoopsObject
             $key                          = (string)(time() + $counter++);
             $this->attachment_array[$key] = [
                 'name_saved'   => $name_saved,
-                'name_display' => isset($name_display) ? $name_display : $name_saved,
+                'name_display' => $name_display ?? $name_saved,
                 'mimetype'     => $mimetype,
                 'num_download' => isset($num_download) ? (int)$num_download : 0,
             ];

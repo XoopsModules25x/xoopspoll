@@ -125,7 +125,7 @@ switch ($op) {
         }
 
         /* make sure there's at least one option */
-        $option_text   = isset($_POST['option_text']) ? $_POST['option_text'] : '';
+        $option_text   = $_POST['option_text'] ?? '';
         $option_string = is_array($option_text) ? implode('', $option_text) : $option_text;
         $option_string = trim($option_string);
         if (empty($option_string)) {
@@ -254,7 +254,7 @@ switch ($op) {
             redirect_header($_SERVER['PHP_SELF'], 2, implode('<br>', $GLOBALS['xoopsSecurity']->getErrors()));
         }
 
-        $option_text   = isset($_POST['option_text']) ? $_POST['option_text'] : '';
+        $option_text   = $_POST['option_text'] ?? '';
         $option_string = is_array($option_text) ? implode('', $option_text) : $option_text;
         $option_string = trim($option_string);
         if (empty($option_string)) {
