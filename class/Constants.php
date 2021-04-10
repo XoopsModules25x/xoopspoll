@@ -25,7 +25,6 @@ namespace XoopsModules\Xoopspoll;
  along with this program; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
-
 /**
  * XoopsPoll module
  *
@@ -42,6 +41,8 @@ namespace XoopsModules\Xoopspoll;
  * @package  ::  xoopspoll
  * @since    ::  1.40
  **/
+
+
 interface Constants
 {
     /**#@+
@@ -50,138 +51,138 @@ interface Constants
     /**
      *  indicates a poll has not been emailed
      */
-    const POLL_NOT_MAILED = 0;
+    public const POLL_NOT_MAILED = 0;
     /**
      *  indicates a poll has been emailed
      */
-    const POLL_MAILED = 1;
+    public const POLL_MAILED = 1;
     /**
      *  indicates a poll should nto be emailed to voter
      */
-    const NOT_MAIL_POLL_TO_VOTER = 0;
+    public const NOT_MAIL_POLL_TO_VOTER = 0;
     /**
      *  indicates poll should be emailed to voter
      */
-    const MAIL_POLL_TO_VOTER = 1;
+    public const MAIL_POLL_TO_VOTER = 1;
     /**
      *  indicates admin should not be notified
      */
-    const NOTIFICATION_DISABLED = 0;
+    public const NOTIFICATION_DISABLED = 0;
     /**
      *  indicates admin should be notified
      */
-    const NOTIFICATION_ENABLED = 1;
+    public const NOTIFICATION_ENABLED = 1;
     /**
      *  do not reset poll results
      */
-    const DO_NOT_RESET_RESULTS = 0;
+    public const DO_NOT_RESET_RESULTS = 0;
     /**
      *  reset poll results
      */
-    const RESET_RESULTS = 1;
+    public const RESET_RESULTS = 1;
     /**
      * default number of elements to show on a page
      */
-    const DEFAULT_POLL_PAGE_LIMIT = 30;
+    public const DEFAULT_POLL_PAGE_LIMIT = 30;
     /**
      * default amount of time for a poll to be active in seconds
      */
-    const DEFAULT_POLL_DURATION = 864000;
+    public const DEFAULT_POLL_DURATION = 864000;
     /**
      * no delay XOOPS redirect delay (in seconds)
      */
-    const REDIRECT_DELAY_NONE = 0;
+    public const REDIRECT_DELAY_NONE = 0;
     /**
      * short XOOPS redirect delay (in seconds)
      */
-    const REDIRECT_DELAY_SHORT = 1;
+    public const REDIRECT_DELAY_SHORT = 1;
     /**
      * medium XOOPS redirect delay (in seconds)
      */
-    const REDIRECT_DELAY_MEDIUM = 3;
+    public const REDIRECT_DELAY_MEDIUM = 3;
     /**
      * long XOOPS redirect delay (in seconds)
      */
-    const REDIRECT_DELAY_LONG = 7;
+    public const REDIRECT_DELAY_LONG = 7;
     /**
      * additional blank poll options to be added in form
      */
-    const NUM_ADDTL_OPTIONS = 5;
+    public const NUM_ADDTL_OPTIONS = 5;
     /**
      * poll results visibility option
      * {@internal Do NOT change these after module is installed}
      */
-    const HIDE_NEVER = 0;
+    public const HIDE_NEVER = 0;
     /**
      * poll results visibility option
      * {@internal Do NOT change these after module is installed}
      */
-    const HIDE_END = 1;
+    public const HIDE_END = 1;
     /**
      * poll results visibility option
      * {@internal Do NOT change these after module is installed}
      */
-    const HIDE_VOTED = 2;
+    public const HIDE_VOTED = 2;
     /**
      * poll results visibility option
      * {@internal Do NOT change these after module is installed}
      */
-    const HIDE_ALWAYS = 3;
+    public const HIDE_ALWAYS = 3;
     /**
      * value indicates poll is displayed in block
      */
-    const DISPLAY_POLL_IN_BLOCK = 1;
+    public const DISPLAY_POLL_IN_BLOCK = 1;
     /**
      * value indicates poll is NOT displayed in block
      */
-    const DO_NOT_DISPLAY_POLL_IN_BLOCK = 0;
+    public const DO_NOT_DISPLAY_POLL_IN_BLOCK = 0;
     /**
      * value indicates multiple selections are available in poll
      */
-    const MULTIPLE_SELECT_POLL = 1;
+    public const MULTIPLE_SELECT_POLL = 1;
     /**
      * value indicates multiple selections are not available in poll
      */
-    const NOT_MULTIPLE_SELECT_POLL = 0;
+    public const NOT_MULTIPLE_SELECT_POLL = 0;
     /**
      * value indicates unlimited selections allowed in multiple selection polls
      */
-    const MULTIPLE_SELECT_LIMITLESS = 0;
+    public const MULTIPLE_SELECT_LIMITLESS = 0;
     /**
      * value indicates poll options are shown as select box
      */
-    const POLL_OPTIONS_SELECT = 0;
+    public const POLL_OPTIONS_SELECT = 0;
     /**
      * value indicates poll options are shown as list
      */
-    const POLL_OPTIONS_LIST = 1;
+    public const POLL_OPTIONS_LIST = 1;
     /**
      * anonymous voting in poll allowed
      */
-    const ANONYMOUS_VOTING_ALLOWED = 1;
+    public const ANONYMOUS_VOTING_ALLOWED = 1;
     /**
      * anonymous voting in poll not allowed
      */
-    const ANONYMOUS_VOTING_DISALLOWED = 0;
+    public const ANONYMOUS_VOTING_DISALLOWED = 0;
     /**
      * default poll weight for display order
      */
-    const DEFAULT_WEIGHT = 0;
+    public const DEFAULT_WEIGHT = 0;
     /**
      * do not look up host
      */
-    const DO_NOT_LOOK_UP_HOST = 0;
+    public const DO_NOT_LOOK_UP_HOST = 0;
     /**
      * look up host
      */
-    const LOOK_UP_HOST = 1;
+    public const LOOK_UP_HOST = 1;
     /**
      * confirm not ok to take action
      */
-    const CONFIRM_NOT_OK = 0;
+    public const CONFIRM_NOT_OK = 0;
     /**
      * confirm ok to take action
      */
-    const CONFIRM_OK = 1;
+    public const CONFIRM_OK = 1;
     /**#@-*/
 }
