@@ -417,7 +417,11 @@ if ($GLOBALS['xoopsUser']->isAdmin($xoopsModule->mid())) {
         $myblock->setVar('visible', $visible);
         $myblock->setVar('side', $side);
         $myblock->setVar('bcachetime', $bcachetime);
-        $myblock->store();
+//        $myblock->store();
+
+        /** @var \XoopsBlockHandler $blkhandler */
+        $blkhandler = xoops_getHandler('block');
+        return $blkhandler->insert($myblock);
     }
 
     /**
@@ -481,7 +485,7 @@ if ($GLOBALS['xoopsUser']->isAdmin($xoopsModule->mid())) {
      */
     function updateBlock($bid, $btitle, $bside, $bweight, $bvisible, $bcachetime, $bmodule, $options, $groups)
     {
-        $myblock = new XoopsBlock($bid);
+        $myblock = new \XoopsBlock($bid);
         $myblock->setVar('title', $btitle);
         $myblock->setVar('weight', $bweight);
         $myblock->setVar('visible', $bvisible);
@@ -501,7 +505,10 @@ if ($GLOBALS['xoopsUser']->isAdmin($xoopsModule->mid())) {
                 $myblock->setVar('options', $options);
             }
         }
-        $myblock->store();
+//        $myblock->store();
+        /** @var \XoopsBlockHandler $blkhandler */
+        $blkhandler = xoops_getHandler('block');
+        return $blkhandler->insert($myblock);
 
         global $xoopsDB;
 
