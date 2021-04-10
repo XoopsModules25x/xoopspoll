@@ -221,8 +221,8 @@ if (isset($_POST['submit'])) {
 
                     $poll = new Umfrage($poll_id);
                     if ($poll->delete() !== false) {
-                        UmfrageOption::deleteByPollId($poll_id);
-                        UmfrageLog::deleteByPollId($poll_id);
+                        (new UmfrageOption)->deleteByPollId($poll_id);
+                        (new UmfrageLog)->deleteByPollId($poll_id);
                         xoops_comment_delete($xoopsModule->getVar('mid'), $poll_id);
                     }
                 }

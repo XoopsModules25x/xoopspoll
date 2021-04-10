@@ -134,7 +134,7 @@ if ('xoopspoll' === $pollmodules) {
 } else { //Umfrage
     $poll = new \Umfrage($poll_id);
     if (is_object($xoopsUser)) {
-        if (\UmfrageLog::hasVoted($poll_id, $_SERVER['REMOTE_ADDR'], $xoopsUser->getVar('uid'))) {
+        if ((new UmfrageLog)->hasVoted($poll_id, $_SERVER['REMOTE_ADDR'], $xoopsUser->getVar('uid'))) {
             $msg = _PL_ALREADYVOTED;
             setcookie("bb_polls[$poll_id]", 1);
         } else {
@@ -145,7 +145,7 @@ if ('xoopspoll' === $pollmodules) {
             setcookie("bb_polls[$poll_id]", 1);
         }
     } else {
-        if (\UmfrageLog::hasVoted($poll_id, $_SERVER['REMOTE_ADDR'])) {
+        if ((new UmfrageLog)->hasVoted($poll_id, $_SERVER['REMOTE_ADDR'])) {
             $msg = _PL_ALREADYVOTED;
             setcookie("bb_polls[$poll_id]", 1);
         } else {
