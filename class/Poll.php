@@ -261,7 +261,7 @@ class Poll extends \XoopsObject
             'height' => '350px',
             'name'   => 'description',
             //                           'value'  => ($this->getVar('description'))
-            'value'  => htmlspecialchars($this->getVar('description')),
+            'value'  => htmlspecialchars($this->getVar('description'), ENT_QUOTES | ENT_HTML5),
         ];
         $desc_text     = new \XoopsFormEditor(\_AM_XOOPSPOLL_POLLDESC, 'description', $editorConfigs);
         $pollForm->addElement($desc_text);

@@ -324,7 +324,7 @@ switch ($op) {
                 'poll_id' => $pollId,
             ],
             $_SERVER['SCRIPT_NAME'],
-            sprintf(_AM_XOOPSPOLL_RUSUREDEL, htmlspecialchars($pollObj->getVar('question')))
+            sprintf(_AM_XOOPSPOLL_RUSUREDEL, htmlspecialchars($pollObj->getVar('question'), ENT_QUOTES | ENT_HTML5))
         );
         require_once __DIR__ . '/admin_footer.php';
         //    xoops_cp_footer();

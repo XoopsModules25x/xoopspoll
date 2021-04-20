@@ -93,7 +93,7 @@ return (object)[
         'height' => '350px',
         'name'   => 'description',
         //                           'value'  => ($this->getVar('description'))
-        'value'  => htmlspecialchars($this->getVar('description')),
+        'value'  => htmlspecialchars($this->getVar('description'), ENT_QUOTES | ENT_HTML5),
     ],
 
     'modCopyright' => "<a href='https://xoops.org' title='XOOPS Project' target='_blank'>
