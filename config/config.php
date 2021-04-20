@@ -83,7 +83,7 @@ return (object)[
         //            'totalsubmitted'  => $helper->getHandler('Item')->getItemsCount(-1, [Constants::PUBLISHER_STATUS_SUBMITTED]),
     ],
 
-    'editorConfigs' => [
+/*    'editorConfigs' => [
         //                           'editor' => $GLOBALS['xoopsModuleConfig']['useeditor'],
         //                           'editor' => $xp_config['useeditor'],
         'editor' => $sys_config['general_editor'],
@@ -94,7 +94,7 @@ return (object)[
         'name'   => 'description',
         //                           'value'  => ($this->getVar('description'))
         'value'  => htmlspecialchars($this->getVar('description'), ENT_QUOTES | ENT_HTML5),
-    ],
+    ],*/
 
     'modCopyright' => "<a href='https://xoops.org' title='XOOPS Project' target='_blank'>
                      <img src='" . Admin::iconUrl('xoopsmicrobutton.gif') . "' alt='XOOPS Project'></a>",
