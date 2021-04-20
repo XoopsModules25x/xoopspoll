@@ -12,7 +12,7 @@ namespace XoopsModules\Xoopspoll\Common;
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-use \XoopsModules\Xoopspoll\Common;
+use XoopsModules\Xoopspoll\Common;
 
 /**
  * Class Migrate synchronize existing tables with target schema
