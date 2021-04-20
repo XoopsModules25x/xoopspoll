@@ -148,7 +148,7 @@ $this->helper = $helper ?? Helper::getInstance();
     /**
      * Generates an html select box with options
      * @param mixed $pid the select box is created for this poll id
-     * @return string html select box
+     * @return \XoopsFormElementTray html select box
      */
     public function renderOptionFormTray($pid = 0)
     {

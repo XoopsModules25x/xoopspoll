@@ -354,7 +354,7 @@ class Poll extends \XoopsObject
 
     /**
      * Method determines if current user can view the results of this poll
-     * @return mixed visibility of this poll's results (true if visible, msg if not)
+     * @return bool|string visibility of this poll's results (true if visible, msg if not)
      */
     public function isResultVisible()
     {
