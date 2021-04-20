@@ -21,7 +21,6 @@ require_once __DIR__ . '/admin_header.php';
 $moduleDirName      = \basename(\dirname(__DIR__));
 $moduleDirNameUpper = mb_strtoupper($moduleDirName); //$capsDirName
 
-/** @var Helper $helper */
 $helper = Helper::getInstance();
 
 $helper->loadLanguage('blocksadmin');

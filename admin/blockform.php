@@ -20,7 +20,6 @@ require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 $moduleDirName      = \basename(\dirname(__DIR__));
 $moduleDirNameUpper = mb_strtoupper($moduleDirName); //$capsDirName
 
-/** @var Helper $helper */
 $helper = Helper::getInstance();
 $helper->loadLanguage('blocksadmin');
 

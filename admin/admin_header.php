@@ -41,7 +41,6 @@ require dirname(__DIR__) . '/include/common.php';
 
 $moduleDirName = \basename(\dirname(__DIR__));
 
-/** @var Helper $helper */
 $helper = Helper::getInstance();
 
 /** @var Admin $adminObject */
