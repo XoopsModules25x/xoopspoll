@@ -20,7 +20,7 @@
         <{/foreach}>
         </tbody>
         <tfoot>
-        <{if "" != $lang_multi}>
+        <{if "" != $lang_multi|default:''}>
             <tr>
                 <td class='center foot' colspan='2'><{$lang_multi}></td>
             </tr>
@@ -31,7 +31,7 @@
                 <{if $can_vote}>
                 <input type='submit' value='<{$lang_vote}>'>&nbsp;
                 <{/if}>
-                <{if ($voteCount > 0)}>
+                <{if ($voteCount|default:0 > 0)}>
                 <input type='button' value='<{$lang_results}>' onclick="location='<{$poll.viewresults}>'">
                 <{/if}>
             </td>
