@@ -571,7 +571,7 @@ if ($pollmodules) {
 
             $hasvoted = 0;
             if ($uid > 0) {
-                if ((new UmfrageLog)->hasVoted($topic_obj->getVar('poll_id'), xoops_getenv('REMOTE_ADDR'), $uid)) {
+                if ((new UmfrageLog())->hasVoted($topic_obj->getVar('poll_id'), xoops_getenv('REMOTE_ADDR'), $uid)) {
                     $hasvoted = 1;
                 }
             } else {
@@ -588,7 +588,7 @@ if ($pollmodules) {
                 ]
             );
 
-            if ((new UmfrageLog)->hasVoted($topic_obj->getVar('poll_id'), $_SERVER['REMOTE_ADDR'], $uid)
+            if ((new UmfrageLog())->hasVoted($topic_obj->getVar('poll_id'), $_SERVER['REMOTE_ADDR'], $uid)
                 || $poll_obj->getVar('end_time') < time()) {
                 $renderer->assignResults($xoopsTpl);
                 //pollresults($forumtopic->getVar('poll_id'));

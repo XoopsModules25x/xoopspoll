@@ -337,7 +337,7 @@ switch ($op) {
             $poll_form->addElement($weight_text);
             $multi_yn = new XoopsFormRadioYN(_MD_POLL_ALLOWMULTI, 'multiple', $poll_obj->getVar('multiple'));
             $poll_form->addElement($multi_yn);
-            $options_arr  =& (new UmfrageOption)->getAllByPollId($poll_id);
+            $options_arr  =& (new UmfrageOption())->getAllByPollId($poll_id);
             $notify_value = 1;
             if (0 !== $poll_obj->getVar('mail_status')) {
                 $notify_value = 0;
@@ -517,7 +517,7 @@ switch ($op) {
                     $option_obj->store();
                 } else {
                     if (false !== $option_obj->delete()) {
-                        (new UmfrageLog)->deleteByOptionId($option->getVar('option_id'));
+                        (new UmfrageLog())->deleteByOptionId($option->getVar('option_id'));
                     }
                 }
                 ++$i;
@@ -665,8 +665,8 @@ switch ($op) {
             $poll_obj = new \Umfrage($poll_id);
             $status   = $poll_obj->delete();
             if (false !== $status) {
-                (new UmfrageOption)->deleteByPollId($poll_id);
-                (new UmfrageLog)->deleteByPollId($poll_id);
+                (new UmfrageOption())->deleteByPollId($poll_id);
+                (new UmfrageLog())->deleteByPollId($poll_id);
             } else {
                 $msg = $poll_obj->getHtmlErrors();
             }
@@ -776,8 +776,8 @@ switch ($op) {
                 exit();
             }
             if (!empty($_POST['reset'])) { // reset all logs
-                (new UmfrageLog)->deleteByPollId($poll_id);
-                (new UmfrageOption)->resetCountByPollId($poll_id);
+                (new UmfrageLog())->deleteByPollId($poll_id);
+                (new UmfrageOption())->resetCountByPollId($poll_id);
                 $poll_obj->updateCount();
             }
         }

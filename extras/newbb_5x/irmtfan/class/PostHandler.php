@@ -425,8 +425,8 @@ class PostHandler extends \XoopsPersistableObjectHandler
 
                                 $poll = new \Umfrage($poll_id);
                                 if (false !== $poll->delete()) {
-                                    (new \UmfrageOption)->deleteByPollId($poll_id);
-                                    (new \UmfrageLog)->deleteByPollId($poll_id);
+                                    (new \UmfrageOption())->deleteByPollId($poll_id);
+                                    (new \UmfrageLog())->deleteByPollId($poll_id);
                                     \xoops_comment_delete($GLOBALS['xoopsModule']->getVar('mid'), $poll_id);
                                 }
                             }
