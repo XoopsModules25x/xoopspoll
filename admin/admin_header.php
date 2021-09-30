@@ -34,10 +34,10 @@ use Xmf\Module\Admin;
 use XoopsModules\Xoopspoll\{Helper
 };
 
-include dirname(__DIR__) . '/preloads/autoloader.php';
+include \dirname(__DIR__) . '/preloads/autoloader.php';
 
-require dirname(__DIR__, 3) . '/include/cp_header.php';
-require dirname(__DIR__) . '/include/common.php';
+require \dirname(__DIR__, 3) . '/include/cp_header.php';
+require \dirname(__DIR__) . '/include/common.php';
 
 $moduleDirName = \basename(\dirname(__DIR__));
 
@@ -46,8 +46,8 @@ $helper = Helper::getInstance();
 /** @var Admin $adminObject */
 $adminObject = Admin::getInstance();
 
-$pathIcon16    = \Xmf\Module\Admin::iconUrl('', 16);
-$pathIcon32    = \Xmf\Module\Admin::iconUrl('', 32);
+$pathIcon16    = \Xmf\Module\Admin::iconUrl('', '16');
+$pathIcon32    = \Xmf\Module\Admin::iconUrl('', '32');
 $pathModIcon32 = $helper->getModule()->getInfo('modicons32');
 
 // Load language files

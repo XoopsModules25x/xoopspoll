@@ -80,18 +80,18 @@ class Option extends XoopsObject
     {
         parent::__construct();
         //        $this->db = \XoopsDatabaseFactory::getDatabaseConnection();
-        $this->initVar('option_id', XOBJ_DTYPE_INT, null, false);
-        $this->initVar('poll_id', XOBJ_DTYPE_INT, null, true);
-        $this->initVar('option_text', XOBJ_DTYPE_TXTBOX, null, true, 255);
-        $this->initVar('option_count', XOBJ_DTYPE_INT, 0, false);
-        $this->initVar('option_color', XOBJ_DTYPE_OTHER, null, false);
+        $this->initVar('option_id', \XOBJ_DTYPE_INT, null, false);
+        $this->initVar('poll_id', \XOBJ_DTYPE_INT, null, true);
+        $this->initVar('option_text', \XOBJ_DTYPE_TXTBOX, null, true, 255);
+        $this->initVar('option_count', \XOBJ_DTYPE_INT, 0, false);
+        $this->initVar('option_color', \XOBJ_DTYPE_OTHER, null, false);
 
         /**
          * {@internal The following is provided for backward compatibility with newbb/xforum}
          */
         $this->optHandler = $this->getStaticOptHandler();
         if (!empty($id)) {
-            if (is_array($id)) {
+            if (\is_array($id)) {
                 $this->option = $this->optHandler->create();
                 $this->option->assignVars($id);
             } else {
@@ -113,7 +113,7 @@ class Option extends XoopsObject
      */
     public function store()
     {
-        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
+        $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use Poll and PollHandler classes instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
 
         return $this->optHandler->insert($this->option);
@@ -127,7 +127,7 @@ class Option extends XoopsObject
      */
     public function deleteByPollId($pid)
     {
-        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
+        $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use PollHandler::deleteAll instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
         $criteria = new Criteria('poll_id', (int)$pid, '=');
 
@@ -142,7 +142,7 @@ class Option extends XoopsObject
      */
     public function getAllByPollId($pid)
     {
-        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
+        $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use PollHandler::getAll instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
         $criteria = new Criteria('poll_id', (int)$pid, '=');
 
@@ -157,7 +157,7 @@ class Option extends XoopsObject
      */
     public function resetCountByPollId($pid)
     {
-        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
+        $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use PollHandler::updateAll instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
         $soptHandler = $this->getStaticOptHandler();
         $criteria    = new Criteria('poll_id', (int)$pid, '=');

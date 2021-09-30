@@ -23,7 +23,7 @@
  * @uses      xoops_getHandler() used to load information about the module
  * @uses      XoopsModule::getByDirname() to load information if module info not currently present
  */
-$pathIcon32 = Xmf\Module\Admin::iconUrl('', 32);
+$pathIcon32 = Xmf\Module\Admin::iconUrl('', '32');
 
 echo "<div class='adminfooter'>\n" . "  <div style='text-align: center;'>\n" . "    <a href='https://xoops.org' rel='external'><img src='{$pathIcon32}/xoopsmicrobutton.gif' alt='XOOPS' title='XOOPS'></a>\n" . "  </div>\n" . '  ' . _AM_MODULEADMIN_ADMIN_FOOTER . "\n" . '</div>';
 

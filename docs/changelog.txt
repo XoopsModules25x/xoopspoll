@@ -2,6 +2,9 @@
 <hr>
 - namespaces, autoloading (mamba)
 - fixed bugs with namespaces in newbb 5.0 (axelf/goffy)
+- cosmetics (mamba)
+- PHP8 template defaults (mamba)
+
 
 WORK IN PROGRESS
 

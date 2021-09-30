@@ -21,10 +21,10 @@ use XoopsModules\Xoopspoll\{Common,
 };
 use Xmf\Module\Admin;
 
-require dirname(__DIR__) . '/preloads/autoloader.php';
+require \dirname(__DIR__) . '/preloads/autoloader.php';
 
 $moduleDirName      = \basename(\dirname(__DIR__));
-$moduleDirNameUpper = mb_strtoupper($moduleDirName); //$capsDirName
+$moduleDirNameUpper = \mb_strtoupper($moduleDirName);
 
 /** @var \XoopsDatabase $db */
 /** @var Helper $helper */
@@ -56,8 +56,8 @@ if (!defined($moduleDirNameUpper . '_CONSTANTS_DEFINED')) {
     define($moduleDirNameUpper . '_CONSTANTS_DEFINED', 1);
 }
 
-$pathIcon16 = Admin::iconUrl('', 16);
-$pathIcon32 = Admin::iconUrl('', 32);
+$pathIcon16 = Admin::iconUrl('', '16');
+$pathIcon32 = Admin::iconUrl('', '32');
 //$pathModIcon16 = $helper->getModule()->getInfo('modicons16');
 //$pathModIcon32 = $helper->getModule()->getInfo('modicons32');
 

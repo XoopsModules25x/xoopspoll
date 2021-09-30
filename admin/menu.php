@@ -39,7 +39,7 @@ use XoopsModules\Xoopspoll\{Common,
 };
 use Xmf\Module\Admin;
 
-include dirname(__DIR__) . '/preloads/autoloader.php';
+include \dirname(__DIR__) . '/preloads/autoloader.php';
 
 $moduleDirName      = \basename(\dirname(__DIR__));
 $moduleDirNameUpper = mb_strtoupper($moduleDirName);

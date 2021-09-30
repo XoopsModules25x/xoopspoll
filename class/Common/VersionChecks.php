@@ -55,7 +55,7 @@ trait VersionChecks
     /**
      * Verifies PHP version meets minimum requirements for this module
      * @static
-     * @param \XoopsModule|null $module
+     * @param \XoopsModule|bool|null $module
      *
      * @return bool true if meets requirements, false if not
      */
@@ -122,7 +122,7 @@ trait VersionChecks
                     $latestVersion     = $file[0]->tag_name;
                     $prerelease        = $file[0]->prerelease;
                     if ('master' !== $latestVersionLink) {
-                        $update = \constant('CO_' . $moduleDirNameUpper . '_' . '' . 'NEW_VERSION') . $latestVersion;
+                        $update = \constant('CO_' . $moduleDirNameUpper . '_' . 'NEW_VERSION') . $latestVersion;
                     }
                     //"PHP-standardized" version
                     $latestVersion = mb_strtolower($latestVersion);

@@ -51,7 +51,9 @@
 use Xmf\Module\Admin;
 use Xmf\Request;
 use XoopsModules\Newbb;
-use XoopsModules\Xoopspoll\{Constants,
+use XoopsModules\Xoopspoll\{
+    Common\Configurator,
+    Constants,
     FormDateTimePicker,
     Helper,
     Poll,
@@ -65,6 +67,9 @@ xoops_load('xoopsformloader');
 xoops_load('xoopslists');
 
 $helper = Helper::getInstance();
+
+$configurator = new Configurator();
+$icons = $configurator->icons;
 
 $op = Request::getString('op', Request::getCmd('op', 'list', 'POST'), 'GET');
 switch ($op) {

@@ -135,10 +135,10 @@ $this->helper = $helper ?? Helper::getInstance();
         $tpl->assign(
             [
                 'poll'         => [
-                    'question'    => htmlspecialchars($this->pollObj->getVar('question'), ENT_QUOTES | ENT_HTML5),
+                    'question'    => \htmlspecialchars($this->pollObj->getVar('question'), \ENT_QUOTES | \ENT_HTML5),
                     'pollId'      => $this->pollObj->getVar('poll_id'),
                     'viewresults' => $GLOBALS['xoops']->url('modules/xoopspoll/pollresults.php') . '?poll_id=' . $this->pollObj->getVar('poll_id'),
-                    'options'     => $options ?? '',
+                    'options'     => $options ?? [],
                     'description' => $myts->displayTarea($myts->undoHtmlSpecialChars($this->pollObj->getVar('description')), 1),
                 ],
                 'can_vote'     => $can_vote,
@@ -227,7 +227,7 @@ $this->helper = $helper ?? Helper::getInstance();
         $tpl->assign(
             'poll',
             [
-                'question'    => htmlspecialchars($this->pollObj->getVar('question'), ENT_QUOTES | ENT_HTML5),
+                'question'    => \htmlspecialchars($this->pollObj->getVar('question'), \ENT_QUOTES | \ENT_HTML5),
                 'end_text'    => $xuEndFormatted,
                 'start_text'  => $xuStartFormatted,
                 'totalVotes'  => $totalVotes,
