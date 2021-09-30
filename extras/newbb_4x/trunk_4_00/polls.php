@@ -22,11 +22,11 @@
 
 use XoopsModules\Newbb\Helper;
 
-include_once $GLOBALS['xoops']->path('header.php');
+require_once $GLOBALS['xoops']->path('header.php');
 
-include_once $GLOBALS['xoops']->path('class/xoopsformloader.php');
-include_once $GLOBALS['xoops']->path('class/xoopslists.php');
-include_once $GLOBALS['xoops']->path('class/xoopsblock.php');
+require_once $GLOBALS['xoops']->path('class/xoopsformloader.php');
+require_once $GLOBALS['xoops']->path('class/xoopslists.php');
+require_once $GLOBALS['xoops']->path('class/xoopsblock.php');
 xoops_load('XoopsRequest');
 
 // irmtfan correct the way and typo=addmor -> addmore
@@ -64,7 +64,7 @@ if (is_object($xoopspoll) && $xoopspoll->getVar('isactive')) {
     xoops_loadLanguage('admin', 'xoopspoll');
     $xpPollHandler = xoops_getModuleHandler('poll', 'xoopspoll');
 } else {
-    redirect_header($_SERVER['HTTP_REFERER'], 2, _MD_POLLMODULE_ERROR);
+    redirect_header(\Xmf\Request::getString('HTTP_REFERER', '', 'SERVER'), 2, _MD_POLLMODULE_ERROR);
 }
 
 /** @var NewbbTopicHandler $topicHandler */
@@ -130,7 +130,7 @@ switch ($op) {
         $option_string = trim($option_string);
         if (empty($option_string)) {
             // irmtfan - issue with javascript:history.go(-1)
-            redirect_header($_SERVER['HTTP_REFERER'], 2, _MD_ERROROCCURED . ': ' . _MD_POLL_POLLOPTIONS . ' !');
+            redirect_header(\Xmf\Request::getString('HTTP_REFERER', '', 'SERVER'), 2, _MD_ERROROCCURED . ': ' . _MD_POLL_POLLOPTIONS . ' !');
         }
 
         $poll_obj     = $xpPollHandler->get($poll_id);
@@ -215,7 +215,7 @@ switch ($op) {
         }
 
         // clear the template cache so changes take effect immediately
-        include_once $GLOBALS['xoops']->path('class/template.php');
+        require_once $GLOBALS['xoops']->path('class/template.php');
         xoops_template_clear_module_cache($GLOBALS['xoopsModule']->getVar('mid'));
         xoops_template_clear_module_cache($xoopspoll->getVar('mid'));
 
@@ -259,7 +259,7 @@ switch ($op) {
         $option_string = trim($option_string);
         if (empty($option_string)) {
             // irmtfan - issue with javascript:history.go(-1)
-            redirect_header($_SERVER['HTTP_REFERER'], 2, _MD_ERROROCCURED . ': ' . _MD_POLL_POLLOPTIONS . ' !');
+            redirect_header(\Xmf\Request::getString('HTTP_REFERER', '', 'SERVER'), 2, _MD_ERROROCCURED . ': ' . _MD_POLL_POLLOPTIONS . ' !');
         }
 
         $xpOptHandler = xoops_getModuleHandler('option', 'xoopspoll');
@@ -277,7 +277,7 @@ switch ($op) {
             }
             ++$i;
         }
-        include_once $GLOBALS['xoops']->path('class/template.php');
+        require_once $GLOBALS['xoops']->path('class/template.php');
         xoops_template_clear_module_cache($GLOBALS['xoopsModule']->getVar('mid'));
         xoops_template_clear_module_cache($xoopspoll->getVar('mid'));
         redirect_header("polls.php?op=edit&amp;poll_id={$poll_id}&amp;topic_id={$topic_id}", 2, _MD_POLL_DBUPDATED);
@@ -306,7 +306,7 @@ switch ($op) {
             $msg = $xpPollHandler->getHtmlErrors();
         }
         if (false !== $status) {
-            include_once $GLOBALS['xoops']->path('class/template.php');
+            require_once $GLOBALS['xoops']->path('class/template.php');
             xoops_template_clear_module_cache($xoopsModule->getVar('mid'));
             xoops_template_clear_module_cache($xoopspoll->getVar('mid'));
             // delete comments for this poll
@@ -387,7 +387,7 @@ switch ($op) {
         }
 
         // clear the topic votes
-        include_once $GLOBALS['xoops']->path('class/template.php');
+        require_once $GLOBALS['xoops']->path('class/template.php');
         xoops_template_clear_module_cache($xoopsModule->getVar('mid'));
         xoops_template_clear_module_cache($xoopspoll->getVar('mid'));
         redirect_header("viewtopic.php?topic_id={$topic_id}", 1, _MD_POLL_DBUPDATED);

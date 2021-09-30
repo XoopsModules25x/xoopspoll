@@ -3,7 +3,7 @@
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
 //                  Copyright (c) 2000-2016 XOOPS.org                        //
-//                       <http://xoops.org/>                             //
+//                       <http://xoops.org>                             //
 //  ------------------------------------------------------------------------ //
 //  This program is free software; you can redistribute it and/or modify     //
 //  it under the terms of the GNU General Public License as published by     //
@@ -30,7 +30,7 @@
 //  ------------------------------------------------------------------------ //
 use XoopsModules\Newbb\Helper;
 
-include_once __DIR__ . '/header.php';
+require_once __DIR__ . '/header.php';
 
 if (isset($_POST['submit'])) {
     foreach (['forum', 'newforum', 'newtopic'] as $getint) {
@@ -107,7 +107,7 @@ $action['digest']['sql']   = 'topic_digest = 1, digest_time = ' . time();
 // Disable cache
 $xoopsConfig['module_cache'][$xoopsModule->getVar('mid')] = 0;
 // irmtfan include header.php after defining $xoopsOption['template_main']
-include_once XOOPS_ROOT_PATH . '/header.php';
+require_once XOOPS_ROOT_PATH . '/header.php';
 
 if (isset($_POST['submit'])) {
     $mode = $_POST['mode'];
@@ -214,10 +214,10 @@ if (isset($_POST['submit'])) {
                         xoops_comment_delete($xoopsModule->getVar('mid'), $poll_id);
                     }
                 } elseif ('umfrage' === $pollmodul) {
-                    include_once $GLOBALS['xoops']->path('modules/umfrage/class/umfrage.php');
-                    include_once $GLOBALS['xoops']->path('modules/umfrage/class/umfrageoption.php');
-                    include_once $GLOBALS['xoops']->path('modules/umfrage/class/umfragelog.php');
-                    include_once $GLOBALS['xoops']->path('modules/umfrage/class/umfragerenderer.php');
+                    require_once $GLOBALS['xoops']->path('modules/umfrage/class/umfrage.php');
+                    require_once $GLOBALS['xoops']->path('modules/umfrage/class/umfrageoption.php');
+                    require_once $GLOBALS['xoops']->path('modules/umfrage/class/umfragelog.php');
+                    require_once $GLOBALS['xoops']->path('modules/umfrage/class/umfragerenderer.php');
 
                     $poll = new Umfrage($poll_id);
                     if ($poll->delete() !== false) {
@@ -282,7 +282,7 @@ if (isset($_POST['submit'])) {
             echo $action[$mode]['msg'] . "<p><a href='" . XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname') . "/viewtopic.php?topic_id=$topic_id&amp;forum=$newforum'>" . _MD_GOTONEWFORUM . "</a></p><p><a href='" . XOOPS_URL . "/modules/newbb/index.php'>" . _MD_RETURNFORUMINDEX . '</a></p>';
         } else {
             // irmtfan - issue with javascript:history.go(-1)
-            redirect_header($_SERVER['HTTP_REFERER'], 2, _MD_ERRORFORUM);
+            redirect_header(\Xmf\Request::getString('HTTP_REFERER', '', 'SERVER'), 2, _MD_ERRORFORUM);
         }
     } else {
         $topic_id  = $topic_id[0];
@@ -371,16 +371,16 @@ if (isset($_POST['submit'])) {
     }
     if ('merge' === $mode) {
         echo '<tr><td class="bg3">' . _MD_MERGETOPICTO . '</td><td class="bg1">';
-        echo _MD_TOPIC . "ID-$topic_id -> ID: <input name='newtopic' value='' />";
+        echo _MD_TOPIC . "ID-$topic_id -> ID: <input name='newtopic' value=''>";
         echo '</td></tr>';
     }
     echo '<tr class="bg3"><td colspan="2" align="center">';
-    echo "<input type='hidden' name='mode' value='" . $action[$mode]['name'] . "' />";
-    echo "<input type='hidden' name='topic_id' value='" . $topic_id . "' />";
-    echo "<input type='hidden' name='forum' value='" . $forum . "' />";
-    echo "<input type='submit' name='submit' value='" . $action[$mode]['submit'] . "' />";
+    echo "<input type='hidden' name='mode' value='" . $action[$mode]['name'] . "'>";
+    echo "<input type='hidden' name='topic_id' value='" . $topic_id . "'>";
+    echo "<input type='hidden' name='forum' value='" . $forum . "'>";
+    echo "<input type='submit' name='submit' value='" . $action[$mode]['submit'] . "'>";
     echo '</td></tr></form></table></td></tr></table>';
 }
 // irmtfan move to footer.php
-include_once __DIR__ . '/footer.php';
+require_once __DIR__ . '/footer.php';
 include $GLOBALS['xoops']->path('footer.php');

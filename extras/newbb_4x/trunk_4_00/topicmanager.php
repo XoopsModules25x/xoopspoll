@@ -19,7 +19,7 @@
 
 use XoopsModules\Newbb\Helper;
 
-include __DIR__ . '/header.php';
+require __DIR__ . '/header.php';
 
 if (isset($_POST['submit'])) {
     foreach (['forum', 'topic_id', 'newforum', 'newtopic'] as $getint) {
@@ -74,7 +74,7 @@ $action['digest']['sql']   = 'topic_digest = 1, digest_time = ' . time();
 
 // Disable cache
 $xoopsConfig['module_cache'][$xoopsModule->getVar('mid')] = 0;
-include XOOPS_ROOT_PATH . '/header.php';
+require XOOPS_ROOT_PATH . '/header.php';
 
 if (isset($_POST['submit'])) {
     $mode = $_POST['mode'];
@@ -92,7 +92,7 @@ if (isset($_POST['submit'])) {
         $newtopic_obj = $topicHandler->get($newtopic);
         /* return false if destination topic is newer or not existing */
         if ($newtopic > $topic_id || !is_object($newtopic_obj)) {
-            redirect_header($_SERVER['HTTP_REFERER'], 2, _MD_ERROR);
+            redirect_header(\Xmf\Request::getString('HTTP_REFERER', '', 'SERVER'), 2, _MD_ERROR);
         }
 
         $criteria_topic = new Criteria('topic_id', $topic_id);
@@ -156,7 +156,7 @@ if (isset($_POST['submit'])) {
             $forumHandler->synchronization($forum);
             echo $action[$mode]['msg'] . "<p><a href='viewtopic.php?topic_id={$topic_id}&amp;forum={$newforum}'>" . _MD_GOTONEWFORUM . "</a></p><p><a href='index.php'>" . _MD_RETURNFORUMINDEX . '</a></p>';
         } else {
-            redirect_header($_SERVER['HTTP_REFERER'], 2, _MD_ERRORFORUM);
+            redirect_header(\Xmf\Request::getString('HTTP_REFERER', '', 'SERVER'), 2, _MD_ERRORFORUM);
         }
     } else {
         $sql = sprintf('UPDATE %s SET ' . $action[$mode]['sql'] . ' WHERE topic_id = %u', $xoopsDB->prefix('bb_topics'), $topic_id);
@@ -215,14 +215,14 @@ if (isset($_POST['submit'])) {
     }
     if ('merge' === $mode) {
         echo '<tr><td class="bg3">' . _MD_MERGETOPICTO . '</td><td class="bg1">';
-        echo _MD_TOPIC . " ID-{$topic_id} -> ID: <input name='newtopic' value='' />";
+        echo _MD_TOPIC . " ID-{$topic_id} -> ID: <input name='newtopic' value=''>";
         echo '</td></tr>';
     }
     echo '<tr class="bg3"><td colspan="2" align="center">';
-    echo "<input type='hidden' name='mode' value='" . $action[$mode]['name'] . "' />";
-    echo "<input type='hidden' name='topic_id' value='" . $topic_id . "' />";
-    echo "<input type='hidden' name='forum' value='" . $forum . "' />";
-    echo "<input type='submit' name='submit' value='" . $action[$mode]['submit'] . "' />";
+    echo "<input type='hidden' name='mode' value='" . $action[$mode]['name'] . "'>";
+    echo "<input type='hidden' name='topic_id' value='" . $topic_id . "'>";
+    echo "<input type='hidden' name='forum' value='" . $forum . "'>";
+    echo "<input type='submit' name='submit' value='" . $action[$mode]['submit'] . "'>";
     echo '</td></tr></form></table></td></tr></table>';
 }
-include XOOPS_ROOT_PATH . '/footer.php';
+require XOOPS_ROOT_PATH . '/footer.php';

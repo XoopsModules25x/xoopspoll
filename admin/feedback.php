@@ -24,7 +24,7 @@ use Xmf\Request;
 use XoopsModules\Xoopspoll\{Common
 };
 
-include __DIR__ . '/admin_header.php';
+require __DIR__ . '/admin_header.php';
 
 $adminObject = Admin::getInstance();
 

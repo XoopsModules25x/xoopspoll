@@ -206,11 +206,11 @@ class Post extends XoopsObject
         if (is_array($attachments) && count($attachments) > 0) {
             $iconHandler = newbb_getIconHandler();
             $mime_path   = $iconHandler->getPath('mime');
-            include_once $GLOBALS['xoops']->path('modules/' . $GLOBALS['xoopsModule']->getVar('dirname', 'n') . '/include/functions.image.php');
+            require_once $GLOBALS['xoops']->path('modules/' . $GLOBALS['xoopsModule']->getVar('dirname', 'n') . '/include/functions.image.php');
             $image_extensions = ['jpg', 'jpeg', 'gif', 'png', 'bmp']; // need improve !!!
             $post_attachment  .= '<br><strong>' . _MD_ATTACHMENT . '</strong>:';
             $post_attachment  .= "<div style='margin: 1em 0; border-top: 1px solid;'></div>\n";
-            //            $post_attachment .= '<br><hr style="height: 1px;" noshade="noshade" /><br>';
+            //            $post_attachment .= '<br><hr style="height: 1px;" noshade="noshade"><br>';
             foreach ($attachments as $key => $att) {
                 $file_extension = ltrim(strrchr($att['name_saved'], '.'), '.');
                 $filetype       = $file_extension;
@@ -223,14 +223,14 @@ class Post extends XoopsObject
                 $file_size = number_format($file_size / 1024, 2) . ' KB';
                 if (in_array(strtolower($file_extension), $image_extensions)
                     && $GLOBALS['xoopsModuleConfig']['media_allowed']) {
-                    $post_attachment .= '<br><img src="' . $icon_filetype . '" alt="' . $filetype . '" /><strong>&nbsp; ' . $att['name_display'] . '</strong> <small>(' . $file_size . ')</small>';
+                    $post_attachment .= '<br><img src="' . $icon_filetype . '" alt="' . $filetype . '"><strong>&nbsp; ' . $att['name_display'] . '</strong> <small>(' . $file_size . ')</small>';
                     $post_attachment .= '<br>' . newbb_attachmentImage($att['name_saved']);
                     $isDisplayed     = true;
                 } else {
                     if (empty($GLOBALS['xoopsModuleConfig']['show_userattach'])) {
                         $post_attachment .= "<a href='"
                                             . $GLOBALS['xoops']->url('/modules/' . $GLOBALS['xoopsModule']->getVar('dirname', 'n') . "/dl_attachment.php?attachid={$key}&amp;post_id=" . $this->getVar('post_id'))
-                                            . "'> <img src='{$icon_filetype}' alt='{$filetype}' /> {$att['name_display']}</a> "
+                                            . "'> <img src='{$icon_filetype}' alt='{$filetype}'> {$att['name_display']}</a> "
                                             . _MD_FILESIZE
                                             . ": {$file_size}; "
                                             . _MD_HITS
@@ -241,7 +241,7 @@ class Post extends XoopsObject
                                             . $GLOBALS['xoops']->url('/modules/' . $GLOBALS['xoopsModule']->getVar('dirname', 'n') . "/dl_attachment.php?attachid={$key}&amp;post_id=" . $this->getVar('post_id'))
                                             . "'> <img src='"
                                             . $icon_filetype
-                                            . "' alt='{$filetype}' /> {$att['name_display']}</a> "
+                                            . "' alt='{$filetype}'> {$att['name_display']}</a> "
                                             . _MD_FILESIZE
                                             . ": {$file_size}; "
                                             . _MD_HITS
@@ -512,9 +512,9 @@ class Post extends XoopsObject
         }
 
         if ($posticon = $this->getVar('icon')) {
-            $post_image = "<a name='{$post_id}'><img src='" . $GLOBALS['xoops']->url("images/subject/{$posticon}") . "' alt='' /></a>";
+            $post_image = "<a name='{$post_id}'><img src='" . $GLOBALS['xoops']->url("images/subject/{$posticon}") . "' alt=''></a>";
         } else {
-            $post_image = "<a name='{$post_id}'><img src='" . $GLOBALS['xoops']->url('images/icons/posticon.gif') . "' alt='' /></a>";
+            $post_image = "<a name='{$post_id}'><img src='" . $GLOBALS['xoops']->url('images/icons/posticon.gif') . "' alt=''></a>";
         }
 
         $thread_buttons = [];
@@ -730,7 +730,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
                   . ' ORDER BY p.post_time DESC';
         $result = $this->db->query($sql, $limit, 0);
         $ret    = [];
-        while ($myrow = $this->db->fetchArray($result)) {
+        while (false !== ($myrow = $this->db->fetchArray($result))) {
             $post = $this->create(false);
             $post->assignVars($myrow);
 
@@ -1069,10 +1069,10 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
                             $poll_moduleHandler = $moduleHandler->getByDirname('umfrage');
                             if (($poll_moduleHandler instanceof XoopsModuleHandler)
                                 && $poll_moduleHandler->isactive()) {
-                                include_once $GLOBALS['xoops']->path('modules/umfrage/class/umfrage.php');
-                                include_once $GLOBALS['xoops']->path('modules/umfrage/class/umfrageoption.php');
-                                include_once $GLOBALS['xoops']->path('modules/umfrage/class/umfragelog.php');
-                                include_once $GLOBALS['xoops']->path('modules/umfrage/class/umfragerenderer.php');
+                                require_once $GLOBALS['xoops']->path('modules/umfrage/class/umfrage.php');
+                                require_once $GLOBALS['xoops']->path('modules/umfrage/class/umfrageoption.php');
+                                require_once $GLOBALS['xoops']->path('modules/umfrage/class/umfragelog.php');
+                                require_once $GLOBALS['xoops']->path('modules/umfrage/class/umfragerenderer.php');
 
                                 $poll = new Umfrage($poll_id);
                                 if (false !== $poll->delete()) {
@@ -1200,7 +1200,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
             //            xoops_error($this->db->error());
             return $ret;
         }
-        while ($myrow = $this->db->fetchArray($result)) {
+        while (false !== ($myrow = $this->db->fetchArray($result))) {
             $post = $this->create(false);
             $post->assignVars($myrow);
             $ret[$myrow['post_id']] = $post;

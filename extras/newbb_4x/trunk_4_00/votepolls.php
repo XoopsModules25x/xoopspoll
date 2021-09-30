@@ -32,7 +32,7 @@ $topicHandler = Helper::getInstance()->getHandler('Topic');
 $topic_obj    = $topicHandler->get($topic_id);
 if (!$topicHandler->getPermission($topic_obj->getVar('forum_id'), $topic_obj->getVar('topic_status'), 'vote')) {
     // irmtfan - issue with javascript:history.go(-1)
-    redirect_header($_SERVER['HTTP_REFERER'], 2, _NOPERM);
+    redirect_header(\Xmf\Request::getString('HTTP_REFERER', '', 'SERVER'), 2, _NOPERM);
 }
 
 if (empty($_POST['option_id'])) {
@@ -53,7 +53,7 @@ if (($xoopspoll instanceof XoopsModule) && $xoopspoll->isactive()) {
     $xpLogHandler  = xoops_getModuleHandler('log', 'xoopspoll');
 } else {
     //no active poll module found
-    redirect_header($_SERVER['HTTP_REFERER'], 2, _MD_POLLMODULE_ERROR);
+    redirect_header(\Xmf\Request::getString('HTTP_REFERER', '', 'SERVER'), 2, _MD_POLLMODULE_ERROR);
 }
 
 $mail_author = false;

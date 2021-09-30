@@ -2,7 +2,7 @@
 /*------------------------------------------------------------------------
                 XOOPS - PHP Content Management System
                     Copyright (c) 2000-2016 XOOPS.org
-                       <http://xoops.org/>
+                       <http://xoops.org>
   ------------------------------------------------------------------------
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@
 // irmtfan enhance include
 use XoopsModules\Newbb\Helper;
 
-include_once __DIR__ . '/header.php';
+require_once __DIR__ . '/header.php';
 $xoopsLogger->startTime('newBB_viewtopic');
 mod_loadFunctions('read', 'newbb');
 mod_loadFunctions('render', 'newbb');
@@ -164,14 +164,14 @@ $GLOBALS['xoopsOption']['template_main'] = 'newbb_viewtopic.tpl';
 // irmtfan remove and move to footer.php
 //$xoopsOption['xoops_module_header']= $xoops_module_header;
 // irmtfan include header.php after defining $xoopsOption['template_main']
-include_once $GLOBALS['xoops']->path('header.php');
+require_once $GLOBALS['xoops']->path('header.php');
 //$xoopsTpl->assign('xoops_module_header', $xoops_module_header);
 // irmtfan new method
 if (!empty($GLOBALS['xoopsModuleConfig']['rss_enable'])) {
     $xoopsTpl->assign(
         'xoops_module_header',
         '
-        <link rel="alternate" type="application/rss+xml" title="' . $xoopsModule->getVar('name') . '-' . $forum_obj->getVar('forum_name') . '" href="' . XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname') . '/rss.php?f=' . $forum_obj->getVar('forum_id') . '" />
+        <link rel="alternate" type="application/rss+xml" title="' . $xoopsModule->getVar('name') . '-' . $forum_obj->getVar('forum_name') . '" href="' . XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname') . '/rss.php?f=' . $forum_obj->getVar('forum_id') . '">
         ' . @$xoopsTpl->get_template_vars('xoops_module_header')
     );
 }
@@ -478,10 +478,10 @@ if ($pollmodules) {
             xoops_load('renderer', 'xoopspoll');
             xoops_loadLanguage('main', 'xoopspoll');
         } else {
-            @include_once $GLOBALS['xoops']->path('modules/umfrage/class/umfrage.php');
-            @include_once $GLOBALS['xoops']->path('modules/umfrage/class/umfrageoption.php');
-            @include_once $GLOBALS['xoops']->path('modules/umfrage/class/umfragelog.php');
-            @include_once $GLOBALS['xoops']->path('modules/umfrage/class/umfragerenderer.php');
+            @require_once $GLOBALS['xoops']->path('modules/umfrage/class/umfrage.php');
+            @require_once $GLOBALS['xoops']->path('modules/umfrage/class/umfrageoption.php');
+            @require_once $GLOBALS['xoops']->path('modules/umfrage/class/umfragelog.php');
+            @require_once $GLOBALS['xoops']->path('modules/umfrage/class/umfragerenderer.php');
         }
     }
 
@@ -824,7 +824,7 @@ if ($GLOBALS['xoopsModuleConfig']['do_tag']) {
     $moduleHandler = xoops_getHandler('module');
     $tagModule     = $moduleHandler->getByDirname('tag');
     if ($tagModule instanceof XoopsModule && $tagModule->isactive()) {
-        @include_once $GLOBALS['xoops']->path('modules/tag/include/tagbar.php');
+        @require_once $GLOBALS['xoops']->path('modules/tag/include/tagbar.php');
         $xoopsTpl->assign('tagbar', tagBar($topic_obj->getVar('topic_tags', 'n')));
     } else {
         $xoopsTpl->assign('tagbar', '');
@@ -833,6 +833,6 @@ if ($GLOBALS['xoopsModuleConfig']['do_tag']) {
     $xoopsTpl->assign('tagbar', '');
 }
 // irmtfan move to footer.php
-include_once __DIR__ . '/footer.php';
+require_once __DIR__ . '/footer.php';
 include $GLOBALS['xoops']->path('footer.php');
 $xoopsLogger->stopTime('newBB_viewtopic');

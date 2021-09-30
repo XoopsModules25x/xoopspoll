@@ -2,7 +2,7 @@
     <div class="forum_title">
         <h2><a href="<{$xoops_url}>/modules/<{$xoops_dirname}>/index.php"><{$lang_forum_index}></a></h2>
         <{*-- irmtfan hardcode removed align="left" --*}>
-        <hr class="align_left width50" size="1"/>
+        <hr class="align_left width50" size="1">
         <a href="<{$xoops_url}>/modules/<{$xoops_dirname}>/index.php"><{$smarty.const._MD_FORUMHOME}></a>
         <span class="delimiter">&raquo;</span>
         <a href="<{$xoops_url}>/modules/<{$xoops_dirname}>/index.php?cat=<{$category.id}>"><{$category.title}></a>
@@ -57,7 +57,7 @@
         <form name="form_posts_admin" action="action.post.php" method="POST"
               onsubmit="if(window.document.form_posts_admin.op.value &lt; 1){return false;}">
             <{$smarty.const._ALL}>: <input type="checkbox" name="post_check" id="post_check" value="1"
-                                           onclick="xoopsCheckAll('form_posts_admin', 'post_check');"/>
+                                           onclick="xoopsCheckAll('form_posts_admin', 'post_check');">
             <{*-- irmtfan mistype mode => op  --*}>
             <select name="op">
                 <option value="0"><{$smarty.const._SELECT}></option>
@@ -68,8 +68,8 @@
                     <option value="restore"><{$smarty.const._MD_RESTORE}></option>
                 <{/if}>
             </select>
-            <input type="hidden" name="topic_id" value="<{$topic_id}>"/>
-            <input type="submit" name="submit" value="<{$smarty.const._SUBMIT}>"/> |
+            <input type="hidden" name="topic_id" value="<{$topic_id}>">
+            <input type="submit" name="submit" value="<{$smarty.const._SUBMIT}>"> |
             <a href="<{$xoops_url}>/modules/<{$xoops_dirname}>/viewtopic.php?topic_id=<{$topic_id}>" target="_self"
                title="<{$smarty.const._MD_TYPE_VIEW}>"><{$smarty.const._MD_TYPE_VIEW}></a>
             <{else}>
@@ -166,14 +166,14 @@
             <fieldset>
                 <input name="term" id="term" type="text" size="15" value="<{$smarty.const._MD_SEARCHTOPIC}>..."
                        onBlur="if(this.value=='') this.value='<{$smarty.const._MD_SEARCHTOPIC}>...'"
-                       onFocus="if(this.value =='<{$smarty.const._MD_SEARCHTOPIC}>...' ) this.value=''"/>
-                <input type="hidden" name="forum" id="forum" value="<{$forum_id}>"/>
-                <input type="hidden" name="sortby" id="sortby" value="p.post_time desc"/>
-                <input type="hidden" name="topic" id="topic" value="<{$topic_id}>"/>
-                <input type="hidden" name="action" id="action" value="yes"/>
-                <input type="hidden" name="searchin" id="searchin" value="both"/>
-                <input type="hidden" name="show_search" id="show_search" value="post_text"/>
-                <input type="submit" class="formButton" value="<{$smarty.const._MD_SEARCH}>"/>
+                       onFocus="if(this.value =='<{$smarty.const._MD_SEARCHTOPIC}>...' ) this.value=''">
+                <input type="hidden" name="forum" id="forum" value="<{$forum_id}>">
+                <input type="hidden" name="sortby" id="sortby" value="p.post_time desc">
+                <input type="hidden" name="topic" id="topic" value="<{$topic_id}>">
+                <input type="hidden" name="action" id="action" value="yes">
+                <input type="hidden" name="searchin" id="searchin" value="both">
+                <input type="hidden" name="show_search" id="show_search" value="post_text">
+                <input type="submit" class="formButton" value="<{$smarty.const._MD_SEARCH}>">
             </fieldset>
         </form>
         <{/if}>
@@ -280,13 +280,13 @@
     <{*-- irmtfan hardcode removed style="float: right; text-align: right;" --*}>
     <div class="icon_right">
         <form action="<{$xoops_url}>/modules/<{$xoops_dirname}>/search.php" method="get">
-            <input name="term" id="term" type="text" size="15"/>
-            <input type="hidden" name="forum" id="forum" value="<{$forum_id}>"/>
-            <input type="hidden" name="sortby" id="sortby" value="p.post_time desc"/>
-            <input type="hidden" name="since" id="since" value="<{$forum_since}>"/>
-            <input type="hidden" name="action" id="action" value="yes"/>
-            <input type="hidden" name="searchin" id="searchin" value="both"/>
-            <input type="submit" class="formButton" value="<{$smarty.const._MD_SEARCH}>"/><br>
+            <input name="term" id="term" type="text" size="15">
+            <input type="hidden" name="forum" id="forum" value="<{$forum_id}>">
+            <input type="hidden" name="sortby" id="sortby" value="p.post_time desc">
+            <input type="hidden" name="since" id="since" value="<{$forum_since}>">
+            <input type="hidden" name="action" id="action" value="yes">
+            <input type="hidden" name="searchin" id="searchin" value="both">
+            <input type="submit" class="formButton" value="<{$smarty.const._MD_SEARCH}>"><br>
             [<a href="<{$xoops_url}>/modules/<{$xoops_dirname}>/search.php"><{$smarty.const._MD_ADVSEARCH}></a>]
         </form>
         <br>

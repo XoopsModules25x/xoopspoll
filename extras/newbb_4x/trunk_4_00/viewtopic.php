@@ -19,7 +19,7 @@
 
 use XoopsModules\Newbb\Helper;
 
-include __DIR__ . '/header.php';
+require __DIR__ . '/header.php';
 require_once XOOPS_ROOT_PATH . '/modules/newbb/include/functions.read.php';
 require_once XOOPS_ROOT_PATH . '/modules/newbb/include/functions.render.php';
 
@@ -125,13 +125,13 @@ $topic_obj->incrementCounter();
 newbb_setRead('topic', $topic_id, $topic_obj->getVar('topic_last_post_id'));
 
 if (!empty($xoopsModuleConfig['rss_enable'])) {
-    $xoops_module_header .= '<link rel="alternate" type="application/rss+xml" title="' . $xoopsModule->getVar('name') . '-' . $forum_obj->getVar('forum_name') . '" href="' . XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname') . '/rss.php?f=' . $forum_obj->getVar('forum_id') . '" />';
+    $xoops_module_header .= '<link rel="alternate" type="application/rss+xml" title="' . $xoopsModule->getVar('name') . '-' . $forum_obj->getVar('forum_name') . '" href="' . XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname') . '/rss.php?f=' . $forum_obj->getVar('forum_id') . '">';
 }
 $xoops_pagetitle = $topic_obj->getVar('topic_title') . ' [' . $xoopsModule->getVar('name') . ' - ' . $forum_obj->getVar('forum_name') . ']';
 
 $xoopsOption['xoops_pagetitle']     = $xoops_pagetitle;
 $xoopsOption['xoops_module_header'] = $xoops_module_header;
-include XOOPS_ROOT_PATH . '/header.php';
+require XOOPS_ROOT_PATH . '/header.php';
 
 $xoopsLogger->startTime('XOOPS output module - topic');
 
@@ -281,7 +281,7 @@ if ('thread' === $viewmode) {
     }
 
     if ($total_posts > $xoopsModuleConfig['posts_per_page']) {
-        include XOOPS_ROOT_PATH . '/class/pagenav.php';
+        require XOOPS_ROOT_PATH . '/class/pagenav.php';
         $nav = new XoopsPageNav($total_posts, $xoopsModuleConfig['posts_per_page'], $start, 'start', 'topic_id=' . $topic_id . '&amp;viewmode=' . $viewmode . '&amp;order=' . $order . '&amp;status=' . $status . '&amp;mode=' . $mode);
         $xoopsTpl->assign('forum_page_nav', $nav->renderNav(4));
     } else {
@@ -600,7 +600,7 @@ if (!empty($xoopsModuleConfig['quickreply_enabled'])
     require_once XOOPS_ROOT_PATH . '/class/xoopsform/formbutton.php';
     require_once XOOPS_ROOT_PATH . '/class/xoopsform/themeform.php';
     require_once XOOPS_ROOT_PATH . '/class/xoopsform/formtextarea.php';
-    if (!@include_once XOOPS_ROOT_PATH . '/class/xoopsform/formeditor.php') {
+    if (!@require_once XOOPS_ROOT_PATH . '/class/xoopsform/formeditor.php') {
         require_once XOOPS_ROOT_PATH . '/Frameworks/compat/class/xoopsform/formeditor.php';
     }
 
@@ -677,17 +677,17 @@ if (!empty($xoopsModuleConfig['quickreply_enabled'])
 $xoopsLogger->stopTime('XOOPS output module - topic - quickreply');
 
 $xoopsLogger->startTime('XOOPS output module - topic - tag');
-if ($xoopsModuleConfig['do_tag'] && @include_once XOOPS_ROOT_PATH . '/modules/tag/include/tagbar.php') {
+if ($xoopsModuleConfig['do_tag'] && @require_once XOOPS_ROOT_PATH . '/modules/tag/include/tagbar.php') {
     $xoopsTpl->assign('tagbar', tagBar($topic_obj->getVar('topic_tags', 'n')));
 }
 $xoopsLogger->stopTime('XOOPS output module - topic - tag');
 
 $xoopsLogger->startTime('XOOPS output module - topic - transfer');
-if ($transferbar = @include XOOPS_ROOT_PATH . '/Frameworks/transfer/bar.transfer.php') {
+if ($transferbar = @require XOOPS_ROOT_PATH . '/Frameworks/transfer/bar.transfer.php') {
     $xoopsTpl->assign('transfer', $transferbar);
 }
 $xoopsLogger->stopTime('XOOPS output module - topic - transfer');
 
 $xoopsLogger->stopTime('XOOPS output module - topic');
 
-include XOOPS_ROOT_PATH . '/footer.php';
+require XOOPS_ROOT_PATH . '/footer.php';

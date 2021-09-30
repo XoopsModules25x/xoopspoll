@@ -3,7 +3,7 @@
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
 //                  Copyright (c) 2000-2016 XOOPS.org                        //
-//                       <http://xoops.org/>                             //
+//                       <http://xoops.org>                             //
 //  ------------------------------------------------------------------------ //
 //  This program is free software; you can redistribute it and/or modify     //
 //  it under the terms of the GNU General Public License as published by     //
@@ -42,7 +42,7 @@ $topicHandler = Helper::getInstance()->getHandler('Topic');
 $topic_obj    = $topicHandler->get($topic_id);
 if (!$topicHandler->getPermission($topic_obj->getVar('forum_id'), $topic_obj->getVar('topic_status'), 'vote')) {
     // irmtfan - issue with javascript:history.go(-1)
-    redirect_header($_SERVER['HTTP_REFERER'], 2, _NOPERM);
+    redirect_header(\Xmf\Request::getString('HTTP_REFERER', '', 'SERVER'), 2, _NOPERM);
 }
 
 if (empty($_POST['option_id'])) {
@@ -60,15 +60,15 @@ if (($xoopspoll instanceof XoopsModule) && $xoopspoll->isactive()) {
         $xpLogHandler  = xoops_getModuleHandler('log', 'xoopspoll');
     } else { // Umfrage
         $pollmodul = 'umfrage';
-        include_once XOOPS_ROOT_PATH . '/modules/umfrage/include/constants.php';
-        include_once XOOPS_ROOT_PATH . '/modules/umfrage/class/umfrage.php';
-        include_once XOOPS_ROOT_PATH . '/modules/umfrage/class/umfrageoption.php';
-        include_once XOOPS_ROOT_PATH . '/modules/umfrage/class/umfragelog.php';
-        include_once XOOPS_ROOT_PATH . '/modules/umfrage/class/umfragerenderer.php';
+        require_once XOOPS_ROOT_PATH . '/modules/umfrage/include/constants.php';
+        require_once XOOPS_ROOT_PATH . '/modules/umfrage/class/umfrage.php';
+        require_once XOOPS_ROOT_PATH . '/modules/umfrage/class/umfrageoption.php';
+        require_once XOOPS_ROOT_PATH . '/modules/umfrage/class/umfragelog.php';
+        require_once XOOPS_ROOT_PATH . '/modules/umfrage/class/umfragerenderer.php';
     }
 } else {
     //no active poll module found
-    redirect_header($_SERVER['HTTP_REFERER'], 2, _MD_POLLMODULE_ERROR);
+    redirect_header(\Xmf\Request::getString('HTTP_REFERER', '', 'SERVER'), 2, _MD_POLLMODULE_ERROR);
 }
 
 $mail_author = false;

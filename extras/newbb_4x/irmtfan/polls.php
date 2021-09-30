@@ -22,11 +22,11 @@
 
 use XoopsModules\Newbb\Helper;
 
-include_once __DIR__ . '/header.php';
+require_once __DIR__ . '/header.php';
 
-include_once $GLOBALS['xoops']->path('class/xoopsformloader.php');
-include_once $GLOBALS['xoops']->path('class/xoopslists.php');
-include_once $GLOBALS['xoops']->path('class/xoopsblock.php');
+require_once $GLOBALS['xoops']->path('class/xoopsformloader.php');
+require_once $GLOBALS['xoops']->path('class/xoopslists.php');
+require_once $GLOBALS['xoops']->path('class/xoopsblock.php');
 xoops_load('XoopsRequest');
 
 // irmtfan correct the way and typo=addmor -> addmore
@@ -65,13 +65,13 @@ if ('xoopspoll' === $pollmodules) {
     //is this umfrage?
     if ('umfrage' === $pollmodules) {
         include $GLOBALS['xoops']->path('modules/umfrage/include/constants.php');
-        include_once $GLOBALS['xoops']->path('modules/umfrage/class/umfrage.php');
-        include_once $GLOBALS['xoops']->path('modules/umfrage/class/umfrageoption.php');
-        include_once $GLOBALS['xoops']->path('modules/umfrage/class/umfragelog.php');
-        include_once $GLOBALS['xoops']->path('modules/umfrage/class/umfragerenderer.php');
+        require_once $GLOBALS['xoops']->path('modules/umfrage/class/umfrage.php');
+        require_once $GLOBALS['xoops']->path('modules/umfrage/class/umfrageoption.php');
+        require_once $GLOBALS['xoops']->path('modules/umfrage/class/umfragelog.php');
+        require_once $GLOBALS['xoops']->path('modules/umfrage/class/umfragerenderer.php');
     } else {
         // irmtfan - issue with javascript:history.go(-1)
-        redirect_header($_SERVER['HTTP_REFERER'], 2, _MD_POLLMODULE_ERROR);
+        redirect_header(\Xmf\Request::getString('HTTP_REFERER', '', 'SERVER'), 2, _MD_POLLMODULE_ERROR);
     }
 }
 /** @var NewbbTopicHandler $topicHandler */
@@ -164,7 +164,7 @@ switch ($op) {
                 $color_select = new XoopsFormSelect("", "option_color[{$i}]", $current_bar);
                 $color_select->addOptionArray($barcolor_array);
                 $color_select->setExtra("onchange='showImgSelected(\"option_color_image[{$i}]\", \"option_color[{$i}]\", \"modules/{$pollmodules}/assets/images/colorbars\", \"\", \"" . XOOPS_URL . "\")'");
-                $color_label = new XoopsFormLabel("", "<img src='" . XOOPS_URL . "/modules/{$pollmodules}/assets/images/colorbars/{$current_bar}' name='option_color_image[{$i}]' id='option_color_image[{$i}]' width='30' class='alignbottom' height='15' alt='' /><br>");
+                $color_label = new XoopsFormLabel("", "<img src='" . XOOPS_URL . "/modules/{$pollmodules}/assets/images/colorbars/{$current_bar}' name='option_color_image[{$i}]' id='option_color_image[{$i}]' width='30' class='alignbottom' height='15' alt=''><br>");
                 $option_tray->addElement($color_select);
                 $option_tray->addElement($color_label);
                 if (!next($barcolor_array)) {
@@ -190,7 +190,7 @@ switch ($op) {
 
         // make sure the question isn't empty
         if (empty($_POST['question'])) {
-            redirect_header($_SERVER['HTTP_REFERER'], 2, _MD_ERROROCCURED . ': ' . _MD_POLL_POLLQUESTION . ' !');
+            redirect_header(\Xmf\Request::getString('HTTP_REFERER', '', 'SERVER'), 2, _MD_ERROROCCURED . ': ' . _MD_POLL_POLLQUESTION . ' !');
         }
 
         // Check to see if any options are set
@@ -199,7 +199,7 @@ switch ($op) {
         $option_string = trim($option_string);
         if (empty($option_string)) {
             // irmtfan - issue with javascript:history.go(-1)
-            redirect_header($_SERVER['HTTP_REFERER'], 2, _MD_ERROROCCURED . ': ' . _MD_POLL_POLLOPTIONS . ' !');
+            redirect_header(\Xmf\Request::getString('HTTP_REFERER', '', 'SERVER'), 2, _MD_ERROROCCURED . ': ' . _MD_POLL_POLLOPTIONS . ' !');
         }
 
         if ("xoopspoll" == $pollmodules) {
@@ -289,7 +289,7 @@ switch ($op) {
     //            xoops_error($GLOBALS['xoopsDB']->error());
             }
 
-            include_once $GLOBALS['xoops']->path("class/template.php");
+            require_once $GLOBALS['xoops']->path("class/template.php");
             xoops_template_clear_module_cache($GLOBALS['xoopsModule']->getVar('mid'));
             xoops_template_clear_module_cache($xoopspoll->getVar('mid'));
         } else {
@@ -354,7 +354,7 @@ switch ($op) {
                 $color_select->addOptionArray($barcolor_array);
                 $color_select->setExtra("onchange='showImgSelected(\"option_color_image[{$i}]\", \"option_color[" . $i . "]\", \"modules/{$pollmodules}/assets/images/colorbars\", \"\", \"" . XOOPS_URL . "\")'");
                 $color_label = new XoopsFormLabel(
-                    '', "<img src='" . $GLOBALS['xoops']->url("modules/{$pollmodules}/assets/images/colorbars/" . $option->getVar('option_color', 'E')) . "' name='option_color_image[{$i}]' id='option_color_image[{$i}]' class='alignbottom' width='30' height='15' alt='' /><br>"
+                    '', "<img src='" . $GLOBALS['xoops']->url("modules/{$pollmodules}/assets/images/colorbars/" . $option->getVar('option_color', 'E')) . "' name='option_color_image[{$i}]' id='option_color_image[{$i}]' class='alignbottom' width='30' height='15' alt=''><br>"
                 );
                 $option_tray->addElement($color_select);
                 $option_tray->addElement($color_label);
@@ -389,7 +389,7 @@ switch ($op) {
         $option_string = trim($option_string);
         if (empty($option_string)) {
             // irmtfan - issue with javascript:history.go(-1)
-            redirect_header($_SERVER['HTTP_REFERER'], 2, _MD_ERROROCCURED . ': ' . _MD_POLL_POLLOPTIONS . ' !');
+            redirect_header(\Xmf\Request::getString('HTTP_REFERER', '', 'SERVER'), 2, _MD_ERROROCCURED . ': ' . _MD_POLL_POLLOPTIONS . ' !');
         }
 
         if ('xoopspoll' === $pollmodules) {
@@ -475,7 +475,7 @@ switch ($op) {
             }
 
             // clear the template cache so changes take effect immediately
-            //        include_once $GLOBALS['xoops']->path("class" . "/template.php");
+            //        require_once $GLOBALS['xoops']->path("class" . "/template.php");
             //        xoops_template_clear_module_cache($GLOBALS['xoopsModule']->getVar('mid'));
             //        xoops_template_clear_module_cache($xoopspoll->getVar('mid'));
             //        redirect_header("viewtopic.php?topic_id={$topic_id}", XoopspollConstants::REDIRECT_DELAY_SHORT, _MD_POLL_DBUPDATED);
@@ -523,13 +523,13 @@ switch ($op) {
                 ++$i;
             }
             $poll_obj->updateCount();
-            //        include_once $GLOBALS['xoops']->path("class" . "/template.php");
+            //        require_once $GLOBALS['xoops']->path("class" . "/template.php");
             //        xoops_template_clear_module_cache($GLOBALS['xoopsModule']->getVar('mid'));
             //        redirect_header("viewtopic.php?topic_id={$topic_id}", 1, _MD_POLL_DBUPDATED);
         }
 
         // clear the template cache so changes take effect immediately
-        include_once $GLOBALS['xoops']->path('class/template.php');
+        require_once $GLOBALS['xoops']->path('class/template.php');
         xoops_template_clear_module_cache($GLOBALS['xoopsModule']->getVar('mid'));
         xoops_template_clear_module_cache($xoopspoll->getVar('mid'));
 
@@ -568,7 +568,7 @@ switch ($op) {
                 $color_select->addOptionArray($barcolor_array);
                 $color_select->setExtra("onchange='showImgSelected(\"option_color_image[{$i}]\", \"option_color[{$i}]\", \"modules/{$pollmodules}/assets/images/colorbars\", \"\", \"" . XOOPS_URL . "\")'");
                 $color_label = new XoopsFormLabel(
-                    '', "<img src='" . $GLOBALS['xoops']->url("modules/{$pollmodules}/assets/images/colorbars/{$current_bar}") . "' name='option_color_image[{$i}]' id='option_color_image[{$i}]' class='alignbottom' width='30' height='15' alt='' /><br>"
+                    '', "<img src='" . $GLOBALS['xoops']->url("modules/{$pollmodules}/assets/images/colorbars/{$current_bar}") . "' name='option_color_image[{$i}]' id='option_color_image[{$i}]' class='alignbottom' width='30' height='15' alt=''><br>"
                 );
                 $option_tray->addElement($color_select);
                 $option_tray->addElement($color_label);
@@ -600,7 +600,7 @@ switch ($op) {
         $option_string = trim($option_string);
         if (empty($option_string)) {
             // irmtfan - issue with javascript:history.go(-1)
-            redirect_header($_SERVER['HTTP_REFERER'], 2, _MD_ERROROCCURED . ': ' . _MD_POLL_POLLOPTIONS . ' !');
+            redirect_header(\Xmf\Request::getString('HTTP_REFERER', '', 'SERVER'), 2, _MD_ERROROCCURED . ': ' . _MD_POLL_POLLOPTIONS . ' !');
         }
 
         if ('xoopspoll' === $pollmodules) {
@@ -628,7 +628,7 @@ switch ($op) {
             }
             ++$i;
         }
-        include_once $GLOBALS['xoops']->path('class/template.php');
+        require_once $GLOBALS['xoops']->path('class/template.php');
         xoops_template_clear_module_cache($GLOBALS['xoopsModule']->getVar('mid'));
         xoops_template_clear_module_cache($xoopspoll->getVar('mid'));
         redirect_header("polls.php?op=edit&amp;poll_id={$poll_id}&amp;topic_id={$topic_id}", 2, _MD_POLL_DBUPDATED);
@@ -672,7 +672,7 @@ switch ($op) {
             }
         }
         if (false !== $status) {
-            include_once $GLOBALS['xoops']->path('class/template.php');
+            require_once $GLOBALS['xoops']->path('class/template.php');
             xoops_template_clear_module_cache($xoopsModule->getVar('mid'));
             xoops_template_clear_module_cache($xoopspoll->getVar('mid'));
             // delete comments for this poll
@@ -791,7 +791,7 @@ switch ($op) {
                 break;
             }
         */
-        include_once $GLOBALS['xoops']->path('class/template.php');
+        require_once $GLOBALS['xoops']->path('class/template.php');
         xoops_template_clear_module_cache($xoopsModule->getVar('mid'));
         xoops_template_clear_module_cache($xoopspoll->getVar('mid'));
         redirect_header("viewtopic.php?topic_id={$topic_id}", 1, _MD_POLL_DBUPDATED);
@@ -807,5 +807,5 @@ switch ($op) {
 }
 
 // irmtfan move to footer.php
-include_once __DIR__ . '/footer.php';
+require_once __DIR__ . '/footer.php';
 include $GLOBALS['xoops']->path('footer.php');

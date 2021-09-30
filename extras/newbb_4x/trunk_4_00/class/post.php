@@ -192,10 +192,10 @@ class Post extends XoopsObject
         if (is_array($attachments) && count($attachments) > 0) {
             $iconHandler = newbb_getIconHandler();
             $mime_path   = $iconHandler->getPath('mime');
-            include_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->getVar('dirname', 'n') . '/include/functions.image.php';
+            require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->getVar('dirname', 'n') . '/include/functions.image.php';
             $image_extensions = ['jpg', 'jpeg', 'gif', 'png', 'bmp']; // need improve !!!
             $post_attachment  .= '<br><strong>' . _MD_ATTACHMENT . '</strong>:';
-            $post_attachment  .= '<br><hr size="1" noshade="noshade" /><br>';
+            $post_attachment  .= '<br><hr size="1" noshade="noshade"><br>';
             foreach ($attachments as $key => $att) {
                 $file_extension = ltrim(strrchr($att['name_saved'], '.'), '.');
                 $filetype       = $file_extension;
@@ -207,7 +207,7 @@ class Post extends XoopsObject
                 $file_size = @filesize(XOOPS_ROOT_PATH . '/' . $xoopsModuleConfig['dir_attachments'] . '/' . $att['name_saved']);
                 $file_size = number_format($file_size / 1024, 2) . ' KB';
                 if (in_array(strtolower($file_extension), $image_extensions) && $xoopsModuleConfig['media_allowed']) {
-                    $post_attachment .= '<br><img src="' . $icon_filetype . '" alt="' . $filetype . '" /><strong>&nbsp; ' . $att['name_display'] . '</strong> <small>(' . $file_size . ')</small>';
+                    $post_attachment .= '<br><img src="' . $icon_filetype . '" alt="' . $filetype . '"><strong>&nbsp; ' . $att['name_display'] . '</strong> <small>(' . $file_size . ')</small>';
                     $post_attachment .= '<br>' . newbb_attachmentImage($att['name_saved']);
                     $isDisplayed     = true;
                 } else {
@@ -223,7 +223,7 @@ class Post extends XoopsObject
                                         . $icon_filetype
                                         . '" alt="'
                                         . $filetype
-                                        . '" /> '
+                                        . '"> '
                                         . $att['name_display']
                                         . '</a> '
                                         . _MD_FILESIZE
@@ -483,9 +483,9 @@ class Post extends XoopsObject
         }
 
         if ($posticon = $this->getVar('icon')) {
-            $post_image = '<a name="' . $post_id . '"><img src="' . XOOPS_URL . '/images/subject/' . $posticon . '" alt="" /></a>';
+            $post_image = '<a name="' . $post_id . '"><img src="' . XOOPS_URL . '/images/subject/' . $posticon . '" alt=""></a>';
         } else {
-            $post_image = '<a name="' . $post_id . '"><img src="' . XOOPS_URL . '/images/icons/posticon.gif" alt="" /></a>';
+            $post_image = '<a name="' . $post_id . '"><img src="' . XOOPS_URL . '/images/icons/posticon.gif" alt=""></a>';
         }
 
         $thread_buttons = [];
@@ -619,7 +619,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
                   . ' ORDER BY p.post_time DESC';
         $result = $this->db->query($sql, $limit, 0);
         $ret    = [];
-        while ($myrow = $this->db->fetchArray($result)) {
+        while (false !== ($myrow = $this->db->fetchArray($result))) {
             $post = $this->create(false);
             $post->assignVars($myrow);
 
@@ -1014,7 +1014,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
             //xoops_error($this->db->error());
             return $ret;
         }
-        while ($myrow = $this->db->fetchArray($result)) {
+        while (false !== ($myrow = $this->db->fetchArray($result))) {
             $post = $this->create(false);
             $post->assignVars($myrow);
             $ret[$myrow['post_id']] = $post;
