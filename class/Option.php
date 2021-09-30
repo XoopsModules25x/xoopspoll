@@ -90,7 +90,7 @@ class Option extends XoopsObject
          * {@internal The following is provided for backward compatibility with newbb/xforum}
          */
         $this->optHandler = $this->getStaticOptHandler();
-        if (!empty($id)) {
+        if (null !== $id) {
             if (\is_array($id)) {
                 $this->option = $this->optHandler->create();
                 $this->option->assignVars($id);
