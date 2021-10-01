@@ -95,7 +95,7 @@ class Poll extends \XoopsObject
      * @return bool
      * @uses   Poll::getVar()
      */
-    public function hasExpired()
+    public function hasExpired(): bool
     {
         $ret = true;
         if ($this->getVar('end_time') > \time()) {
@@ -112,7 +112,7 @@ class Poll extends \XoopsObject
      * @access public
      * @uses   XoopsUser
      */
-    public function isAllowedToVote()
+    public function isAllowedToVote(): bool
     {
         $ret = false;
         if ((Constants::ANONYMOUS_VOTING_ALLOWED === $this->getVar('anonymous'))
@@ -137,7 +137,7 @@ class Poll extends \XoopsObject
      * @uses     LogHandler
      * @internal param int $uid
      */
-    public function vote($optionId, $ip, $time)
+    public function vote($optionId, $ip, $time): bool
     {
         if (!empty($optionId) && $this->isAllowedToVote()) {
             $voteTime      = empty($time) ? \time() : (int)$time;
@@ -189,7 +189,7 @@ class Poll extends \XoopsObject
      * @param int poll_id
      * @return int count of comments for this poll_id
      */
-    public function getComments()
+    public function getComments(): int
     {
         $moduleHandler = \xoops_getHandler('module');
         $pollModule    = $moduleHandler->getByDirname('xoopspoll');
@@ -398,7 +398,7 @@ class Poll extends \XoopsObject
      * @param null $user the Xoops user object for this user
      * @return bool      send status
      */
-    public function notifyVoter($user = null)
+    public function notifyVoter($user = null): bool
     {
         if (($user instanceof \XoopsUser) && (Constants::MAIL_POLL_TO_VOTER === $this->getVar('mail_voter'))) {
             \xoops_loadLanguage('main', 'xoopspoll');

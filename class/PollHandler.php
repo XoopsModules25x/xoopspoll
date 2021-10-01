@@ -52,7 +52,7 @@ $this->helper = $helper ?? Helper::getInstance();
      * @param \XoopsObject $pollObj
      * @return bool $success
      */
-    public function updateCount($pollObj)
+    public function updateCount($pollObj): bool
     {
         $success = false;
         if ($pollObj instanceof Poll) {
@@ -74,7 +74,7 @@ $this->helper = $helper ?? Helper::getInstance();
      * @param mixed $pollObj
      * @return array true|false indicating sendmail status
      */
-    public function mailResults($pollObj = null)
+    public function mailResults($pollObj = null): array
     {
         $criteria = new \CriteriaCompo();
         $criteria->add(new \Criteria('end_time', \time(), '<'));  // expired polls

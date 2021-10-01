@@ -118,7 +118,7 @@ class Log extends \XoopsObject
     /**
      * @return bool
      */
-    private static function getStaticLogHandler()
+    private static function getStaticLogHandler(): bool
     {
         static $log_h;
         $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);

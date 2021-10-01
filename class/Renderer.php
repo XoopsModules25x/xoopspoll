@@ -80,7 +80,7 @@ $this->helper = $helper ?? Helper::getInstance();
      * @access public
      * @return string html form for display
      */
-    public function renderForm()
+    public function renderForm(): string
     {
         $myTpl = new \XoopsTpl();
         $this->assignForm($myTpl);  // get the poll information

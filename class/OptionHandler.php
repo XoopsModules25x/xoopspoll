@@ -97,7 +97,7 @@ $this->helper = $helper ?? Helper::getInstance();
      * @uses CriteriaCompo
      * @uses XoopsPersistableObjectHandler::deleteAll
      */
-    public function getAllByPollId($pid = 0, $sortby = 'option_id', $orderby = 'ASC')
+    public function getAllByPollId($pid = 0, $sortby = 'option_id', $orderby = 'ASC'): array
     {
         //        $criteria = new \CriteriaCompo();
         $criteria = new \Criteria('poll_id', (int)$pid, '=');
@@ -123,7 +123,7 @@ $this->helper = $helper ?? Helper::getInstance();
      * @uses XoopsPersistableObjectHandler::deleteAll
      * @uses Criteria
      */
-    public function deleteByPollId($pid = 0)
+    public function deleteByPollId($pid = 0): bool
     {
         $success = $this->deleteAll(new \Criteria('poll_id', (int)$pid, '='));
 
@@ -138,7 +138,7 @@ $this->helper = $helper ?? Helper::getInstance();
      * @uses XoopsPersistableObjectHandler::updateAll
      * @uses Criteria
      */
-    public function resetCountByPollId($pid = 0)
+    public function resetCountByPollId($pid = 0): bool
     {
         $success = $this->updateAll('option_count', 0, new \Criteria('poll_id', (int)$pid, '='));
 
@@ -150,7 +150,7 @@ $this->helper = $helper ?? Helper::getInstance();
      * @param mixed $pid the select box is created for this poll id
      * @return \XoopsFormElementTray html select box
      */
-    public function renderOptionFormTray($pid = 0)
+    public function renderOptionFormTray($pid = 0): \XoopsFormElementTray
     {
         \xoops_load('xoopsformloader');
         $pid            = (int)$pid;

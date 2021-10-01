@@ -13,7 +13,7 @@ class Utility extends Common\SysUtility
      * @param string $ipAddr the ip address of the host
      * @return string host name
      */
-    public static function getHostByAddrWithCache(&$ipAddr)
+    public static function getHostByAddrWithCache(&$ipAddr): string
     {
         static $ipArray = [];
         $retVal  = &$ipAddr;
@@ -56,7 +56,7 @@ class Utility extends Common\SysUtility
      * Creates a visibility array from module default values
      * @return array visibility options available for a poll
      */
-    public static function getVisibilityArray()
+    public static function getVisibilityArray(): array
     {
         /**
          * {@internal Do NOT add/delete from $visOptions after the module has been installed}
@@ -85,7 +85,7 @@ class Utility extends Common\SysUtility
      * @param string $cookieBaseName
      * @return array  contains cookie for polls, empty array if not found
      */
-    public static function getVoteCookie($cookieBaseName = 'voted_polls')
+    public static function getVoteCookie($cookieBaseName = 'voted_polls'): array
     {
         $pollDir = \basename(\dirname(__DIR__));
         if ('xoopspoll' === $pollDir) {
@@ -110,7 +110,7 @@ class Utility extends Common\SysUtility
      * @param string     $cookieBaseName name of cookie (without directory prefix)
      * @return bool         success in setting cookie
      */
-    public static function setVoteCookie($index, $value, $expires = 0, $cookieBaseName = 'voted_polls')
+    public static function setVoteCookie($index, $value, $expires = 0, $cookieBaseName = 'voted_polls'): bool
     {
         $pollDir = \basename(\dirname(__DIR__));
         $success = false;
@@ -159,7 +159,7 @@ class Utility extends Common\SysUtility
      * @internal param int $expires time when cookie expires
      * @internal param string $cookieBaseName name of cookie (without directory prefix)
      */
-    public static function dbTableExists(\XoopsDatabase $db, $tablename)
+    public static function dbTableExists(\XoopsDatabase $db, $tablename): bool
     {
         $tablename = \addslashes($tablename);
         $mytable   = $db->prefix((string)$tablename);

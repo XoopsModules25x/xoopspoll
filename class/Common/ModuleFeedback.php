@@ -78,7 +78,7 @@ class ModuleFeedback extends XoopsObject
      * @param bool $action
      * @return \XoopsThemeForm
      */
-    public function getFormFeedback($action = false)
+    public function getFormFeedback($action = false): XoopsThemeForm
     {
         if (!$action) {
             $action = $_SERVER['REQUEST_URI'];
