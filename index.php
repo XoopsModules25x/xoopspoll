@@ -36,10 +36,10 @@
  * @uses     Criteria
  * @uses     mixed $GLOBALS['xoops']::path gets XOOPS directory information
  * @uses     string $GLOBALS['xoops']::url gets XOOPS URL/URI information
- * @uses     mixed $GLOBALS['xoopsUser'] gets information about the currently logged in user
+ * @uses     mixed $GLOBALS['xoopsUser'] gets information about the currently logged-in user
  * @uses     xoops_getenv() function to retrieve XOOPS environment variables
  * @uses     xoops_getUserTimestamp() function to convert time to user timestamp
- * @uses     formatTimestamp() function to convert timestamp to human readable form
+ * @uses     formatTimestamp() function to convert timestamp to human-readable form
  * @uses     xoops_getModuleHandler() to load handler for this module's class(es)
  * @uses     redirect_header() function used to send user to another location after completing task(s)
  */

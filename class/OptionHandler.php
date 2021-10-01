@@ -64,7 +64,7 @@ $this->helper = $helper ?? Helper::getInstance();
     }
 
     /**
-     * Update the option vote count for a Option Object
+     * Update the option vote count for an Option Object
      * @param mixed $optionObj is an option object to update
      * @return mixed results @see XoopsPersistibleObjectHandler
      * @uses xoops_getModuleHandler
@@ -146,7 +146,7 @@ $this->helper = $helper ?? Helper::getInstance();
     }
 
     /**
-     * Generates an html select box with options
+     * Generates a HTML select box with options
      * @param mixed $pid the select box is created for this poll id
      * @return \XoopsFormElementTray html select box
      */

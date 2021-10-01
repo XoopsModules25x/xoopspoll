@@ -513,7 +513,7 @@ class Poll extends \XoopsObject
     }
 
     /**
-     * Setup a static Poll Handler for use by class methods
+     * Set up a static Poll Handler for use by class methods
      */
     private function getStaticPollHandler()
     {

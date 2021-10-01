@@ -44,7 +44,7 @@ require_once $GLOBALS['xoops']->path( "modules"
  * @uses   CriteriaCompo
  * @uses   Criteria
  * @uses   xoops_getUserTimestamp() function to convert time to user time
- * @uses   formatTimestamp() takes timestamp and converts to human readable format
+ * @uses   formatTimestamp() takes timestamp and converts to human-readable format
  */
 function xoopspollBlockSinglepollShow($options)
 {
@@ -218,7 +218,7 @@ function xoopspollBlockSinglepollEdit($options)
      *          3 = show options as list|select
      */
 
-    // find out if want to show expired polls in block
+    // find out if you want to show expired polls in block
     // (otherwise it will hide block once it expires)
     if (0 === $options[0]) {
         $chk0no  = ' checked';
@@ -247,7 +247,7 @@ function xoopspollBlockSinglepollEdit($options)
     $criteria->setOrder('ASC');
     $criteria->setSort('weight');
     /**
-     * Note that you can select polls that have not started yet so they will automatically show
+     * Note that you can select polls that have not started yet, so they will automatically show
      * up in the block once they have started.  To only allow selection of active polls uncomment
      * the following line in the code - this could be made a module config option if desired
      */
@@ -322,7 +322,7 @@ function xoopspollBlockSinglepollEdit($options)
              . "<input type='radio' name='options[2]' value='0'{$chk2no} id='nor'>\n"
              . "</td></tr>\n";
 
-    /* find out if want to show options as a list or as a select box */
+    /* find out if you want to show options as a list or as a select box */
     if (Constants::POLL_OPTIONS_SELECT === $options[3]) {
         $chk3select = ' checked';
         $chk3list   = '';

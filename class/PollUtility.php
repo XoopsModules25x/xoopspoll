@@ -103,7 +103,7 @@ class PollUtility
      * Retrieves vote cookie from client system
      * The cookie name is based on the module directory. If module is
      * installed in default location then cookie name is 'voted_polls'
-     * for backward compatibility. Otherwise cookie is named
+     * for backward compatibility. Otherwise, cookie is named
      * '<dirname>_voted_polls' to allow for module to be cloned using
      * smartClone module.
      * @param null $cookieBaseName
@@ -129,7 +129,7 @@ class PollUtility
      * Sets vote cookie on client system
      * The cookie name is based on the module directory. If module is
      * installed in default location then cookie name is 'voted_polls'
-     * for backward compatibility. Otherwise cookie is named
+     * for backward compatibility. Otherwise, cookie is named
      * '<dirname>_voted_polls' to allow for module to be cloned using
      * smartClone module.
      * @param int|string $index          array index to set in cookie
@@ -176,7 +176,7 @@ class PollUtility
      * Sets vote cookie on client system
      * The cookie name is based on the module directory. If module is
      * installed in default location then cookie name is 'voted_polls'
-     * for backward compatibility. Otherwise cookie is named
+     * for backward compatibility. Otherwise, cookie is named
      * '<dirname>_voted_polls' to allow for module to be cloned using
      * smartClone module.
      * @param \XoopsDatabase|null $db

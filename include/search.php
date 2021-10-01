@@ -47,7 +47,7 @@ function xoopspoll_search($queryArray, $andor, $limit, $offset, $uid)
 
         /**
          * @todo:
-         * find out if want to show polls that were created with a forum. If no, then change
+         * find out if you want to show polls that were created with a forum. If no, then change
          * the link to forum topic_id
          */
 

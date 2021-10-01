@@ -391,7 +391,7 @@ class SysUtility
     }
 
     /**
-     * Check if dB table table exists
+     * Check if dB table exists
      *
      * @param string $tablename dB tablename with prefix
      * @return bool true if table exists
