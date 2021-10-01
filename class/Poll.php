@@ -238,11 +238,10 @@ class Poll extends \XoopsObject
                 $descTarea = new \XoopsFormTextarea(_AM_XOOPSPOLL_POLLDESC, "description", $this->getVar('description', 'E'));
                 $pollForm->addElement($descTarea);
         */
+        /** @var \XoopsModuleHandler $moduleHandler */
         $moduleHandler = \xoops_getHandler('module');
         $pollModule    = $moduleHandler->getByDirname('xoopspoll');
 
-        /** @var \XoopsModuleHandler $moduleHandler */
-        $moduleHandler = \xoops_getHandler('module');
         $configHandler = \xoops_getHandler('config');
         //        $xp_module      = $moduleHandler->getByDirname("xoopspoll");
         //        $module_id      = $xp_module->getVar("mid");
