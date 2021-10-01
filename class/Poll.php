@@ -277,9 +277,7 @@ class Poll extends \XoopsObject
 
         /* display start/end time fields on form */
         $startTimeText = new FormDateTimePicker("<div class='bold'>" . \_AM_XOOPSPOLL_START_TIME . '<br>' . "<span class='x-small'>" . \_AM_XOOPSPOLL_FORMAT . '<br>' . \sprintf(\_AM_XOOPSPOLL_CURRENTTIME, $xuCurrentFormatted) . '</span></div>', 'xu_start_time', 20, $xuStartTimestamp);
-        if (!$this->hasExpired()) {
-            $endTimeText = new FormDateTimePicker("<div class='bold middle'>" . \_AM_XOOPSPOLL_EXPIRATION . '</div>', 'xu_end_time', 20, $xuEndTimestamp);
-        } else {
+        if ($this->hasExpired()) {
             /*
                         $extra = "";
                         foreach ($addHidden as $key=>$value) {
@@ -299,6 +297,8 @@ class Poll extends \XoopsObject
             $query              = \htmlentities($query, \ENT_QUOTES);
             $xuEndFormattedTime = \ucfirst(\date(_MEDIUMDATESTRING, $xuEndTimestamp));
             $endTimeText        = new \XoopsFormLabel("<div class='bold middle'>" . \_AM_XOOPSPOLL_EXPIRATION, \sprintf(\_AM_XOOPSPOLL_EXPIREDAT, $xuEndFormattedTime) . "<br><a href='{$rtnPage}?{$query}'>" . \_AM_XOOPSPOLL_RESTART . '</a></div>');
+        } else {
+            $endTimeText = new FormDateTimePicker("<div class='bold middle'>" . \_AM_XOOPSPOLL_EXPIRATION . '</div>', 'xu_end_time', 20, $xuEndTimestamp);
         }
 
         $timeTray->addElement($startTimeText);
@@ -365,11 +365,11 @@ class Poll extends \XoopsObject
                 $visibleMsg = \_MD_XOOPSPOLL_HIDE_ALWAYS_MSG;
                 break;
             case Constants::HIDE_END:  // hide the results until the poll ends
-                if (!$this->hasExpired()) {
+                if ($this->hasExpired()) {
+                    $isVisible = true;
+                } else {
                     $visibleMsg = \_MD_XOOPSPOLL_HIDE_END_MSG;
                     $isVisible  = false;
-                } else {
-                    $isVisible = true;
                 }
                 break;
             case Constants::HIDE_VOTED: // hide the results until user votes

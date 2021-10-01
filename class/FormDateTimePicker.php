@@ -60,13 +60,13 @@ class FormDateTimePicker extends \XoopsFormText
         $ele_name  = $this->getName();
         $ele_value = $this->getValue(true);
         //        if (is_string($ele_value)) {
-        if (!\is_numeric($ele_value)) {
-            $display_value = $ele_value;
-            $ele_value     = \time();
-        } else {
+        if (\is_numeric($ele_value)) {
             //            $display_value = '';
             //            $display_value = formatTimestamp($ele_value, 'm');
             $display_value = \ucfirst(\date(_MEDIUMDATESTRING, $ele_value));
+        } else {
+            $display_value = $ele_value;
+            $ele_value     = \time();
         }
 
         if (\is_object($GLOBALS['xoTheme'])) {

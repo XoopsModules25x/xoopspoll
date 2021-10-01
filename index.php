@@ -176,7 +176,10 @@ if (empty($pollId)) {
         } else {
             $optionId = Request::getInt('option_id', 0, 'POST');
         }
-        if (!$pollObj->hasExpired()) {
+        if ($pollObj->hasExpired()) {
+            /* poll has expired so just show the results */
+            $msg = _MD_XOOPSPOLL_SORRYEXPIRED;
+        } else {
             $msg = _MD_XOOPSPOLL_MUSTLOGIN;
             //@todo:: add $url to all redirects
             //            $url = $GLOBALS['xoops']->buildUrl("index.php", array('poll_id' => $pollId));
@@ -207,9 +210,6 @@ if (empty($pollId)) {
             } else {
                 $msg = _MD_XOOPSPOLL_CANNOTVOTE;
             }
-        } else {
-            /* poll has expired so just show the results */
-            $msg = _MD_XOOPSPOLL_SORRYEXPIRED;
         }
     } else {
         $msg = _MD_XOOPSPOLL_ERROR_INVALID_POLLID;
