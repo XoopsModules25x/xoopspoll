@@ -39,13 +39,13 @@ class Poll extends \XoopsObject
     {
         parent::__construct();
         //        $timestamp = xoops_getUserTimestamp(time());
-        $current_timestamp = \time();
+        $currentTimestamp = \time();
         $this->initVar('poll_id', \XOBJ_DTYPE_INT, null, false);
         $this->initVar('question', \XOBJ_DTYPE_TXTBOX, null, true, 255);
         $this->initVar('description', \XOBJ_DTYPE_TXTAREA, null, false);
         $this->initVar('user_id', \XOBJ_DTYPE_INT, null, false);
-        $this->initVar('start_time', \XOBJ_DTYPE_INT, $current_timestamp, false);
-        $this->initVar('end_time', \XOBJ_DTYPE_INT, $current_timestamp + Constants::DEFAULT_POLL_DURATION, true);
+        $this->initVar('start_time', \XOBJ_DTYPE_INT, $currentTimestamp, false);
+        $this->initVar('end_time', \XOBJ_DTYPE_INT, $currentTimestamp + Constants::DEFAULT_POLL_DURATION, true);
         $this->initVar('votes', \XOBJ_DTYPE_INT, 0, false);
         $this->initVar('voters', \XOBJ_DTYPE_INT, 0, false);
         $this->initVar('display', \XOBJ_DTYPE_INT, Constants::DISPLAY_POLL_IN_BLOCK, false);
@@ -62,11 +62,11 @@ class Poll extends \XoopsObject
          */
         if (!empty($id)) {
             $trace   = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-            $err_msg = __CLASS__ . " instantiation with 'id' set is deprecated since Xoopspoll 1.40, please use PollHandler instead." . " Called from {$trace[0]['file']}line {$trace[0]['line']}";
+            $errorMsg = __CLASS__ . " instantiation with 'id' set is deprecated since Xoopspoll 1.40, please use PollHandler instead." . " Called from {$trace[0]['file']}line {$trace[0]['line']}";
             if (isset($GLOBALS['xoopsLogger'])) {
-                $GLOBALS['xoopsLogger']->addDeprecated($err_msg);
+                $GLOBALS['xoopsLogger']->addDeprecated($errorMsg);
             } else {
-                \trigger_error($err_msg, \E_USER_WARNING);
+                \trigger_error($errorMsg, \E_USER_WARNING);
             }
 
             if (\is_array($id)) {

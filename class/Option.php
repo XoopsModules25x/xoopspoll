@@ -74,7 +74,7 @@ class Option extends XoopsObject
     // constructor
 
     /**
-     * @param int|null $id poll id
+     * @param int|null|array $id poll id
      */
     public function __construct($id = null)
     {
