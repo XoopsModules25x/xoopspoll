@@ -65,7 +65,7 @@ class LogHandler extends \XoopsPersistableObjectHandler
     public function deleteByOptionId($option_id)
     {
         $criteria = new \Criteria('option_id', $option_id, '=');
-        $success  = $this->deleteAll($criteria) ? true : false;
+        $success  = $this->deleteAll($criteria);
 
         return $success;
     }
@@ -79,7 +79,7 @@ class LogHandler extends \XoopsPersistableObjectHandler
     public function deleteByPollId($pid)
     {
         $criteria = new \Criteria('poll_id', (int)$pid, '=');
-        $success  = $this->deleteAll($criteria) ? true : false;
+        $success  = $this->deleteAll($criteria);
 
         return $success;
     }

@@ -142,7 +142,7 @@ function xoopspollBlockMultiShow($options)
             }
 
             $totalVotes = $pollVars['votes'];
-            $hasVoted   = $logHandler->hasVoted($pollVars['poll_id'], xoops_getenv('REMOTE_ADDR'), $uid) ? true : false;
+            $hasVoted   = (bool)$logHandler->hasVoted($pollVars['poll_id'], xoops_getenv('REMOTE_ADDR'), $uid);
             $canVote    = (!$hasVoted) && $pollObj->isAllowedToVote();
             foreach ($pollOptionObjs as $pollOptionObj) {
                 $optionObjVars = $pollOptionObj->getValues();
@@ -161,7 +161,7 @@ function xoopspollBlockMultiShow($options)
             $xuEndFormattedTime = ucfirst(date(_MEDIUMDATESTRING, $xuEndTimestamp));
 
             $isVisible  = true === $pollObj->isResultVisible();
-            $multiple   = $pollVars['multiple'] ? true : false;
+            $multiple   = (bool)$pollVars['multiple'];
             $multiLimit = (int)$pollVars['multilimit'];
             $lang_multi = '';
             if ($multiple && ($multiLimit > 0)) {

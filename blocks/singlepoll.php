@@ -139,7 +139,7 @@ function xoopspollBlockSinglepollShow($options)
 
             $totalVotes       = $pollVars['votes'];
             $logHandler       = Helper::getInstance()->getHandler('Log');
-            $hasVoted         = $logHandler->hasVoted($pollVars['poll_id'], xoops_getenv('REMOTE_ADDR'), $uid) ? true : false;
+            $hasVoted         = (bool)$logHandler->hasVoted($pollVars['poll_id'], xoops_getenv('REMOTE_ADDR'), $uid);
             $canVote          = (!$hasVoted) && $pollObj->isAllowedToVote();
             $pollOptionsArray = [];
             foreach ($optionsObjArray as $optionObj) {
@@ -166,7 +166,7 @@ function xoopspollBlockSinglepollShow($options)
 
             $isVisible = true === $pollObj->isResultVisible();
 
-            $multiple   = $pollVars['multiple'] ? true : false;
+            $multiple   = (bool)$pollVars['multiple'];
             $multiLimit = (int)$pollVars['multilimit'];
             $lang_multi = '';
             if ($multiple && ($multiLimit > 0)) {

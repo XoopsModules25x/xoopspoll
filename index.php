@@ -237,8 +237,8 @@ if (empty($pollId)) {
     if ($pollObj->isAllowedToVote()) {
         $thisVoter  = (!empty($GLOBALS['xoopsUser'])
                        && ($GLOBALS['xoopsUser'] instanceof \XoopsUser)) ? $GLOBALS['xoopsUser']->getVar('uid') : null;
-        $canVote    = $logHandler->hasVoted($pollId, xoops_getenv('REMOTE_ADDR'), $thisVoter) ? false : true;
-        $multiple   = $pollObj->getVar('multiple') ? true : false;
+        $canVote    = !$logHandler->hasVoted($pollId, xoops_getenv('REMOTE_ADDR'), $thisVoter);
+        $multiple   = $pollObj->getVar('multiple');
         $multiLimit = (int)$pollObj->getVar('multilimit');
         if ($multiple && ($multiLimit > 0)) {
             $lang_multi = sprintf(_MD_XOOPSPOLL_MULTITEXT, $multiLimit);
