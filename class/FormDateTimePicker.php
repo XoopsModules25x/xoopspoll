@@ -53,7 +53,7 @@ class FormDateTimePicker extends \XoopsFormText
      * Generate the HTML <input> to display the date/time field
      * @return string HTML code used to display in a form
      */
-    public function render()
+    public function render(): string
     {
         static $included = false;
 

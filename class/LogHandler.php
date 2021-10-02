@@ -62,7 +62,7 @@ class LogHandler extends \XoopsPersistableObjectHandler
      * @param int $option_id
      * @return bool $success
      */
-    public function deleteByOptionId($option_id)
+    public function deleteByOptionId($option_id): bool
     {
         $criteria = new \Criteria('option_id', $option_id, '=');
         $success  = $this->deleteAll($criteria);
@@ -76,7 +76,7 @@ class LogHandler extends \XoopsPersistableObjectHandler
      * @return bool $success
      * @uses CriteriaCompo
      */
-    public function deleteByPollId($pid)
+    public function deleteByPollId($pid): bool
     {
         $criteria = new \Criteria('poll_id', (int)$pid, '=');
         $success  = $this->deleteAll($criteria);
@@ -92,7 +92,7 @@ class LogHandler extends \XoopsPersistableObjectHandler
      * @return array $success
      * @uses CriteriaCompo
      */
-    public function getAllByPollId($pid, $sortby = 'time', $orderby = 'ASC')
+    public function getAllByPollId($pid, $sortby = 'time', $orderby = 'ASC'): array
     {
         $ret      = [];
         $criteria = new \CriteriaCompo();
@@ -110,7 +110,7 @@ class LogHandler extends \XoopsPersistableObjectHandler
      * @return int
      * @uses CriteriaCompo
      */
-    public function getTotalVotesByPollId($pid)
+    public function getTotalVotesByPollId($pid): int
     {
         $criteria = new \Criteria('poll_id', (int)$pid, '=');
         $numVotes = $this->getCount($criteria);
@@ -124,7 +124,7 @@ class LogHandler extends \XoopsPersistableObjectHandler
      * @return int
      * @uses CriteriaCompo
      */
-    public function getTotalVotersByPollId($pid)
+    public function getTotalVotersByPollId($pid): int
     {
         $criteria = new \CriteriaCompo();
         $criteria->add(new \Criteria('poll_id', (int)$pid, '='));
@@ -141,7 +141,7 @@ class LogHandler extends \XoopsPersistableObjectHandler
      * @return int
      * @uses CriteriaCompo
      */
-    public function getTotalVotesByOptionId($option_id)
+    public function getTotalVotesByOptionId($option_id): int
     {
         $criteria = new \Criteria('option_id', (int)$option_id, '=');
         $votes    = $this->getCount($criteria);
@@ -157,7 +157,7 @@ class LogHandler extends \XoopsPersistableObjectHandler
      * @return bool
      * @uses $_COOKIE
      */
-    public function hasVoted($pid, $ip, $uid = 0)
+    public function hasVoted($pid, $ip, $uid = 0): bool
     {
         $uid         = (int)$uid;
         $pid         = (int)$pid;
