@@ -29,7 +29,7 @@ use XoopsModules\Xoopspoll\{Utility
  * @param \XoopsModule $module
  * @return bool
  */
-function xoops_module_pre_uninstall_xoopspoll(\XoopsModule $module)
+function xoops_module_pre_uninstall_xoopspoll(\XoopsModule $module): bool
 {
     /* make sure that any polls associated with xoopspoll are cleared from newbb */
     /** @var \XoopsModuleHandler $moduleHandler */
@@ -52,7 +52,7 @@ function xoops_module_pre_uninstall_xoopspoll(\XoopsModule $module)
  * @param XoopsModule $module
  * @return bool
  */
-function xoops_module_uninstall_xoopspoll(\XoopsModule $module)
+function xoops_module_uninstall_xoopspoll(\XoopsModule $module): bool
 {
     /* clear the voted cookie(s) for the admin user's machine when module is uninstalled */
     $success = Utility::setVoteCookie('', null, time() - 3600);

@@ -59,7 +59,7 @@ require_once $GLOBALS['xoops']->path( "modules"
  * @global mixed $GLOBALS ['xoopsUser']
  * @uses   CriteriaCompo
  */
-function xoopspollBlockMultiShow($options)
+function xoopspollBlockMultiShow($options): array
 {
     $block           = [];
     $pollOptionArray = [];
@@ -203,7 +203,7 @@ function xoopspollBlockMultiShow($options)
  * @global mixed $GLOBALS ['xoopsUser']
  * @uses   xoops_getModuleHandler() function to get class handler for this modules class(es)
  */
-function xoopspollBlockMultiEdit($options)
+function xoopspollBlockMultiEdit($options): string
 {
     /**
      * Options[]

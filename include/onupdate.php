@@ -29,7 +29,7 @@ use XoopsModules\Xoopspoll\{Helper,
  * @param                     $toTable
  * @return bool
  */
-function xoopspollChangeTableName(\XoopsDatabase $db, $fromTable, $toTable)
+function xoopspollChangeTableName(\XoopsDatabase $db, $fromTable, $toTable): bool
 {
     $fromTable = addslashes($fromTable);
     $toTable   = addslashes($toTable);
@@ -57,7 +57,7 @@ function xoopspollChangeTableName(\XoopsDatabase $db, $fromTable, $toTable)
  * @param              $prev_version
  * @return bool
  */
-function xoops_module_update_xoopspoll(\XoopsModule $module, $prev_version)
+function xoops_module_update_xoopspoll(\XoopsModule $module, $prev_version): bool
 {
     // referer check
     $success = false;

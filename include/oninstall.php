@@ -20,7 +20,7 @@
  * @param \XoopsModule $module
  * @return bool
  */
-function xoops_module_pre_install_xoopspoll(\XoopsModule $module)
+function xoops_module_pre_install_xoopspoll(\XoopsModule $module): bool
 {
     //    $db = \XoopsDatabaseFactory::getDatabaseConnection();
     $retVal = true;
@@ -32,7 +32,7 @@ function xoops_module_pre_install_xoopspoll(\XoopsModule $module)
  * @param \XoopsModule $module
  * @return bool
  */
-function xoops_module_install_xoopspoll(\XoopsModule $module)
+function xoops_module_install_xoopspoll(\XoopsModule $module): bool
 {
     $retVal = true;
 

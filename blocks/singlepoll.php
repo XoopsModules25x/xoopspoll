@@ -46,7 +46,7 @@ require_once $GLOBALS['xoops']->path( "modules"
  * @uses   xoops_getUserTimestamp() function to convert time to user time
  * @uses   formatTimestamp() takes timestamp and converts to human-readable format
  */
-function xoopspollBlockSinglepollShow($options)
+function xoopspollBlockSinglepollShow($options): array
 {
     $block = [];
 
@@ -206,7 +206,7 @@ function xoopspollBlockSinglepollShow($options)
  * @global mixed $GLOBALS ['xoopsUser']
  * @uses   xoops_getModuleHandler() function to get class handler for this modules class(es)
  */
-function xoopspollBlockSinglepollEdit($options)
+function xoopspollBlockSinglepollEdit($options): string
 {
     /**
      * Options[]
