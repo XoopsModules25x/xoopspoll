@@ -162,8 +162,8 @@ class LogHandler extends \XoopsPersistableObjectHandler
         $uid         = (int)$uid;
         $pid         = (int)$pid;
         $voted       = true;
-        $voted_polls = Utility::getVoteCookie();
-        //        $voted_polls = [];  //TESTING HACK TO BYPASS COOKIES
+        $votedPolls = Utility::getVoteCookie();
+        //        $votedPolls = [];  //TESTING HACK TO BYPASS COOKIES
         $pollHandler = Helper::getInstance()->getHandler('Poll');
         $pollObj     = $pollHandler->get($pid);
         if ($pollObj) {
@@ -188,7 +188,7 @@ class LogHandler extends \XoopsPersistableObjectHandler
                 $voted  = $vCount > 0;
             } else {
                 /* Check cookie to see if someone from this system has voted before */
-                if (\array_key_exists($pid, $voted_polls) && ((int)$voted_polls[$pid] >= $pollStarttime)) {
+                if (\array_key_exists($pid, $votedPolls) && ((int)$votedPolls[$pid] >= $pollStarttime)) {
                     $criteria = new \CriteriaCompo();
                     $criteria->add(new \Criteria('poll_id', $pid, '='));
                     $criteria->add(new \Criteria('time', (int)$pollStarttime, '>='));

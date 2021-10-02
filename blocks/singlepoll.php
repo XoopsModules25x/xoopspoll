@@ -56,7 +56,7 @@ function xoopspollBlockSinglepollShow($options)
     /** @var \XoopsModuleHandler $moduleHandler */
     $moduleHandler      = xoops_getHandler('module');
     $thisModule         = $moduleHandler->getByDirname('xoopspoll');
-    $this_module_config = $configHandler->getConfigsByCat(0, $thisModule->getVar('mid'));
+    $thisModuleConfig = $configHandler->getConfigsByCat(0, $thisModule->getVar('mid'));
 
     /* if admin hasn't initialized block then we'll pick a poll for them
      * provided that one exists in the database
@@ -66,7 +66,7 @@ function xoopspollBlockSinglepollShow($options)
         /**
          * check to see if we want to include polls created with forum (newbb)
          */
-        if ($this_module_config['hide_forum_polls']
+        if ($thisModuleConfig['hide_forum_polls']
             && ($thisModule instanceof \XoopsModule)
             && $thisModule->isactive()) {
             $newbbModule = $moduleHandler->getByDirname('newbb');
@@ -113,7 +113,7 @@ function xoopspollBlockSinglepollShow($options)
             $block['asList']          = $options[3];
             $block['thisModuleDir']   = 'xoopspoll';
             $block['url']             = 'http' . (!empty($_SERVER['HTTPS']) ? 's' : '') . '://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
-            $block['dispVotes']       = $this_module_config['disp_vote_nums'];
+            $block['dispVotes']       = $thisModuleConfig['disp_vote_nums'];
 
             $optionHandler = Helper::getInstance()->getHandler('Option');
 
@@ -262,9 +262,9 @@ function xoopspollBlockSinglepollEdit($options)
     /** @var \XoopsModuleHandler $moduleHandler */
     $moduleHandler      = xoops_getHandler('module');
     $thisModule         = $moduleHandler->getByDirname('xoopspoll');
-    $this_module_config = $configHandler->getConfigsByCat(0, $thisModule->getVar('mid'));
+    $thisModuleConfig = $configHandler->getConfigsByCat(0, $thisModule->getVar('mid'));
 
-    if ($this_module_config['hide_forum_polls'] && ($thisModule instanceof \XoopsModule) && $thisModule->isactive()) {
+    if ($thisModuleConfig['hide_forum_polls'] && ($thisModule instanceof \XoopsModule) && $thisModule->isactive()) {
         $newbbModule = $moduleHandler->getByDirname('newbb');
         if ($newbbModule instanceof \XoopsModule && $newbbModule->isactive()) {
             /** @var Newbb\TopicHandler $topicHandler */

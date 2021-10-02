@@ -120,15 +120,15 @@ class Log extends \XoopsObject
      */
     private static function getStaticLogHandler(): bool
     {
-        static $log_h;
+        static $logHandler;
         $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __FUNCTION__ . ' is deprecated since Xoopspoll 1.40, please use Log and LogHandler methods instead.' . " Called from {$trace[0]['file']}line {$trace[0]['line']}");
 
-        if (!isset($log_h)) {
-            $log_h = Helper::getInstance()->getHandler('Log');
+        if (!isset($logHandler)) {
+            $logHandler = Helper::getInstance()->getHandler('Log');
         }
 
-        return $log_h;
+        return $logHandler;
     }
     /**#@-*/
 }

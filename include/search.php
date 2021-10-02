@@ -59,11 +59,11 @@ function xoopspoll_search($queryArray, $andor, $limit, $offset, $uid)
         /** @var \XoopsModuleHandler $moduleHandler */
         $moduleHandler      = xoops_getHandler('module');
         $thisModule         = $moduleHandler->getByDirname('xoopspoll');
-        $this_module_config = $configHandler->getConfigsByCat(0, $thisModule->getVar('mid'));
+        $thisModuleConfig = $configHandler->getConfigsByCat(0, $thisModule->getVar('mid'));
 
         $pollsWithTopics = [];
         if (($thisModule instanceof \XoopsModule) && $thisModule->isactive()
-            && $this_module_config['hide_forum_polls']) {
+            && $thisModuleConfig['hide_forum_polls']) {
             $newbbModule = $moduleHandler->getByDirname('newbb');
             if ($newbbModule instanceof \XoopsModule && $newbbModule->isactive()) {
                 /** @var Newbb\TopicHandler $topicHandler */

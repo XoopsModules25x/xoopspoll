@@ -64,14 +64,14 @@ class SysUtility
     {
         global $start, $order, $sort;
 
-        $select_view   = '';
+        $selectViewForm   = '';
         $moduleDirName = \basename(\dirname(__DIR__));
         $helper = Helper::getInstance();
 
         //$pathModIcon16 = XOOPS_URL . '/modules/' . $moduleDirName . '/' . $helper->getConfig('modicons16');
         $pathModIcon16 = $helper->url($helper->getModule()->getInfo('modicons16'));
 
-        $select_view = '<form name="form_switch" id="form_switch" action="' . Request::getString('REQUEST_URI', '', 'SERVER') . '" method="post"><span style="font-weight: bold;">' . $text . '</span>';
+        $selectViewForm = '<form name="form_switch" id="form_switch" action="' . Request::getString('REQUEST_URI', '', 'SERVER') . '" method="post"><span style="font-weight: bold;">' . $text . '</span>';
         //$sorts =  $sort ==  'asc' ? 'desc' : 'asc';
         if ($form_sort == $sort) {
             $sel1 = 'asc' === $order ? 'selasc.png' : 'asc.png';
@@ -80,11 +80,11 @@ class SysUtility
             $sel1 = 'asc.png';
             $sel2 = 'desc.png';
         }
-        $select_view .= '  <a href="' . Request::getString('SCRIPT_NAME', '', 'SERVER') . '?start=' . $start . '&sort=' . $form_sort . '&order=asc"><img src="' . $pathModIcon16 . '/' . $sel1 . '" title="ASC" alt="ASC"></a>';
-        $select_view .= '<a href="' . Request::getString('SCRIPT_NAME', '', 'SERVER') . '?start=' . $start . '&sort=' . $form_sort . '&order=desc"><img src="' . $pathModIcon16 . '/' . $sel2 . '" title="DESC" alt="DESC"></a>';
-        $select_view .= '</form>';
+        $selectViewForm .= '  <a href="' . Request::getString('SCRIPT_NAME', '', 'SERVER') . '?start=' . $start . '&sort=' . $form_sort . '&order=asc"><img src="' . $pathModIcon16 . '/' . $sel1 . '" title="ASC" alt="ASC"></a>';
+        $selectViewForm .= '<a href="' . Request::getString('SCRIPT_NAME', '', 'SERVER') . '?start=' . $start . '&sort=' . $form_sort . '&order=desc"><img src="' . $pathModIcon16 . '/' . $sel2 . '" title="DESC" alt="DESC"></a>';
+        $selectViewForm .= '</form>';
 
-        return $select_view;
+        return $selectViewForm;
     }
 
     /***************Blocks***************/
@@ -230,7 +230,7 @@ class SysUtility
             }
             // splits all html-tags to scanable lines
             \preg_match_all('/(<.+?' . '>)?([^<>]*)/s', $text, $lines, \PREG_SET_ORDER);
-            $total_length = \mb_strlen($ending);
+            $totalLength = \mb_strlen($ending);
             //$openTags    = [];
             $truncate = '';
             foreach ($lines as $line_matchings) {
@@ -255,10 +255,10 @@ class SysUtility
                     $truncate .= $line_matchings[1];
                 }
                 // calculate the length of the plain text part of the line; handle entities as one character
-                $content_length = \mb_strlen(\preg_replace('/&[0-9a-z]{2,8};|&#\d{1,7};|[0-9a-f]{1,6};/i', ' ', $line_matchings[2]));
-                if ($total_length + $content_length > $length) {
+                $contentLength = \mb_strlen(\preg_replace('/&[0-9a-z]{2,8};|&#\d{1,7};|[0-9a-f]{1,6};/i', ' ', $line_matchings[2]));
+                if ($totalLength + $contentLength > $length) {
                     // the number of characters which are left
-                    $left            = $length - $total_length;
+                    $left            = $length - $totalLength;
                     $entities_length = 0;
                     // search for html entities
                     if (\preg_match_all('/&[0-9a-z]{2,8};|&#\d{1,7};|[0-9a-f]{1,6};/i', $line_matchings[2], $entities, \PREG_OFFSET_CAPTURE)) {
@@ -278,10 +278,10 @@ class SysUtility
                     break;
                 }
                 $truncate     .= $line_matchings[2];
-                $total_length += $content_length;
+                $totalLength += $contentLength;
 
                 // if the maximum length is reached, get off the loop
-                if ($total_length >= $length) {
+                if ($totalLength >= $length) {
                     break;
                 }
             }

@@ -68,7 +68,7 @@ function xoopspollBlockMultiShow($options)
     $thisModule    = $moduleHandler->getByDirname('xoopspoll');
     /** @var \XoopsConfigHandler $configHandler */
     $configHandler      = xoops_getHandler('config');
-    $this_module_config = $configHandler->getConfigsByCat(0, $thisModule->getVar('mid'));
+    $thisModuleConfig = $configHandler->getConfigsByCat(0, $thisModule->getVar('mid'));
 
     $pollHandler = Helper::getInstance()->getHandler('Poll');
     $criteria    = new \CriteriaCompo();
@@ -81,7 +81,7 @@ function xoopspollBlockMultiShow($options)
     /**
      * now check to see if we want to hide polls that were created using newbb
      */
-    if ($this_module_config['hide_forum_polls'] && ($thisModule instanceof \XoopsModule) && $thisModule->isactive()) {
+    if ($thisModuleConfig['hide_forum_polls'] && ($thisModule instanceof \XoopsModule) && $thisModule->isactive()) {
         $newbbModule = $moduleHandler->getByDirname('newbb');
         if ($newbbModule instanceof \XoopsModule && $newbbModule->isactive()) {
             /** @var Newbb\TopicHandler $topicHandler */
@@ -115,7 +115,7 @@ function xoopspollBlockMultiShow($options)
         $block['langComments']  = _MB_XOOPSPOLL_COMMENTS;
         $block['langComment']   = _MB_XOOPSPOLL_COMMENT;
         $block['url']           = 'http' . (!empty($_SERVER['HTTPS']) ? 's' : '') . '://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
-        $block['dispVotes']     = $this_module_config['disp_vote_nums'];
+        $block['dispVotes']     = $thisModuleConfig['disp_vote_nums'];
         $block['thisModuleDir'] = 'xoopspoll';
         $block['asList']        = $options[0];
 
