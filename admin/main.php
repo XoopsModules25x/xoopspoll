@@ -317,7 +317,7 @@ switch ($op) {
         $pollId      = Request::getInt('poll_id', 0);
         $pollHandler = $helper->getHandler('Poll');
         $pollObj     = $pollHandler->get($pollId);
-        if (null === $pollObj || !($pollObj instanceof Poll)) {
+        if (!($pollObj instanceof Poll)) {
             redirect_header($_SERVER['SCRIPT_NAME'], Constants::REDIRECT_DELAY_SHORT, implode('<br>', $pollHandler->getErrors()));
         }
         xoops_cp_header();

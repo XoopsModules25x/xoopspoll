@@ -78,7 +78,7 @@ require $GLOBALS['xoops']->path('header.php');
 
 $pollHandler = $helper->getHandler('Poll');
 $pollObj     = $pollHandler->get($pollId);
-if (null !== $pollObj && ($pollObj instanceof Poll)) {
+if (($pollObj instanceof Poll)) {
     /* make sure the poll has started */
     if ($pollObj->getVar('start_time') > time()) {
         redirect_header('index.php', Constants::REDIRECT_DELAY_NONE);
