@@ -106,7 +106,7 @@ $modversion = [
     'hasSearch'           => 1,
     'search'              => [
         'file' => 'include/search.php',
-        'func' => 'pedigree_search',
+        'func' => 'xoopspoll_search',
     ],
     // ------------------- Comments -------------------------
     'hasComments'         => 1,
@@ -143,14 +143,6 @@ $modversion['helpsection'] = [
     ['name' => _MI_XOOPSPOLL_LICENSE, 'link' => 'page=license'],
     ['name' => _MI_XOOPSPOLL_SUPPORT, 'link' => 'page=support'],
 ];
-
-/**
- * Search definitions
- * 1 = yes, module has search | 0 = no
- */
-$modversion['hasSearch']      = 1;
-$modversion['search']['file'] = 'include/search.php';
-$modversion['search']['func'] = 'xoopspoll_search';
 
 /**#@+
  * Block template description
