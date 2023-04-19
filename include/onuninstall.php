@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  You may not change or alter any portion of this comment or credits
  of supporting developers from this source code or any supporting source code
@@ -13,8 +13,7 @@
  * Xoopspoll uninstall functions.php
  *
  * @copyright:: {@link https://xoops.org/ XOOPS Project}
- * @license  ::   {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package  ::   xoopspoll
+ * @license  ::   {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @since    ::     1.40
  * @author   ::    zyspec <zyspec@yahoo.com>
  * @param XoopsModule $module
@@ -22,7 +21,8 @@
  */
 
 use XoopsModules\Newbb;
-use XoopsModules\Xoopspoll\{Utility
+use XoopsModules\Xoopspoll\{
+    Utility
 };
 
 /**

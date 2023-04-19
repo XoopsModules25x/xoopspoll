@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
                XOOPS - PHP Content Management System
                    Copyright (c) 2000-2020 XOOPS.org
@@ -27,8 +27,7 @@
  * Administration menu for the XoopsPoll Module
  *
  * @copyright ::  {@link https://xoops.org/ XOOPS Project}
- * @license   :: {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package   :: xoopspoll
+ * @license   :: {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @subpackage:: admin
  * @since     :: 1.40
  * @author    :: XOOPS Module Team
@@ -36,7 +35,8 @@
 
 use Xmf\Module\Admin;
 use Xmf\Request;
-use XoopsModules\Xoopspoll\{Constants,
+use XoopsModules\Xoopspoll\{
+    Constants,
     Helper,
     Utility
 };

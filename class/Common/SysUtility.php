@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\Xoopspoll\Common;
 
@@ -16,15 +16,15 @@ namespace XoopsModules\Xoopspoll\Common;
  */
 
 /**
- *
- * @license      https://www.fsf.org/copyleft/gpl.html GNU public license
+ * @license      GNU GPL 2.0 or later (https://www.gnu.org/licenses/gpl-2.0.html)
  * @copyright    https://xoops.org 2000-2020 &copy; XOOPS Project
  * @author       ZySpec <zyspec@yahoo.com>
  * @author       Mamba <mambax7@gmail.com>
  */
 
 use Xmf\Request;
-use XoopsModules\Xoopspoll\{Helper
+use XoopsModules\Xoopspoll\{
+    Helper
 };
 
 /**
@@ -32,9 +32,9 @@ use XoopsModules\Xoopspoll\{Helper
  */
 class SysUtility
 {
-    use VersionChecks; //checkVerXoops, checkVerPhp Traits
-    use ServerStats; // getServerStats Trait
-    use FilesManagement; // Files Management Trait
+    use VersionChecks;    //checkVerXoops, checkVerPhp Traits
+    use ServerStats;    // getServerStats Trait
+    use FilesManagement;    // Files Management Trait
     //    use ModuleStats;    // ModuleStats Trait
 
     //--------------- Common module methods -----------------------------
@@ -45,7 +45,7 @@ class SysUtility
      * @return SysUtility
      *
      */
-    public static function getInstance(): SysUtility
+    public static function getInstance(): self
     {
         static $instance;
         if (null === $instance) {
@@ -56,17 +56,17 @@ class SysUtility
     }
 
     /**
-     * @param $text
-     * @param $form_sort
+     * @param string $text
+     * @param string $form_sort
      * @return string
      */
     public static function selectSorting($text, $form_sort): string
     {
         global $start, $order, $sort;
 
-        $selectViewForm   = '';
-        $moduleDirName = \basename(\dirname(__DIR__));
-        $helper = Helper::getInstance();
+        $selectViewForm = '';
+        $moduleDirName  = \basename(\dirname(__DIR__));
+        $helper         = Helper::getInstance();
 
         //$pathModIcon16 = XOOPS_URL . '/modules/' . $moduleDirName . '/' . $helper->getConfig('modicons16');
         $pathModIcon16 = $helper->url($helper->getModule()->getInfo('modicons16'));
@@ -88,10 +88,7 @@ class SysUtility
     }
 
     /***************Blocks***************/
-    /**
-     * @param array $cats
-     * @return string
-     */
+
     public static function blockAddCatSelect(array $cats): string
     {
         $cat_sql = '';
@@ -138,9 +135,6 @@ class SysUtility
     }
 
     /**
-     * @param string $tableName
-     * @param string $columnName
-     *
      * @return array|false
      */
     public static function enumerate(string $tableName, string $columnName)
@@ -154,17 +148,18 @@ class SysUtility
         $sql    = 'SELECT COLUMN_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "' . $table . '" AND COLUMN_NAME = "' . $columnName . '"';
         $result = $GLOBALS['xoopsDB']->query($sql);
         if (!$result) {
-            //            exit($GLOBALS['xoopsDB']->error());
-            $logger     = \XoopsLogger::getInstance();
+            //            \trigger_error($GLOBALS['xoopsDB']->error());
+            $logger = \XoopsLogger::getInstance();
             $logger->handleError(\E_USER_WARNING, $sql, __FILE__, __LINE__);
+
             return false;
         }
 
         $row      = $GLOBALS['xoopsDB']->fetchBoth($result);
-        $enumList = \explode(',', \str_replace("'", '', \mb_substr($row['COLUMN_TYPE'], 5, - 6)));
+        $enumList = \explode(',', \str_replace("'", '', \mb_substr($row['COLUMN_TYPE'], 5, -6)));
+
         return $enumList;
     }
-
 
     /**
      * Clone a record in a dB
@@ -180,12 +175,12 @@ class SysUtility
     public static function cloneRecord(string $tableName, string $idField, int $id)
     {
         $newId = false;
-        $table  = $GLOBALS['xoopsDB']->prefix($tableName);
+        $table = $GLOBALS['xoopsDB']->prefix($tableName);
         // copy content of the record you wish to clone
         $sql       = "SELECT * FROM $table WHERE $idField='" . $id . "' ";
         $tempTable = $GLOBALS['xoopsDB']->fetchArray($GLOBALS['xoopsDB']->query($sql), \MYSQLI_ASSOC);
         if (!$tempTable) {
-            exit($GLOBALS['xoopsDB']->error());
+            \trigger_error($GLOBALS['xoopsDB']->error());
         }
         // set the auto-incremented id's value to blank.
         unset($tempTable[$idField]);
@@ -193,7 +188,7 @@ class SysUtility
         $sql    = "INSERT INTO $table (" . \implode(', ', \array_keys($tempTable)) . ") VALUES ('" . \implode("', '", $tempTable) . "')";
         $result = $GLOBALS['xoopsDB']->queryF($sql);
         if (!$result) {
-            exit($GLOBALS['xoopsDB']->error());
+            \trigger_error($GLOBALS['xoopsDB']->error());
         }
         // Return the new id
         return $GLOBALS['xoopsDB']->getInsertId();
@@ -233,35 +228,35 @@ class SysUtility
             $totalLength = \mb_strlen($ending);
             //$openTags    = [];
             $truncate = '';
-            foreach ($lines as $line_matchings) {
+            foreach ($lines as $lineMatchings) {
                 // if there is any html-tag in this line, handle it and add it (uncounted) to the output
-                if (!empty($line_matchings[1])) {
+                if (!empty($lineMatchings[1])) {
                     // if it's an "empty element" with or without xhtml-conform closing slash
-                    if (\preg_match('/^<(\s*.+?\/\s*|\s*(img|br|input|hr|area|base|basefont|col|frame|isindex|link|meta|param)(\s.+?)?)>$/is', $line_matchings[1])) {
+                    if (\preg_match('/^<(\s*.+?\/\s*|\s*(img|br|input|hr|area|base|basefont|col|frame|isindex|link|meta|param)(\s.+?)?)>$/is', $lineMatchings[1])) {
                         // do nothing
                         // if tag is a closing tag
-                    } elseif (\preg_match('/^<\s*\/(\S+?)\s*>$/s', $line_matchings[1], $tag_matchings)) {
+                    } elseif (\preg_match('/^<\s*\/(\S+?)\s*>$/s', $lineMatchings[1], $tag_matchings)) {
                         // delete tag from $openTags list
                         $pos = \array_search($tag_matchings[1], $openTags, true);
                         if (false !== $pos) {
                             unset($openTags[$pos]);
                         }
                         // if tag is an opening tag
-                    } elseif (\preg_match('/^<\s*([^\s>!]+).*?' . '>$/s', $line_matchings[1], $tag_matchings)) {
+                    } elseif (\preg_match('/^<\s*([^\s>!]+).*?' . '>$/s', $lineMatchings[1], $tag_matchings)) {
                         // add tag to the beginning of $openTags list
                         \array_unshift($openTags, \mb_strtolower($tag_matchings[1]));
                     }
                     // add html-tag to $truncate'd text
-                    $truncate .= $line_matchings[1];
+                    $truncate .= $lineMatchings[1];
                 }
                 // calculate the length of the plain text part of the line; handle entities as one character
-                $contentLength = \mb_strlen(\preg_replace('/&[0-9a-z]{2,8};|&#\d{1,7};|[0-9a-f]{1,6};/i', ' ', $line_matchings[2]));
+                $contentLength = \mb_strlen(\preg_replace('/&[0-9a-z]{2,8};|&#\d{1,7};|[0-9a-f]{1,6};/i', ' ', $lineMatchings[2]));
                 if ($totalLength + $contentLength > $length) {
                     // the number of characters which are left
                     $left            = $length - $totalLength;
                     $entities_length = 0;
                     // search for html entities
-                    if (\preg_match_all('/&[0-9a-z]{2,8};|&#\d{1,7};|[0-9a-f]{1,6};/i', $line_matchings[2], $entities, \PREG_OFFSET_CAPTURE)) {
+                    if (\preg_match_all('/&[0-9a-z]{2,8};|&#\d{1,7};|[0-9a-f]{1,6};/i', $lineMatchings[2], $entities, \PREG_OFFSET_CAPTURE)) {
                         // calculate the real length of all entities in the legal range
                         foreach ($entities[0] as $entity) {
                             if ($left >= $entity[1] + 1 - $entities_length) {
@@ -273,11 +268,11 @@ class SysUtility
                             }
                         }
                     }
-                    $truncate .= \mb_substr($line_matchings[2], 0, $left + $entities_length);
+                    $truncate .= \mb_substr($lineMatchings[2], 0, $left + $entities_length);
                     // maximum length is reached, so get off the loop
                     break;
                 }
-                $truncate     .= $line_matchings[2];
+                $truncate    .= $lineMatchings[2];
                 $totalLength += $contentLength;
 
                 // if the maximum length is reached, get off the loop
@@ -315,8 +310,6 @@ class SysUtility
     /**
      * Get correct text editor based on user rights
      *
-     * @param \Xmf\Module\Helper|null $helper
-     * @param array|null              $options
      *
      * @return \XoopsFormDhtmlTextArea|\XoopsFormEditor
      */
@@ -369,9 +362,9 @@ class SysUtility
         \trigger_error(__METHOD__ . " is deprecated, use Xmf\Database\Tables instead - instantiated from {$trace[0]['file']} line {$trace[0]['line']},");
 
         $result = $GLOBALS['xoopsDB']->queryF("SHOW COLUMNS FROM   $table LIKE '$fieldname'");
+
         return ($GLOBALS['xoopsDB']->getRowsNum($result) > 0);
     }
-
 
     /**
      * Function responsible for checking if a directory exists, we can also write in and create an index.html file
@@ -405,7 +398,7 @@ class SysUtility
         );
         $result = $GLOBALS['xoopsDB']->queryF("SHOW TABLES LIKE '$tablename'");
 
-        return $GLOBALS['xoopsDB']->getRowsNum($result) > 0    ;
+        return $GLOBALS['xoopsDB']->getRowsNum($result) > 0;
     }
 
     /**
@@ -418,6 +411,7 @@ class SysUtility
     public static function addField($field, $table)
     {
         global $xoopsDB;
+
         return $xoopsDB->queryF('ALTER TABLE ' . $table . " ADD $field;");
     }
 }

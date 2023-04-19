@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
                 XOOPS - PHP Content Management System
                     Copyright (c) 2000-2020 XOOPS.org
@@ -27,8 +27,7 @@
  * XOOPS Poll main index page
  *
  * @copyright::  {@link https://xoops.org XOOPS Project}
- * @license  ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package  ::    xoopspoll
+ * @license  ::    {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @since    ::      1.0
  *
  * @uses     xoops_load() method used to load classes
@@ -47,7 +46,8 @@
 use Xmf\Module\Admin;
 use Xmf\Request;
 use XoopsModules\Newbb;
-use XoopsModules\Xoopspoll\{Constants,
+use XoopsModules\Xoopspoll\{
+    Constants,
     Helper,
     Poll,
     Renderer,
@@ -77,7 +77,7 @@ if (empty($pollId)) {
             'lang_results'        => _MD_XOOPSPOLL_RESULTS,
             'lang_mustlogin'      => _MD_XOOPSPOLL_MUSTLOGIN,
             'disp_votes'          => $GLOBALS['xoopsModuleConfig']['disp_vote_nums'],
-            'results_link_icon'   => Admin::iconUrl('', 16) . '/open12.gif',
+            'results_link_icon'   => Admin::iconUrl('', '16') . '/open12.gif',
             'obscured_icon'       => $GLOBALS['xoops']->url('modules/xoopspoll/assets/images/icons/obscured.png'),
             'lang_obscured_alt'   => _MD_XOOPSPOLL_OBSCURED,
             'lang_obscured_title' => _MD_XOOPSPOLL_OBSCURED,

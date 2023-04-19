@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace XoopsModules\Xoopspoll;
 
@@ -17,8 +15,7 @@ namespace XoopsModules\Xoopspoll;
  * XOOPS Poll Class Definitions
  *
  * @copyright ::  {@link https://xoops.org/ XOOPS Project}
- * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package   ::    xoopspoll
+ * @license   ::    {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @subpackage:: class
  * @since     ::         1.40
  * @author    ::     zyspec <zyspec@yahoo.com>
@@ -37,22 +34,20 @@ class PollHandler extends \XoopsPersistableObjectHandler
     /**
      * PollHandler::__construct()
      *
-     * @param null|\XoopsDatabase                 $db
      * @param \XoopsModules\Xoopspoll\Helper|null $helper
      */
     public function __construct(\XoopsDatabase $db = null, Helper $helper = null)
     {
-$this->helper = $helper ?? Helper::getInstance();
+        $this->helper = $helper ?? Helper::getInstance();
         parent::__construct($db, 'xoopspoll_desc', Poll::class, 'poll_id', 'question');
     }
 
     /**
      * Update the Vote count from the log and polls
-     * @access public
      * @param \XoopsObject $pollObj
-     * @return bool $success
+     * @return int|false object ID or false
      */
-    public function updateCount($pollObj): bool
+    public function updateCount($pollObj)
     {
         $success = false;
         if ($pollObj instanceof Poll) {

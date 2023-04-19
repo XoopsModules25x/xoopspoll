@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 /**
  * Newbb module
  *
@@ -10,8 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
  * @copyright       XOOPS Project (https://xoops.org)
- * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
- * @package         newbb
+ * @license         GNU GPL 2.0 or later (https://www.gnu.org/licenses/gpl-2.0.html)
  * @since           4.0
  * @author          Taiwen Jiang <phppp@users.sourceforge.net>
  */
@@ -47,7 +47,7 @@ $forum_id = Request::getInt('forum', 0, 'GET');
 $move     = isset($_GET['move']) ? mb_strtolower($_GET['move']) : '';
 $start    = Request::getInt('start', 0, 'GET');
 $status   = (!empty($_GET['status'])
-             && in_array($_GET['status'], ['active', 'pending', 'deleted'])) ? $_GET['status'] : '';
+             && in_array($_GET['status'], ['active', 'pending', 'deleted'], true)) ? $_GET['status'] : '';
 $mode     = Request::getInt('mode', (!empty($status) ? 2 : 0), 'GET');
 
 if (!$topic_id && !$post_id) {
@@ -100,13 +100,13 @@ $user_karma   = $karmaHandler->getUserKarma();
 
 $valid_modes     = $helper->getConfig('valid_viewmodes');
 $viewmode_cookie = newbb_getcookie('V');
-if (Request::hasVar('viewmode', 'GET') && in_array($_GET['viewmode'], $valid_modes)) {
+if (Request::hasVar('viewmode', 'GET') && in_array($_GET['viewmode'], $valid_modes, true)) {
     newbb_setcookie('V', $_GET['viewmode'], $forumCookie['expire']);
 }
 $viewmode = $_GET['viewmode'] ?? (!empty($viewmode_cookie) ? $viewmode_cookie : @$valid_modes[$helper->getConfig('view_mode') - 1]);
-$viewmode = @in_array($viewmode, $valid_modes) ? $viewmode : $valid_modes[0];
+$viewmode = @in_array($viewmode, $valid_modes, true) ? $viewmode : $valid_modes[0];
 $order    = (isset($_GET['order'])
-             && in_array(mb_strtoupper($_GET['order']), ['DESC', 'ASC'])) ? $_GET['order'] : 'ASC';
+             && in_array(mb_strtoupper($_GET['order']), ['DESC', 'ASC'], true)) ? $_GET['order'] : 'ASC';
 
 $total_posts = $topicHandler->getPostCount($topic_obj, $status);
 
@@ -364,14 +364,14 @@ if (!$topic_obj->getVar('topic_digest')) {
         'name'  => _MD_UNDIGESTTOPIC,
     ];
 }
-$xoopsTpl->assign_by_ref('admin_actions', $admin_actions);
+$xoopsTpl->assignByRef('admin_actions', $admin_actions);
 
 $xoopsTpl->assign('viewer_level', $isadmin ? 2 : is_object($xoopsUser));
 
 if ($helper->getConfig('show_permissiontable')) {
     $permissionHandler = Newbb\Helper::getInstance()->getHandler('Permission');
     $permission_table  = $permissionHandler->getPermissionTable($forum_obj, $topic_obj->getVar('topic_status'), $isadmin);
-    $xoopsTpl->assign_by_ref('permission_table', $permission_table);
+    $xoopsTpl->assignByRef('permission_table', $permission_table);
 }
 
 ///////////////////////////////
@@ -463,7 +463,7 @@ if (($xoopspoll instanceof \XoopsModule) && $xoopspoll->isactive()) {
                 'name'  => _MD_RESTARTPOLL,
             ];
 
-            $xoopsTpl->assign_by_ref('adminpoll_actions', $adminpoll_actions);
+            $xoopsTpl->assignByRef('adminpoll_actions', $adminpoll_actions);
         }
     }
     if (isset($poll_obj)) {
@@ -587,7 +587,7 @@ $xoopsTpl->assign('topicstatus', $current_status);
 $xoopsTpl->assign('mode', $mode);
 $xoopsTpl->assign('status', $status);
 $xoopsTpl->assign('viewmode_compact', ('compact' === $viewmode) ? 1 : 0);
-$xoopsTpl->assign_by_ref('viewmode_options', $viewmode_options);
+$xoopsTpl->assignByRef('viewmode_options', $viewmode_options);
 unset($viewmode_options);
 $xoopsTpl->assign('menumode', $menumode);
 $xoopsTpl->assign('menumode_other', $menumode_other);
@@ -661,7 +661,7 @@ if (!empty($helper->getConfig('quickreply_enabled'))
     $forum_form->addElement($submit_button);
 
     $toggles = newbb_getcookie('G', true);
-    $display = in_array('qr', $toggles) ? 'none;' : 'block;';
+    $display = in_array('qr', $toggles, true) ? 'none;' : 'block;';
     $xoopsTpl->assign(
         'quickreply',
         [
@@ -679,8 +679,9 @@ if (!empty($helper->getConfig('quickreply_enabled'))
 $xoopsLogger->stopTime('XOOPS output module - topic - quickreply');
 
 $xoopsLogger->startTime('XOOPS output module - topic - tag');
-if ($helper->getConfig('do_tag') && @require_once XOOPS_ROOT_PATH . '/modules/tag/include/tagbar.php') {
-    $xoopsTpl->assign('tagbar', tagBar($topic_obj->getVar('topic_tags', 'n')));
+if (1 == $helper->getConfig('do_tag') && \class_exists(\XoopsModules\Tag\Tagbar::class) && \xoops_isActiveModule('tag')) {
+    $tagbarObj = new \XoopsModules\Tag\Tagbar();
+    $xoopsTpl->assign('tagbar', $tagbarObj->getTagbar($topic_obj->getVar('topic_tags', 'n')));
 }
 $xoopsLogger->stopTime('XOOPS output module - topic - tag');
 

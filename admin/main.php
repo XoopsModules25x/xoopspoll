@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
                XOOPS - PHP Content Management System
                    Copyright (c) 2000-2020 XOOPS.org
@@ -28,8 +28,7 @@
  * Routines to manage administration of CRUD and display of polls
  *
  * @copyright ::  {@link https://xoops.org/ XOOPS Project}
- * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package   ::    xoopspoll
+ * @license   ::    {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @subpackage::    admin
  * @author    ::    Xoops Module Team
  * @since     ::    1.0
@@ -69,7 +68,7 @@ xoops_load('xoopslists');
 $helper = Helper::getInstance();
 
 $configurator = new Configurator();
-$icons = $configurator->icons;
+$icons        = $configurator->icons;
 
 $op = Request::getString('op', Request::getCmd('op', 'list', 'POST'), 'GET');
 switch ($op) {
@@ -146,13 +145,13 @@ switch ($op) {
                 $checked = (Constants::DISPLAY_POLL_IN_BLOCK === $pollVars['display']) ? ' checked' : '';
 
                 $xuCurrentTimestamp   = xoops_getUserTimestamp(time());
-                $xuCurrentFormatted   = ucfirst(date(_MEDIUMDATESTRING, $xuCurrentTimestamp));
+                $xuCurrentFormatted   = ucfirst(date(_MEDIUMDATESTRING, (int)$xuCurrentTimestamp));
                 $xuStartTimestamp     = xoops_getUserTimestamp($pollVars['start_time']);
-                $xuStartFormattedTime = ucfirst(date(_MEDIUMDATESTRING, $xuStartTimestamp));
+                $xuStartFormattedTime = ucfirst(date(_MEDIUMDATESTRING, (int)$xuStartTimestamp));
                 $xuEndTimestamp       = xoops_getUserTimestamp($pollVars['end_time']);
 
                 if ($xuEndTimestamp > $xuCurrentTimestamp) {
-                    $end = ucfirst(date(_MEDIUMDATESTRING, $xuEndTimestamp)); // formatted output for current user
+                    $end = ucfirst(date(_MEDIUMDATESTRING, (int)$xuEndTimestamp)); // formatted output for current user
                 } else {
                     $end = "<span class='red'>" . _AM_XOOPSPOLL_EXPIRED . '</span><br>' . "<a href='" . $_SERVER['SCRIPT_NAME'] . "?op=restart&amp;poll_id={$id}'>" . _AM_XOOPSPOLL_RESTART . '</a>';
                 }
@@ -377,7 +376,7 @@ switch ($op) {
 
         // setup times for forms
         $xuCurrentTimestamp = xoops_getUserTimestamp(time());
-        $xuCurrentFormatted = ucfirst(date(_MEDIUMDATESTRING, $xuCurrentTimestamp));
+        $xuCurrentFormatted = ucfirst(date(_MEDIUMDATESTRING, (int)$xuCurrentTimestamp));
         $xuStartTimestamp   = $xuCurrentTimestamp;
         $xuEndTimestamp     = $xuStartTimestamp + Constants::DEFAULT_POLL_DURATION;
 
@@ -472,7 +471,7 @@ switch ($op) {
         $adminObject->displayNavigation(basename(__FILE__));
 
         $xuEndTimestamp     = userTimeToServerTime($pollObj->getVar('end_time'));
-        $xuEndFormattedTime = ucfirst(date(_MEDIUMDATESTRING, $xuEndTimestamp));
+        $xuEndFormattedTime = ucfirst(date(_MEDIUMDATESTRING, (int)$xuEndTimestamp));
 
         /**
          * @todo need to move this html to a template and pass variables via xoopsTpl
@@ -645,7 +644,7 @@ switch ($op) {
                         echo "          <td class='{$class} center'>{$GLOBALS['xoopsConfig']['anonymous']}</td>\n";
                     }
                     $xuLogTimestamp     = userTimeToServerTime($logVals['time']);
-                    $xuLogFormattedTime = ucfirst(date(_DATESTRING, $xuLogTimestamp));
+                    $xuLogFormattedTime = ucfirst(date(_DATESTRING, (int)$xuLogTimestamp));
 
                     echo "          <td class='{$class} center'>{$xuLogFormattedTime}</td>\n" . "        </tr>\n";
                     $class = ('odd' === $class) ? 'even' : 'odd';

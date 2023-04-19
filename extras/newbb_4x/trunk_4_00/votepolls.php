@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 /**
  * Newbb module
  *
@@ -9,9 +10,8 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * @copyright       XOOPS Project (http://xoops.org)
- * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
- * @package         newbb
+ * @copyright       XOOPS Project (https://xoops.org)
+ * @license         GNU GPL 2.0 or later (https://www.gnu.org/licenses/gpl-2.0.html)
  * @since           4.0
  * @author          Taiwen Jiang <phppp@users.sourceforge.net>
  */

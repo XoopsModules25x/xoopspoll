@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Newbb module
@@ -10,9 +10,8 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * @copyright       XOOPS Project (http://xoops.org)
- * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
- * @package         newbb
+ * @copyright       XOOPS Project (https://xoops.org)
+ * @license         GNU GPL 2.0 or later (https://www.gnu.org/licenses/gpl-2.0.html)
  * @since           4.0
  * @author          Taiwen Jiang <phppp@users.sourceforge.net>
  */
@@ -60,10 +59,10 @@ $action_array = ['merge', 'delete', 'move', 'lock', 'unlock', 'sticky', 'unstick
 foreach ($action_array as $_action) {
     $action[$_action] = [
         'name'   => $_action,
-        'desc'   => constant(strtoupper("_MD_DESC_{$_action}")),
-        'submit' => constant(strtoupper("_MD_{$_action}")),
+        'desc'   => constant(mb_strtoupper("_MD_DESC_{$_action}")),
+        'submit' => constant(mb_strtoupper("_MD_{$_action}")),
         'sql'    => "topic_{$_action}=1",
-        'msg'    => constant(strtoupper("_MD_TOPIC{$_action}")),
+        'msg'    => constant(mb_strtoupper("_MD_TOPIC{$_action}")),
     ];
 }
 $action['lock']['sql']     = 'topic_status = 1';

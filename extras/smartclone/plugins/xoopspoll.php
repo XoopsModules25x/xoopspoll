@@ -1,8 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * @package:: SmartClone
- * @author ::  {@link http://www.smartfactory.ca The SmartFactory}
+ * @author ::  {@link https://www.smartfactory.ca The SmartFactory}
  * @license:: {@link https://www.gnu.org/licenses/gpl-2.0.html GNU Public License}
  */
 

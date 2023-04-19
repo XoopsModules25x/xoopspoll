@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  You may not change or alter any portion of this comment or credits
  of supporting developers from this source code or any supporting source code
@@ -12,14 +12,14 @@
  * XoopsPoll Single Poll Block Definition (clonable)
  *
  * @copyright ::  {@link https://xoops.org/ XOOPS Project}
- * @license   :: {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package   :: xoopspoll
+ * @license   :: {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @subpackage:: blocks
  * @since     :: 1.40
  */
 
 use XoopsModules\Newbb;
-use XoopsModules\Xoopspoll\{Constants,
+use XoopsModules\Xoopspoll\{
+    Constants,
     Helper,
     Poll,
     Utility
@@ -37,7 +37,6 @@ require_once $GLOBALS['xoops']->path( "modules"
 /**
  * Display a single XOOPS Polls in a block
  *
- * @access public
  * @param mixed  $options
  * @return array block keys and values to be used by block template
  * @global mixed $GLOBALS ['xoopsUser']
@@ -54,8 +53,8 @@ function xoopspollBlockSinglepollShow($options): array
     $configHandler = xoops_getHandler('config');
     $pollHandler   = Helper::getInstance()->getHandler('Poll');
     /** @var \XoopsModuleHandler $moduleHandler */
-    $moduleHandler      = xoops_getHandler('module');
-    $thisModule         = $moduleHandler->getByDirname('xoopspoll');
+    $moduleHandler    = xoops_getHandler('module');
+    $thisModule       = $moduleHandler->getByDirname('xoopspoll');
     $thisModuleConfig = $configHandler->getConfigsByCat(0, $thisModule->getVar('mid'));
 
     /* if admin hasn't initialized block then we'll pick a poll for them
@@ -162,7 +161,7 @@ function xoopspollBlockSinglepollShow($options): array
             }
 
             $xuEndTimestamp     = xoops_getUserTimestamp($pollObj->getVar('end_time'));
-            $xuEndFormattedTime = ucfirst(date(_MEDIUMDATESTRING, $xuEndTimestamp));
+            $xuEndFormattedTime = ucfirst(date(_MEDIUMDATESTRING, (int)$xuEndTimestamp));
 
             $isVisible = true === $pollObj->isResultVisible();
 
@@ -200,7 +199,6 @@ function xoopspollBlockSinglepollShow($options): array
 /**
  * Display a form to edit poll block display option
  *
- * @access public
  * @param mixed  $options
  * @return string HTML form for display by block admin
  * @global mixed $GLOBALS ['xoopsUser']
@@ -260,8 +258,8 @@ function xoopspollBlockSinglepollEdit($options): string
     /** @var \XoopsConfigHandler $configHandler */
     $configHandler = xoops_getHandler('config');
     /** @var \XoopsModuleHandler $moduleHandler */
-    $moduleHandler      = xoops_getHandler('module');
-    $thisModule         = $moduleHandler->getByDirname('xoopspoll');
+    $moduleHandler    = xoops_getHandler('module');
+    $thisModule       = $moduleHandler->getByDirname('xoopspoll');
     $thisModuleConfig = $configHandler->getConfigsByCat(0, $thisModule->getVar('mid'));
 
     if ($thisModuleConfig['hide_forum_polls'] && ($thisModule instanceof \XoopsModule) && $thisModule->isactive()) {

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  You may not change or alter any portion of this comment or credits
  of supporting developers from this source code or any supporting source code
@@ -12,8 +12,7 @@
  * XOOPS Poll module
  *
  * @copyright ::  {@link https://xoops.org/ XOOPS Project}
- * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package   ::    xoopspoll
+ * @license   ::    {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @subpackage:: admin
  * @since     ::      1.32
  * @author    ::     XOOPS Module Team
@@ -31,7 +30,8 @@
  */
 
 use Xmf\Module\Admin;
-use XoopsModules\Xoopspoll\{Helper
+use XoopsModules\Xoopspoll\{
+    Helper
 };
 
 include \dirname(__DIR__) . '/preloads/autoloader.php';
@@ -55,6 +55,7 @@ $helper->loadLanguage('admin');
 $helper->loadLanguage('modinfo');
 $helper->loadLanguage('main');
 $helper->loadLanguage('common');
+$helper->loadLanguage('blocksadmin');
 
 $myts = \MyTextSanitizer::getInstance();
 

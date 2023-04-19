@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 /**
  * Newbb module
  *
@@ -10,8 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
  * @copyright       XOOPS Project (https://xoops.org)
- * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
- * @package         newbb
+ * @license         GNU GPL 2.0 or later (https://www.gnu.org/licenses/gpl-2.0.html)
  * @since           4.0
  * @author          Taiwen Jiang <phppp@users.sourceforge.net>
  */
@@ -24,6 +24,29 @@ use XoopsModules\Xoopspoll;
  */
 class Post extends \XoopsObject
 {
+    private $post_id;
+    private $topic_id;
+    private $forum_id;
+    private $post_time;
+    private $poster_ip;
+    private $poster_name;
+    private $subject;
+    private $pid;
+    private $dohtml;
+    private $dosmiley;
+    private $doxcode;
+    private $doimage;
+    private $dobr;
+    private $uid;
+    private $icon;
+    private $attachsig;
+    private $approved;
+    private $post_karma;
+    private $require_reply;
+    private $attachment;
+    private $post_text;
+    private $post_edit;
+
     public $attachment_array = [];
 
     /**
@@ -133,7 +156,7 @@ class Post extends \XoopsObject
         }
 
         foreach ($attach_old as $key => $attach) {
-            if (in_array($key, $attach_array)) {
+            if (in_array($key, $attach_array, true)) {
                 @unlink(XOOPS_ROOT_PATH . '/' . $helper->getConfig('dir_attachments') . '/' . $attach['name_saved']);
                 @unlink(XOOPS_ROOT_PATH . '/' . $helper->getConfig('dir_attachments') . '/thumbs/' . $attach['name_saved']); // delete thumbnails
                 continue;
@@ -208,7 +231,7 @@ class Post extends \XoopsObject
                 }
                 $file_size = @filesize(XOOPS_ROOT_PATH . '/' . $helper->getConfig('dir_attachments') . '/' . $att['name_saved']);
                 $file_size = number_format($file_size / 1024, 2) . ' KB';
-                if (in_array(mb_strtolower($file_extension), $image_extensions) && $helper->getConfig('media_allowed')) {
+                if (in_array(mb_strtolower($file_extension), $image_extensions, true) && $helper->getConfig('media_allowed')) {
                     $post_attachment .= '<br><img src="' . $icon_filetype . '" alt="' . $filetype . '"><strong>&nbsp; ' . $att['name_display'] . '</strong> <small>(' . $file_size . ')</small>';
                     $post_attachment .= '<br>' . newbb_attachmentImage($att['name_saved']);
                     $isDisplayed     = true;
@@ -470,7 +493,7 @@ class Post extends \XoopsObject
             $post_attachment = '';
         } elseif ($helper->getConfig('allow_require_reply') && $this->getVar('require_reply')
                   && (!$uid
-                      || !in_array($uid, $viewtopic_posters))) {
+                      || !in_array($uid, $viewtopic_posters, true))) {
             $post_text       = "<div class='karma'>" . _MD_REPLY_REQUIREMENT . '</div>';
             $post_attachment = '';
         } else {
@@ -636,6 +659,7 @@ class PostHandler extends \XoopsPersistableObjectHandler
                 unset($post);
             }
         }
+
         return $ret;
     }
 
@@ -658,7 +682,7 @@ class PostHandler extends \XoopsPersistableObjectHandler
     }
 
     /**
-     * @param       $post
+     * @param \XoopsObject  $post
      * @param bool  $force
      * @return bool
      */
@@ -729,7 +753,7 @@ class PostHandler extends \XoopsPersistableObjectHandler
 
     /**
      * @param \XoopsObject $post
-     * @param bool         $force
+     * @param bool $force
      * @return bool
      */
     public function insert(\XoopsObject $post, $force = true)
@@ -839,8 +863,8 @@ class PostHandler extends \XoopsPersistableObjectHandler
 
     /**
      * @param \XoopsObject $post
-     * @param bool         $isDeleteOne
-     * @param bool         $force
+     * @param bool $isDeleteOne
+     * @param bool $force
      * @return bool
      */
     public function delete(\XoopsObject $post, $isDeleteOne = true, $force = false)
@@ -1012,7 +1036,7 @@ class PostHandler extends \XoopsPersistableObjectHandler
         if (!empty($join)) {
             $sql .= $join;
         }
-        if (\is_object($criteria) && is_subclass_of($criteria,  \CriteriaElement::class)) {
+        if (\is_object($criteria) && \is_subclass_of($criteria, \CriteriaElement::class)) {
             $sql .= ' ' . $criteria->renderWhere();
             if ('' != $criteria->getSort()) {
                 $sql .= ' ORDER BY ' . $criteria->getSort() . ' ' . $criteria->getOrder();
@@ -1027,6 +1051,7 @@ class PostHandler extends \XoopsPersistableObjectHandler
                 unset($post);
             }
         }
+
         return $ret;
     }
 

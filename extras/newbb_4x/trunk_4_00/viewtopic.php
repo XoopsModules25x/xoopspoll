@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Newbb module
@@ -10,9 +10,8 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * @copyright       XOOPS Project (http://xoops.org)
- * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
- * @package         newbb
+ * @copyright       XOOPS Project (https://xoops.org)
+ * @license         GNU GPL 2.0 or later (https://www.gnu.org/licenses/gpl-2.0.html)
  * @since           4.0
  * @author          Taiwen Jiang <phppp@users.sourceforge.net>
  */
@@ -40,10 +39,10 @@ unset($query_array);
 $topic_id = isset($_GET['topic_id']) ? (int)$_GET['topic_id'] : 0;
 $post_id  = !empty($_GET['post_id']) ? (int)$_GET['post_id'] : 0;
 $forum_id = !empty($_GET['forum']) ? (int)$_GET['forum'] : 0;
-$move     = isset($_GET['move']) ? strtolower($_GET['move']) : '';
+$move     = isset($_GET['move']) ? mb_strtolower($_GET['move']) : '';
 $start    = !empty($_GET['start']) ? (int)$_GET['start'] : 0;
 $status   = (!empty($_GET['status'])
-             && in_array($_GET['status'], ['active', 'pending', 'deleted'])) ? $_GET['status'] : '';
+             && in_array($_GET['status'], ['active', 'pending', 'deleted'], true)) ? $_GET['status'] : '';
 $mode     = !empty($_GET['mode']) ? (int)$_GET['mode'] : (!empty($status) ? 2 : 0);
 
 if (!$topic_id && !$post_id) {
@@ -96,13 +95,13 @@ $user_karma   = $karmaHandler->getUserKarma();
 
 $valid_modes     = $xoopsModuleConfig['valid_viewmodes'];
 $viewmode_cookie = newbb_getcookie('V');
-if (isset($_GET['viewmode']) && in_array($_GET['viewmode'], $valid_modes)) {
+if (isset($_GET['viewmode']) && in_array($_GET['viewmode'], $valid_modes, true)) {
     newbb_setcookie('V', $_GET['viewmode'], $forumCookie['expire']);
 }
 $viewmode = $_GET['viewmode'] ?? (!empty($viewmode_cookie) ? $viewmode_cookie : @$valid_modes[$xoopsModuleConfig['view_mode'] - 1]);
-$viewmode = @in_array($viewmode, $valid_modes) ? $viewmode : $valid_modes[0];
+$viewmode = @in_array($viewmode, $valid_modes, true) ? $viewmode : $valid_modes[0];
 $order    = (isset($_GET['order'])
-             && in_array(strtoupper($_GET['order']), ['DESC', 'ASC'])) ? $_GET['order'] : 'ASC';
+             && in_array(mb_strtoupper($_GET['order']), ['DESC', 'ASC'], true)) ? $_GET['order'] : 'ASC';
 
 $total_posts = $topicHandler->getPostCount($topic_obj, $status);
 
@@ -360,14 +359,14 @@ if (!$topic_obj->getVar('topic_digest')) {
         'name'  => _MD_UNDIGESTTOPIC,
     ];
 }
-$xoopsTpl->assign_by_ref('admin_actions', $admin_actions);
+$xoopsTpl->assignByRef('admin_actions', $admin_actions);
 
 $xoopsTpl->assign('viewer_level', $isadmin ? 2 : is_object($xoopsUser));
 
 if ($xoopsModuleConfig['show_permissiontable']) {
     $permissionHandler = Helper::getInstance()->getHandler('Permission');
     $permission_table  = $permissionHandler->getPermissionTable($forum_obj, $topic_obj->getVar('topic_status'), $isadmin);
-    $xoopsTpl->assign_by_ref('permission_table', $permission_table);
+    $xoopsTpl->assignByRef('permission_table', $permission_table);
 }
 
 ///////////////////////////////
@@ -435,7 +434,7 @@ if (($xoopspoll instanceof XoopsModule) && $xoopspoll->isactive()) {
         if (!$topic_obj->getVar('topic_haspoll')) {
             if (($xoopsUser instanceof XoopsUser) && $xoopsUser->getVar('uid') === $topic_obj->getVar('topic_poster')) {
                 $t_poll = newbb_displayImage('t_poll', _MD_ADDPOLL);
-                $xoopsTpl->assign('forum_addpoll', "<a href=\"" . XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname', 'n') . "/polls.php?op=add&amp;topic_id={$topic_id}\">{$t_poll}</a>");
+                $xoopsTpl->assign('forum_addpoll', '<a href="' . XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname', 'n') . "/polls.php?op=add&amp;topic_id={$topic_id}\">{$t_poll}</a>");
             }
         } elseif ($isadmin
                   || (is_object($poll) && ($xoopsUser instanceof XoopsUser)
@@ -461,7 +460,7 @@ if (($xoopspoll instanceof XoopsModule) && $xoopspoll->isactive()) {
                 'name'  => _MD_RESTARTPOLL,
             ];
 
-            $xoopsTpl->assign_by_ref('adminpoll_actions', $adminpoll_actions);
+            $xoopsTpl->assignByRef('adminpoll_actions', $adminpoll_actions);
         }
     }
     if (isset($poll_obj)) {
@@ -585,7 +584,7 @@ $xoopsTpl->assign('topicstatus', $current_status);
 $xoopsTpl->assign('mode', $mode);
 $xoopsTpl->assign('status', $status);
 $xoopsTpl->assign('viewmode_compact', ('compact' === $viewmode) ? 1 : 0);
-$xoopsTpl->assign_by_ref('viewmode_options', $viewmode_options);
+$xoopsTpl->assignByRef('viewmode_options', $viewmode_options);
 unset($viewmode_options);
 $xoopsTpl->assign('menumode', $menumode);
 $xoopsTpl->assign('menumode_other', $menumode_other);
@@ -659,7 +658,7 @@ if (!empty($xoopsModuleConfig['quickreply_enabled'])
     $forum_form->addElement($submit_button);
 
     $toggles = newbb_getcookie('G', true);
-    $display = in_array('qr', $toggles) ? 'none;' : 'block;';
+    $display = in_array('qr', $toggles, true) ? 'none;' : 'block;';
     $xoopsTpl->assign(
         'quickreply',
         [

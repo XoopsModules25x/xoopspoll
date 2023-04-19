@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\Xoopspoll;
 
@@ -30,14 +30,14 @@ namespace XoopsModules\Xoopspoll;
  * Log class for the XoopsPoll Module
  *
  * @copyright ::  {@link https://xoops.org/ XOOPS Project}
- * @license   ::  {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package   ::  xoopspoll
+ * @license   ::  {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @subpackage::  class
  * @since     ::  1.40
- * @author    ::  {@link http://www.myweb.ne.jp/ Kazumi Ono (AKA onokazu)}
+ * @author    ::  {@link https://www.myweb.ne.jp/ Kazumi Ono (AKA onokazu)}
  **/
 
-use XoopsModules\Xoopspoll\{Helper,
+use XoopsModules\Xoopspoll\{
+    Helper,
     Utility
 };
 
@@ -50,7 +50,7 @@ class LogHandler extends \XoopsPersistableObjectHandler
      * LogHandler::__construct()
      *
      * @param null|\XoopsDatabase $db
-     * @param null                $helper
+     * @param null $helper
      */
     public function __construct(\XoopsDatabase $db = null, $helper = null)
     {
@@ -130,6 +130,7 @@ class LogHandler extends \XoopsPersistableObjectHandler
         $criteria->add(new \Criteria('poll_id', (int)$pid, '='));
         $criteria->setGroupBy('ip');
         $voterGrps = $this->getCount($criteria);
+        //TODO Parameter '$voterGrps' type is not compatible with declaration
         $numVoters = \count($voterGrps);
 
         return $numVoters;
@@ -159,9 +160,9 @@ class LogHandler extends \XoopsPersistableObjectHandler
      */
     public function hasVoted($pid, $ip, $uid = 0): bool
     {
-        $uid         = (int)$uid;
-        $pid         = (int)$pid;
-        $voted       = true;
+        $uid        = (int)$uid;
+        $pid        = (int)$pid;
+        $voted      = true;
         $votedPolls = Utility::getVoteCookie();
         //        $votedPolls = [];  //TESTING HACK TO BYPASS COOKIES
         $pollHandler = Helper::getInstance()->getHandler('Poll');

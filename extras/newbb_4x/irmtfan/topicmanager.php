@@ -1,9 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 //
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
 //                  Copyright (c) 2000-2016 XOOPS.org                        //
-//                       <http://xoops.org>                             //
+//                       <https://xoops.org>                             //
 //  ------------------------------------------------------------------------ //
 //  This program is free software; you can redistribute it and/or modify     //
 //  it under the terms of the GNU General Public License as published by     //
@@ -25,7 +25,7 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 //  ------------------------------------------------------------------------ //
 //  Author: phppp (D.J., infomax@gmail.com)                                  //
-//  URL: http://xoopsforge.com, http://xoops.org.cn                          //
+//  URL: https://xoopsforge.com, https://xoops.org.cn                          //
 //  Project: Article Project                                                 //
 //  ------------------------------------------------------------------------ //
 use XoopsModules\Newbb\Helper;
@@ -92,10 +92,10 @@ $action_array = [
 foreach ($action_array as $_action) {
     $action[$_action] = [
         'name'   => $_action,
-        'desc'   => constant(strtoupper("_MD_DESC_{$_action}")),
-        'submit' => constant(strtoupper("_MD_{$_action}")),
+        'desc'   => constant(mb_strtoupper("_MD_DESC_{$_action}")),
+        'submit' => constant(mb_strtoupper("_MD_{$_action}")),
         'sql'    => "topic_{$_action}=1",
-        'msg'    => constant(strtoupper("_MD_TOPIC{$_action}")),
+        'msg'    => constant(mb_strtoupper("_MD_TOPIC{$_action}")),
     ];
 }
 $action['lock']['sql']     = 'topic_status = 1';
@@ -130,7 +130,7 @@ if (isset($_POST['submit'])) {
         $forums     = [];
         $topics_obj = $topicHandler->getAll(new Criteria('topic_id', '(' . implode(',', $topic_id) . ')', 'IN'));
         foreach (array_keys($topics_obj) as $id) {
-            $topic_obj =& $topics_obj[$id];
+            $topic_obj = &$topics_obj[$id];
             $topicHandler->approve($topic_obj);
             $topicHandler->synchronization($topic_obj);
             $forums[$topic_obj->getVar('forum_id')] = 1;

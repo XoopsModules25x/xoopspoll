@@ -1,4 +1,4 @@
-![alt XOOPS CMS](https://xoops.org/images/logoXoopsPhp8.png)
+![alt XOOPS CMS](https://xoops.org/images/logoXoopsPhp81.png)
 ## XoopsPoll module for [XOOPS CMS 2.5.9+](https://xoops.org)
 
 [![XOOPS CMS Module](https://img.shields.io/badge/XOOPS%20CMS-Module-blue.svg)](https://xoops.org)

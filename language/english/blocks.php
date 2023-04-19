@@ -1,9 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Module Block Definitions
  *
- * @package   ::    xoopspoll
  * @subpackage:: defines
  */
 define('_MB_XOOPSPOLL_WILLEXPIRE', 'The poll will close at');

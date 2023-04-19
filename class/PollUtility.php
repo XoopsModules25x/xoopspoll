@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\Xoopspoll;
 
@@ -17,8 +17,7 @@ namespace XoopsModules\Xoopspoll;
  *  XoopsPoll Utility Class Elements
  *
  * @copyright ::  {@link https://xoops.org/ XOOPS Project}
- * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package   ::    xoopspoll
+ * @license   ::    {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @subpackage:: class
  * @since     ::      1.40
  * @access::     public
@@ -28,7 +27,6 @@ use XoopsModules\Xoopspoll;
 
 /**
  * Class PollUtility
- * @package XoopsModules\Xoopspoll
  */
 class PollUtility
 {
@@ -133,9 +131,9 @@ class PollUtility
      * '<dirname>_voted_polls' to allow for module to be cloned using
      * smartClone module.
      * @param int|string|bool $index          array index to set in cookie
-     * @param string     $value          data to store in cookie
-     * @param int        $expires        time when cookie expires
-     * @param string     $cookieBaseName name of cookie (without directory prefix)
+     * @param string          $value          data to store in cookie
+     * @param int             $expires        time when cookie expires
+     * @param string          $cookieBaseName name of cookie (without directory prefix)
      * @return bool         success in setting cookie
      */
     public static function setVoteCookie($index, $value, $expires = 0, $cookieBaseName = 'voted_polls'): bool

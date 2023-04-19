@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 use XoopsModules\Newbb\Helper;
 
@@ -12,17 +12,38 @@ use XoopsModules\Newbb\Helper;
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * @copyright       XOOPS Project (http://xoops.org)
- * @license         http://www.fsf.org/copyleft/gpl.html GNU public license
- * @package         newbb
+ * @copyright       XOOPS Project (https://xoops.org)
+ * @license         GNU GPL 2.0 or later (https://www.gnu.org/licenses/gpl-2.0.html)
  * @since           4.0
  * @author          Taiwen Jiang <phppp@users.sourceforge.net>
  */
-
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
 class Post extends XoopsObject
 {
+    private $post_id;
+    private $topic_id;
+    private $forum_id;
+    private $post_time;
+    private $poster_ip;
+    private $poster_name;
+    private $subject;
+    private $pid;
+    private $dohtml;
+    private $dosmiley;
+    private $doxcode;
+    private $doimage;
+    private $dobr;
+    private $uid;
+    private $icon;
+    private $attachsig;
+    private $approved;
+    private $post_karma;
+    private $require_reply;
+    private $attachment;
+    private $post_text;
+    private $post_edit;
+
     public $attachment_array = [];
 
     /**
@@ -57,6 +78,7 @@ class Post extends XoopsObject
 
     // ////////////////////////////////////////////////////////////////////////////////////
     // attachment functions    TODO: there should be a file/attachment management class
+
     /**
      * @return array|mixed|null
      */
@@ -69,7 +91,7 @@ class Post extends XoopsObject
         if (empty($attachment)) {
             $this->attachment_array = null;
         } else {
-            $this->attachment_array = @unserialize(base64_decode($attachment));
+            $this->attachment_array = @unserialize(base64_decode($attachment, true));
         }
 
         return $this->attachment_array;
@@ -131,7 +153,7 @@ class Post extends XoopsObject
         }
 
         foreach ($attach_old as $key => $attach) {
-            if (in_array($key, $attach_array)) {
+            if (in_array($key, $attach_array, true)) {
                 @unlink(XOOPS_ROOT_PATH . '/' . $xoopsModuleConfig['dir_attachments'] . '/' . $attach['name_saved']);
                 @unlink(XOOPS_ROOT_PATH . '/' . $xoopsModuleConfig['dir_attachments'] . '/thumbs/' . $attach['name_saved']); // delete thumbnails
                 continue;
@@ -197,7 +219,7 @@ class Post extends XoopsObject
             $post_attachment  .= '<br><strong>' . _MD_ATTACHMENT . '</strong>:';
             $post_attachment  .= '<br><hr size="1" noshade="noshade"><br>';
             foreach ($attachments as $key => $att) {
-                $file_extension = ltrim(strrchr($att['name_saved'], '.'), '.');
+                $file_extension = ltrim(mb_strrchr($att['name_saved'], '.'), '.');
                 $filetype       = $file_extension;
                 if (file_exists(XOOPS_ROOT_PATH . '/' . $mime_path . '/' . $filetype . '.gif')) {
                     $icon_filetype = XOOPS_URL . '/' . $mime_path . '/' . $filetype . '.gif';
@@ -206,7 +228,7 @@ class Post extends XoopsObject
                 }
                 $file_size = @filesize(XOOPS_ROOT_PATH . '/' . $xoopsModuleConfig['dir_attachments'] . '/' . $att['name_saved']);
                 $file_size = number_format($file_size / 1024, 2) . ' KB';
-                if (in_array(strtolower($file_extension), $image_extensions) && $xoopsModuleConfig['media_allowed']) {
+                if (in_array(mb_strtolower($file_extension), $image_extensions, true) && $xoopsModuleConfig['media_allowed']) {
                     $post_attachment .= '<br><img src="' . $icon_filetype . '" alt="' . $filetype . '"><strong>&nbsp; ' . $att['name_display'] . '</strong> <small>(' . $file_size . ')</small>';
                     $post_attachment .= '<br>' . newbb_attachmentImage($att['name_saved']);
                     $isDisplayed     = true;
@@ -240,6 +262,7 @@ class Post extends XoopsObject
 
         return $post_attachment;
     }
+
     // attachment functions
     // ////////////////////////////////////////////////////////////////////////////////////
 
@@ -269,7 +292,7 @@ class Post extends XoopsObject
 
         $post_edits = $this->getVar('post_edit');
         if (!empty($post_edits)) {
-            $post_edits = unserialize(base64_decode($post_edits));
+            $post_edits = unserialize(base64_decode($post_edits, true));
         }
         if (!is_array($post_edits)) {
             $post_edits = [];
@@ -296,7 +319,7 @@ class Post extends XoopsObject
         $post_edit  = '';
         $post_edits = $this->getVar('post_edit');
         if (!empty($post_edits)) {
-            $post_edits = unserialize(base64_decode($post_edits));
+            $post_edits = unserialize(base64_decode($post_edits, true));
         }
         if (!isset($post_edits) || !is_array($post_edits)) {
             $post_edits = [];
@@ -450,7 +473,7 @@ class Post extends XoopsObject
         $uid = is_object($xoopsUser) ? $xoopsUser->getVar('uid') : 0;
 
         ++$post_NO;
-        if (strtolower($order) === 'desc') {
+        if (mb_strtolower($order) === 'desc') {
             $post_no = $total_posts - ($start + $post_NO) + 1;
         } else {
             $post_no = $start + $post_NO;
@@ -464,7 +487,7 @@ class Post extends XoopsObject
             $post_attachment = '';
         } elseif ($xoopsModuleConfig['allow_require_reply'] && $this->getVar('require_reply')
                   && (!$uid
-                      || !in_array($uid, $viewtopic_posters))) {
+                      || !in_array($uid, $viewtopic_posters, true))) {
             $post_text       = "<div class='karma'>" . _MD_REPLY_REQUIREMENT . '</div>';
             $post_attachment = '';
         } else {
@@ -649,8 +672,8 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
     }
 
     /**
-     * @param       $post
      * @param bool  $force
+     * @param mixed $post
      * @return bool
      */
     public function approve(&$post, $force = false)
@@ -719,8 +742,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
     }
 
     /**
-     * @param XoopsObject $post
-     * @param bool        $force
+     * @param bool $force
      * @return bool
      */
     public function insert(XoopsObject $post, $force = true)
@@ -808,7 +830,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
                     return false;
                 }
             }
-            $text_obj =& $textHandler->get($post->getVar('post_id'));
+            $text_obj = &$textHandler->get($post->getVar('post_id'));
             $text_obj->setDirty();
             foreach ($post_text_vars as $key) {
                 $text_obj->vars[$key] = $post->vars[$key];
@@ -828,9 +850,8 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
     }
 
     /**
-     * @param XoopsObject $post
-     * @param bool        $isDeleteOne
-     * @param bool        $force
+     * @param bool $isDeleteOne
+     * @param bool $force
      * @return bool
      */
     public function delete(XoopsObject $post, $isDeleteOne = true, $force = false)
@@ -849,18 +870,17 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
             }
 
             return $this->_delete($post, $force);
-        } else {
-            require_once XOOPS_ROOT_PATH . '/class/xoopstree.php';
-            $mytree = new XoopsTree($this->db->prefix('bb_posts'), 'post_id', 'pid');
-            $arr    = $mytree->getAllChild($post->getVar('post_id'));
-            for ($i = 0, $iMax = count($arr); $i < $iMax; ++$i) {
-                $childpost = $this->create(false);
-                $childpost->assignVars($arr[$i]);
-                $this->_delete($childpost, $force);
-                unset($childpost);
-            }
-            $this->_delete($post, $force);
         }
+        require_once XOOPS_ROOT_PATH . '/class/xoopstree.php';
+        $mytree = new XoopsTree($this->db->prefix('bb_posts'), 'post_id', 'pid');
+        $arr    = $mytree->getAllChild($post->getVar('post_id'));
+        for ($i = 0, $iMax = count($arr); $i < $iMax; ++$i) {
+            $childpost = $this->create(false);
+            $childpost->assignVars($arr[$i]);
+            $this->_delete($childpost, $force);
+            unset($childpost);
+        }
+        $this->_delete($post, $force);
 
         return true;
     }
@@ -989,6 +1009,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
     /*
      * TODO: combining viewtopic.php
      */
+
     /**
      * @param null $criteria
      * @param int  $limit
@@ -1003,7 +1024,7 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
         if (!empty($join)) {
             $sql .= $join;
         }
-        if (\is_object($criteria) && is_subclass_of($criteria,  \CriteriaElement::class)) {
+        if (\is_object($criteria) && \is_subclass_of($criteria, \CriteriaElement::class)) {
             $sql .= ' ' . $criteria->renderWhere();
             if ($criteria->getSort() != '') {
                 $sql .= ' ORDER BY ' . $criteria->getSort() . ' ' . $criteria->getOrder();
@@ -1041,8 +1062,8 @@ class NewbbPostHandler extends XoopsPersistableObjectHandler
             $sql = 'DELETE FROM ' . $this->db->prefix('bb_posts_text') . " WHERE (post_id NOT IN ( SELECT DISTINCT post_id FROM {$this->table}) )";
         else:
             // for 4.0+
-            /* */ $sql = 'DELETE ' . $this->db->prefix('bb_posts_text') . ' FROM ' . $this->db->prefix('bb_posts_text') . " LEFT JOIN {$this->table} AS aa ON " . $this->db->prefix('bb_posts_text') . '.post_id = aa.post_id ' . ' WHERE (aa.post_id IS NULL)';
-            /* */ // Alternative for 4.1+
+            $sql = 'DELETE ' . $this->db->prefix('bb_posts_text') . ' FROM ' . $this->db->prefix('bb_posts_text') . " LEFT JOIN {$this->table} AS aa ON " . $this->db->prefix('bb_posts_text') . '.post_id = aa.post_id ' . ' WHERE (aa.post_id IS NULL)';
+            // Alternative for 4.1+
             /*
             $sql =     "DELETE bb FROM ".$this->db->prefix("bb_posts_text")." AS bb".
                     " LEFT JOIN ".$this->table." AS aa ON bb.post_id = aa.post_id ".

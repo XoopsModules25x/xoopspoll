@@ -22,7 +22,7 @@
 <br>
 <{if $tagbar}>
     <div class="taglist pad5">
-        <{includeq file="db:tag_bar.tpl"}>
+        <{include file="db:tag_bar.tpl"}>
     </div>
 <{/if}>
 
@@ -91,9 +91,9 @@
 <{* irmtfan add $mode to not show polls in admin mode *}>
 <{if ($mode lte 1) && $topic_poll}>
     <{if $topic_pollresult}>
-    <{includeq file="db:newbb_poll_results.tpl" poll=$poll}>
+    <{include file="db:newbb_poll_results.tpl" poll=$poll}>
     <{else}>
-    <{includeq file="db:newbb_poll_view.tpl" poll=$poll}>
+    <{include file="db:newbb_poll_view.tpl" poll=$poll}>
     <{/if}>
 <{/if}>
 <div class="clear"></div>
@@ -197,7 +197,7 @@
 <{if $post_id == 0}><div id="aktuell"></div><{/if}>
 --*}>
 <{foreach item=topic_post from=$topic_posts}>
-<{includeq file="db:newbb_thread.tpl" topic_post=$topic_post mode=$mode}>
+<{include file="db:newbb_thread.tpl" topic_post=$topic_post mode=$mode}>
 <br>
 <br>
 <{foreachelse}>
@@ -296,7 +296,7 @@
 <div class="clear"></div>
 <br>
 
-<{includeq file='db:newbb_notification_select.html'}>
+<{include file='db:newbb_notification_select.html'}>
 <{*-- irmtfan remove
 
 <script type="text/javascript">

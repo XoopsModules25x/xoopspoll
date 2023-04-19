@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -11,8 +11,8 @@
 
 /**
  * @copyright    XOOPS Project (https://xoops.org)
- * @license      GNU GPL 2 or later (https://www.gnu.org/licenses/gpl-2.0.html)
- * @author      XOOPS Development Team
+ * @license      GNU GPL 2.0 or later (https://www.gnu.org/licenses/gpl-2.0.html)
+ * @author       XOOPS Development Team
  */
 
 // Blocks & Groups Admin
@@ -40,3 +40,8 @@ define('_AM_DBUPDATED', 'Database updated');
 define('_AM_BLOCKTAG1', '%s will print %s');
 define('_AM_ADDBLOCK', 'Add Block');
 define('_AM_NOTSELNG', 'Not Sel');
+
+define('_AM_SYSTEMCANT', 'System blocks cannot be deleted!');
+define('_AM_MODULECANT', 'This block cannot be deleted directly! If you wish to disable this block, deactivate the module.');
+
+define('_AM_RUSUREDEL', 'Are you sure, you want to delete this block?');

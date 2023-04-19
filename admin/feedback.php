@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  You may not change or alter any portion of this comment or credits
  of supporting developers from this source code or any supporting source code
@@ -13,15 +13,16 @@
  * Feedback plugin for xoops modules
  *
  * @copyright      XOOPS Project  (https://xoops.org)
- * @license        GNU GPL 2 or later (https://www.gnu.org/licenses/gpl-2.0.html)
- * @author         Michael Beck <mambax7@gmailc.com>
+ * @license        GNU GPL 2.0 or later (https://www.gnu.org/licenses/gpl-2.0.html)
+ * @author         Michael Beck <mambax7@gmail.com>
  * @author         Wedega - Email:<webmaster@wedega.com>
  * @author         Fernando Santos (topet05) <fernando@mastop.com.br>
  */
 
 use Xmf\Module\Admin;
 use Xmf\Request;
-use XoopsModules\Xoopspoll\{Common
+use XoopsModules\Xoopspoll\{
+    Common
 };
 
 require __DIR__ . '/admin_header.php';
@@ -33,7 +34,7 @@ $feedback = new Common\ModuleFeedback();
 // It recovered the value of argument op in URL$
 $op                 = Request::getString('op', 'list');
 $moduleDirName      = $GLOBALS['xoopsModule']->getVar('dirname');
-$moduleDirNameUpper = mb_strtoupper($moduleDirName);
+$moduleDirNameUpper = \mb_strtoupper($moduleDirName);
 xoops_loadLanguage('feedback', $moduleDirName);
 
 xoops_cp_header();
@@ -48,7 +49,6 @@ switch ($op) {
         $form            = $feedback->getFormFeedback();
         $form->display();
         break;
-
     case 'send':
         // Security Check
         if (!$GLOBALS['xoopsSecurity']->check()) {

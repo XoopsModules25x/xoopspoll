@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
                XOOPS - PHP Content Management System
                    Copyright (c) 2000-2020 XOOPS.org
@@ -28,8 +28,7 @@
  * Administration index to display module information and admin links
  *
  * @copyright ::  {@link https://xoops.org/ XOOPS Project}
- * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package   ::    xoopspoll
+ * @license   ::    {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @subpackage:: admin
  * @since     ::      1.32
  * @author    ::     XOOPS Module Team
@@ -37,7 +36,6 @@
 
 use Xmf\Module\Admin;
 use Xmf\Request;
-use Xmf\Yaml;
 use XoopsModules\Xoopspoll\{
     Common\TestdataButtons,
     Helper,
@@ -47,13 +45,10 @@ use XoopsModules\Xoopspoll\{
 /** @var Admin $adminObject */
 /** @var Helper $helper */
 /** @var Utility $utility */
-
-
 require_once __DIR__ . '/admin_header.php';
 xoops_cp_header();
 
 /** @var Helper $helper */
-
 $adminObject = Admin::getInstance();
 
 $pollHandler = Helper::getInstance()->getHandler('Poll');
@@ -80,7 +75,6 @@ $adminObject->addInfoBoxLine(sprintf("<span class='infolabel'>" . _MD_XOOPSPOLL_
 
 $adminObject->displayNavigation(basename(__FILE__));
 
-
 //------------- Test Data Buttons ----------------------------
 if ($helper->getConfig('displaySampleButton')) {
     TestdataButtons::loadButtonConfig($adminObject);
@@ -96,7 +90,6 @@ switch ($op) {
         break;
 }
 //------------- End Test Data Buttons ----------------------------
-
 
 $adminObject->displayIndex();
 echo $utility::getServerStats();

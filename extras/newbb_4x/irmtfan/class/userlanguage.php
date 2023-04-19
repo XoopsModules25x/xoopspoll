@@ -1,19 +1,15 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * User Language Class (moved from 'main' language file)
- * @package   ::    newbb
  * @subpackage:: class
  */
-
 require_once $GLOBALS['xoops']->path('modules/newbb/class/user.php');
 
 /**
- *
  * Allows setting for user information
  * If you have a customized userbar, define it here.
- *
  */
-class User_language extends User
+class userlanguage extends User
 {
     /**
      * User_language constructor.
@@ -59,7 +55,7 @@ class User_language extends User
         }
         if ($user->getVar('user_icq')) {
             $userbar[] = [
-                'link' => "javascript:void window.open('http://wwp.icq.com/scripts/search.dll?to=" . $user->getVar('user_icq') . "','new');",
+                'link' => "javascript:void window.open('https://wwp.icq.com/scripts/search.dll?to=" . $user->getVar('user_icq') . "','new');",
                 'name' => _MD_ICQ,
             ];
         }
@@ -71,13 +67,13 @@ class User_language extends User
         }
         if ($user->getVar('user_yim')) {
             $userbar[] = [
-                'link' => "javascript:void window.open('http://edit.yahoo.com/config/send_webmesg?.target=" . $user->getVar('user_yim') . '&.src=pg' . "','new');",
+                'link' => "javascript:void window.open('https://edit.yahoo.com/config/send_webmesg?.target=" . $user->getVar('user_yim') . '&.src=pg' . "','new');",
                 'name' => _MD_YIM,
             ];
         }
         if ($user->getVar('user_msnm')) {
             $userbar[] = [
-                'link' => "javascript:void window.open('http://members.msn.com?mem=" . $user->getVar('user_msnm') . "','new');",
+                'link' => "javascript:void window.open('https://members.msn.com?mem=" . $user->getVar('user_msnm') . "','new');",
                 'name' => _MD_MSNM,
             ];
         }

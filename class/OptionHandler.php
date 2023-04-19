@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\Xoopspoll;
 
@@ -30,14 +30,14 @@ namespace XoopsModules\Xoopspoll;
  * Poll Option class for the XoopsPoll Module
  *
  * @copyright ::  {@link https://xoops.org/ XOOPS Project}
- * @license   ::  {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package   ::  xoopspoll
+ * @license   ::  {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @subpackage::  class
  * @since     ::  1.0
- * @author    ::  {@link http://www.myweb.ne.jp/ Kazumi Ono (AKA onokazu)}
+ * @author    ::  {@link https://www.myweb.ne.jp/ Kazumi Ono (AKA onokazu)}
  */
 
-use XoopsModules\Xoopspoll\{Helper
+use XoopsModules\Xoopspoll\{
+    Helper
 };
 
 /**
@@ -58,7 +58,7 @@ class OptionHandler extends \XoopsPersistableObjectHandler
      */
     public function __construct(\XoopsDatabase $db = null, Helper $helper = null)
     {
-$this->helper = $helper ?? Helper::getInstance();
+        $this->helper = $helper ?? Helper::getInstance();
 
         parent::__construct($db, 'xoopspoll_option', Option::class, 'option_id', 'option_text');
     }

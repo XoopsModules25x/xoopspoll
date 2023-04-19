@@ -1,10 +1,10 @@
-<?php
+<?php declare(strict_types=1);
 
 $moduleDirName      = \basename(\dirname(__DIR__));
-$moduleDirNameUpper = mb_strtoupper($moduleDirName);
+$moduleDirNameUpper = \mb_strtoupper($moduleDirName);
 
 return [
-    'name'          => mb_strtoupper($moduleDirName) . ' PathConfigurator',
+    'name'          => \mb_strtoupper($moduleDirName) . ' PathConfigurator',
     'dirname'       => $moduleDirName,
     'admin'         => XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/admin',
     'modPath'       => XOOPS_ROOT_PATH . '/modules/' . $moduleDirName,
@@ -18,4 +18,3 @@ return [
         //XOOPS_UPLOAD_PATH . '/flags'
     ],
 ];
-

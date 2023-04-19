@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
                 XOOPS - PHP Content Management System
                     Copyright (c) 2000-2020 XOOPS.org
@@ -27,15 +27,15 @@
  * XoopsPoll Display Multi-poll Block
  *
  * @copyright ::   {@link https://xoops.org/ XOOPS Project}
- * @license   ::  {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package   ::  xoopspoll
+ * @license   ::  {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @subpackage::  blocks
  * @since     ::  1.0
  *
  **/
 
 use XoopsModules\Newbb;
-use XoopsModules\Xoopspoll\{Constants,
+use XoopsModules\Xoopspoll\{
+    Constants,
     Helper,
     Utility
 };
@@ -52,7 +52,6 @@ require_once $GLOBALS['xoops']->path( "modules"
 /**
  * Display XOOPS polls in a block
  *
- * @access public
  * @param array  $options block options array
  * @return array block keys and values to be used by block template
  * @uses   Criteria
@@ -67,7 +66,7 @@ function xoopspollBlockMultiShow($options): array
     $moduleHandler = xoops_getHandler('module');
     $thisModule    = $moduleHandler->getByDirname('xoopspoll');
     /** @var \XoopsConfigHandler $configHandler */
-    $configHandler      = xoops_getHandler('config');
+    $configHandler    = xoops_getHandler('config');
     $thisModuleConfig = $configHandler->getConfigsByCat(0, $thisModule->getVar('mid'));
 
     $pollHandler = Helper::getInstance()->getHandler('Poll');
@@ -158,7 +157,7 @@ function xoopspollBlockMultiShow($options): array
             }
             unset($pollOptionObjs, $optionObjVars);
             $xuEndTimestamp     = xoops_getUserTimestamp($pollObj->getVar('end_time'));
-            $xuEndFormattedTime = ucfirst(date(_MEDIUMDATESTRING, $xuEndTimestamp));
+            $xuEndFormattedTime = ucfirst(date(_MEDIUMDATESTRING, (int)$xuEndTimestamp));
 
             $isVisible  = true === $pollObj->isResultVisible();
             $multiple   = (bool)$pollVars['multiple'];
@@ -197,7 +196,6 @@ function xoopspollBlockMultiShow($options): array
 /**
  * Display a form to edit poll block display option
  *
- * @access public
  * @param mixed  $options
  * @return string HTML form for display by block admin
  * @global mixed $GLOBALS ['xoopsUser']

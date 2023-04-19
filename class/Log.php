@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\Xoopspoll;
 
@@ -30,14 +30,14 @@ namespace XoopsModules\Xoopspoll;
  * Log class for the XoopsPoll Module
  *
  * @copyright ::  {@link https://xoops.org/ XOOPS Project}
- * @license   ::  {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package   ::  xoopspoll
+ * @license   ::  {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @subpackage::  class
  * @since     ::  1.40
- * @author    ::  {@link http://www.myweb.ne.jp/ Kazumi Ono (AKA onokazu)}
+ * @author    ::  {@link https://www.myweb.ne.jp/ Kazumi Ono (AKA onokazu)}
  **/
 
-use XoopsModules\Xoopspoll\{Helper
+use XoopsModules\Xoopspoll\{
+    Helper
 };
 
 /**
@@ -47,6 +47,13 @@ use XoopsModules\Xoopspoll\{Helper
  */
 class Log extends \XoopsObject
 {
+    private $log_id;
+    private $poll_id;
+    private $option_id;
+    private $ip;
+    private $user_id;
+    private $time;
+
     //  class Log extends \XoopsObject {
     //    var $db;
 

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\Xoopspoll\Common;
 
@@ -20,23 +20,15 @@ use XoopsFormText;
 use XoopsObject;
 use XoopsThemeForm;
 
-
-
-
-
-
-
-
 /**
  * Feedback plugin for xoops modules
  *
  * @copyright      XOOPS Project  (https://xoops.org)
- * @license        GNU GPL 2 or later (https://www.gnu.org/licenses/gpl-2.0.html)
- * @author         Michael Beck <mambax7@gmailc.com>
+ * @license        GNU GPL 2.0 or later (https://www.gnu.org/licenses/gpl-2.0.html)
+ * @author         Michael Beck <mambax7@gmail.com>
  * @author         Wedega - Email:<webmaster@wedega.com>
  * @author         Fernando Santos (topet05) <fernando@mastop.com.br>
  */
-
 \defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 /**
@@ -64,7 +56,7 @@ class ModuleFeedback extends XoopsObject
      *
      * @param null
      */
-    public static function getInstance()
+    public static function getInstance(): void
     {
         static $instance = false;
         if (!$instance) {
@@ -76,7 +68,6 @@ class ModuleFeedback extends XoopsObject
      * @public function getFormFeedback:
      * provide form for sending a feedback to module author
      * @param bool|string $action
-     * @return \XoopsThemeForm
      */
     public function getFormFeedback($action = false): XoopsThemeForm
     {
@@ -84,7 +75,7 @@ class ModuleFeedback extends XoopsObject
             $action = $_SERVER['REQUEST_URI'];
         }
         $moduleDirName      = \basename(\dirname(__DIR__, 2));
-        $moduleDirNameUpper = mb_strtoupper($moduleDirName);
+        $moduleDirNameUpper = \mb_strtoupper($moduleDirName);
         // Get Theme Form
         \xoops_load('XoopsFormLoader');
         $form = new XoopsThemeForm(\constant('CO_' . $moduleDirNameUpper . '_' . 'FB_FORM_TITLE'), 'formfeedback', 'feedback.php', 'post', true);

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
                XOOPS - PHP Content Management System
                    Copyright (c) 2000-2020 XOOPS.org
@@ -27,17 +27,17 @@
  * Poll Results page for the XoopsPoll Module
  *
  * @copyright ::  {@link https://xoops.org/ XOOPS Project}
- * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package   ::    xoopspoll
+ * @license   ::    {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @subpackage:: admin
  * @since     ::         1.0
- * @author    ::     {@link http://www.myweb.ne.jp/ Kazumi Ono (AKA onokazu)}
+ * @author    ::     {@link https://www.myweb.ne.jp/ Kazumi Ono (AKA onokazu)}
  **/
 
 use Xmf\Module\Admin;
 use Xmf\Request;
 use XoopsModules\Newbb;
-use XoopsModules\Xoopspoll\{Constants,
+use XoopsModules\Xoopspoll\{
+    Constants,
     Helper,
     Poll,
     Renderer
@@ -96,7 +96,7 @@ if (($pollObj instanceof Poll)) {
         [
             'visible_msg'    => $visibleMsg,
             'disp_votes'     => $GLOBALS['xoopsModuleConfig']['disp_vote_nums'],
-            'back_link_icon' => Admin::iconUrl('', 16) . '/back.png',
+            'back_link_icon' => Admin::iconUrl('', '16') . '/back.png',
             'back_link'      => $GLOBALS['xoops']->url('modules/xoopspoll/index.php'),
             'back_text'      => _BACK,
         ]

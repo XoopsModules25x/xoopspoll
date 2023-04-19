@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 /**
  * You may not change or alter any portion of this comment or credits
@@ -11,7 +9,7 @@ declare(strict_types=1);
  * @author          XOOPS Development Team
  * @copyright       XOOPS Project
  * @link            https://xoops.org
- * @license         GNU GPL 2 or later (https://www.gnu.org/licenses/gpl-2.0.html)
+ * @license         GNU GPL 2.0 or later (https://www.gnu.org/licenses/gpl-2.0.html)
  */
 
 use Xmf\Module\Admin;
@@ -21,7 +19,6 @@ use XoopsModules\Xoopspoll\{
 
 /** @var Admin $adminObject */
 /** @var Helper $helper */
-
 require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 
 $moduleDirName      = \basename(\dirname(__DIR__));
@@ -77,7 +74,7 @@ if ($block['is_custom']) {
     if ('' !== $block['template']) {
         /** @var \XoopsTplfileHandler $tplfileHandler */
         $tplfileHandler = xoops_getHandler('tplfile');
-        $btemplate = $tplfileHandler->find($GLOBALS['xoopsConfig']['template_set'], 'block', $block['bid']);
+        $btemplate      = $tplfileHandler->find($GLOBALS['xoopsConfig']['template_set'], 'block', $block['bid']);
         if (count($btemplate) > 0) {
             $form->addElement(new \XoopsFormLabel(_AM_SYSTEM_BLOCKS_CONTENT, '<a href="' . XOOPS_URL . '/modules/system/admin.php?fct=tplsets&amp;op=edittpl&amp;id=' . $btemplate[0]->getVar('tpl_id') . '">' . _AM_SYSTEM_BLOCKS_EDITTPL . '</a>'));
         } else {

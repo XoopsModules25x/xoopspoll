@@ -1,8 +1,7 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Main Definitions
  *
- * @package   ::    xoopspoll
  * @subpackage:: defines
  */
 

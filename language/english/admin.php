@@ -1,9 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * XOOPS Poll Administration Language Definitions
  *
- * @package   ::    xoopspoll
  * @subpackage:: defines
  */
 define('_AM_XOOPSPOLL_DBUPDATED', 'Database Updated Successfully!');

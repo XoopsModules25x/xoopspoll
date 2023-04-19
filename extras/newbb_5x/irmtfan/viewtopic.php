@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*------------------------------------------------------------------------
                 XOOPS - PHP Content Management System
                     Copyright (c) 2000-2020 XOOPS.org
@@ -24,7 +24,7 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
   ------------------------------------------------------------------------
   Author: phppp (D.J., infomax@gmail.com)
-  URL: http://xoopsforge.com, https://xoops.org.cn
+  URL: https://xoopsforge.com, https://xoops.org.cn
   Project: Article Project
   ------------------------------------------------------------------------
 */
@@ -33,8 +33,7 @@
  * View Forum Topic with poll support
  *
  * @copyright::  {@link https://xoops.org/ XOOPS Project}
- * @license  ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package  ::    newbb
+ * @license  ::    {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @author   ::     phppp (D.J.) <infomax@gmail.com>
  */
 
@@ -69,9 +68,9 @@ $post_id  = Request::getInt('post_id', 0, 'GET');
 $move     = isset($_GET['move']) ? mb_strtolower($_GET['move']) : '';
 $start    = Request::getInt('start', 0, 'GET');
 $status   = (!empty($_GET['status'])
-             && in_array($_GET['status'], ['active', 'pending', 'deleted'])) ? $_GET['status'] : '';
+             && in_array($_GET['status'], ['active', 'pending', 'deleted'], true)) ? $_GET['status'] : '';
 $mode     = Request::getInt('mode', (!empty($status) ? 2 : 0), 'GET');
-$order    = (!empty($_GET['order']) && in_array($_GET['order'], ['ASC', 'DESC'])) ? $_GET['order'] : '';
+$order    = (!empty($_GET['order']) && in_array($_GET['order'], ['ASC', 'DESC'], true)) ? $_GET['order'] : '';
 
 if ('' === $order) {
     if (($xoopsUser instanceof \XoopsUser) && $xoopsUser->isActive()) {
@@ -179,7 +178,7 @@ if (!empty($GLOBALS['xoopsModuleConfig']['rss_enable'])) {
         'xoops_module_header',
         '
         <link rel="alternate" type="application/rss+xml" title="' . $xoopsModule->getVar('name') . '-' . $forum_obj->getVar('forum_name') . '" href="' . XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname') . '/rss.php?f=' . $forum_obj->getVar('forum_id') . '">
-        ' . @$xoopsTpl->get_template_vars('xoops_module_header')
+        ' . @$xoopsTpl->getTemplateVars('xoops_module_header')
     );
 }
 
@@ -255,7 +254,7 @@ if ($topicHandler->getPermission($forum_obj, $topic_obj->getVar('topic_status'),
     }
 }
 // irmtfan for backward compatibility assign forum_post_or_register smarty again.
-$xoopsTpl->assign('forum_post_or_register', @$xoopsTpl->get_template_vars('forum_post') . @$xoopsTpl->get_template_vars('forum_register') . @$xoopsTpl->get_template_vars('topic_lock'));
+$xoopsTpl->assign('forum_post_or_register', @$xoopsTpl->getTemplateVars('forum_post') . @$xoopsTpl->getTemplateVars('forum_register') . @$xoopsTpl->getTemplateVars('topic_lock'));
 
 if ($topicHandler->getPermission($forum_obj, $topic_obj->getVar('topic_status'), 'reply')) {
     $xoopsTpl->assign('forum_reply', '<a href="' . XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname', 'n') . '/reply.php?topic_id=' . $topic_id . '">' . $t_reply . '</a>');
@@ -467,14 +466,14 @@ if ($topic_obj->getVar('approved') > 0) { // if the topic is active
 }
 // END irmtfan add restore to viewtopic
 
-$xoopsTpl->assign_by_ref('admin_actions', $admin_actions);
+$xoopsTpl->assignByRef('admin_actions', $admin_actions);
 $xoopsTpl->assign('viewer_level', (int)($isadmin ? 2 : is_object($xoopsUser)));
 
 if ($GLOBALS['xoopsModuleConfig']['show_permissiontable']) {
     /** @var Newbb\PermissionHandler $permHandler */
     $permissionHandler = Newbb\Helper::getInstance()->getHandler('Permission');
     $permission_table  = $permissionHandler->getPermissionTable($forum_obj, $topic_obj->getVar('topic_status'), $isadmin);
-    $xoopsTpl->assign_by_ref('permission_table', $permission_table);
+    $xoopsTpl->assignByRef('permission_table', $permission_table);
 }
 
 // Show poll
@@ -632,7 +631,7 @@ if ($pollmodules) {
                 'name'  => _MD_RESTARTPOLL,
             ];
 
-            $xoopsTpl->assign_by_ref('adminpoll_actions', $adminpoll_actions);
+            $xoopsTpl->assignByRef('adminpoll_actions', $adminpoll_actions);
         }
     }
     if (isset($poll_obj)) {
@@ -736,7 +735,7 @@ $xoopsTpl->assign(
 );
 //$xoopsTpl->assign('viewmode_compact', ($viewmode=="compact")?1:0);
 // changed to assign, assign_by_ref not supported under PHP 5.x
-//$xoopsTpl->assign_by_ref('viewmode_options', $viewmode_options);
+//$xoopsTpl->assignByRef('viewmode_options', $viewmode_options);
 //unset($viewmode_options);
 
 // START irmtfan add verifyUser to quick reply
@@ -807,7 +806,7 @@ if (!empty($GLOBALS['xoopsModuleConfig']['quickreply_enabled'])
         'collapse' => $iconHandler->getImageSource($qr_collapse),
     ];
     $quickreply['show']   = 1; // = !empty($GLOBALS['xoopsModuleConfig']['quickreply_enabled']
-    $quickreply['expand'] = (count($toggles) > 0) ? (in_array('qr', $toggles) ? false : true) : true;
+    $quickreply['expand'] = (count($toggles) > 0) ? (in_array('qr', $toggles, true) ? false : true) : true;
     if ($quickreply['expand']) {
         $quickreply['style']     = 'block';        //irmtfan move semicolon
         $quickreply_icon_display = $qr_expand;
@@ -826,19 +825,11 @@ if (!empty($GLOBALS['xoopsModuleConfig']['quickreply_enabled'])
     $xoopsTpl->assign('quickreply', ['show' => 0]);
 }
 
-if ($GLOBALS['xoopsModuleConfig']['do_tag']) {
-    // now make sure tag module exists and is active
-    /** @var \XoopsModuleHandler $moduleHandler */
-    $moduleHandler = xoops_getHandler('module');
-    $tagModule     = $moduleHandler->getByDirname('tag');
-    if ($tagModule instanceof \XoopsModule && $tagModule->isactive()) {
-        @require_once $GLOBALS['xoops']->path('modules/tag/include/tagbar.php');
-        $xoopsTpl->assign('tagbar', tagBar($topic_obj->getVar('topic_tags', 'n')));
-    } else {
-        $xoopsTpl->assign('tagbar', '');
-    }
-} else {
-    $xoopsTpl->assign('tagbar', '');
+$xoopsTpl->assign('tagbar', '');
+$helper = Helper::getInstance();
+if (1 == $helper->getConfig('do_tag') && \class_exists(\XoopsModules\Tag\Tagbar::class) && \xoops_isActiveModule('tag')) {
+    $tagbarObj = new \XoopsModules\Tag\Tagbar();
+    $xoopsTpl->assign('tagbar', $tagbarObj->getTagbar($topic_obj->getVar('topic_tags', 'n')));
 }
 // irmtfan move to footer.php
 require_once __DIR__ . '/footer.php';

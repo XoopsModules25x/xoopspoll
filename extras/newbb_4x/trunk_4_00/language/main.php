@@ -1,6 +1,5 @@
-<?php
+<?php declare(strict_types=1);
 
-//
 if (defined('MAIN_DEFINED')) {
     return;
 }
@@ -421,7 +420,7 @@ define('_MD_LOG_XOOPSPOLL_ADMIN_REDIRECT', 'Redirecting to Xoopspoll Administrat
 
 //report.php
 define('_MD_REPORTED', 'Thank you for reporting this post/thread! A moderator will look into your report shortly.');
-define('_MD_REPORT_ERROR', 'Error occured while sending the report.');
+define('_MD_REPORT_ERROR', 'Error occurred while sending the report.');
 define('_MD_REPORT_TEXT', 'Report message:');
 
 define('_MD_PDF', 'Create PDF from Post');

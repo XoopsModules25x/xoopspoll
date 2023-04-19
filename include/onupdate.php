@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  You may not change or alter any portion of this comment or credits
  of supporting developers from this source code or any supporting source code
@@ -13,13 +13,13 @@
  * Xoopspoll install functions.php
  *
  * @copyright:: {@link https://xoops.org/ XOOPS Project}
- * @license  ::   {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package  ::   xoopspoll
+ * @license  ::   {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @since    ::     1.40
  * @author   ::    zyspec <zyspec@yahoo.com>
  */
 
-use XoopsModules\Xoopspoll\{Helper,
+use XoopsModules\Xoopspoll\{
+    Helper,
     Utility
 };
 
@@ -40,7 +40,7 @@ function xoopspollChangeTableName(\XoopsDatabase $db, $fromTable, $toTable): boo
     $helper  = Helper::getInstance();
     $success = false;
     if (Utility::dbTableExists($db, $fromTable) && !Utility::dbTableExists($db, $toTable)) {
-        $sql     = sprintf('ALTER TABLE ' . $db->prefix((string)$fromTable) . ' RENAME ' . $db->prefix('{$toTable}'));
+        $sql     = 'ALTER TABLE ' . $db->prefix((string)$fromTable) . ' RENAME ' . $db->prefix('{$toTable}');
         $success = $db->queryF($sql);
         if (false === $success) {
             $moduleHandler   = $helper->getHandler('Module');

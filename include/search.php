@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  You may not change or alter any portion of this comment or credits
  of supporting developers from this source code or any supporting source code
@@ -13,15 +13,15 @@
  * Description: Search function for the XoopsPoll Module
  *
  * @copyright ::  {@link https://xoops.org/ XOOPS Project}
- * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package   ::    xoopspoll
+ * @license   ::    {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @subpackage:: search
  * @since     ::      1.40
  * @author    ::     John Neill, zyspec <zyspec@yahoo.com>
  */
 
 use XoopsModules\Newbb;
-use XoopsModules\Xoopspoll\{Helper
+use XoopsModules\Xoopspoll\{
+    Helper
 };
 
 /**
@@ -57,8 +57,8 @@ function xoopspoll_search($queryArray, $andor, $limit, $offset, $uid): array
         /** @var \XoopsConfigHandler $configHandler */
         $configHandler = xoops_getHandler('config');
         /** @var \XoopsModuleHandler $moduleHandler */
-        $moduleHandler      = xoops_getHandler('module');
-        $thisModule         = $moduleHandler->getByDirname('xoopspoll');
+        $moduleHandler    = xoops_getHandler('module');
+        $thisModule       = $moduleHandler->getByDirname('xoopspoll');
         $thisModuleConfig = $configHandler->getConfigsByCat(0, $thisModule->getVar('mid'));
 
         $pollsWithTopics = [];

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
 
  You may not change or alter any portion of this comment or credits
@@ -13,8 +13,7 @@
  * XOOPS Poll module
  *
  * @copyright ::  {@link https://xoops.org/ XOOPS Project}
- * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package   ::    xoopspoll
+ * @license   ::    {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @subpackage:: admin
  * @since     ::      1.32
  * @author    ::     XOOPS Module Team
@@ -28,4 +27,3 @@ $pathIcon32 = Xmf\Module\Admin::iconUrl('', '32');
 echo "<div class='adminfooter'>\n" . "  <div style='text-align: center;'>\n" . "    <a href='https://xoops.org' rel='external'><img src='$pathIcon32/xoopsmicrobutton.gif' alt='XOOPS' title='XOOPS'></a>\n" . "  </div>\n" . '  ' . _AM_MODULEADMIN_ADMIN_FOOTER . "\n" . '</div>';
 
 xoops_cp_footer();
-

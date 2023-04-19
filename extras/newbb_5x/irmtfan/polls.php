@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * Newbb module
  *
@@ -14,8 +14,7 @@
  * Poll handling for Newbb
  *
  * @copyright       {@link https://xoops.org/ XOOPS Project}
- * @license         {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package         newbb
+ * @license         {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @since           4.0
  * @author          Taiwen Jiang <phppp@users.sourceforge.net>
  */
@@ -47,7 +46,7 @@ $goodOps = [
     'log',
 ];
 $op      = Request::getString('op', 'add');
-$op      = (!in_array($op, $goodOps)) ? 'add' : $op;
+$op      = (!in_array($op, $goodOps, true)) ? 'add' : $op;
 
 //$poll_id  = (isset($_GET['poll_id']))   ? (int)($_GET['poll_id'])   : 0;
 //$poll_id  = (isset($_POST['poll_id']))  ? (int)($_POST['poll_id'])  : $poll_id;
@@ -101,7 +100,7 @@ if (!newbb_isAdmin($forum_obj)) {
     ) {
         //        if (('add' === $op || 'save' === $op || 'update' === $op)
         if (($GLOBALS['xoopsUser'] instanceof \XoopsUser)
-            && in_array($op, ['add', 'save', 'update'])
+            && in_array($op, ['add', 'save', 'update'], true)
             && !$topic_obj->getVar('topic_haspoll')
             && ($GLOBALS['xoopsUser']->getVar('uid') === $topic_obj->getVar('topic_poster'))) {
             $perm = true;
@@ -350,7 +349,8 @@ switch ($op) {
                 $color_select->addOptionArray($barcolor_array);
                 $color_select->setExtra("onchange='showImgSelected(\"option_color_image[{$i}]\", \"option_color[" . $i . "]\", \"modules/{$pollmodules}/assets/images/colorbars\", \"\", \"" . XOOPS_URL . "\")'");
                 $color_label = new \XoopsFormLabel(
-                    '', "<img src='" . $GLOBALS['xoops']->url("modules/{$pollmodules}/assets/images/colorbars/" . $option->getVar('option_color', 'E')) . "' name='option_color_image[{$i}]' id='option_color_image[{$i}]' class='alignbottom' width='30' height='15' alt=''><br>"
+                    '',
+                    "<img src='" . $GLOBALS['xoops']->url("modules/{$pollmodules}/assets/images/colorbars/" . $option->getVar('option_color', 'E')) . "' name='option_color_image[{$i}]' id='option_color_image[{$i}]' class='alignbottom' width='30' height='15' alt=''><br>"
                 );
                 $option_tray->addElement($color_select);
                 $option_tray->addElement($color_label);

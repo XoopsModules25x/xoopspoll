@@ -1,8 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 /*------------------------------------------------------------------------
                 XOOPS - PHP Content Management System
                     Copyright (c) 2000-2016 XOOPS.org
-                       <http://xoops.org>
+                       <https://xoops.org>
   ------------------------------------------------------------------------
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
   ------------------------------------------------------------------------
   Author: phppp (D.J., infomax@gmail.com)
-  URL: http://xoopsforge.com, http://xoops.org.cn
+  URL: https://xoopsforge.com, https://xoops.org.cn
   Project: Article Project
   ------------------------------------------------------------------------
 */
@@ -32,9 +32,8 @@
 /**
  * View Forum Topic with poll support
  *
- * @copyright::  {@link http://xoops.org/ XOOPS Project}
- * @license  ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package  ::    newbb
+ * @copyright::  {@link https://xoops.org/ XOOPS Project}
+ * @license  ::    {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @author   ::     phppp (D.J.) <infomax@gmail.com>
  */
 
@@ -62,12 +61,12 @@ $forum_id = !empty($_GET['forum']) ? (int)$_GET['forum'] : 0;
 $read     = (!empty($_GET['read']) && 'new' == $_GET['read']) ? $_GET['read'] : '';
 $topic_id = isset($_GET['topic_id']) ? (int)$_GET['topic_id'] : 0;
 $post_id  = !empty($_GET['post_id']) ? (int)$_GET['post_id'] : 0;
-$move     = isset($_GET['move']) ? strtolower($_GET['move']) : '';
+$move     = isset($_GET['move']) ? mb_strtolower($_GET['move']) : '';
 $start    = !empty($_GET['start']) ? (int)$_GET['start'] : 0;
 $status   = (!empty($_GET['status'])
-             && in_array($_GET['status'], ['active', 'pending', 'deleted'])) ? $_GET['status'] : '';
+             && in_array($_GET['status'], ['active', 'pending', 'deleted'], true)) ? $_GET['status'] : '';
 $mode     = !empty($_GET['mode']) ? (int)$_GET['mode'] : (!empty($status) ? 2 : 0);
-$order    = (!empty($_GET['order']) && in_array($_GET['order'], ['ASC', 'DESC'])) ? $_GET['order'] : '';
+$order    = (!empty($_GET['order']) && in_array($_GET['order'], ['ASC', 'DESC'], true)) ? $_GET['order'] : '';
 
 if ('' === $order) {
     if (($xoopsUser instanceof XoopsUser) && $xoopsUser->isActive()) {
@@ -172,7 +171,7 @@ if (!empty($GLOBALS['xoopsModuleConfig']['rss_enable'])) {
         'xoops_module_header',
         '
         <link rel="alternate" type="application/rss+xml" title="' . $xoopsModule->getVar('name') . '-' . $forum_obj->getVar('forum_name') . '" href="' . XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname') . '/rss.php?f=' . $forum_obj->getVar('forum_id') . '">
-        ' . @$xoopsTpl->get_template_vars('xoops_module_header')
+        ' . @$xoopsTpl->getTemplateVars('xoops_module_header')
     );
 }
 
@@ -247,7 +246,7 @@ if ($topicHandler->getPermission($forum_obj, $topic_obj->getVar('topic_status'),
     }
 }
 // irmtfan for backward compatibility assign forum_post_or_register smarty again.
-$xoopsTpl->assign('forum_post_or_register', @$xoopsTpl->get_template_vars('forum_post') . @$xoopsTpl->get_template_vars('forum_register') . @$xoopsTpl->get_template_vars('topic_lock'));
+$xoopsTpl->assign('forum_post_or_register', @$xoopsTpl->getTemplateVars('forum_post') . @$xoopsTpl->getTemplateVars('forum_register') . @$xoopsTpl->getTemplateVars('topic_lock'));
 
 if ($topicHandler->getPermission($forum_obj, $topic_obj->getVar('topic_status'), 'reply')) {
     $xoopsTpl->assign('forum_reply', '<a href="' . XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname', 'n') . '/reply.php?topic_id=' . $topic_id . '">' . $t_reply . '</a>');
@@ -369,13 +368,13 @@ if (!empty($postsArray[$post_id])) {
     $kwort = '';
     $z     = 0;
     foreach ($kw as $k) {
-        if (strlen(trim($k)) > 5 && $z < 30) {
+        if (mb_strlen(trim($k)) > 5 && $z < 30) {
             $kwort .= trim($k) . ' ';
             ++$z;
         }
     }
     $xoTheme->addMeta('meta', 'keywords', $kwort);
-    $xoTheme->addMeta('meta', 'description', substr(strip_tags($postsArray[$post_id]->getVar('post_text')), 0, 120));
+    $xoTheme->addMeta('meta', 'description', mb_substr(strip_tags($postsArray[$post_id]->getVar('post_text')), 0, 120));
 }
 unset($postsArray);
 
@@ -459,13 +458,13 @@ if ($topic_obj->getVar('approved') > 0) { // if the topic is active
 }
 // END irmtfan add restore to viewtopic
 
-$xoopsTpl->assign_by_ref('admin_actions', $admin_actions);
+$xoopsTpl->assignByRef('admin_actions', $admin_actions);
 $xoopsTpl->assign('viewer_level', (int)($isadmin ? 2 : is_object($xoopsUser)));
 
 if ($GLOBALS['xoopsModuleConfig']['show_permissiontable']) {
     $permissionHandler = Helper::getInstance()->getHandler('Permission');
     $permission_table  = $permissionHandler->getPermissionTable($forum_obj, $topic_obj->getVar('topic_status'), $isadmin);
-    $xoopsTpl->assign_by_ref('permission_table', $permission_table);
+    $xoopsTpl->assignByRef('permission_table', $permission_table);
 }
 
 // Show poll
@@ -624,7 +623,7 @@ if ($pollmodules) {
                 'name'  => _MD_RESTARTPOLL,
             ];
 
-            $xoopsTpl->assign_by_ref('adminpoll_actions', $adminpoll_actions);
+            $xoopsTpl->assignByRef('adminpoll_actions', $adminpoll_actions);
         }
     }
     if (isset($poll_obj)) {
@@ -727,7 +726,7 @@ $xoopsTpl->assign(
 );
 //$xoopsTpl->assign('viewmode_compact', ($viewmode=="compact")?1:0);
 // changed to assign, assign_by_ref not supported under PHP 5.x
-//$xoopsTpl->assign_by_ref('viewmode_options', $viewmode_options);
+//$xoopsTpl->assignByRef('viewmode_options', $viewmode_options);
 //unset($viewmode_options);
 
 // START irmtfan add verifyUser to quick reply
@@ -798,7 +797,7 @@ if (!empty($GLOBALS['xoopsModuleConfig']['quickreply_enabled'])
         'collapse' => $iconHandler->getImageSource($qr_collapse),
     ];
     $quickreply['show']   = 1; // = !empty($GLOBALS['xoopsModuleConfig']['quickreply_enabled']
-    $quickreply['expand'] = (count($toggles) > 0) ? (in_array('qr', $toggles) ? false : true) : true;
+    $quickreply['expand'] = (count($toggles) > 0) ? (in_array('qr', $toggles, true) ? false : true) : true;
     if ($quickreply['expand']) {
         $quickreply['style']     = 'block';        //irmtfan move semicolon
         $quickreply_icon_display = $qr_expand;

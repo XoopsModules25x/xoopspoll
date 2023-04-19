@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  You may not change or alter any portion of this comment or credits
  of supporting developers from this source code or any supporting source code
@@ -12,16 +12,15 @@
 /**
  *  userlog module
  *
- * @copyright       XOOPS Project (http://xoops.org)
+ * @copyright       XOOPS Project (https://xoops.org)
  * @license         GNU GPL 2 (https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
- * @package         newbb class plugin
  * @since           4.31
  * @author          irmtfan (irmtfan@yahoo.com)
  * @author          XOOPS Project <www.xoops.org> <www.xoops.ir>
  */
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-class XoopspollUserlogPlugin extends \Userlog_Module_Plugin_Abstract implements \UserlogPluginInterface
+class userlog extends \Userlog_Module_Plugin_Abstract implements \UserlogPluginInterface
 {
     /**
      * @param string $subscribe_from Name of the script

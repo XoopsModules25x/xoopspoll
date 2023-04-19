@@ -1,12 +1,12 @@
-<h5>2.01 Beta 1  [NOT RELEASED]</h5>  Dev: XOOPS 2.5.11, PHP 7.4.10, PHP 8.0 Beta 3
+<h5>2.1.0 Beta 1  [2023-04-18]</h5>  Dev: XOOPS 2.5.11, PHP 8.2.4
 <hr>
 - namespaces, autoloading (mamba)
 - fixed bugs with namespaces in newbb 5.0 (axelf/goffy)
 - cosmetics (mamba)
 - PHP8 template defaults (mamba)
-
-
-WORK IN PROGRESS
+- add blocksadmin.php language file (mamba)
+- add local deleteBlock() & isDeleteOk() (mamba)
+- PHP 8.2 and Smarty 3 updates (mamba)
 
 
 <h5>1.40 RC3         [2016-09-18]</h5>

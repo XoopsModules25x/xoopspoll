@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * Newbb module
  *
@@ -13,9 +13,8 @@
 /**
  * Poll handling for Newbb
  *
- * @copyright       {@link http://xoops.org/ XOOPS Project}
- * @license         {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package         newbb
+ * @copyright       {@link https://xoops.org/ XOOPS Project}
+ * @license         {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @since           4.0
  * @author          Taiwen Jiang <phppp@users.sourceforge.net>
  */
@@ -45,7 +44,7 @@ $goodOps = [
     'log',
 ];
 $op      = XoopsRequest::getString('op', 'add');
-$op      = (!in_array($op, $goodOps)) ? 'add' : $op;
+$op      = (!in_array($op, $goodOps, true)) ? 'add' : $op;
 
 //$poll_id  = (isset($_GET['poll_id']))   ? (int)($_GET['poll_id'])   : 0;
 //$poll_id  = (isset($_POST['poll_id']))  ? (int)($_POST['poll_id'])  : $poll_id;
@@ -116,7 +115,6 @@ switch ($op) {
         $poll_obj = $xpPollHandler->get($poll_id); // will create poll if poll_id = 0 exist
         $poll_obj->renderForm($_SERVER['PHP_SELF'], 'post', ['topic_id' => $topic_id]);
         break;
-
     case 'save':
     case 'update':
         // check security token
@@ -229,7 +227,6 @@ switch ($op) {
             redirect_header("viewtopic.php?topic_id={$topic_id}", 2, _MD_POLL_DBUPDATED);
         }
         break;
-
     case 'addmore':
         $poll_obj     = $xpPollHandler->get($poll_id);
         $xpOptHandler = xoops_getModuleHandler('option', 'xoopspoll');
@@ -247,7 +244,6 @@ switch ($op) {
         echo '<h4>' . _MD_POLL_POLLCONF . "</h4>\n";
         $poll_form->display();
         break;
-
     case 'savemore':
         // check security token
         if (!$GLOBALS['xoopsSecurity']->check()) {
@@ -282,13 +278,11 @@ switch ($op) {
         xoops_template_clear_module_cache($xoopspoll->getVar('mid'));
         redirect_header("polls.php?op=edit&amp;poll_id={$poll_id}&amp;topic_id={$topic_id}", 2, _MD_POLL_DBUPDATED);
         break;
-
     case 'delete':
         echo '<h4>' . _MD_POLL_POLLCONF . "</h4>\n";
         $poll_obj = $xpPollHandler->get($poll_id);
         xoops_confirm(['op' => 'delete_ok', 'topic_id' => $topic_id, 'poll_id' => $poll_id], 'polls.php', sprintf(_MD_POLL_RUSUREDEL, $poll_obj->getVar('question')));
         break;
-
     case 'delete_ok':
         // check security token
         if (!$GLOBALS['xoopsSecurity']->check()) {
@@ -326,12 +320,15 @@ switch ($op) {
         }
         redirect_header("viewtopic.php?topic_id={$topic_id}", 1, _MD_POLL_DBUPDATED);
         break;
-
     case 'restart':
         $default_poll_duration = XoopspollConstants::DEFAULT_POLL_DURATION;
         $poll_form             = new XoopsThemeForm(_MD_POLL_RESTARTPOLL, 'poll_form', 'polls.php', 'post', true);
         $expire_text           = new XoopsFormText(
-            _MD_POLL_EXPIRATION . '<br><small>' . _MD_POLL_FORMAT . '<br>' . sprintf(_MD_POLL_CURRENTTIME, formatTimestamp(time(), _DATESTRING)) . '</small>', 'end_time', 20, 19, formatTimestamp(time() + $default_poll_duration, _DATESTRING)
+            _MD_POLL_EXPIRATION . '<br><small>' . _MD_POLL_FORMAT . '<br>' . sprintf(_MD_POLL_CURRENTTIME, formatTimestamp(time(), _DATESTRING)) . '</small>',
+            'end_time',
+            20,
+            19,
+            formatTimestamp(time() + $default_poll_duration, _DATESTRING)
         );
         $poll_form->addElement($expire_text);
         $poll_form->addElement(new XoopsFormRadioYN(_MD_POLL_NOTIFY, 'notify', 1));
@@ -345,7 +342,6 @@ switch ($op) {
         $poll_form->display();
 
         break;
-
     case 'restart_ok':
         // check security token
         if (!$GLOBALS['xoopsSecurity']->check()) {
@@ -392,7 +388,6 @@ switch ($op) {
         xoops_template_clear_module_cache($xoopspoll->getVar('mid'));
         redirect_header("viewtopic.php?topic_id={$topic_id}", 1, _MD_POLL_DBUPDATED);
         break;
-
     case 'log':
         redirect_header($GLOBALS['xoops']->url("modules/xoopspoll/admin/main.php?op=log&amp;poll_id={$poll_id}"), 2, _MD_LOG_XOOPSPOLL_ADMIN_REDIRECT);
         break;

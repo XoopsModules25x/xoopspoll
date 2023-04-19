@@ -1,8 +1,6 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Module Info Language Definitions
- *
- * @package xoopspoll
  */
 
 /**
@@ -82,7 +80,7 @@ define('_MI_XOOPSPOLL_HELP_HEADER', __DIR__ . '/help/helpheader.tpl');
 define('_MI_XOOPSPOLL_BACK_2_ADMIN', 'Back to Administration of ');
 define('_MI_XOOPSPOLL_OVERVIEW', 'Overview');
 
-//help multi-page
+//help multipage
 define('_MI_XOOPSPOLL_DISCLAIMER', 'Disclaimer');
 define('_MI_XOOPSPOLL_LICENSE', 'License');
 define('_MI_XOOPSPOLL_SUPPORT', 'Support');
