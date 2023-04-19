@@ -303,7 +303,7 @@ class Poll extends \XoopsObject
             */
             $extra              = \is_array($addHidden) ? $addHidden : [];
             $extra              = \array_merge($extra, ['op' => 'restart', 'poll_id' => $this->getVar('poll_id')]);
-            $query              = \http_build_query($extra, null, '&');
+            $query              = \http_build_query($extra, '', '&');
             $query              = \htmlentities($query, \ENT_QUOTES);
             $xuEndFormattedTime = \ucfirst(\date(_MEDIUMDATESTRING, $xuEndTimestamp));
             $endTimeText        = new \XoopsFormLabel("<div class='bold middle'>" . \_AM_XOOPSPOLL_EXPIRATION, \sprintf(\_AM_XOOPSPOLL_EXPIREDAT, $xuEndFormattedTime) . "<br><a href='{$rtnPage}?{$query}'>" . \_AM_XOOPSPOLL_RESTART . '</a></div>');
