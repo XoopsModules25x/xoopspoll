@@ -456,7 +456,7 @@ class Post extends \XoopsObject
         static $name_anonymous;
 
         if (!isset($name_anonymous)) {
-            $name_anonymous = htmlspecialchars($GLOBALS['xoopsConfig']['anonymous']);
+            $name_anonymous = htmlspecialchars($GLOBALS['xoopsConfig']['anonymous'], ENT_QUOTES | ENT_HTML5);
         }
 
         require_once XOOPS_ROOT_PATH . '/modules/newbb/include/functions.time.php';

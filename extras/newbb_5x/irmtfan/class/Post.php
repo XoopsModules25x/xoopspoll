@@ -462,7 +462,7 @@ class Post extends \XoopsObject
         static $name_anonymous;
 
         if (!isset($name_anonymous)) {
-            $name_anonymous = htmlspecialchars($GLOBALS['xoopsConfig']['anonymous']);
+            $name_anonymous = htmlspecialchars($GLOBALS['xoopsConfig']['anonymous'], ENT_QUOTES | ENT_HTML5);
         }
 
         //        mod_loadFunctions('time', 'newbb');
@@ -514,7 +514,7 @@ class Post extends \XoopsObject
         // Hightlighting searched words
         $post_title = $this->getVar('subject');
         if (!empty($_GET['keywords']) && Request::hasVar('keywords', 'GET')) {
-            $keywords   = htmlspecialchars(\trim(\urldecode($_GET['keywords'])));
+            $keywords   = htmlspecialchars(\trim(\urldecode($_GET['keywords'])), ENT_QUOTES | ENT_HTML5);
             $post_text  = \newbb_highlightText($post_text, $keywords);
             $post_title = \newbb_highlightText($post_title, $keywords);
         }

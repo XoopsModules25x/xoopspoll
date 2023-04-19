@@ -54,7 +54,7 @@ function b_marquee_xoopspoll($limit, $dateformat, $itemssize)
     $pollObjs   = $pollHandler->getAll($criteria, $pollFields);
     foreach ($pollObjs as $pollObj) {
         $pollValues = $pollObj->getValues();
-        $title      = htmlspecialchars($pollValues['question']);
+        $title      = htmlspecialchars($pollValues['question'], ENT_QUOTES | ENT_HTML5);
         if ((int)$itemssize > 0) {
             $title = xoops_substr($title, 0, $itemssize + 3);
         }
