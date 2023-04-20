@@ -47,12 +47,12 @@ use XoopsModules\Xoopspoll\{
  */
 class Log extends \XoopsObject
 {
-    private int $log_id;
-    private int $poll_id;
-    private int $option_id;
-    private string $ip;
-    private int $user_id;
-    private int $time;
+    public int    $log_id;
+    public int    $poll_id;
+    public int    $option_id;
+    public string $ip;
+    public int    $user_id;
+    public int    $time;
 
     //  class Log extends \XoopsObject {
     //    var $db;
@@ -70,9 +70,9 @@ class Log extends \XoopsObject
         $this->initVar('ip', \XOBJ_DTYPE_OTHER, null);
         $this->initVar('user_id', \XOBJ_DTYPE_INT, 0);
         $this->initVar('time', \XOBJ_DTYPE_INT, null);
-        if (!empty($id) && \is_array($id)) {
-            $this->assignVars($id);
-        }
+//        if (!empty($id) && \is_array($id)) {
+//            $this->assignVars($id);
+//        }
     }
 
     /**

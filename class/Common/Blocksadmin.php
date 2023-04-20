@@ -270,7 +270,7 @@ class Blocksadmin
         \xoops_loadLanguage('admin/blocksadmin', 'system');
         \xoops_loadLanguage('admin/groups', 'system');
 
-        $myblock = new \XoopsBlock($bid);
+//        $myblock = new \XoopsBlock($bid);
 
         $sql = \sprintf('DELETE FROM %s WHERE bid = %u', $this->db->prefix('newblocks'), $bid);
         $result = $this->db->queryF($sql);
@@ -335,7 +335,8 @@ class Blocksadmin
         //        $form = new Blockform();
         //        $form->render();
 
-        echo $this->render($block);
+        $output =  $this->render($block);
+        echo $output;
         //        xoops_cp_footer();
         //        require_once __DIR__ . '/admin_footer.php';
         //        exit();
@@ -408,8 +409,9 @@ class Blocksadmin
             /** @var \XoopsTplfileHandler $tplfileHandler */
             $tplfileHandler = \xoops_getHandler('tplfile');
             $configHandler = xoops_getHandler('config');
+            /** @var \XoopsConfigHandler $xoopsConfig */
             $xoopsConfig = $configHandler->getConfigsByCat(XOOPS_CONF);
-            $btemplate      = $tplfileHandler->find($xoopsConfig['template_set'], 'block', (string)$bid);
+            $btemplate   = $tplfileHandler->find($xoopsConfig['template_set'], 'block', (string)$bid);
             if (\count($btemplate) > 0) {
                 $tplclone = $btemplate[0]->xoopsClone();
                 $tplclone->setVar('tpl_id', 0);
@@ -506,7 +508,8 @@ class Blocksadmin
         ];
         echo '<a href="blocksadmin.php">' . \constant('CO_' . $this->moduleDirNameUpper . '_' . 'BADMIN') . '</a>&nbsp;<span style="font-weight:bold;">&raquo;&raquo;</span>&nbsp;' . \_AM_SYSTEM_BLOCKS_EDITBLOCK . '<br><br>';
 
-        echo $this->render($block);
+        $output = $this->render($block);
+        echo $output;
     }
 
     /**
@@ -578,7 +581,7 @@ class Blocksadmin
      * @param array $oldside
      * @param array $oldweight
      * @param array $oldvisible
-     * @param array $oldgroups
+//     * @param array $oldgroups
      * @param array $oldbcachetime
      * @param array $oldbmodule
      * @param array $title
@@ -595,7 +598,7 @@ class Blocksadmin
         array $oldside,
         array $oldweight,
         array $oldvisible,
-        array $oldgroups,
+//        array $oldgroups,
         array $oldbcachetime,
         array $oldbmodule,
         array $title,

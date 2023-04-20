@@ -186,7 +186,7 @@ if (empty($pollId)) {
             if ($pollObj->isAllowedToVote()) {
                 $thisVoter     = (!empty($GLOBALS['xoopsUser'])
                                   && ($GLOBALS['xoopsUser'] instanceof \XoopsUser)) ? $GLOBALS['xoopsUser']->getVar('uid') : null;
-                $votedThisPoll = $logHandler->hasVoted($pollId, xoops_getenv('REMOTE_ADDR'), $thisVoter);
+                $votedThisPoll = $logHandler->hasVoted($pollId, xoops_getenv('REMOTE_ADDR'), (int)$thisVoter);
                 if (!$votedThisPoll) {
                     /* user that hasn't voted before in this poll or module preferences allow it */
                     $voteTime = time();

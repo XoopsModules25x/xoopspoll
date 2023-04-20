@@ -117,7 +117,6 @@ function xoopspollBlockMultiShow(array $options): array
         $block['dispVotes']     = $thisModuleConfig['disp_vote_nums'];
         $block['thisModuleDir'] = 'xoopspoll';
         $block['asList']        = $options[0];
-        $pollOptionArray = [];
         $optionHandler = Helper::getInstance()->getHandler('Option');
         $logHandler    = Helper::getInstance()->getHandler('Log');
 
