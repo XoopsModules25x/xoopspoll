@@ -47,12 +47,12 @@ use XoopsObject;
  */
 class Option extends XoopsObject
 {
-    private $option_id;
-    private $poll_id;
-    private $option_text;
-    private $option_count;
-    private $option_color;
-    private $optHandler;
+    private int $option_id;
+    private int $poll_id;
+    private string $option_text;
+    private int $option_count;
+    private string $option_color;
+    private mixed $optHandler;
 
     /**
      * database connection object
@@ -63,16 +63,16 @@ class Option extends XoopsObject
      * holds option object
      * @var Option
      */
-    protected $option;
+    protected Option $option;
     /**
      * Option Handler to be used to manipulate poll options
      * @var OptionHandler
      */
-    protected $optionHandler;
+    protected OptionHandler $optionHandler;
     // constructor
 
     /**
-     * @param int|null|array $id poll id
+     * @param int|array|null $id poll id
      */
     public function __construct($id = null)
     {
@@ -108,7 +108,7 @@ class Option extends XoopsObject
      * @uses       XoopsPersistableObjectHandler::insert
      * @deprecated since Xoopspoll 1.40, please @see XoopspollOptionHandler & @see XoopspollOption
      */
-    public function store()
+    public function store(): mixed
     {
         $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use Poll and PollHandler classes instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
@@ -122,7 +122,7 @@ class Option extends XoopsObject
      * @return mixed results of deleting objects from database
      * @uses XoopsPersistableObjectHandler::deleteAll
      */
-    public function deleteByPollId($pid)
+    public function deleteByPollId(int $pid): mixed
     {
         $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use PollHandler::deleteAll instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
@@ -137,7 +137,7 @@ class Option extends XoopsObject
      * @return mixed   results of getting objects from database
      * @uses XoopsPersistableObjectHandler::getAll
      */
-    public function getAllByPollId($pid)
+    public function getAllByPollId(int $pid): mixed
     {
         $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use PollHandler::getAll instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
@@ -152,7 +152,7 @@ class Option extends XoopsObject
      * @return mixed results of the object(s) update
      * @uses XoopsPersistableObjectHandler::updateAll
      */
-    public function resetCountByPollId($pid)
+    public function resetCountByPollId(int $pid): mixed
     {
         $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use PollHandler::updateAll instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
@@ -167,7 +167,7 @@ class Option extends XoopsObject
      * @return mixed handler object returned on success, false on failure
      * @uses xoops_getModuleHandler
      */
-    private function getStaticOptHandler()
+    private function getStaticOptHandler(): mixed
     {
         static $optionHandler;
 

@@ -42,18 +42,18 @@ class XoopspollCorePreload extends \XoopsPreloadItem
 {
     // to add PSR-4 autoloader
     /**
-     * @param $args
+     * @param array $args
      */
-    public static function eventCoreIncludeCommonEnd($args): void
+    public static function eventCoreIncludeCommonEnd(array $args): void
     {
         require __DIR__ . '/autoloader.php';
     }
 
     /**
      * plugin class for Xoops preload for index page start
-     * @param $args
+     * @param array $args
      */
-    public static function eventCoreIndexStart($args): void
+    public static function eventCoreIndexStart(array $args): void
     {
         // check once per user session if expired poll email has been sent
         if (empty($_SESSION['pollChecked'])) {

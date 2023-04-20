@@ -55,7 +55,7 @@ function xoops_module_pre_uninstall_xoopspoll(\XoopsModule $module): bool
 function xoops_module_uninstall_xoopspoll(\XoopsModule $module): bool
 {
     /* clear the voted cookie(s) for the admin user's machine when module is uninstalled */
-    $success = Utility::setVoteCookie('', null, time() - 3600);
+    $success = Utility::setVoteCookie('', '', time() - 3600);
 
     return $success;
 }

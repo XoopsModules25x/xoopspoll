@@ -52,13 +52,13 @@ require_once $GLOBALS['xoops']->path( "modules"
 /**
  * Display XOOPS polls in a block
  *
- * @param array  $options block options array
+ * @param array $options block options array
  * @return array block keys and values to be used by block template
  * @uses   Criteria
  * @global mixed $GLOBALS ['xoopsUser']
  * @uses   CriteriaCompo
  */
-function xoopspollBlockMultiShow($options): array
+function xoopspollBlockMultiShow(array $options): array
 {
     $block           = [];
     $pollOptionArray = [];
@@ -117,7 +117,7 @@ function xoopspollBlockMultiShow($options): array
         $block['dispVotes']     = $thisModuleConfig['disp_vote_nums'];
         $block['thisModuleDir'] = 'xoopspoll';
         $block['asList']        = $options[0];
-
+        $pollOptionArray = [];
         $optionHandler = Helper::getInstance()->getHandler('Option');
         $logHandler    = Helper::getInstance()->getHandler('Log');
 
@@ -201,7 +201,7 @@ function xoopspollBlockMultiShow($options): array
  * @global mixed $GLOBALS ['xoopsUser']
  * @uses   xoops_getModuleHandler() function to get class handler for this modules class(es)
  */
-function xoopspollBlockMultiEdit($options): string
+function xoopspollBlockMultiEdit(mixed $options): string
 {
     /**
      * Options[]

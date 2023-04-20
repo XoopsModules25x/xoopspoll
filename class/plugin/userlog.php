@@ -34,7 +34,7 @@ class userlog extends \Userlog_Module_Plugin_Abstract implements \UserlogPluginI
      *
      * @return array|bool $item["item_name"] name of the item, $item["item_id"] id of the item
      */
-    public function item($subscribe_from)
+    public function item(string $subscribe_from)
     {
         xoops_load('XoopsRequest');
         $poll_id = XoopsRequest::getInt('poll_id', 0);

@@ -13,7 +13,7 @@ class Utility extends Common\SysUtility
      * @param string $ipAddr the ip address of the host
      * @return string host name
      */
-    public static function getHostByAddrWithCache(&$ipAddr): string
+    public static function getHostByAddrWithCache(string &$ipAddr): string
     {
         static $ipArray = [];
         $retVal  = &$ipAddr;
@@ -45,6 +45,7 @@ class Utility extends Common\SysUtility
         if (!isset($mConfig)) {
             $mHandler = \xoops_getHandler('module');
             $mod      = $mHandler->getByDirname('xoopspoll');
+            /** @var \XoopsConfigHandler $cHandler */
             $cHandler = \xoops_getHandler('config');
             $mConfig  = &$cHandler->getConfigsByCat(0, $mod->getVar('mid'));
         }
@@ -85,7 +86,7 @@ class Utility extends Common\SysUtility
      * @param string $cookieBaseName
      * @return array  contains cookie for polls, empty array if not found
      */
-    public static function getVoteCookie($cookieBaseName = 'voted_polls'): array
+    public static function getVoteCookie(string $cookieBaseName = 'voted_polls'): array
     {
         $pollDir = \basename(\dirname(__DIR__));
         if ('xoopspoll' === $pollDir) {
@@ -104,13 +105,13 @@ class Utility extends Common\SysUtility
      * for backward compatibility. Otherwise , cookie is named
      * '<dirname>_voted_polls' to allow for module to be cloned using
      * smartClone module.
-     * @param int|string|bool $index          array index to set in cookie
+     * @param bool|int|string $index          array index to set in cookie
      * @param string          $value          data to store in cookie
      * @param int             $expires        time when cookie expires
      * @param string          $cookieBaseName name of cookie (without directory prefix)
      * @return bool         success in setting cookie
      */
-    public static function setVoteCookie($index, $value, $expires = 0, $cookieBaseName = 'voted_polls'): bool
+    public static function setVoteCookie($index, string $value, int $expires = 0, string $cookieBaseName = 'voted_polls'): bool
     {
         $pollDir = \basename(\dirname(__DIR__));
         $success = false;
@@ -152,14 +153,14 @@ class Utility extends Common\SysUtility
      * '<dirname>_voted_polls' to allow for module to be cloned using
      * smartClone module.
      * @param \XoopsDatabase|null $db
-     * @param                     $tablename
+     * @param  string $tablename
      * @return bool success in setting cookie
      * @internal param int|string $index array index to set in cookie
      * @internal param unknown_type $value data to store in cookie
      * @internal param int $expires time when cookie expires
      * @internal param string $cookieBaseName name of cookie (without directory prefix)
      */
-    public static function dbTableExists(\XoopsDatabase $db, $tablename): bool
+    public static function dbTableExists(\XoopsDatabase $db, string $tablename): bool
     {
         $tablename = \addslashes($tablename);
         $mytable   = $db->prefix((string)$tablename);

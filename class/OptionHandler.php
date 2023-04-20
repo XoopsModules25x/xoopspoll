@@ -48,7 +48,7 @@ class OptionHandler extends \XoopsPersistableObjectHandler
     /**
      * @var \XoopsModules\Xoopspoll\Helper
      */
-    protected $helper;
+    protected \XoopsModules\Xoopspoll\Helper $helper;
 
     /**
      * PollOptionHandler::__construct()
@@ -70,14 +70,14 @@ class OptionHandler extends \XoopsPersistableObjectHandler
      * @uses xoops_getModuleHandler
      * @uses XoopsPersistableObjectHandler::insert
      */
-    public function updateCount($optionObj)
+    public function updateCount(mixed $optionObj): mixed
     {
         $status = false;
         static $logHandler;
         if ($optionObj instanceof Option) {
             $option_id = $optionObj->getVar('option_id');
             if (!isset($logHandler)) {
-                $logHandler = $this->helper::getInstance()->getHandler('Log');
+                $logHandler = $this->helper->getHandler('Log');
             }
             $votes = $logHandler->getTotalVotesByOptionId($option_id);
             $optionObj->setVar('option_count', $votes);
@@ -90,14 +90,14 @@ class OptionHandler extends \XoopsPersistableObjectHandler
     /**
      * Gets all options for poll ID
      *
-     * @param int    $pid
+     * @param int $pid
      * @param string $sortby
      * @param string $orderby
      * @return array  an array of Option objects
      * @uses CriteriaCompo
      * @uses XoopsPersistableObjectHandler::deleteAll
      */
-    public function getAllByPollId($pid = 0, $sortby = 'option_id', $orderby = 'ASC'): array
+    public function getAllByPollId(int $pid = 0, string $sortby = 'option_id', string $orderby = 'ASC'): array
     {
         //        $criteria = new \CriteriaCompo();
         $criteria = new \Criteria('poll_id', (int)$pid, '=');
@@ -123,7 +123,7 @@ class OptionHandler extends \XoopsPersistableObjectHandler
      * @uses XoopsPersistableObjectHandler::deleteAll
      * @uses Criteria
      */
-    public function deleteByPollId($pid = 0): bool
+    public function deleteByPollId(int $pid = 0): bool
     {
         $success = $this->deleteAll(new \Criteria('poll_id', (int)$pid, '='));
 
@@ -138,7 +138,7 @@ class OptionHandler extends \XoopsPersistableObjectHandler
      * @uses XoopsPersistableObjectHandler::updateAll
      * @uses Criteria
      */
-    public function resetCountByPollId($pid = 0): bool
+    public function resetCountByPollId(int $pid = 0): bool
     {
         $success = $this->updateAll('option_count', 0, new \Criteria('poll_id', (int)$pid, '='));
 
@@ -147,14 +147,15 @@ class OptionHandler extends \XoopsPersistableObjectHandler
 
     /**
      * Generates a HTML select box with options
-     * @param mixed $pid the select box is created for this poll id
+     * @param int $pid the select box is created for this poll id
      * @return \XoopsFormElementTray html select box
      */
-    public function renderOptionFormTray($pid = 0): \XoopsFormElementTray
+    public function renderOptionFormTray(int $pid = 0): \XoopsFormElementTray
     {
         \xoops_load('xoopsformloader');
         $pid            = (int)$pid;
         $barcolor_array = \XoopsLists::getImgListAsArray($GLOBALS['xoops']->path('modules/xoopspoll/assets/images/colorbars/'));
+        $optionObjs = [];
 
         /**
          * get all the options for this poll & add some blank options to allow adding more

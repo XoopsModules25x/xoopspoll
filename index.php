@@ -205,7 +205,7 @@ if (empty($pollId)) {
                 }
                 /* set anon user vote (and the time they voted) */
                 if (!$GLOBALS['xoopsUser'] instanceof \XoopsUser) {
-                    Utility::setVoteCookie($pollId, $voteTime, 0);
+                    Utility::setVoteCookie($pollId, (string)$voteTime, 0);
                 }
             } else {
                 $msg = _MD_XOOPSPOLL_CANNOTVOTE;

@@ -30,7 +30,7 @@ xoops_cp_header();
 
 /** @var Admin $adminObject */
 $adminObject->displayNavigation(basename(__FILE__));
-$adminObject::setPaypal('xoopsfoundation@gmail.com');
+Admin::setPaypal('xoopsfoundation@gmail.com');
 $adminObject->displayAbout(false);
 
 require_once __DIR__ . '/admin_footer.php';

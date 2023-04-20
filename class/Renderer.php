@@ -37,6 +37,9 @@ namespace XoopsModules\Xoopspoll;
  */
 
 use Xmf\Request;
+use XoopsModules\Xoopspoll\{
+    Poll
+};
 
 Helper::getInstance()->loadLanguage('main');
 
@@ -45,19 +48,19 @@ Helper::getInstance()->loadLanguage('main');
  */
 class Renderer
 {
-    // XoopsPoll class object
-    protected $pollObj;
-    protected $pollHandler;
-    protected $optionHandler;
-    protected $logHandler;
-    protected $helper;
+    // Poll class object
+    protected Poll $pollObj;
+    protected PollHandler $pollHandler;
+    protected OptionHandler $optionHandler;
+    protected LogHandler $logHandler;
+    protected Helper $helper;
     // constructor(s)
 
     /**
-     * @param null $poll
-     * @param null $helper
+     * @param Poll|null $poll
+     * @param Helper|null $helper
      */
-    public function __construct($poll = null, $helper = null)
+    public function __construct(Poll $poll = null, Helper $helper = null)
     {
         $this->helper = $helper ?? Helper::getInstance();
         // setup handlers
@@ -168,6 +171,7 @@ class Renderer
         $xuEndFormatted   = \ucfirst(\date(_MEDIUMDATESTRING, (int)$xuEndTimestamp));
         $xuStartTimestamp = \xoops_getUserTimestamp($this->pollObj->getVar('start_time'));
         $xuStartFormatted = \ucfirst(\date(_MEDIUMDATESTRING, (int)$xuStartTimestamp));
+        $options          = [];
 
         //        $logHandler =  $this->helper->getHandler('Log');
         $criteria = new \CriteriaCompo();
@@ -189,6 +193,7 @@ class Renderer
             /* setup module config handler - required since this is called by newbb too */
             /** @var \XoopsModuleHandler $moduleHandler */
             $moduleHandler = \xoops_getHandler('module');
+            /** @var \XoopsConfigHandler $configHandler */
             $configHandler = \xoops_getHandler('config');
             $xp_module     = $moduleHandler->getByDirname('xoopspoll');
             $module_id     = $xp_module->getVar('mid');

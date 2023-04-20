@@ -60,7 +60,7 @@ class SysUtility
      * @param string $form_sort
      * @return string
      */
-    public static function selectSorting($text, $form_sort): string
+    public static function selectSorting(string $text, string $form_sort): string
     {
         global $start, $order, $sort;
 
@@ -105,9 +105,9 @@ class SysUtility
     }
 
     /**
-     * @param $content
+     * @param string $content
      */
-    public static function metaKeywords($content): void
+    public static function metaKeywords(string $content): void
     {
         global $xoopsTpl, $xoTheme;
         $myts    = \MyTextSanitizer::getInstance();
@@ -120,9 +120,9 @@ class SysUtility
     }
 
     /**
-     * @param $content
+     * @param string $content
      */
-    public static function metaDescription($content): void
+    public static function metaDescription(string $content): void
     {
         global $xoopsTpl, $xoTheme;
         $myts    = \MyTextSanitizer::getInstance();
@@ -172,7 +172,7 @@ class SysUtility
      *
      * @return mixed
      */
-    public static function cloneRecord(string $tableName, string $idField, int $id)
+    public static function cloneRecord(string $tableName, string $idField, int $id): mixed
     {
         $newId = false;
         $table = $GLOBALS['xoopsDB']->prefix($tableName);
@@ -334,9 +334,9 @@ class SysUtility
 
         if (\class_exists('XoopsFormEditor')) {
             if ($isAdmin) {
-                $descEditor = new XoopsFormEditor(\ucfirst($options['name']), $helper->getConfig('editorAdmin'), $options, $nohtml = false, $onfailure = 'textarea');
+                $descEditor = new \XoopsFormEditor(\ucfirst($options['name']), $helper->getConfig('editorAdmin'), $options, $nohtml = false, $onfailure = 'textarea');
             } else {
-                $descEditor = new XoopsFormEditor(\ucfirst($options['name']), $helper->getConfig('editorUser'), $options, $nohtml = false, $onfailure = 'textarea');
+                $descEditor = new \XoopsFormEditor(\ucfirst($options['name']), $helper->getConfig('editorUser'), $options, $nohtml = false, $onfailure = 'textarea');
             }
         } else {
             $descEditor = new \XoopsFormDhtmlTextArea(\ucfirst($options['name']), $options['name'], $options['value'], '100%', '100%');
@@ -404,11 +404,11 @@ class SysUtility
     /**
      * Add a field to a mysql table
      *
-     * @param $field
-     * @param $table
+     * @param string $field
+     * @param string $table
      * @return bool|\mysqli_result
      */
-    public static function addField($field, $table)
+    public static function addField(string $field, string $table)
     {
         global $xoopsDB;
 

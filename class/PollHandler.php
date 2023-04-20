@@ -29,7 +29,7 @@ class PollHandler extends \XoopsPersistableObjectHandler
     /**
      * @var \XoopsModules\Xoopspoll\Helper
      */
-    protected $helper;
+    protected Helper $helper;
 
     /**
      * PollHandler::__construct()
@@ -47,7 +47,7 @@ class PollHandler extends \XoopsPersistableObjectHandler
      * @param \XoopsObject $pollObj
      * @return int|false object ID or false
      */
-    public function updateCount($pollObj)
+    public function updateCount(\XoopsObject $pollObj)
     {
         $success = false;
         if ($pollObj instanceof Poll) {
@@ -66,10 +66,10 @@ class PollHandler extends \XoopsPersistableObjectHandler
 
     /**
      * Mail the results of poll when expired
-     * @param mixed $pollObj
+     * @param mixed|null $pollObj
      * @return array true|false indicating sendmail status
      */
-    public function mailResults($pollObj = null): array
+    public function mailResults(mixed $pollObj = null): array
     {
         $criteria = new \CriteriaCompo();
         $criteria->add(new \Criteria('end_time', \time(), '<'));  // expired polls

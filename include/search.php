@@ -36,7 +36,7 @@ use XoopsModules\Xoopspoll\{
  * @internal param mixed $queryarray
  * @internal param mixed $userid
  */
-function xoopspoll_search($queryArray, $andor, $limit, $offset, $uid): array
+function xoopspoll_search($queryArray, mixed $andor, mixed $limit, mixed $offset, $uid): array
 {
     $ret = [];
     if (0 === (int)$uid) {

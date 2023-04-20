@@ -27,22 +27,22 @@ namespace XoopsModules\Xoopspoll;
  */
 class Poll extends \XoopsObject
 {
-    private $poll_id;
-    private $question;
-    private $description;
-    private $user_id;
-    private $start_time;
-    private $end_time;
-    private $votes;
-    private $voters;
-    private $display;
-    private $visibility;
-    private $anonymous;
-    private $weight;
-    private $multiple;
-    private $multilimit;
-    private $mail_status;
-    private $mail_voter;
+    private int $poll_id;
+    private string $question;
+    private string $description;
+    private int $user_id;
+    private int $start_time;
+    private int $end_time;
+    private int $votes;
+    private int $voters;
+    private int $display;
+    private int $visibility;
+    private int $anonymous;
+    private int $weight;
+    private int $multiple;
+    private int $multilimit;
+    private int $mail_status;
+    private int $mail_voter;
 
     /**
      * Poll::__construct()
@@ -101,7 +101,7 @@ class Poll extends \XoopsObject
     {
         $ret = $this->getVar('question');
 
-        return $ret;
+        return (string)$ret;
     }
 
     /**
@@ -137,9 +137,9 @@ class Poll extends \XoopsObject
     }
 
     /**
-     * @param int     $optionId
-     * @param string  $ip ip address of voter
-     * @param         $time
+     * @param int $optionId
+     * @param string $ip ip address of voter
+     * @param int $time
      * @return bool   true vote entered, false voting failed
      * @uses     xoops_getModuleHandler()
      * @uses     CriteriaCompo()
@@ -147,7 +147,7 @@ class Poll extends \XoopsObject
      * @uses     LogHandler
      * @internal param int $uid
      */
-    public function vote($optionId, $ip, $time): bool
+    public function vote(int $optionId, string $ip, int $time): bool
     {
         if (!empty($optionId) && $this->isAllowedToVote()) {
             $voteTime      = empty($time) ? \time() : (int)$time;
@@ -218,9 +218,9 @@ class Poll extends \XoopsObject
      * display the poll form
      * @param string $rtnPage   where to send the form result
      * @param string $rtnMethod return method  get|post
-     * @param array  $addHidden
+     * @param array $addHidden
      */
-    public function renderForm($rtnPage, $rtnMethod = 'post', $addHidden = [])
+    public function renderForm(string $rtnPage, string $rtnMethod = 'post', array $addHidden = [])
     {
         \xoops_load('xoopsformloader');
         $myts = \MyTextSanitizer::getInstance();
@@ -252,6 +252,7 @@ class Poll extends \XoopsObject
         $moduleHandler = \xoops_getHandler('module');
         $pollModule    = $moduleHandler->getByDirname('xoopspoll');
 
+        /** @var \XoopsConfigHandler $configHandler */
         $configHandler = \xoops_getHandler('config');
         //        $xp_module      = $moduleHandler->getByDirname("xoopspoll");
         //        $module_id      = $xp_module->getVar("mid");
@@ -367,6 +368,7 @@ class Poll extends \XoopsObject
      */
     public function isResultVisible()
     {
+        $visibleMsg = '';
         \xoops_loadLanguage('main', 'xoopspoll');
         switch ($this->getVar('visibility')) {
             case Constants::HIDE_ALWAYS:  // always hide the results
@@ -405,10 +407,10 @@ class Poll extends \XoopsObject
     /**
      * Send copy of vote to the user at time of vote (if selected)
      *
-     * @param null $user the Xoops user object for this user
+     * @param \XoopsUser|null $user the Xoops user object for this user
      * @return bool      send status
      */
-    public function notifyVoter($user = null): bool
+    public function notifyVoter(\XoopsUser $user = null): bool
     {
         if (($user instanceof \XoopsUser) && (Constants::MAIL_POLL_TO_VOTER === $this->getVar('mail_voter'))) {
             \xoops_loadLanguage('main', 'xoopspoll');
@@ -478,16 +480,12 @@ class Poll extends \XoopsObject
         return $status;
     }
 
-    /**#@+
-     * The following method is provided for backward compatibility with newbb/xforum
-     * @deprecated since Xoopspoll 1.40, please use PollHandler & Poll
-     */
-
     /**
+     * The following method is provided for backward compatibility with newbb/xforum
      * deletes the object from the database
      * @return mixed results of deleting poll from db
-     */
-    public function delete()
+     * @deprecated since Xoopspoll 1.40, please use PollHandler & Poll
+     */    public function delete(): mixed
     {
         $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use PollHandler::' . __METHOD__ . ' instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
@@ -499,6 +497,7 @@ class Poll extends \XoopsObject
     /**
      * update the vote counter for this poll
      * @returns bool results of update counter
+     * @deprecated since Xoopspoll 1.40, please use PollHandler & Poll
      */
     public function updateCount()
     {
@@ -512,8 +511,9 @@ class Poll extends \XoopsObject
     /**
      * inserts the poll object into the database
      * @return mixed results of inserting poll into db
+     * @deprecated since Xoopspoll 1.40, please use PollHandler & Poll
      */
-    public function store()
+    public function store(): mixed
     {
         $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use PollHandler::insert() instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
