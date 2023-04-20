@@ -27,22 +27,22 @@ namespace XoopsModules\Xoopspoll;
  */
 class Poll extends \XoopsObject
 {
-    private int $poll_id;
+    private int    $poll_id;
     private string $question;
     private string $description;
-    private int $user_id;
-    private int $start_time;
-    private int $end_time;
-    private int $votes;
-    private int $voters;
-    private int $display;
-    private int $visibility;
-    private int $anonymous;
-    private int $weight;
-    private int $multiple;
-    private int $multilimit;
-    private int $mail_status;
-    private int $mail_voter;
+    private int    $user_id;
+    private int    $start_time;
+    private int    $end_time;
+    private int    $votes;
+    private int    $voters;
+    private int    $display;
+    private int    $visibility;
+    private int    $anonymous;
+    private int    $weight;
+    private int    $multiple;
+    private int    $multilimit;
+    private int    $mail_status;
+    private int    $mail_voter;
 
     /**
      * Poll::__construct()

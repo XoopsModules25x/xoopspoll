@@ -47,12 +47,12 @@ use XoopsObject;
  */
 class Option extends XoopsObject
 {
-    private int $option_id;
-    private int $poll_id;
+    private int    $option_id;
+    private int    $poll_id;
     private string $option_text;
-    private int $option_count;
+    private int    $option_count;
     private string $option_color;
-    private mixed $optHandler;
+    private mixed  $optHandler;
 
     /**
      * database connection object

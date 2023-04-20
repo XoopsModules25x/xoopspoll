@@ -20,7 +20,7 @@
  */
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-class userlog extends \Userlog_Module_Plugin_Abstract implements \UserlogPluginInterface
+class Userlog extends \Userlog_Module_Plugin_Abstract implements \UserlogPluginInterface
 {
     /**
      * @param string $subscribe_from Name of the script

@@ -44,8 +44,8 @@ $moduleDirNameUpper = \mb_strtoupper($moduleDirName);
 // ------------------- Information ------------------- /
 $modversion = [
     'version'             => '2.1.0',
-    'module_status'       => 'Beta 1',
-    'release_date'        => '2023/04/18',
+    'module_status'       => 'Beta 2',
+    'release_date'        => '2023/04/20',
     'name'                => _MI_XOOPSPOLL_NAME,
     'description'         => _MI_XOOPSPOLL_DESC,
     'official'            => 0,     //1 indicates official XOOPS module supported by XOOPS Dev Team, 0 means 3rd party supported

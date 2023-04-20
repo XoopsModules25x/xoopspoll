@@ -21,16 +21,18 @@ use XoopsModules\Xoopspoll\{
     Helper
 };
 
-//require __DIR__ . '/admin_header.php';
-
-// BlockActionsHandler.php
-
+/**
+ * class BlockActionsHandler
+ */
 class BlockActionsHandler
 {
     private $blocksadmin;
     private $helper;
     private $request;
 
+    /**
+     * @param $blocksadmin
+     */
     public function __construct($blocksadmin)
     {
         $this->blocksadmin = $blocksadmin;
@@ -162,7 +164,12 @@ class BlockActionsHandler
 
 
     //for testing mocking
-    public function setRequest($request)
+
+    /**
+     * @param $request
+     * @return void
+     */
+    public function setRequest($request): void
     {
         $this->request = $request;
     }

@@ -32,7 +32,7 @@ namespace XoopsModules\Xoopspoll\Common;
 class Breadcrumb
 {
     public string $dirname;
-    private array $bread = [];
+    public array $bread = [];
 
     public function __construct()
     {
