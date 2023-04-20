@@ -270,7 +270,7 @@ class Blocksadmin
         \xoops_loadLanguage('admin/blocksadmin', 'system');
         \xoops_loadLanguage('admin/groups', 'system');
 
-        $myblock = new \XoopsBlock();
+        $myblock = new \XoopsBlock($bid);
 
         $sql = \sprintf('DELETE FROM %s WHERE bid = %u', $this->db->prefix('newblocks'), $bid);
         $result = $this->db->queryF($sql);
@@ -446,7 +446,7 @@ class Blocksadmin
      */
     public function setOrder(string $bid, string $title, string $weight, string $visible, string $side, string $bcachetime, ?array $bmodule = null): void
     {
-        $myblock = new \XoopsBlock();
+        $myblock = new \XoopsBlock($bid);
         $myblock->setVar('title', $title);
         $myblock->setVar('weight', $weight);
         $myblock->setVar('visible', $visible);
@@ -470,7 +470,7 @@ class Blocksadmin
         \xoops_loadLanguage('admin/blocksadmin', 'system');
         \xoops_loadLanguage('admin/groups', 'system');
         //        mpu_adm_menu();
-        $myblock = new \XoopsBlock();
+        $myblock = new \XoopsBlock($bid);
         $sql     = 'SELECT module_id FROM ' . $this->db->prefix('block_module_link') . ' WHERE block_id=' . $bid;
         $result  = $this->db->query($sql);
         if (!$this->db->isResultSet($result)) {
@@ -522,7 +522,7 @@ class Blocksadmin
      */
     public function updateBlock(int $bid, string $btitle, string $bside, string $bweight, string $bvisible, string $bcachetime, ?array $bmodule, ?array $options, ?array $groups)
     {
-        $myblock = new \XoopsBlock();
+        $myblock = new \XoopsBlock($bid);
         $myblock->setVar('title', $btitle);
         $myblock->setVar('weight', $bweight);
         $myblock->setVar('visible', $bvisible);
