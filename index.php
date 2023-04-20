@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
                 XOOPS - PHP Content Management System
                     Copyright (c) 2000-2020 XOOPS.org
@@ -27,8 +27,7 @@
  * XOOPS Poll main index page
  *
  * @copyright::  {@link https://xoops.org XOOPS Project}
- * @license  ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package  ::    xoopspoll
+ * @license  ::    {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @since    ::      1.0
  *
  * @uses     xoops_load() method used to load classes
@@ -36,14 +35,15 @@
  * @uses     Criteria
  * @uses     mixed $GLOBALS['xoops']::path gets XOOPS directory information
  * @uses     string $GLOBALS['xoops']::url gets XOOPS URL/URI information
- * @uses     mixed $GLOBALS['xoopsUser'] gets information about the currently logged in user
+ * @uses     mixed $GLOBALS['xoopsUser'] gets information about the currently logged-in user
  * @uses     xoops_getenv() function to retrieve XOOPS environment variables
  * @uses     xoops_getUserTimestamp() function to convert time to user timestamp
- * @uses     formatTimestamp() function to convert timestamp to human readable form
+ * @uses     formatTimestamp() function to convert timestamp to human-readable form
  * @uses     xoops_getModuleHandler() to load handler for this module's class(es)
  * @uses     redirect_header() function used to send user to another location after completing task(s)
  */
 
+use Xmf\Module\Admin;
 use Xmf\Request;
 use XoopsModules\Newbb;
 use XoopsModules\Xoopspoll\{
@@ -54,9 +54,9 @@ use XoopsModules\Xoopspoll\{
     Utility
 };
 
-require_once dirname(__DIR__, 2) . '/mainfile.php';
+require_once \dirname(__DIR__, 2) . '/mainfile.php';
 
-$helper = Helper::getInstance();
+$helper      = Helper::getInstance();
 $myts        = \MyTextSanitizer::getInstance();
 $pollHandler = $helper->getHandler('Poll');
 $logHandler  = $helper->getHandler('Log');
@@ -69,17 +69,17 @@ if (empty($pollId)) {
     require $GLOBALS['xoops']->path('header.php');
     $GLOBALS['xoopsTpl']->assign(
         [
-                                     'lang_pollslist'      => _MD_XOOPSPOLL_POLLSLIST,
-                                     'lang_pollquestion'   => _MD_XOOPSPOLL_POLLQUESTION,
-                                     'lang_pollvoters'     => _MD_XOOPSPOLL_VOTERS,
-                                     'lang_votes'          => _MD_XOOPSPOLL_VOTES,
-                                     'lang_expiration'     => _MD_XOOPSPOLL_EXPIRATION,
-                                     'lang_results'        => _MD_XOOPSPOLL_RESULTS,
-                                     'lang_mustlogin'      => _MD_XOOPSPOLL_MUSTLOGIN,
-                                     'disp_votes'          => $GLOBALS['xoopsModuleConfig']['disp_vote_nums'],
-            'results_link_icon'   => \Xmf\Module\Admin::iconUrl('', 16) . '/open12.gif',
-                                     'obscured_icon'       => $GLOBALS['xoops']->url('modules/xoopspoll/assets/images/icons/obscured.png'),
-                                     'lang_obscured_alt'   => _MD_XOOPSPOLL_OBSCURED,
+            'lang_pollslist'      => _MD_XOOPSPOLL_POLLSLIST,
+            'lang_pollquestion'   => _MD_XOOPSPOLL_POLLQUESTION,
+            'lang_pollvoters'     => _MD_XOOPSPOLL_VOTERS,
+            'lang_votes'          => _MD_XOOPSPOLL_VOTES,
+            'lang_expiration'     => _MD_XOOPSPOLL_EXPIRATION,
+            'lang_results'        => _MD_XOOPSPOLL_RESULTS,
+            'lang_mustlogin'      => _MD_XOOPSPOLL_MUSTLOGIN,
+            'disp_votes'          => $GLOBALS['xoopsModuleConfig']['disp_vote_nums'],
+            'results_link_icon'   => Admin::iconUrl('', '16') . '/open12.gif',
+            'obscured_icon'       => $GLOBALS['xoops']->url('modules/xoopspoll/assets/images/icons/obscured.png'),
+            'lang_obscured_alt'   => _MD_XOOPSPOLL_OBSCURED,
             'lang_obscured_title' => _MD_XOOPSPOLL_OBSCURED,
         ]
     );
@@ -176,14 +176,17 @@ if (empty($pollId)) {
         } else {
             $optionId = Request::getInt('option_id', 0, 'POST');
         }
-        if (!$pollObj->hasExpired()) {
+        if ($pollObj->hasExpired()) {
+            /* poll has expired so just show the results */
+            $msg = _MD_XOOPSPOLL_SORRYEXPIRED;
+        } else {
             $msg = _MD_XOOPSPOLL_MUSTLOGIN;
             //@todo:: add $url to all redirects
             //            $url = $GLOBALS['xoops']->buildUrl("index.php", array('poll_id' => $pollId));
             if ($pollObj->isAllowedToVote()) {
                 $thisVoter     = (!empty($GLOBALS['xoopsUser'])
                                   && ($GLOBALS['xoopsUser'] instanceof \XoopsUser)) ? $GLOBALS['xoopsUser']->getVar('uid') : null;
-                $votedThisPoll = $logHandler->hasVoted($pollId, xoops_getenv('REMOTE_ADDR'), $thisVoter);
+                $votedThisPoll = $logHandler->hasVoted($pollId, xoops_getenv('REMOTE_ADDR'), (int)$thisVoter);
                 if (!$votedThisPoll) {
                     /* user that hasn't voted before in this poll or module preferences allow it */
                     $voteTime = time();
@@ -202,14 +205,11 @@ if (empty($pollId)) {
                 }
                 /* set anon user vote (and the time they voted) */
                 if (!$GLOBALS['xoopsUser'] instanceof \XoopsUser) {
-                    Utility::setVoteCookie($pollId, $voteTime, 0);
+                    Utility::setVoteCookie($pollId, (string)$voteTime, 0);
                 }
             } else {
                 $msg = _MD_XOOPSPOLL_CANNOTVOTE;
             }
-        } else {
-            /* poll has expired so just show the results */
-            $msg = _MD_XOOPSPOLL_SORRYEXPIRED;
         }
     } else {
         $msg = _MD_XOOPSPOLL_ERROR_INVALID_POLLID;
@@ -237,8 +237,8 @@ if (empty($pollId)) {
     if ($pollObj->isAllowedToVote()) {
         $thisVoter  = (!empty($GLOBALS['xoopsUser'])
                        && ($GLOBALS['xoopsUser'] instanceof \XoopsUser)) ? $GLOBALS['xoopsUser']->getVar('uid') : null;
-        $canVote    = $logHandler->hasVoted($pollId, xoops_getenv('REMOTE_ADDR'), $thisVoter) ? false : true;
-        $multiple   = $pollObj->getVar('multiple') ? true : false;
+        $canVote    = !$logHandler->hasVoted($pollId, xoops_getenv('REMOTE_ADDR'), $thisVoter);
+        $multiple   = $pollObj->getVar('multiple');
         $multiLimit = (int)$pollObj->getVar('multilimit');
         if ($multiple && ($multiLimit > 0)) {
             $lang_multi = sprintf(_MD_XOOPSPOLL_MULTITEXT, $multiLimit);
@@ -247,11 +247,11 @@ if (empty($pollId)) {
 
     $GLOBALS['xoopsTpl']->assign(
         [
-                                     'voteCount'    => $voteCount,
-                                     'lang_vote'    => _MD_XOOPSPOLL_VOTE,
-                                     'lang_results' => _MD_XOOPSPOLL_RESULTS,
-                                     'disp_votes'   => $GLOBALS['xoopsModuleConfig']['disp_vote_nums'],
-                                     'can_vote'     => $canVote,
+            'voteCount'    => $voteCount,
+            'lang_vote'    => _MD_XOOPSPOLL_VOTE,
+            'lang_results' => _MD_XOOPSPOLL_RESULTS,
+            'disp_votes'   => $GLOBALS['xoopsModuleConfig']['disp_vote_nums'],
+            'can_vote'     => $canVote,
             'lang_multi'   => $lang_multi,
         ]
     );

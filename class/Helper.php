@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\Xoopspoll;
 
@@ -13,12 +13,11 @@ namespace XoopsModules\Xoopspoll;
  */
 
 /**
- * @copyright    XOOPS Project https://xoops.org/
- * @license      GNU GPL 2 or later (https://www.gnu.org/licenses/gpl-2.0.html)
- * @package
- * @since
+ * @copyright    XOOPS Project (https://xoops.org)
+ * @license      GNU GPL 2.0 or later (https://www.gnu.org/licenses/gpl-2.0.html)
  * @author       XOOPS Development Team
  */
+
 /**
  * Class Helper
  */
@@ -41,7 +40,7 @@ class Helper extends \Xmf\Module\Helper
      *
      * @return \XoopsModules\Xoopspoll\Helper
      */
-    public static function getInstance($debug = false)
+    public static function getInstance(bool $debug = false): self
     {
         static $instance;
         if (null === $instance) {
@@ -54,7 +53,7 @@ class Helper extends \Xmf\Module\Helper
     /**
      * @return string
      */
-    public function getDirname()
+    public function getDirname(): string
     {
         return $this->dirname;
     }
@@ -79,6 +78,7 @@ class Helper extends \Xmf\Module\Helper
         $helper = self::getInstance();
         $ret    = new $class($db, $helper);
         $this->addLog("Getting handler '{$name}'");
+
         return $ret;
     }
 }

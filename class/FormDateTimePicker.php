@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\Xoopspoll;
 
@@ -14,15 +14,12 @@ namespace XoopsModules\Xoopspoll;
  *
  * @copyright ::   &copy; {@link https://xoops.org/ XOOPS Project}
  * @license   ::     {@link https://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU GPL 2}
- * @package   ::     xoopspoll
  * @subpackage::  class
  * @since     ::       1.40
- * @author    ::      TXMod Xoops (aka timgno) {@link http://www.txmodxoops.org/ TXMod Xoops}
+ * @author    ::      TXMod Xoops (aka timgno) {@link https://www.txmodxoops.org/ TXMod Xoops}
  * @author    ::      zyspec <zyspec@yahoo.com>
- * @credits::     {@link http://www.trentrichardson.com Trent Richardson}
+ * @credits::     {@link https://www.trentrichardson.com Trent Richardson}
  */
-
-
 
 /**
  * Creates a text field with jquery ui calendar & time select popup
@@ -53,20 +50,20 @@ class FormDateTimePicker extends \XoopsFormText
      * Generate the HTML <input> to display the date/time field
      * @return string HTML code used to display in a form
      */
-    public function render()
+    public function render(): string
     {
         static $included = false;
 
         $ele_name  = $this->getName();
         $ele_value = $this->getValue(true);
         //        if (is_string($ele_value)) {
-        if (!\is_numeric($ele_value)) {
-            $display_value = $ele_value;
-            $ele_value     = \time();
-        } else {
+        if (\is_numeric($ele_value)) {
             //            $display_value = '';
             //            $display_value = formatTimestamp($ele_value, 'm');
-            $display_value = \ucfirst(\date(_MEDIUMDATESTRING, $ele_value));
+            $display_value = \ucfirst(\date(_MEDIUMDATESTRING, (int)$ele_value));
+        } else {
+            $display_value = $ele_value;
+            $ele_value     = \time();
         }
 
         if (\is_object($GLOBALS['xoTheme'])) {

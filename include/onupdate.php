@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  You may not change or alter any portion of this comment or credits
  of supporting developers from this source code or any supporting source code
@@ -13,8 +13,7 @@
  * Xoopspoll install functions.php
  *
  * @copyright:: {@link https://xoops.org/ XOOPS Project}
- * @license  ::   {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package  ::   xoopspoll
+ * @license  ::   {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @since    ::     1.40
  * @author   ::    zyspec <zyspec@yahoo.com>
  */
@@ -24,14 +23,13 @@ use XoopsModules\Xoopspoll\{
     Utility
 };
 
-
 /**
  * @param \XoopsDatabase|null $db
  * @param                     $fromTable
  * @param                     $toTable
  * @return bool
  */
-function xoopspollChangeTableName(\XoopsDatabase $db, $fromTable, $toTable)
+function xoopspollChangeTableName(\XoopsDatabase $db, $fromTable, $toTable): bool
 {
     $fromTable = addslashes($fromTable);
     $toTable   = addslashes($toTable);
@@ -39,10 +37,10 @@ function xoopspollChangeTableName(\XoopsDatabase $db, $fromTable, $toTable)
         $fromThisTable = $db->prefix("{$fromTable}");
         $toThisTable = $db->prefix("{$toTable}");
     */
-    $helper = Helper::getInstance();
+    $helper  = Helper::getInstance();
     $success = false;
     if (Utility::dbTableExists($db, $fromTable) && !Utility::dbTableExists($db, $toTable)) {
-        $sql     = sprintf('ALTER TABLE ' . $db->prefix((string)$fromTable) . ' RENAME ' . $db->prefix('{$toTable}'));
+        $sql     = 'ALTER TABLE ' . $db->prefix((string)$fromTable) . ' RENAME ' . $db->prefix('{$toTable}');
         $success = $db->queryF($sql);
         if (false === $success) {
             $moduleHandler   = $helper->getHandler('Module');
@@ -55,16 +53,16 @@ function xoopspollChangeTableName(\XoopsDatabase $db, $fromTable, $toTable)
 }
 
 /**
- * @param \XoopsModule  $module
+ * @param \XoopsModule $module
  * @param              $prev_version
  * @return bool
  */
-function xoops_module_update_xoopspoll(\XoopsModule $module, $prev_version)
+function xoops_module_update_xoopspoll(\XoopsModule $module, $prev_version): bool
 {
     // referer check
     $success = false;
     $ref     = xoops_getenv('HTTP_REFERER');
-    $helper = Helper::getInstance();
+    $helper  = Helper::getInstance();
     if (('' === $ref) || 0 === mb_strpos($ref, $GLOBALS['xoops']->url('modules/system/admin.php'))) {
         /* module specific part */
         require_once $helper->path('include/oninstall.php');

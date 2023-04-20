@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\Xoopspoll\Common;
 
@@ -15,10 +15,8 @@ namespace XoopsModules\Xoopspoll\Common;
  * Configurator Class
  *
  * @copyright   XOOPS Project (https://xoops.org)
- * @license     http://www.fsf.org/copyleft/gpl.html GNU public license
+ * @license     GNU GPL 2.0 or later (https://www.gnu.org/licenses/gpl-2.0.html)
  * @author      XOOPS Development Team
- * @package
- * @since       1.05
  */
 
 /**
@@ -26,25 +24,25 @@ namespace XoopsModules\Xoopspoll\Common;
  */
 class Configurator
 {
-    public $name;
-    public $paths           = [];
-    public $uploadFolders   = [];
-    public $copyBlankFiles  = [];
-    public $copyTestFolders = [];
-    public $templateFolders = [];
-    public $oldFiles        = [];
-    public $oldFolders      = [];
-    public $renameTables    = [];
-    public $modCopyright;
+    public string $name;
+    public mixed $paths           = [];
+    public array $uploadFolders   = [];
+    public array $copyBlankFiles  = [];
+    public array $copyTestFolders = [];
+    public array $templateFolders = [];
+    public array $oldFiles        = [];
+    public array $oldFolders      = [];
+    public array $renameTables    = [];
+    public array $renameColumns   = [];
+    public array $moduleStats     = [];
+    public string $modCopyright;
+    public mixed $icons;
 
     /**
      * Configurator constructor.
      */
     public function __construct()
     {
-        $moduleDirName      = \basename(\dirname(__DIR__, 2));
-        $moduleDirNameUpper = mb_strtoupper($moduleDirName);
-
         $config = require \dirname(__DIR__, 2) . '/config/config.php';
 
         $this->name            = $config->name;
@@ -56,9 +54,11 @@ class Configurator
         $this->oldFiles        = $config->oldFiles;
         $this->oldFolders      = $config->oldFolders;
         $this->renameTables    = $config->renameTables;
+        $this->renameColumns   = $config->renameColumns;
+        $this->moduleStats     = $config->moduleStats;
         $this->modCopyright    = $config->modCopyright;
 
-        $this->icons = include \dirname(__DIR__, 2) . '/config/icons.php';
-        $this->paths = include \dirname(__DIR__, 2) . '/config/paths.php';
+        $this->icons = require \dirname(__DIR__, 2) . '/config/icons.php';
+        $this->paths = require \dirname(__DIR__, 2) . '/config/paths.php';
     }
 }

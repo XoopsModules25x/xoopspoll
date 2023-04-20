@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
                 XOOPS - PHP Content Management System
                     Copyright (c) 2012 XOOPS.org
@@ -27,14 +27,13 @@
  *  XOOPS Poll Module results mailer preload
  *
  * @copyright ::  {@link https://xoops.org XOOPS Project}
- * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package   ::    xoopspoll
+ * @license   ::    {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @subpackage:: preloads
  * @since     ::      1.4
  * @author    ::     zyspec <zyspec@yahoo.com>
  **/
 
-use XoopsModules\Xoopspoll;
+use XoopsModules\Xoopspoll\Helper;
 
 /**
  * Class XoopspollCorePreload
@@ -42,24 +41,23 @@ use XoopsModules\Xoopspoll;
 class XoopspollCorePreload extends \XoopsPreloadItem
 {
     // to add PSR-4 autoloader
-
     /**
-     * @param $args
+     * @param array $args
      */
-    public static function eventCoreIncludeCommonEnd($args)
+    public static function eventCoreIncludeCommonEnd(array $args): void
     {
         require __DIR__ . '/autoloader.php';
     }
 
     /**
      * plugin class for Xoops preload for index page start
-     * @param $args
+     * @param array $args
      */
-    public static function eventCoreIndexStart($args)
+    public static function eventCoreIndexStart(array $args): void
     {
         // check once per user session if expired poll email has been sent
         if (empty($_SESSION['pollChecked'])) {
-            $pollHandler = \XoopsModules\Xoopspoll\Helper::getInstance()->getHandler('Poll');
+            $pollHandler = Helper::getInstance()->getHandler('Poll');
             $pollHandler->mailResults();  //send the results of any polls that have ended
             unset($pollHandler);
             $_SESSION['pollChecked'] = 1;

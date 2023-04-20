@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  You may not change or alter any portion of this comment or credits
  of supporting developers from this source code or any supporting source code
@@ -13,8 +13,7 @@
  * Xoopspoll uninstall functions.php
  *
  * @copyright:: {@link https://xoops.org/ XOOPS Project}
- * @license  ::   {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package  ::   xoopspoll
+ * @license  ::   {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @since    ::     1.40
  * @author   ::    zyspec <zyspec@yahoo.com>
  * @param XoopsModule $module
@@ -30,7 +29,7 @@ use XoopsModules\Xoopspoll\{
  * @param \XoopsModule $module
  * @return bool
  */
-function xoops_module_pre_uninstall_xoopspoll(\XoopsModule $module)
+function xoops_module_pre_uninstall_xoopspoll(\XoopsModule $module): bool
 {
     /* make sure that any polls associated with xoopspoll are cleared from newbb */
     /** @var \XoopsModuleHandler $moduleHandler */
@@ -53,10 +52,10 @@ function xoops_module_pre_uninstall_xoopspoll(\XoopsModule $module)
  * @param XoopsModule $module
  * @return bool
  */
-function xoops_module_uninstall_xoopspoll(\XoopsModule $module)
+function xoops_module_uninstall_xoopspoll(\XoopsModule $module): bool
 {
     /* clear the voted cookie(s) for the admin user's machine when module is uninstalled */
-    $success = Utility::setVoteCookie('', null, time() - 3600);
+    $success = Utility::setVoteCookie('', '', time() - 3600);
 
     return $success;
 }

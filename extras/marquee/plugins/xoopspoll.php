@@ -1,8 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * ****************************************************************************
  * Marquee - MODULE FOR XOOPS
- * Copyright (c) Hervé Thouzard (http://www.herve-thouzard.com)
+ * Copyright (c) Hervé Thouzard (https://www.herve-thouzard.com)
  *
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -12,10 +12,9 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * ****************************************************************************
  *
- * @copyright ::   {@link http://www.herve-thouzard.com Hervé Thouzard}
- * @license   ::     {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @author    ::      Hervé Thouzard (http://www.herve-thouzard.com)
- * @package   ::     marquee
+ * @copyright ::   {@link https://www.herve-thouzard.com Hervé Thouzard}
+ * @license   ::     {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
+ * @author    ::      Hervé Thouzard (https://www.herve-thouzard.com)
  * @subpackage::  plugins
  */
 
@@ -41,8 +40,8 @@ use XoopsModules\Xoopspoll\{
 function b_marquee_xoopspoll($limit, $dateformat, $itemssize)
 {
     require_once $GLOBALS['xoops']->path('modules/marquee/include/functions.php');
-    $block       = [];
-    $myts        = \MyTextSanitizer::getInstance();
+    $block = [];
+    $myts  = \MyTextSanitizer::getInstance();
     /** @var PollHandler $pollHandler */
     $pollHandler = Helper::getInstance()->getHandler('Poll');
     $criteria    = new \CriteriaCompo();
@@ -55,7 +54,7 @@ function b_marquee_xoopspoll($limit, $dateformat, $itemssize)
     $pollObjs   = $pollHandler->getAll($criteria, $pollFields);
     foreach ($pollObjs as $pollObj) {
         $pollValues = $pollObj->getValues();
-        $title      = $myts->htmlSpecialChars($pollValues['question']);
+        $title      = htmlspecialchars($pollValues['question'], ENT_QUOTES | ENT_HTML5);
         if ((int)$itemssize > 0) {
             $title = xoops_substr($title, 0, $itemssize + 3);
         }

@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace XoopsModules\Xoopspoll;
 
@@ -17,15 +15,13 @@ namespace XoopsModules\Xoopspoll;
  * XOOPS Poll Class Definitions
  *
  * @copyright ::  {@link https://xoops.org/ XOOPS Project}
- * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package   ::    xoopspoll
+ * @license   ::    {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @subpackage:: class
  * @since     ::         1.40
  * @author    ::     zyspec <zyspec@yahoo.com>
  */
 
-
- /**
+/**
  * Class PollHandler
  */
 class PollHandler extends \XoopsPersistableObjectHandler
@@ -33,31 +29,25 @@ class PollHandler extends \XoopsPersistableObjectHandler
     /**
      * @var \XoopsModules\Xoopspoll\Helper
      */
-    protected $helper;
+    protected Helper $helper;
 
     /**
      * PollHandler::__construct()
      *
-     * @param null|\XoopsDatabase                 $db
      * @param \XoopsModules\Xoopspoll\Helper|null $helper
      */
     public function __construct(\XoopsDatabase $db = null, Helper $helper = null)
     {
-        if (null === $helper) {
-            $this->helper = Helper::getInstance();
-        } else {
-            $this->helper = $helper;
-        }
+        $this->helper = $helper ?? Helper::getInstance();
         parent::__construct($db, 'xoopspoll_desc', Poll::class, 'poll_id', 'question');
     }
 
     /**
      * Update the Vote count from the log and polls
-     * @access public
      * @param \XoopsObject $pollObj
-     * @return bool $success
+     * @return int|false object ID or false
      */
-    public function updateCount($pollObj)
+    public function updateCount(\XoopsObject $pollObj)
     {
         $success = false;
         if ($pollObj instanceof Poll) {
@@ -76,10 +66,10 @@ class PollHandler extends \XoopsPersistableObjectHandler
 
     /**
      * Mail the results of poll when expired
-     * @param mixed $pollObj
+     * @param mixed|null $pollObj
      * @return array true|false indicating sendmail status
      */
-    public function mailResults($pollObj = null)
+    public function mailResults(mixed $pollObj = null): array
     {
         $criteria = new \CriteriaCompo();
         $criteria->add(new \Criteria('end_time', \time(), '<'));  // expired polls

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\Xoopspoll\Common;
 
@@ -12,7 +12,7 @@ namespace XoopsModules\Xoopspoll\Common;
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  */
 
-use \XoopsModules\Xoopspoll\Common;
+use XoopsModules\Xoopspoll\Common;
 
 /**
  * Class Migrate synchronize existing tables with target schema
@@ -20,12 +20,12 @@ use \XoopsModules\Xoopspoll\Common;
  * @category  Migrate
  * @author    Richard Griffith <richard@geekwright.com>
  * @copyright 2016 XOOPS Project (https://xoops.org)
- * @license   GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
+ * @license   GNU GPL 2.0 or later (https://www.gnu.org/licenses/gpl-2.0.html)
  * @link      https://xoops.org
  */
 class Migrate extends \Xmf\Database\Migrate
 {
-    private $renameTables;
+    private mixed $renameTables;
 
     /**
      * Migrate constructor.
@@ -44,7 +44,7 @@ class Migrate extends \Xmf\Database\Migrate
     /**
      * change table prefix if needed
      */
-    private function changePrefix()
+    private function changePrefix(): void
     {
         foreach ($this->renameTables as $oldName => $newName) {
             if ($this->tableHandler->useTable($oldName) && !$this->tableHandler->useTable($newName)) {
@@ -59,7 +59,7 @@ class Migrate extends \Xmf\Database\Migrate
      * @param string $tableName  table to convert
      * @param string $columnName column with IP address
      */
-    private function convertIPAddresses($tableName, $columnName)
+    private function convertIPAddresses(string $tableName, string $columnName): void
     {
         if ($this->tableHandler->useTable($tableName)) {
             $attributes = $this->tableHandler->getColumnAttributes($tableName, $columnName);
@@ -77,7 +77,7 @@ class Migrate extends \Xmf\Database\Migrate
     /**
      * Move do* columns from newbb_posts to newbb_posts_text table
      */
-    private function moveDoColumns()
+    private function moveDoColumns(): void
     {
         $tableName    = 'newbb_posts_text';
         $srcTableName = 'newbb_posts';
@@ -101,7 +101,7 @@ class Migrate extends \Xmf\Database\Migrate
      *   table and column renames
      *   data conversions
      */
-    protected function preSyncActions()
+    protected function preSyncActions(): void
     {
         // change 'bb' table prefix to 'newbb'
         $this->changePrefix();

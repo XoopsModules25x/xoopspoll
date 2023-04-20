@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -12,8 +12,6 @@
 /**
  * @copyright    {@link https://xoops.org/ XOOPS Project}
  * @license      {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
- * @package
- * @since
  * @author       XOOPS Development Team,  phppp (D.J., infomax@gmail.com)
  */
 
@@ -215,8 +213,8 @@ if (Request::hasVar('submit', 'POST')) {
 
                     $poll = new Umfrage($poll_id);
                     if (false !== $poll->delete()) {
-                        UmfrageOption::deleteByPollId($poll_id);
-                        UmfrageLog::deleteByPollId($poll_id);
+                        (new UmfrageOption())->deleteByPollId($poll_id);
+                        (new UmfrageLog())->deleteByPollId($poll_id);
                         xoops_comment_delete($xoopsModule->getVar('mid'), $poll_id);
                     }
                 }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\Xoopspoll;
 
@@ -30,23 +30,30 @@ namespace XoopsModules\Xoopspoll;
  * Poll Option class for the XoopsPoll Module
  *
  * @copyright ::  {@link https://xoops.org/ XOOPS Project}
- * @license   ::  {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package   ::  xoopspoll
+ * @license   ::  {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @subpackage::  class
  * @since     ::  1.0
- * @author    ::  {@link http://www.myweb.ne.jp/ Kazumi Ono (AKA onokazu)}
+ * @author    ::  {@link https://www.myweb.ne.jp/ Kazumi Ono (AKA onokazu)}
  */
 
+use Criteria;
 use XoopsModules\Xoopspoll\{
     Helper
 };
+use XoopsObject;
 
- /**
+/**
  * Class Option
- * @package XoopsModules\Xoopspoll
  */
-class Option extends \XoopsObject
+class Option extends XoopsObject
 {
+    private int    $option_id;
+    private int    $poll_id;
+    private string $option_text;
+    private int    $option_count;
+    private string $option_color;
+    private mixed  $optHandler;
+
     /**
      * database connection object
      * @var \XoopsDatabasefactory
@@ -56,17 +63,16 @@ class Option extends \XoopsObject
      * holds option object
      * @var Option
      */
-    protected $option;
+    protected Option $option;
     /**
      * Option Handler to be used to manipulate poll options
      * @var OptionHandler
      */
-    protected $optionHandler;
-
+    protected OptionHandler $optionHandler;
     // constructor
 
     /**
-     * @param int|null $id poll id
+     * @param int|array|null $id poll id
      */
     public function __construct($id = null)
     {
@@ -82,7 +88,7 @@ class Option extends \XoopsObject
          * {@internal The following is provided for backward compatibility with newbb/xforum}
          */
         $this->optHandler = $this->getStaticOptHandler();
-        if (!empty($id)) {
+        if (null !== $id) {
             if (\is_array($id)) {
                 $this->option = $this->optHandler->create();
                 $this->option->assignVars($id);
@@ -92,18 +98,17 @@ class Option extends \XoopsObject
         }
     }
 
-
     /**#@+
      * @deprecated since Xoopspoll 1.40, please @see OptionHandler & @see Option
      */
+
     /**
-     *
      * Stores object into the database
-     * @uses XoopsPersistableObjectHandler::insert
      * @return mixed
+     * @uses       XoopsPersistableObjectHandler::insert
      * @deprecated since Xoopspoll 1.40, please @see XoopspollOptionHandler & @see XoopspollOption
      */
-    public function store()
+    public function store(): mixed
     {
         $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use Poll and PollHandler classes instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
@@ -113,49 +118,46 @@ class Option extends \XoopsObject
 
     /**
      * Delete all the poll options for a specific poll
-     * @uses XoopsPersistableObjectHandler::deleteAll
-     * @param  int   $pid is used to delete all options by this id
+     * @param int $pid is used to delete all options by this id
      * @return mixed results of deleting objects from database
      * @uses XoopsPersistableObjectHandler::deleteAll
      */
-    public function deleteByPollId($pid)
+    public function deleteByPollId(int $pid): mixed
     {
         $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use PollHandler::' . __METHOD__ . ' instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
-        $criteria    = new \Criteria('poll_id', (int)$pid, '=');
+        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use PollHandler::deleteAll instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
+        $criteria = new Criteria('poll_id', (int)$pid, '=');
 
         return $this->optHandler->deleteAll($criteria);
     }
 
     /**
      * Get all options for a particular poll
-     * @uses XoopsPersistableObjectHandler::getAll
-     * @param  unknown $pid
+     * @param int $pid
      * @return mixed   results of getting objects from database
      * @uses XoopsPersistableObjectHandler::getAll
      */
-    public function getAllByPollId($pid)
+    public function getAllByPollId(int $pid): mixed
     {
         $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use PollHandler::' . __METHOD__ . ' instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
-        $criteria    = new \Criteria('poll_id', (int)$pid, '=');
+        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use PollHandler::getAll instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
+        $criteria = new Criteria('poll_id', (int)$pid, '=');
 
         return $this->optHandler->getAll($criteria);
     }
 
     /**
      * Reset the poll's options vote count
-     * @param unknown_type $pid
-     * @uses XoopsPersistableObjectHandler::updateAll
+     * @param int $pid
      * @return mixed results of the object(s) update
      * @uses XoopsPersistableObjectHandler::updateAll
      */
-    public function resetCountByPollId($pid)
+    public function resetCountByPollId(int $pid): mixed
     {
         $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use PollHandler::' . __METHOD__ . ' instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
+        $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use PollHandler::updateAll instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
         $soptHandler = $this->getStaticOptHandler();
-        $criteria    = new \Criteria('poll_id', (int)$pid, '=');
+        $criteria    = new Criteria('poll_id', (int)$pid, '=');
 
         return $soptHandler->updateAll('option_count', 0, $criteria);
     }
@@ -165,16 +167,15 @@ class Option extends \XoopsObject
      * @return mixed handler object returned on success, false on failure
      * @uses xoops_getModuleHandler
      */
-    private function getStaticOptHandler()
+    private function getStaticOptHandler(): mixed
     {
         static $optionHandler;
 
         if (!isset($optionHandler)) {
             $optionHandler = Helper::getInstance()->getHandler('Option');
-    }
-
-        return $optionHandler;
         }
 
+        return $optionHandler;
+    }
     /**#@-*/
 }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * Xoops Poll Version Information
  *
@@ -32,22 +32,20 @@
 
 /**
  * @copyright::  {@link https://xoops.org/ XOOPS Project}
- * @license  ::  {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package  ::  xoopspoll
+ * @license  ::  {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @since    ::  1.0
- * @author   ::  {@link http://www.myweb.ne.jp Kazumi Ono}
+ * @author   ::  {@link https://www.myweb.ne.jp Kazumi Ono}
  **/
-
 require_once __DIR__ . '/preloads/autoloader.php';
 
 $moduleDirName      = basename(__DIR__);
-$moduleDirNameUpper = mb_strtoupper($moduleDirName);
+$moduleDirNameUpper = \mb_strtoupper($moduleDirName);
 
-// ------------------- Informations ------------------- //
+// ------------------- Information ------------------- /
 $modversion = [
-    'version'             => 2.01,
-    'module_status'       => 'Beta 1',
-    'release_date'        => '2020/07/21',
+    'version'             => '2.1.0',
+    'module_status'       => 'Beta 2',
+    'release_date'        => '2023/04/20',
     'name'                => _MI_XOOPSPOLL_NAME,
     'description'         => _MI_XOOPSPOLL_DESC,
     'official'            => 0,     //1 indicates official XOOPS module supported by XOOPS Dev Team, 0 means 3rd party supported
@@ -80,8 +78,8 @@ $modversion = [
     'module_website_url'  => 'www.xoops.org',
     'module_website_name' => 'XOOPS Project',
     // ------------------- Min Requirements -------------------
-    'min_php'             => '7.1',
-    'min_xoops'           => '2.5.10',
+    'min_php'             => '7.4',
+    'min_xoops'           => '2.5.11',
     'min_admin'           => '1.2',
     'min_db'              => ['mysql' => '5.5'],
     // ------------------- Admin Menu -------------------
@@ -106,13 +104,13 @@ $modversion = [
     'hasSearch'           => 1,
     'search'              => [
         'file' => 'include/search.php',
-        'func' => 'pedigree_search',
+        'func' => 'xoopspoll_search',
     ],
     // ------------------- Comments -------------------------
     'hasComments'         => 1,
     'comments'            => [
-        'pageName'     => 'pollresults.php',
-        'itemName'     => 'poll_id',
+        'pageName' => 'pollresults.php',
+        'itemName' => 'poll_id',
     ],
     // ------------------- Mysql -----------------------------
     'sqlfile'             => ['mysql' => 'sql/mysql.sql'],
@@ -125,7 +123,6 @@ $modversion = [
 ];
 
 // ------------------- Templates ------------------- //
-
 $modversion['templates'] = [
     ['file' => 'xoopspoll_index.tpl', 'description' => _MI_XOOPSPOLL_INDEX_DSC],
     ['file' => 'xoopspoll_view.tpl', 'description' => _MI_XOOPSPOLL_VIEW_DSC],
@@ -144,15 +141,6 @@ $modversion['helpsection'] = [
     ['name' => _MI_XOOPSPOLL_LICENSE, 'link' => 'page=license'],
     ['name' => _MI_XOOPSPOLL_SUPPORT, 'link' => 'page=support'],
 ];
-
-
-/**
- * Search definitions
- * 1 = yes, module has search | 0 = no
- */
-$modversion['hasSearch']      = 1;
-$modversion['search']['file'] = 'include/search.php';
-$modversion['search']['func'] = 'xoopspoll_search';
 
 /**#@+
  * Block template description
@@ -277,4 +265,3 @@ $modversion['config'][] = [
     'valuetype'   => 'int',
     'default'     => 0,
 ];
-

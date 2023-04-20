@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\Xoopspoll;
 
@@ -30,18 +30,17 @@ namespace XoopsModules\Xoopspoll;
  * Poll Option class for the XoopsPoll Module
  *
  * @copyright ::  {@link https://xoops.org/ XOOPS Project}
- * @license   ::  {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package   ::  xoopspoll
+ * @license   ::  {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @subpackage::  class
  * @since     ::  1.0
- * @author    ::  {@link http://www.myweb.ne.jp/ Kazumi Ono (AKA onokazu)}
+ * @author    ::  {@link https://www.myweb.ne.jp/ Kazumi Ono (AKA onokazu)}
  */
 
 use XoopsModules\Xoopspoll\{
     Helper
 };
 
- /**
+/**
  * Class OptionHandler
  */
 class OptionHandler extends \XoopsPersistableObjectHandler
@@ -49,7 +48,7 @@ class OptionHandler extends \XoopsPersistableObjectHandler
     /**
      * @var \XoopsModules\Xoopspoll\Helper
      */
-    protected $helper;
+    protected \XoopsModules\Xoopspoll\Helper $helper;
 
     /**
      * PollOptionHandler::__construct()
@@ -59,30 +58,26 @@ class OptionHandler extends \XoopsPersistableObjectHandler
      */
     public function __construct(\XoopsDatabase $db = null, Helper $helper = null)
     {
-        if (null === $helper) {
-            $this->helper = Helper::getInstance();
-        } else {
-            $this->helper = $helper;
-        }
+        $this->helper = $helper ?? Helper::getInstance();
 
         parent::__construct($db, 'xoopspoll_option', Option::class, 'option_id', 'option_text');
     }
 
     /**
-     * Update the option vote count for a Option Object
+     * Update the option vote count for an Option Object
      * @param mixed $optionObj is an option object to update
      * @return mixed results @see XoopsPersistibleObjectHandler
      * @uses xoops_getModuleHandler
      * @uses XoopsPersistableObjectHandler::insert
      */
-    public function updateCount($optionObj)
+    public function updateCount(mixed $optionObj): mixed
     {
         $status = false;
         static $logHandler;
         if ($optionObj instanceof Option) {
             $option_id = $optionObj->getVar('option_id');
             if (!isset($logHandler)) {
-                $logHandler = $this->helper::getInstance()->getHandler('Log');
+                $logHandler = $this->helper->getHandler('Log');
             }
             $votes = $logHandler->getTotalVotesByOptionId($option_id);
             $optionObj->setVar('option_count', $votes);
@@ -95,14 +90,14 @@ class OptionHandler extends \XoopsPersistableObjectHandler
     /**
      * Gets all options for poll ID
      *
-     * @param int    $pid
+     * @param int $pid
      * @param string $sortby
      * @param string $orderby
      * @return array  an array of Option objects
      * @uses CriteriaCompo
      * @uses XoopsPersistableObjectHandler::deleteAll
      */
-    public function getAllByPollId($pid = 0, $sortby = 'option_id', $orderby = 'ASC')
+    public function getAllByPollId(int $pid = 0, string $sortby = 'option_id', string $orderby = 'ASC'): array
     {
         //        $criteria = new \CriteriaCompo();
         $criteria = new \Criteria('poll_id', (int)$pid, '=');
@@ -128,7 +123,7 @@ class OptionHandler extends \XoopsPersistableObjectHandler
      * @uses XoopsPersistableObjectHandler::deleteAll
      * @uses Criteria
      */
-    public function deleteByPollId($pid = 0)
+    public function deleteByPollId(int $pid = 0): bool
     {
         $success = $this->deleteAll(new \Criteria('poll_id', (int)$pid, '='));
 
@@ -143,7 +138,7 @@ class OptionHandler extends \XoopsPersistableObjectHandler
      * @uses XoopsPersistableObjectHandler::updateAll
      * @uses Criteria
      */
-    public function resetCountByPollId($pid = 0)
+    public function resetCountByPollId(int $pid = 0): bool
     {
         $success = $this->updateAll('option_count', 0, new \Criteria('poll_id', (int)$pid, '='));
 
@@ -151,15 +146,16 @@ class OptionHandler extends \XoopsPersistableObjectHandler
     }
 
     /**
-     * Generates an html select box with options
-     * @param mixed $pid the select box is created for this poll id
-     * @return string html select box
+     * Generates a HTML select box with options
+     * @param int $pid the select box is created for this poll id
+     * @return \XoopsFormElementTray html select box
      */
-    public function renderOptionFormTray($pid = 0)
+    public function renderOptionFormTray(int $pid = 0): \XoopsFormElementTray
     {
         \xoops_load('xoopsformloader');
         $pid            = (int)$pid;
         $barcolor_array = \XoopsLists::getImgListAsArray($GLOBALS['xoops']->path('modules/xoopspoll/assets/images/colorbars/'));
+        $optionObjs = [];
 
         /**
          * get all the options for this poll & add some blank options to allow adding more

@@ -89,7 +89,7 @@
                     <a href='<{$xoops_url}>/modules/xoopspoll/pollresults.php?poll_id=<{$poll.id}>'><{$block.comments}> <{$block.langComment}></a>
                     <{elseif ($block.comments > 1)}>
                     <a href='<{$xoops_url}>/modules/xoopspoll/pollresults.php?poll_id=<{$poll.id}>'><{$block.comments}> <{$block.langComments}></a>
-                    <{else}>
+                    <{elseif isset($poll)}>
                     <a href='<{$xoops_url}>/modules/xoopspoll/pollresults.php?poll_id=<{$poll.id}>'><{$block.langComments}>
                         ?</a>
                     <{/if}>

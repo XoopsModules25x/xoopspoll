@@ -10,7 +10,7 @@ http://localhost/
 
 You should change it to your environment in all the test files.
 
-For a tutorial on how to create and run Selenium IDE Tests in XOOPS, plase read:
+For a tutorial on how to create and run Selenium IDE Tests in XOOPS, please read:
 
 https://xoops.org/modules/news/article.php?storyid=5433
 

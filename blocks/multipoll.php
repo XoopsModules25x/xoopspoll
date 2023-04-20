@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
                 XOOPS - PHP Content Management System
                     Copyright (c) 2000-2020 XOOPS.org
@@ -27,8 +27,7 @@
  * XoopsPoll Display Multi-poll Block
  *
  * @copyright ::   {@link https://xoops.org/ XOOPS Project}
- * @license   ::  {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package   ::  xoopspoll
+ * @license   ::  {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @subpackage::  blocks
  * @since     ::  1.0
  *
@@ -53,22 +52,22 @@ require_once $GLOBALS['xoops']->path( "modules"
 /**
  * Display XOOPS polls in a block
  *
- * @access public
- * @param  array $options block options array
+ * @param array $options block options array
  * @return array block keys and values to be used by block template
  * @uses   Criteria
  * @global mixed $GLOBALS ['xoopsUser']
  * @uses   CriteriaCompo
  */
-function xoopspollBlockMultiShow($options)
+function xoopspollBlockMultiShow(array $options): array
 {
     $block           = [];
     $pollOptionArray = [];
     /** @var \XoopsModuleHandler $moduleHandler */
     $moduleHandler = xoops_getHandler('module');
-    $thisModule         = $moduleHandler->getByDirname('xoopspoll');
-    $configHandler      = xoops_getHandler('config');
-    $this_module_config = $configHandler->getConfigsByCat(0, $thisModule->getVar('mid'));
+    $thisModule    = $moduleHandler->getByDirname('xoopspoll');
+    /** @var \XoopsConfigHandler $configHandler */
+    $configHandler    = xoops_getHandler('config');
+    $thisModuleConfig = $configHandler->getConfigsByCat(0, $thisModule->getVar('mid'));
 
     $pollHandler = Helper::getInstance()->getHandler('Poll');
     $criteria    = new \CriteriaCompo();
@@ -81,13 +80,13 @@ function xoopspollBlockMultiShow($options)
     /**
      * now check to see if we want to hide polls that were created using newbb
      */
-    if ($this_module_config['hide_forum_polls'] && ($thisModule instanceof \XoopsModule) && $thisModule->isactive()) {
+    if ($thisModuleConfig['hide_forum_polls'] && ($thisModule instanceof \XoopsModule) && $thisModule->isactive()) {
         $newbbModule = $moduleHandler->getByDirname('newbb');
         if ($newbbModule instanceof \XoopsModule && $newbbModule->isactive()) {
             /** @var Newbb\TopicHandler $topicHandler */
             $topicHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Topic');
-            $tFields       = ['topic_id', 'poll_id'];
-            $tArray        = $topicHandler->getAll(new Criteria('topic_haspoll', 0, '>'), $tFields, false);
+            $tFields      = ['topic_id', 'poll_id'];
+            $tArray       = $topicHandler->getAll(new Criteria('topic_haspoll', 0, '>'), $tFields, false);
             if (!empty($tArray)) {
                 $tcriteria = [];
                 foreach ($tArray as $t) {
@@ -115,10 +114,9 @@ function xoopspollBlockMultiShow($options)
         $block['langComments']  = _MB_XOOPSPOLL_COMMENTS;
         $block['langComment']   = _MB_XOOPSPOLL_COMMENT;
         $block['url']           = 'http' . (!empty($_SERVER['HTTPS']) ? 's' : '') . '://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
-        $block['dispVotes']     = $this_module_config['disp_vote_nums'];
+        $block['dispVotes']     = $thisModuleConfig['disp_vote_nums'];
         $block['thisModuleDir'] = 'xoopspoll';
         $block['asList']        = $options[0];
-
         $optionHandler = Helper::getInstance()->getHandler('Option');
         $logHandler    = Helper::getInstance()->getHandler('Log');
 
@@ -136,13 +134,13 @@ function xoopspollBlockMultiShow($options)
                 $pollOptionName = 'option_id';
             }
 
-                $uid = 0;
+            $uid = 0;
             if (isset($GLOBALS['xoopsUser']) && ($GLOBALS['xoopsUser'] instanceof \XoopsUser)) {
                 $uid = $GLOBALS['xoopsUser']->getVar('uid');
             }
 
             $totalVotes = $pollVars['votes'];
-            $hasVoted   = $logHandler->hasVoted($pollVars['poll_id'], xoops_getenv('REMOTE_ADDR'), $uid) ? true : false;
+            $hasVoted   = (bool)$logHandler->hasVoted($pollVars['poll_id'], xoops_getenv('REMOTE_ADDR'), $uid);
             $canVote    = (!$hasVoted) && $pollObj->isAllowedToVote();
             foreach ($pollOptionObjs as $pollOptionObj) {
                 $optionObjVars = $pollOptionObj->getValues();
@@ -158,10 +156,10 @@ function xoopspollBlockMultiShow($options)
             }
             unset($pollOptionObjs, $optionObjVars);
             $xuEndTimestamp     = xoops_getUserTimestamp($pollObj->getVar('end_time'));
-            $xuEndFormattedTime = ucfirst(date(_MEDIUMDATESTRING, $xuEndTimestamp));
+            $xuEndFormattedTime = ucfirst(date(_MEDIUMDATESTRING, (int)$xuEndTimestamp));
 
             $isVisible  = true === $pollObj->isResultVisible();
-            $multiple   = $pollVars['multiple'] ? true : false;
+            $multiple   = (bool)$pollVars['multiple'];
             $multiLimit = (int)$pollVars['multilimit'];
             $lang_multi = '';
             if ($multiple && ($multiLimit > 0)) {
@@ -197,13 +195,12 @@ function xoopspollBlockMultiShow($options)
 /**
  * Display a form to edit poll block display option
  *
- * @access public
  * @param mixed  $options
  * @return string HTML form for display by block admin
  * @global mixed $GLOBALS ['xoopsUser']
  * @uses   xoops_getModuleHandler() function to get class handler for this modules class(es)
  */
-function xoopspollBlockMultiEdit($options)
+function xoopspollBlockMultiEdit(mixed $options): string
 {
     /**
      * Options[]

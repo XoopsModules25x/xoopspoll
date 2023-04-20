@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  You may not change or alter any portion of this comment or credits
  of supporting developers from this source code or any supporting source code
@@ -8,19 +8,19 @@
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 */
+
 /**
  *  userlog module
  *
- * @copyright       XOOPS Project (http://xoops.org)
- * @license         GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
- * @package         newbb class plugin
+ * @copyright       XOOPS Project (https://xoops.org)
+ * @license         GNU GPL 2 (https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
  * @since           4.31
  * @author          irmtfan (irmtfan@yahoo.com)
  * @author          XOOPS Project <www.xoops.org> <www.xoops.ir>
  */
 // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
 
-class XoopspollUserlogPlugin extends \Userlog_Module_Plugin_Abstract implements \UserlogPluginInterface
+class Userlog extends \Userlog_Module_Plugin_Abstract implements \UserlogPluginInterface
 {
     /**
      * @param string $subscribe_from Name of the script
@@ -34,7 +34,7 @@ class XoopspollUserlogPlugin extends \Userlog_Module_Plugin_Abstract implements 
      *
      * @return array|bool $item["item_name"] name of the item, $item["item_id"] id of the item
      */
-    public function item($subscribe_from)
+    public function item(string $subscribe_from)
     {
         xoops_load('XoopsRequest');
         $poll_id = XoopsRequest::getInt('poll_id', 0);

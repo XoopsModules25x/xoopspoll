@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  You may not change or alter any portion of this comment or credits
  of supporting developers from this source code or any supporting source code
@@ -13,8 +13,7 @@
  * Description: Search function for the XoopsPoll Module
  *
  * @copyright ::  {@link https://xoops.org/ XOOPS Project}
- * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package   ::    xoopspoll
+ * @license   ::    {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @subpackage:: search
  * @since     ::      1.40
  * @author    ::     John Neill, zyspec <zyspec@yahoo.com>
@@ -25,21 +24,19 @@ use XoopsModules\Xoopspoll\{
     Helper
 };
 
-
-
 /**
  * xoopspoll_search()
  *
  * @param        $queryArray
- * @param  mixed $andor
- * @param  mixed $limit
- * @param  mixed $offset
+ * @param mixed  $andor
+ * @param mixed  $limit
+ * @param mixed  $offset
  * @param        $uid
  * @return array
  * @internal param mixed $queryarray
  * @internal param mixed $userid
  */
-function xoopspoll_search($queryArray, $andor, $limit, $offset, $uid)
+function xoopspoll_search($queryArray, mixed $andor, mixed $limit, mixed $offset, $uid): array
 {
     $ret = [];
     if (0 === (int)$uid) {
@@ -48,24 +45,25 @@ function xoopspoll_search($queryArray, $andor, $limit, $offset, $uid)
         $criteria    = new \CriteriaCompo();
         $criteria->add(new \Criteria('start_time', time(), '<=')); // only show polls that have started
 
-         /**
+        /**
          * @todo:
-         * find out if want to show polls that were created with a forum. If no, then change
+         * find out if you want to show polls that were created with a forum. If no, then change
          * the link to forum topic_id
          */
 
         /**
          * check to see if we want to include polls created with forum (newbb)
          */
-        $configHandler      = xoops_getHandler('config');
+        /** @var \XoopsConfigHandler $configHandler */
+        $configHandler = xoops_getHandler('config');
         /** @var \XoopsModuleHandler $moduleHandler */
-        $moduleHandler = xoops_getHandler('module');
-        $thisModule         = $moduleHandler->getByDirname('xoopspoll');
-        $this_module_config = $configHandler->getConfigsByCat(0, $thisModule->getVar('mid'));
+        $moduleHandler    = xoops_getHandler('module');
+        $thisModule       = $moduleHandler->getByDirname('xoopspoll');
+        $thisModuleConfig = $configHandler->getConfigsByCat(0, $thisModule->getVar('mid'));
 
         $pollsWithTopics = [];
         if (($thisModule instanceof \XoopsModule) && $thisModule->isactive()
-            && $this_module_config['hide_forum_polls']) {
+            && $thisModuleConfig['hide_forum_polls']) {
             $newbbModule = $moduleHandler->getByDirname('newbb');
             if ($newbbModule instanceof \XoopsModule && $newbbModule->isactive()) {
                 /** @var Newbb\TopicHandler $topicHandler */

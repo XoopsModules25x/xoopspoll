@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * Newbb module
  *
@@ -14,8 +14,7 @@
  * Poll handling for Newbb
  *
  * @copyright       {@link https://xoops.org/ XOOPS Project}
- * @license         {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package         newbb
+ * @license         {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @since           4.0
  * @author          Taiwen Jiang <phppp@users.sourceforge.net>
  */
@@ -47,7 +46,7 @@ $goodOps = [
     'log',
 ];
 $op      = Request::getString('op', 'add');
-$op      = (!in_array($op, $goodOps)) ? 'add' : $op;
+$op      = (!in_array($op, $goodOps, true)) ? 'add' : $op;
 
 //$poll_id  = (isset($_GET['poll_id']))   ? (int)($_GET['poll_id'])   : 0;
 //$poll_id  = (isset($_POST['poll_id']))  ? (int)($_POST['poll_id'])  : $poll_id;

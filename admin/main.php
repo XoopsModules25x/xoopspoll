@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
                XOOPS - PHP Content Management System
                    Copyright (c) 2000-2020 XOOPS.org
@@ -28,8 +28,7 @@
  * Routines to manage administration of CRUD and display of polls
  *
  * @copyright ::  {@link https://xoops.org/ XOOPS Project}
- * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package   ::    xoopspoll
+ * @license   ::    {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @subpackage::    admin
  * @author    ::    Xoops Module Team
  * @since     ::    1.0
@@ -48,9 +47,11 @@
  * @uses      redirect_header() function to send user to page after completing task(s)
  */
 
+use Xmf\Module\Admin;
 use Xmf\Request;
 use XoopsModules\Newbb;
 use XoopsModules\Xoopspoll\{
+    Common\Configurator,
     Constants,
     FormDateTimePicker,
     Helper,
@@ -65,6 +66,9 @@ xoops_load('xoopsformloader');
 xoops_load('xoopslists');
 
 $helper = Helper::getInstance();
+
+$configurator = new Configurator();
+$icons        = $configurator->icons;
 
 $op = Request::getString('op', Request::getCmd('op', 'list', 'POST'), 'GET');
 switch ($op) {
@@ -84,7 +88,7 @@ switch ($op) {
         $pollsCount = count($pollObjs);
 
         xoops_cp_header();
-        $adminObject = \Xmf\Module\Admin::getInstance();
+        $adminObject = Admin::getInstance();
 
         $xoopsTpl->assign('navigation', $adminObject->displayNavigation(basename(__FILE__)));
         $adminObject->addItemButton(_AM_XOOPSPOLL_CREATENEWPOLL, 'main.php' . '?op=add', $icon = 'add');
@@ -141,13 +145,13 @@ switch ($op) {
                 $checked = (Constants::DISPLAY_POLL_IN_BLOCK === $pollVars['display']) ? ' checked' : '';
 
                 $xuCurrentTimestamp   = xoops_getUserTimestamp(time());
-                $xuCurrentFormatted   = ucfirst(date(_MEDIUMDATESTRING, $xuCurrentTimestamp));
+                $xuCurrentFormatted   = ucfirst(date(_MEDIUMDATESTRING, (int)$xuCurrentTimestamp));
                 $xuStartTimestamp     = xoops_getUserTimestamp($pollVars['start_time']);
-                $xuStartFormattedTime = ucfirst(date(_MEDIUMDATESTRING, $xuStartTimestamp));
+                $xuStartFormattedTime = ucfirst(date(_MEDIUMDATESTRING, (int)$xuStartTimestamp));
                 $xuEndTimestamp       = xoops_getUserTimestamp($pollVars['end_time']);
 
                 if ($xuEndTimestamp > $xuCurrentTimestamp) {
-                    $end = ucfirst(date(_MEDIUMDATESTRING, $xuEndTimestamp)); // formatted output for current user
+                    $end = ucfirst(date(_MEDIUMDATESTRING, (int)$xuEndTimestamp)); // formatted output for current user
                 } else {
                     $end = "<span class='red'>" . _AM_XOOPSPOLL_EXPIRED . '</span><br>' . "<a href='" . $_SERVER['SCRIPT_NAME'] . "?op=restart&amp;poll_id={$id}'>" . _AM_XOOPSPOLL_RESTART . '</a>';
                 }
@@ -210,11 +214,11 @@ switch ($op) {
         $optionHandler = $helper->getHandler('Option');
         $pollHandler   = $helper->getHandler('Poll');
         $pollId        = Request::getInt('poll_id', 0);
-        $pollObj     = $pollHandler->get($pollId); // will auto create object if poll_id=0
+        $pollObj       = $pollHandler->get($pollId); // will auto create object if poll_id=0
 
         // display the form
         xoops_cp_header();
-        $adminObject = \Xmf\Module\Admin::getInstance();
+        $adminObject = Admin::getInstance();
         $adminObject->displayNavigation(basename(__FILE__));
         $pollObj->renderForm($_SERVER['SCRIPT_NAME'], 'post');
         require_once __DIR__ . '/admin_footer.php';
@@ -312,19 +316,19 @@ switch ($op) {
         $pollId      = Request::getInt('poll_id', 0);
         $pollHandler = $helper->getHandler('Poll');
         $pollObj     = $pollHandler->get($pollId);
-        if (empty($pollObj) || !($pollObj instanceof Poll)) {
+        if (!($pollObj instanceof Poll)) {
             redirect_header($_SERVER['SCRIPT_NAME'], Constants::REDIRECT_DELAY_SHORT, implode('<br>', $pollHandler->getErrors()));
         }
         xoops_cp_header();
-        $adminObject = \Xmf\Module\Admin::getInstance();
+        $adminObject = Admin::getInstance();
         $adminObject->displayNavigation(basename(__FILE__));
         xoops_confirm(
             [
-                          'op'      => 'delete_ok',
+                'op'      => 'delete_ok',
                 'poll_id' => $pollId,
             ],
             $_SERVER['SCRIPT_NAME'],
-            sprintf(_AM_XOOPSPOLL_RUSUREDEL, $myts->htmlSpecialChars($pollObj->getVar('question')))
+            sprintf(_AM_XOOPSPOLL_RUSUREDEL, htmlspecialchars($pollObj->getVar('question'), ENT_QUOTES | ENT_HTML5))
         );
         require_once __DIR__ . '/admin_footer.php';
         //    xoops_cp_footer();
@@ -352,7 +356,7 @@ switch ($op) {
             $moduleHandler = xoops_getHandler('module');
             $newbbModule   = $moduleHandler->getByDirname('newbb');
             if (($newbbModule instanceof XoopsModule) && $newbbModule->isactive()) {
-                /** @var NewbbTopicHandler $topicHandler */
+                /** @var Newbb\TopicHandler $topicHandler */
                 $topicHandler = \XoopsModules\Newbb\Helper::getInstance()->getHandler('Topic');
                 $criteria     = new CriteriaCompo();
                 $criteria->add(new Criteria('poll_id', $pollId, '='));
@@ -372,7 +376,7 @@ switch ($op) {
 
         // setup times for forms
         $xuCurrentTimestamp = xoops_getUserTimestamp(time());
-        $xuCurrentFormatted = ucfirst(date(_MEDIUMDATESTRING, $xuCurrentTimestamp));
+        $xuCurrentFormatted = ucfirst(date(_MEDIUMDATESTRING, (int)$xuCurrentTimestamp));
         $xuStartTimestamp   = $xuCurrentTimestamp;
         $xuEndTimestamp     = $xuStartTimestamp + Constants::DEFAULT_POLL_DURATION;
 
@@ -394,7 +398,7 @@ switch ($op) {
         $pollForm->addElement(new \XoopsFormButton('', 'poll_submit', _AM_XOOPSPOLL_RESTART, 'submit'));
 
         xoops_cp_header();
-        $adminObject = \Xmf\Module\Admin::getInstance();
+        $adminObject = Admin::getInstance();
         $adminObject->displayNavigation(basename(__FILE__));
         $pollForm->display();
         require_once __DIR__ . '/admin_footer.php';
@@ -463,11 +467,11 @@ switch ($op) {
         $pollObj      = $pollHandler->get($pollId);
         $expiredClass = ($pollObj->getVar('end_time') < time()) ? ' red' : '';
         xoops_cp_header();
-        $adminObject = \Xmf\Module\Admin::getInstance();
+        $adminObject = Admin::getInstance();
         $adminObject->displayNavigation(basename(__FILE__));
 
         $xuEndTimestamp     = userTimeToServerTime($pollObj->getVar('end_time'));
-        $xuEndFormattedTime = ucfirst(date(_MEDIUMDATESTRING, $xuEndTimestamp));
+        $xuEndFormattedTime = ucfirst(date(_MEDIUMDATESTRING, (int)$xuEndTimestamp));
 
         /**
          * @todo need to move this html to a template and pass variables via xoopsTpl
@@ -616,8 +620,8 @@ switch ($op) {
                         $pmLink      = $GLOBALS['xoops']->buildUrl(
                             $GLOBALS['xoops']->path('pmlite.php', true),
                             [
-                            'send'        => 1,
-                            'from_userid' => $from_userid,
+                                'send'        => 1,
+                                'from_userid' => $from_userid,
                                 'to_userid'   => $to_userid,
                             ]
                         );
@@ -640,7 +644,7 @@ switch ($op) {
                         echo "          <td class='{$class} center'>{$GLOBALS['xoopsConfig']['anonymous']}</td>\n";
                     }
                     $xuLogTimestamp     = userTimeToServerTime($logVals['time']);
-                    $xuLogFormattedTime = ucfirst(date(_DATESTRING, $xuLogTimestamp));
+                    $xuLogFormattedTime = ucfirst(date(_DATESTRING, (int)$xuLogTimestamp));
 
                     echo "          <td class='{$class} center'>{$xuLogFormattedTime}</td>\n" . "        </tr>\n";
                     $class = ('odd' === $class) ? 'even' : 'odd';
@@ -702,8 +706,8 @@ switch ($op) {
         $pollHandler   = $helper->getHandler('Poll');
         $optionHandler = $helper->getHandler('Option');
         $pollId        = Request::getInt('poll_id', 0);
-        $pollObj     = $pollHandler->get($pollId);
-        $origValues  = $pollObj->getValues();
+        $pollObj       = $pollHandler->get($pollId);
+        $origValues    = $pollObj->getValues();
         unset($origValues['poll_id']);
         $pollDuration = $origValues['end_time'] - $origValues['start_time'];
         $pollDuration = ($pollDuration > 0) ? $pollDuration : Constants::DEFAULT_POLL_DURATION;

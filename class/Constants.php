@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\Xoopspoll;
 
@@ -25,6 +25,7 @@ namespace XoopsModules\Xoopspoll;
  along with this program; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
+
 /**
  * XoopsPoll module
  *
@@ -32,17 +33,14 @@ namespace XoopsModules\Xoopspoll;
  * used to make the code easier to read and to keep values in central
  * location if they need to be changed.  These should not normally need
  * to be modified. If they are to be modified it is recommended to change
- * the value(s) before module installation. Additionally the module may not
+ * the value(s) before module installation. Additionally, the module may not
  * work correctly if trying to upgrade if these values have been changed.
  *
  * @copyright::  {@link https://xoops.org/ XOOPS Project}
  * @license  ::  {@link https://www.gnu.org/licenses/gpl-2.0.html GNU Public License}
  * @author   ::  zyspec <zyspec@yahoo.com>
- * @package  ::  xoopspoll
  * @since    ::  1.40
  **/
-
-
 interface Constants
 {
     /**#@+

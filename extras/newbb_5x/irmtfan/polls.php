@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * Newbb module
  *
@@ -14,8 +14,7 @@
  * Poll handling for Newbb
  *
  * @copyright       {@link https://xoops.org/ XOOPS Project}
- * @license         {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package         newbb
+ * @license         {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @since           4.0
  * @author          Taiwen Jiang <phppp@users.sourceforge.net>
  */
@@ -47,7 +46,7 @@ $goodOps = [
     'log',
 ];
 $op      = Request::getString('op', 'add');
-$op      = (!in_array($op, $goodOps)) ? 'add' : $op;
+$op      = (!in_array($op, $goodOps, true)) ? 'add' : $op;
 
 //$poll_id  = (isset($_GET['poll_id']))   ? (int)($_GET['poll_id'])   : 0;
 //$poll_id  = (isset($_POST['poll_id']))  ? (int)($_POST['poll_id'])  : $poll_id;
@@ -101,7 +100,7 @@ if (!newbb_isAdmin($forum_obj)) {
     ) {
         //        if (('add' === $op || 'save' === $op || 'update' === $op)
         if (($GLOBALS['xoopsUser'] instanceof \XoopsUser)
-            && in_array($op, ['add', 'save', 'update'])
+            && in_array($op, ['add', 'save', 'update'], true)
             && !$topic_obj->getVar('topic_haspoll')
             && ($GLOBALS['xoopsUser']->getVar('uid') === $topic_obj->getVar('topic_poster'))) {
             $perm = true;
@@ -333,7 +332,7 @@ switch ($op) {
             $poll_form->addElement($weight_text);
             $multi_yn = new \XoopsFormRadioYN(_MD_POLL_ALLOWMULTI, 'multiple', $poll_obj->getVar('multiple'));
             $poll_form->addElement($multi_yn);
-            $options_arr  = &\UmfrageOption::getAllByPollId($poll_id);
+            $options_arr  = &(new UmfrageOption())->getAllByPollId($poll_id);
             $notify_value = 1;
             if (0 !== $poll_obj->getVar('mail_status')) {
                 $notify_value = 0;
@@ -350,7 +349,8 @@ switch ($op) {
                 $color_select->addOptionArray($barcolor_array);
                 $color_select->setExtra("onchange='showImgSelected(\"option_color_image[{$i}]\", \"option_color[" . $i . "]\", \"modules/{$pollmodules}/assets/images/colorbars\", \"\", \"" . XOOPS_URL . "\")'");
                 $color_label = new \XoopsFormLabel(
-                    '', "<img src='" . $GLOBALS['xoops']->url("modules/{$pollmodules}/assets/images/colorbars/" . $option->getVar('option_color', 'E')) . "' name='option_color_image[{$i}]' id='option_color_image[{$i}]' class='alignbottom' width='30' height='15' alt=''><br>"
+                    '',
+                    "<img src='" . $GLOBALS['xoops']->url("modules/{$pollmodules}/assets/images/colorbars/" . $option->getVar('option_color', 'E')) . "' name='option_color_image[{$i}]' id='option_color_image[{$i}]' class='alignbottom' width='30' height='15' alt=''><br>"
                 );
                 $option_tray->addElement($color_select);
                 $option_tray->addElement($color_label);
@@ -489,10 +489,10 @@ switch ($op) {
             $poll_obj->setVar('multiple', (int)(@$_POST['multiple']));
             if (!empty($_POST['notify']) && $end_time > time()) {
                 // if notify, set mail status to 'not mailed'
-                $poll_obj->setVar('mail_status', POLL_NOT_MAILED);
+                $poll_obj->setVar('mail_status', Constants::POLL_NOT_MAILED);
             } else {
                 // if not notify, set mail status to already "mailed"
-                $poll_obj->setVar('mail_status', POLL_MAILED);
+                $poll_obj->setVar('mail_status', Constants::POLL_MAILED);
             }
 
             if (!$poll_obj->store()) {
@@ -511,7 +511,7 @@ switch ($op) {
                     $option_obj->store();
                 } else {
                     if (false !== $option_obj->delete()) {
-                        \UmfrageLog::deleteByOptionId($option->getVar('option_id'));
+                        (new UmfrageLog())->deleteByOptionId($option->getVar('option_id'));
                     }
                 }
                 ++$i;
@@ -652,8 +652,8 @@ switch ($op) {
             $poll_obj = new \Umfrage($poll_id);
             $status   = $poll_obj->delete();
             if (false !== $status) {
-                \UmfrageOption::deleteByPollId($poll_id);
-                \UmfrageLog::deleteByPollId($poll_id);
+                (new UmfrageOption())->deleteByPollId($poll_id);
+                (new UmfrageLog())->deleteByPollId($poll_id);
             } else {
                 $msg = $poll_obj->getHtmlErrors();
             }
@@ -720,8 +720,8 @@ switch ($op) {
         } else { // Umfrage
             $poll_obj              = new \Umfrage($poll_id);
             $default_poll_duration = (86400 * 10);
-            $poll_not_mailed       = POLL_NOT_MAILED;
-            $poll_mailed           = POLL_MAILED;
+            $poll_not_mailed       = Constants::POLL_NOT_MAILED;
+            $poll_mailed           = Constants::POLL_MAILED;
         }
 
         $end_time = Request::getInt('end_time', 0, 'POST');
@@ -759,8 +759,8 @@ switch ($op) {
                 exit();
             }
             if (Request::hasVar('reset', 'POST')) { // reset all logs
-                \UmfrageLog::deleteByPollId($poll_id);
-                \UmfrageOption::resetCountByPollId($poll_id);
+                (new UmfrageLog())->deleteByPollId($poll_id);
+                (new UmfrageOption())->resetCountByPollId($poll_id);
                 $poll_obj->updateCount();
             }
         }

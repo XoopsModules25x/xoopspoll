@@ -1,8 +1,6 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Module Info Language Definitions
- *
- * @package xoopspoll
  */
 
 /**
@@ -32,7 +30,7 @@ define('_MI_XOOPSPOLL_BNAME2DSC', 'Shows a single poll');
 //define('_MI_XOOPSPOLL_LIMITBYIP', 'Prevent voting twice by checking IP address.');
 //define('_MI_XOOPSPOLL_LIMITBYIPDSC', 'The user IP address is checked to prevent voting twice from the same IP. Please notice that if there are two different users using the same public IP, the last one will not be able to vote.');
 //define('_MI_XOOPSPOLL_LIMITBYUID', 'Prevent voting twice from the same user');
-//define('_MI_XOOPSPOLL_LIMITBYUIDDSC', 'Check the logged in user ID to prevent them from voting more than once.');
+//define('_MI_XOOPSPOLL_LIMITBYUIDDSC', 'Check the logged-in user ID to prevent them from voting more than once.');
 define('_MI_XOOPSPOLL_LOOKUPHOST', 'Display host name instead of IP address in the Administration Log');
 define('_MI_XOOPSPOLL_LOOKUPHOSTDSC', 'List host names instead of IP addresses in viewing poll log. Since nslookup is used, It might take longer to show names.');
 define('_MI_XOOPSPOLL_DISPVOTE', 'Display number of poll votes and voters to users.');
@@ -82,7 +80,7 @@ define('_MI_XOOPSPOLL_HELP_HEADER', __DIR__ . '/help/helpheader.tpl');
 define('_MI_XOOPSPOLL_BACK_2_ADMIN', 'Back to Administration of ');
 define('_MI_XOOPSPOLL_OVERVIEW', 'Overview');
 
-//help multi-page
+//help multipage
 define('_MI_XOOPSPOLL_DISCLAIMER', 'Disclaimer');
 define('_MI_XOOPSPOLL_LICENSE', 'License');
 define('_MI_XOOPSPOLL_SUPPORT', 'Support');

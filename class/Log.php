@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\Xoopspoll;
 
@@ -30,18 +30,15 @@ namespace XoopsModules\Xoopspoll;
  * Log class for the XoopsPoll Module
  *
  * @copyright ::  {@link https://xoops.org/ XOOPS Project}
- * @license   ::  {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package   ::  xoopspoll
+ * @license   ::  {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @subpackage::  class
  * @since     ::  1.40
- * @author    ::  {@link http://www.myweb.ne.jp/ Kazumi Ono (AKA onokazu)}
+ * @author    ::  {@link https://www.myweb.ne.jp/ Kazumi Ono (AKA onokazu)}
  **/
 
 use XoopsModules\Xoopspoll\{
     Helper
 };
-
-
 
 /**
  * Log() class definition for Log Objects
@@ -50,14 +47,21 @@ use XoopsModules\Xoopspoll\{
  */
 class Log extends \XoopsObject
 {
+    public int    $log_id;
+    public int    $poll_id;
+    public int    $option_id;
+    public string $ip;
+    public int    $user_id;
+    public int    $time;
+
     //  class Log extends \XoopsObject {
     //    var $db;
 
     /**
      * Constructor
-     * @param null $id
+     * @param int|null $id
      */
-    public function __construct($id = null)
+    public function __construct(int $id = null)
     {
         parent::__construct();
         $this->initVar('log_id', \XOBJ_DTYPE_INT, 0);
@@ -66,11 +70,10 @@ class Log extends \XoopsObject
         $this->initVar('ip', \XOBJ_DTYPE_OTHER, null);
         $this->initVar('user_id', \XOBJ_DTYPE_INT, 0);
         $this->initVar('time', \XOBJ_DTYPE_INT, null);
-        if (!empty($id) && \is_array($id)) {
-            $this->assignVars($id);
-        }
+//        if (!empty($id) && \is_array($id)) {
+//            $this->assignVars($id);
+//        }
     }
-
 
     /**
      * The following method is provided for backward compatibility with newbb
@@ -78,10 +81,11 @@ class Log extends \XoopsObject
      * @return mixed
      * @deprecated since Xoopspoll 1.40, please use LogHandler & Log
      */
-    public static function deleteByPollId($pid)
+    public static function deleteByPollId(int $pid): mixed
     {
         $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __FUNCTION__ . ' is deprecated since Xoopspoll 1.40, please use Log and LogHandler methods instead.' . " Called from {$trace[0]['file']}line {$trace[0]['line']}");
+        /** @var LogHandler $slogHandler */
         $slogHandler = self::getStaticLogHandler();
         $criteria    = new \Criteria('poll_id', (int)$pid, '=');
 
@@ -89,14 +93,15 @@ class Log extends \XoopsObject
     }
 
     /**
-     * @param $opt_id
+     * @param int $opt_id
      * @return mixed
      */
-    public static function deleteByOptionId($opt_id)
+    public static function deleteByOptionId(int $opt_id): mixed
     {
         $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __FUNCTION__ . ' is deprecated since Xoopspoll 1.40, please use Log and LogHandler methods instead.' . " Called from {$trace[0]['file']}line {$trace[0]['line']}");
 
+        /** @var LogHandler $slogHandler */
         $slogHandler = self::getStaticLogHandler();
         $criteria    = new \Criteria('option_id', (int)$opt_id, '=');
 
@@ -104,16 +109,17 @@ class Log extends \XoopsObject
     }
 
     /**
-     * @param $pid
-     * @param $ip
-     * @param $uid
+     * @param int $pid
+     * @param string $ip
+     * @param int $uid
      * @return mixed
      */
-    public static function hasVoted($pid, $ip, $uid)
+    public static function hasVoted(int $pid, string $ip, int $uid): mixed
     {
         $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __FUNCTION__ . ' is deprecated since Xoopspoll 1.40, please use Log and LogHandler methods instead.' . " Called from {$trace[0]['file']}line {$trace[0]['line']}");
 
+        /** @var LogHandler $slogHandler */
         $slogHandler = self::getStaticLogHandler();
 
         return $slogHandler->hasVoted($pid, $ip, $uid);
@@ -122,18 +128,17 @@ class Log extends \XoopsObject
     /**
      * @return bool
      */
-    private static function getStaticLogHandler()
+    private static function getStaticLogHandler(): bool
     {
-        static $log_h;
+        static $logHandler;
         $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __FUNCTION__ . ' is deprecated since Xoopspoll 1.40, please use Log and LogHandler methods instead.' . " Called from {$trace[0]['file']}line {$trace[0]['line']}");
 
-        if (!isset($log_h)) {
-            $log_h = Helper::getInstance()->getHandler('Log');
+        if (!isset($logHandler)) {
+            $logHandler = Helper::getInstance()->getHandler('Log');
         }
 
-        return $log_h;
+        return $logHandler;
     }
-
     /**#@-*/
 }

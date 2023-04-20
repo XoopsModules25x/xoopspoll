@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  You may not change or alter any portion of this comment or credits
  of supporting developers from this source code or any supporting source code
@@ -12,8 +12,7 @@
  * XOOPS Poll module
  *
  * @copyright ::  {@link https://xoops.org/ XOOPS Project}
- * @license   ::    {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package   ::    xoopspoll
+ * @license   ::    {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @subpackage:: admin
  * @since     ::      1.32
  * @author    ::     XOOPS Module Team
@@ -35,21 +34,20 @@ use XoopsModules\Xoopspoll\{
     Helper
 };
 
-include dirname(__DIR__) . '/preloads/autoloader.php';
+include \dirname(__DIR__) . '/preloads/autoloader.php';
 
-require_once dirname(__DIR__, 3) . '/include/cp_header.php';
-require dirname(__DIR__) . '/include/common.php';
+require \dirname(__DIR__, 3) . '/include/cp_header.php';
+require \dirname(__DIR__) . '/include/common.php';
 
-$moduleDirName = basename(dirname(__DIR__));
+$moduleDirName = \basename(\dirname(__DIR__));
 
-/** @var Helper $helper */
 $helper = Helper::getInstance();
 
 /** @var Admin $adminObject */
 $adminObject = Admin::getInstance();
 
-$pathIcon16    = \Xmf\Module\Admin::iconUrl('', 16);
-$pathIcon32    = \Xmf\Module\Admin::iconUrl('', 32);
+$pathIcon16    = \Xmf\Module\Admin::iconUrl('', '16');
+$pathIcon32    = \Xmf\Module\Admin::iconUrl('', '32');
 $pathModIcon32 = $helper->getModule()->getInfo('modicons32');
 
 // Load language files
@@ -57,6 +55,7 @@ $helper->loadLanguage('admin');
 $helper->loadLanguage('modinfo');
 $helper->loadLanguage('main');
 $helper->loadLanguage('common');
+$helper->loadLanguage('blocksadmin');
 
 $myts = \MyTextSanitizer::getInstance();
 

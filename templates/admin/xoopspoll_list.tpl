@@ -16,7 +16,7 @@
                 <th class='center'><{$smarty.const._AM_XOOPSPOLL_VOTES}></th>
                 <th class='center'><{$smarty.const._AM_XOOPSPOLL_START_TIME}></th>
                 <th class='center'><{$smarty.const._AM_XOOPSPOLL_EXPIRATION}></th>
-                <th class='center'><{$smarty.const._AM_XOOPSPOLL_ACTIONS}></th>
+                <th class='center width10 '><{$smarty.const._AM_XOOPSPOLL_ACTIONS}></th>
             </tr>
             </thead>
             <tfoot>
@@ -53,6 +53,8 @@
                     <td class='center'><{$pollItem.votes}></td>
                     <td class='center'><{$pollItem.xuStartFormattedTime}></td>
                     <td class='center'><{$pollItem.end}></td>
+
+
                     <td class='center'>
                         <{html_image file=$pollItem.buttons.edit.file href=$pollItem.buttons.edit.href
                         alt=$pollItem.buttons.edit.alt title=$pollItem.buttons.edit.alt}>

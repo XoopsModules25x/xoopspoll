@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * You may not change or alter any portion of this comment or credits
  * of supporting developers from this source code or any supporting source code
@@ -12,8 +12,6 @@
 /**
  * @copyright    {@link https://xoops.org/ XOOPS Project}
  * @license      {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
- * @package
- * @since
  * @author       XOOPS Development Team
  */
 
@@ -126,7 +124,7 @@ if ('xoopspoll' === $pollmodules) {
 } else { //Umfrage
     $poll = new \Umfrage($poll_id);
     if (is_object($xoopsUser)) {
-        if (\UmfrageLog::hasVoted($poll_id, $_SERVER['REMOTE_ADDR'], $xoopsUser->getVar('uid'))) {
+        if ((new UmfrageLog())->hasVoted($poll_id, $_SERVER['REMOTE_ADDR'], $xoopsUser->getVar('uid'))) {
             $msg = _PL_ALREADYVOTED;
             setcookie("bb_polls[$poll_id]", 1);
         } else {
@@ -137,7 +135,7 @@ if ('xoopspoll' === $pollmodules) {
             setcookie("bb_polls[$poll_id]", 1);
         }
     } else {
-        if (\UmfrageLog::hasVoted($poll_id, $_SERVER['REMOTE_ADDR'])) {
+        if ((new UmfrageLog())->hasVoted($poll_id, $_SERVER['REMOTE_ADDR'])) {
             $msg = _PL_ALREADYVOTED;
             setcookie("bb_polls[$poll_id]", 1);
         } else {

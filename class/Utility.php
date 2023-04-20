@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\Xoopspoll;
 
@@ -8,13 +8,12 @@ namespace XoopsModules\Xoopspoll;
 class Utility extends Common\SysUtility
 {
     //--------------- Custom module methods -----------------------------
-
     /**
      * gets the name of the host located at a specific ip address
      * @param string $ipAddr the ip address of the host
      * @return string host name
      */
-    public static function getHostByAddrWithCache(&$ipAddr)
+    public static function getHostByAddrWithCache(string &$ipAddr): string
     {
         static $ipArray = [];
         $retVal  = &$ipAddr;
@@ -46,6 +45,7 @@ class Utility extends Common\SysUtility
         if (!isset($mConfig)) {
             $mHandler = \xoops_getHandler('module');
             $mod      = $mHandler->getByDirname('xoopspoll');
+            /** @var \XoopsConfigHandler $cHandler */
             $cHandler = \xoops_getHandler('config');
             $mConfig  = &$cHandler->getConfigsByCat(0, $mod->getVar('mid'));
         }
@@ -57,7 +57,7 @@ class Utility extends Common\SysUtility
      * Creates a visibility array from module default values
      * @return array visibility options available for a poll
      */
-    public static function getVisibilityArray()
+    public static function getVisibilityArray(): array
     {
         /**
          * {@internal Do NOT add/delete from $visOptions after the module has been installed}
@@ -80,13 +80,13 @@ class Utility extends Common\SysUtility
      * Retrieves vote cookie from client system
      * The cookie name is based on the module directory. If module is
      * installed in default location then cookie name is 'voted_polls'
-     * for backward compatibility. Otherwise cookie is named
+     * for backward compatibility. Otherwise , cookie is named
      * '<dirname>_voted_polls' to allow for module to be cloned using
      * smartClone module.
      * @param string $cookieBaseName
      * @return array  contains cookie for polls, empty array if not found
      */
-    public static function getVoteCookie($cookieBaseName = 'voted_polls')
+    public static function getVoteCookie(string $cookieBaseName = 'voted_polls'): array
     {
         $pollDir = \basename(\dirname(__DIR__));
         if ('xoopspoll' === $pollDir) {
@@ -102,16 +102,16 @@ class Utility extends Common\SysUtility
      * Sets vote cookie on client system
      * The cookie name is based on the module directory. If module is
      * installed in default location then cookie name is 'voted_polls'
-     * for backward compatibility. Otherwise cookie is named
+     * for backward compatibility. Otherwise , cookie is named
      * '<dirname>_voted_polls' to allow for module to be cloned using
      * smartClone module.
-     * @param int|string $index          array index to set in cookie
-     * @param string     $value          data to store in cookie
-     * @param int        $expires        time when cookie expires
-     * @param string     $cookieBaseName name of cookie (without directory prefix)
+     * @param bool|int|string $index          array index to set in cookie
+     * @param string          $value          data to store in cookie
+     * @param int             $expires        time when cookie expires
+     * @param string          $cookieBaseName name of cookie (without directory prefix)
      * @return bool         success in setting cookie
      */
-    public static function setVoteCookie($index, $value, $expires = 0, $cookieBaseName = 'voted_polls')
+    public static function setVoteCookie($index, string $value, int $expires = 0, string $cookieBaseName = 'voted_polls'): bool
     {
         $pollDir = \basename(\dirname(__DIR__));
         $success = false;
@@ -149,18 +149,18 @@ class Utility extends Common\SysUtility
      * Sets vote cookie on client system
      * The cookie name is based on the module directory. If module is
      * installed in default location then cookie name is 'voted_polls'
-     * for backward compatibility. Otherwise cookie is named
+     * for backward compatibility. Otherwise , cookie is named
      * '<dirname>_voted_polls' to allow for module to be cloned using
      * smartClone module.
      * @param \XoopsDatabase|null $db
-     * @param                     $tablename
+     * @param  string $tablename
      * @return bool success in setting cookie
      * @internal param int|string $index array index to set in cookie
      * @internal param unknown_type $value data to store in cookie
      * @internal param int $expires time when cookie expires
      * @internal param string $cookieBaseName name of cookie (without directory prefix)
      */
-    public static function dbTableExists(\XoopsDatabase $db, $tablename)
+    public static function dbTableExists(\XoopsDatabase $db, string $tablename): bool
     {
         $tablename = \addslashes($tablename);
         $mytable   = $db->prefix((string)$tablename);

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  You may not change or alter any portion of this comment or credits
  of supporting developers from this source code or any supporting source code
@@ -12,8 +12,7 @@
  * XoopsPoll Single Poll Block Definition (clonable)
  *
  * @copyright ::  {@link https://xoops.org/ XOOPS Project}
- * @license   :: {@link http://www.fsf.org/copyleft/gpl.html GNU public license}
- * @package   :: xoopspoll
+ * @license   :: {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2.0 or later}
  * @subpackage:: blocks
  * @since     :: 1.40
  */
@@ -38,25 +37,25 @@ require_once $GLOBALS['xoops']->path( "modules"
 /**
  * Display a single XOOPS Polls in a block
  *
- * @access public
  * @param mixed  $options
  * @return array block keys and values to be used by block template
  * @global mixed $GLOBALS ['xoopsUser']
  * @uses   CriteriaCompo
  * @uses   Criteria
  * @uses   xoops_getUserTimestamp() function to convert time to user time
- * @uses   formatTimestamp() takes timestamp and converts to human readable format
+ * @uses   formatTimestamp() takes timestamp and converts to human-readable format
  */
-function xoopspollBlockSinglepollShow($options)
+function xoopspollBlockSinglepollShow(mixed $options): array
 {
     $block = [];
 
-    $configHandler      = xoops_getHandler('config');
+    /** @var \XoopsConfigHandler $configHandler */
+    $configHandler = xoops_getHandler('config');
     $pollHandler   = Helper::getInstance()->getHandler('Poll');
     /** @var \XoopsModuleHandler $moduleHandler */
-    $moduleHandler = xoops_getHandler('module');
-    $thisModule         = $moduleHandler->getByDirname('xoopspoll');
-    $this_module_config = $configHandler->getConfigsByCat(0, $thisModule->getVar('mid'));
+    $moduleHandler    = xoops_getHandler('module');
+    $thisModule       = $moduleHandler->getByDirname('xoopspoll');
+    $thisModuleConfig = $configHandler->getConfigsByCat(0, $thisModule->getVar('mid'));
 
     /* if admin hasn't initialized block then we'll pick a poll for them
      * provided that one exists in the database
@@ -66,7 +65,7 @@ function xoopspollBlockSinglepollShow($options)
         /**
          * check to see if we want to include polls created with forum (newbb)
          */
-        if ($this_module_config['hide_forum_polls']
+        if ($thisModuleConfig['hide_forum_polls']
             && ($thisModule instanceof \XoopsModule)
             && $thisModule->isactive()) {
             $newbbModule = $moduleHandler->getByDirname('newbb');
@@ -113,7 +112,7 @@ function xoopspollBlockSinglepollShow($options)
             $block['asList']          = $options[3];
             $block['thisModuleDir']   = 'xoopspoll';
             $block['url']             = 'http' . (!empty($_SERVER['HTTPS']) ? 's' : '') . '://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
-            $block['dispVotes']       = $this_module_config['disp_vote_nums'];
+            $block['dispVotes']       = $thisModuleConfig['disp_vote_nums'];
 
             $optionHandler = Helper::getInstance()->getHandler('Option');
 
@@ -132,14 +131,14 @@ function xoopspollBlockSinglepollShow($options)
                 $pollOptionName = 'option_id';
             }
 
-                $uid = 0;
+            $uid = 0;
             if (isset($GLOBALS['xoopsUser']) && ($GLOBALS['xoopsUser'] instanceof \XoopsUser)) {
                 $uid = $GLOBALS['xoopsUser']->getVar('uid');
             }
 
             $totalVotes       = $pollVars['votes'];
             $logHandler       = Helper::getInstance()->getHandler('Log');
-            $hasVoted         = $logHandler->hasVoted($pollVars['poll_id'], xoops_getenv('REMOTE_ADDR'), $uid) ? true : false;
+            $hasVoted         = (bool)$logHandler->hasVoted($pollVars['poll_id'], xoops_getenv('REMOTE_ADDR'), $uid);
             $canVote          = (!$hasVoted) && $pollObj->isAllowedToVote();
             $pollOptionsArray = [];
             foreach ($optionsObjArray as $optionObj) {
@@ -162,11 +161,11 @@ function xoopspollBlockSinglepollShow($options)
             }
 
             $xuEndTimestamp     = xoops_getUserTimestamp($pollObj->getVar('end_time'));
-            $xuEndFormattedTime = ucfirst(date(_MEDIUMDATESTRING, $xuEndTimestamp));
+            $xuEndFormattedTime = ucfirst(date(_MEDIUMDATESTRING, (int)$xuEndTimestamp));
 
             $isVisible = true === $pollObj->isResultVisible();
 
-            $multiple   = $pollVars['multiple'] ? true : false;
+            $multiple   = (bool)$pollVars['multiple'];
             $multiLimit = (int)$pollVars['multilimit'];
             $lang_multi = '';
             if ($multiple && ($multiLimit > 0)) {
@@ -200,13 +199,12 @@ function xoopspollBlockSinglepollShow($options)
 /**
  * Display a form to edit poll block display option
  *
- * @access public
  * @param mixed  $options
  * @return string HTML form for display by block admin
  * @global mixed $GLOBALS ['xoopsUser']
  * @uses   xoops_getModuleHandler() function to get class handler for this modules class(es)
  */
-function xoopspollBlockSinglepollEdit($options)
+function xoopspollBlockSinglepollEdit(mixed $options): string
 {
     /**
      * Options[]
@@ -218,7 +216,7 @@ function xoopspollBlockSinglepollEdit($options)
      *          3 = show options as list|select
      */
 
-    // find out if want to show expired polls in block
+    // find out if you want to show expired polls in block
     // (otherwise it will hide block once it expires)
     if (0 === $options[0]) {
         $chk0no  = ' checked';
@@ -247,20 +245,24 @@ function xoopspollBlockSinglepollEdit($options)
     $criteria->setOrder('ASC');
     $criteria->setSort('weight');
     /**
-     * Note that you can select polls that have not started yet so they will automatically show
+     * Note that you can select polls that have not started yet, so they will automatically show
      * up in the block once they have started.  To only allow selection of active polls uncomment
      * the following line in the code - this could be made a module config option if desired
-     */ // $criteria->add(new \Criteria('start_time', time(), '<='));
+     */
+
+    // $criteria->add(new \Criteria('start_time', time(), '<='));
+
     /**
      * now check to see if we want to hide polls that were created using newbb
      */
-    $configHandler      = xoops_getHandler('config');
+    /** @var \XoopsConfigHandler $configHandler */
+    $configHandler = xoops_getHandler('config');
     /** @var \XoopsModuleHandler $moduleHandler */
-    $moduleHandler = xoops_getHandler('module');
-    $thisModule         = $moduleHandler->getByDirname('xoopspoll');
-    $this_module_config = $configHandler->getConfigsByCat(0, $thisModule->getVar('mid'));
+    $moduleHandler    = xoops_getHandler('module');
+    $thisModule       = $moduleHandler->getByDirname('xoopspoll');
+    $thisModuleConfig = $configHandler->getConfigsByCat(0, $thisModule->getVar('mid'));
 
-    if ($this_module_config['hide_forum_polls'] && ($thisModule instanceof \XoopsModule) && $thisModule->isactive()) {
+    if ($thisModuleConfig['hide_forum_polls'] && ($thisModule instanceof \XoopsModule) && $thisModule->isactive()) {
         $newbbModule = $moduleHandler->getByDirname('newbb');
         if ($newbbModule instanceof \XoopsModule && $newbbModule->isactive()) {
             /** @var Newbb\TopicHandler $topicHandler */
@@ -293,7 +295,7 @@ function xoopspollBlockSinglepollEdit($options)
         foreach ($allPollsArray as $thisPoll) {
             $selected       = ($thisPoll['poll_id'] === $options[1]) ? ' selected' : '';
             $taggedQuestion = ($thisPoll['end_time'] < time()) ? $thisPoll['question'] . '**' : $thisPoll['question'];
-            $form .= "  <option value='" . $thisPoll['poll_id'] . "'{$selected}>" . $taggedQuestion . "</option>\n";
+            $form           .= "  <option value='" . $thisPoll['poll_id'] . "'{$selected}>" . $taggedQuestion . "</option>\n";
         }
         $form .= "</select>\n" . '&nbsp;** - ' . _MB_XOOPSPOLL_EXPIRED_INDICATOR . "\n";
     }
@@ -318,7 +320,7 @@ function xoopspollBlockSinglepollEdit($options)
              . "<input type='radio' name='options[2]' value='0'{$chk2no} id='nor'>\n"
              . "</td></tr>\n";
 
-    /* find out if want to show options as a list or as a select box */
+    /* find out if you want to show options as a list or as a select box */
     if (Constants::POLL_OPTIONS_SELECT === $options[3]) {
         $chk3select = ' checked';
         $chk3list   = '';

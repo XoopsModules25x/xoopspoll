@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace XoopsModules\Newbb;
 
@@ -15,15 +15,11 @@ namespace XoopsModules\Newbb;
 /**
  * @copyright    {@link https://xoops.org/ XOOPS Project}
  * @license      {@link https://www.gnu.org/licenses/gpl-2.0.html GNU GPL 2 or later}
- * @package
- * @since
  * @author       XOOPS Development Team, phppp (D.J., infomax@gmail.com)
  */
 
 use Xmf\Request;
 use XoopsModules\Newbb;
-
-
 
 \defined('NEWBB_FUNCTIONS_INI') || require XOOPS_ROOT_PATH . '/modules/newbb/include/functions.ini.php';
 newbb_load_object();
@@ -33,6 +29,29 @@ newbb_load_object();
  */
 class Post extends \XoopsObject
 {
+    private $post_id;
+    private $topic_id;
+    private $forum_id;
+    private $post_time;
+    private $poster_ip;
+    private $poster_name;
+    private $subject;
+    private $pid;
+    private $dohtml;
+    private $dosmiley;
+    private $doxcode;
+    private $doimage;
+    private $dobr;
+    private $uid;
+    private $icon;
+    private $attachsig;
+    private $approved;
+    private $post_karma;
+    private $require_reply;
+    private $attachment;
+    private $post_text;
+    private $post_edit;
+
     //class Post extends \XoopsObject {
     public $attachment_array = [];
 
@@ -140,7 +159,7 @@ class Post extends \XoopsObject
         }
 
         foreach ($attach_old as $key => $attach) {
-            if (\in_array($key, $attach_array)) {
+            if (\in_array($key, $attach_array, true)) {
                 @\unlink(XOOPS_ROOT_PATH . '/' . $GLOBALS['xoopsModuleConfig']['dir_attachments'] . '/' . $attach['name_saved']);
                 @\unlink(XOOPS_ROOT_PATH . '/' . $GLOBALS['xoopsModuleConfig']['dir_attachments'] . '/thumbs/' . $attach['name_saved']); // delete thumbnails
                 continue;
@@ -171,7 +190,7 @@ class Post extends \XoopsObject
             $key                          = (string)(\time() + $counter++);
             $this->attachment_array[$key] = [
                 'name_saved'   => $name_saved,
-                'name_display' => isset($name_display) ? $name_display : $name_saved,
+                'name_display' => $name_display ?? $name_saved,
                 'mimetype'     => $mimetype,
                 'num_download' => isset($num_download) ? (int)$num_download : 0,
             ];
@@ -213,7 +232,7 @@ class Post extends \XoopsObject
                 $file_size = @\filesize($GLOBALS['xoops']->path($GLOBALS['xoopsModuleConfig']['dir_attachments'] . '/' . $att['name_saved']));
                 $file_size = \number_format($file_size / 1024, 2) . ' KB';
                 if ($GLOBALS['xoopsModuleConfig']['media_allowed']
-                    && \in_array(mb_strtolower($file_extension), $image_extensions)) {
+                    && \in_array(mb_strtolower($file_extension), $image_extensions, true)) {
                     $post_attachment .= '<br><img src="' . $icon_filetype . '" alt="' . $filetype . '"><strong>&nbsp; ' . $att['name_display'] . '</strong> <small>(' . $file_size . ')</small>';
                     $post_attachment .= '<br>' . newbb_attachmentImage($att['name_saved']);
                     $isDisplayed     = true;
@@ -312,8 +331,8 @@ class Post extends \XoopsObject
         if ($post_edits && \is_array($post_edits)) {
             foreach ($post_edits as $postedit) {
                 $edit_time = (int)$postedit['edit_time'];
-                $edit_user = $myts->stripSlashesGPC($postedit['edit_user']);
-                $edit_msg  = !empty($postedit['edit_msg']) ? $myts->stripSlashesGPC($postedit['edit_msg']) : '';
+                $edit_user = ($postedit['edit_user']);
+                $edit_msg  = !empty($postedit['edit_msg']) ? ($postedit['edit_msg']) : '';
                 // Start irmtfan add option to do only the latest edit when do_latestedit=0 (Alfred)
                 if (empty($GLOBALS['xoopsModuleConfig']['do_latestedit'])) {
                     $post_edit = '';
@@ -443,7 +462,7 @@ class Post extends \XoopsObject
         static $name_anonymous;
 
         if (!isset($name_anonymous)) {
-            $name_anonymous = $myts->htmlSpecialChars($GLOBALS['xoopsConfig']['anonymous']);
+            $name_anonymous = htmlspecialchars($GLOBALS['xoopsConfig']['anonymous'], ENT_QUOTES | ENT_HTML5);
         }
 
         //        mod_loadFunctions('time', 'newbb');
@@ -484,7 +503,7 @@ class Post extends \XoopsObject
             $post_attachment = '';
         } elseif ($GLOBALS['xoopsModuleConfig']['allow_require_reply'] && $this->getVar('require_reply')
                   && (!$uid
-                      || !\in_array($uid, $viewtopic_posters))) {
+                      || !\in_array($uid, $viewtopic_posters, true))) {
             $post_text       = "<div class='karma'>" . _MD_REPLY_REQUIREMENT . "</div>\n";
             $post_attachment = '';
         } else {
@@ -495,7 +514,7 @@ class Post extends \XoopsObject
         // Hightlighting searched words
         $post_title = $this->getVar('subject');
         if (!empty($_GET['keywords']) && Request::hasVar('keywords', 'GET')) {
-            $keywords   = $myts->htmlSpecialChars(\trim(\urldecode($_GET['keywords'])));
+            $keywords   = htmlspecialchars(\trim(\urldecode($_GET['keywords'])), ENT_QUOTES | ENT_HTML5);
             $post_text  = \newbb_highlightText($post_text, $keywords);
             $post_title = \newbb_highlightText($post_title, $keywords);
         }
@@ -613,12 +632,12 @@ class Post extends \XoopsObject
             $full_link   = $GLOBALS['xoops']->url("modules/newbb/viewtopic.php?post_id={$post_id}");
 
             $thread_action['social_twitter']['image']  = newbb_displayImage('twitter', \_MD_SHARE_TWITTER);
-            $thread_action['social_twitter']['link']   = "http://twitter.com/share?text={$clean_title}&amp;url={$full_link}";
+            $thread_action['social_twitter']['link']   = "https://twitter.com/share?text={$clean_title}&amp;url={$full_link}";
             $thread_action['social_twitter']['name']   = \_MD_SHARE_TWITTER;
             $thread_action['social_twitter']['target'] = '_blank';
 
             $thread_action['social_facebook']['image']  = newbb_displayImage('facebook', \_MD_SHARE_FACEBOOK);
-            $thread_action['social_facebook']['link']   = "http://www.facebook.com/sharer.php?u={$full_link}";
+            $thread_action['social_facebook']['link']   = "https://www.facebook.com/sharer.php?u={$full_link}";
             $thread_action['social_facebook']['name']   = \_MD_SHARE_FACEBOOK;
             $thread_action['social_facebook']['target'] = '_blank';
 
@@ -628,27 +647,27 @@ class Post extends \XoopsObject
             $thread_action['social_gplus']['target'] = '_blank';
 
             $thread_action['social_linkedin']['image']  = newbb_displayImage('linkedin', \_MD_SHARE_LINKEDIN);
-            $thread_action['social_linkedin']['link']   = "http://www.linkedin.com/shareArticle?mini=true&amp;title={$full_title}&amp;url={$full_link}";
+            $thread_action['social_linkedin']['link']   = "https://www.linkedin.com/shareArticle?mini=true&amp;title={$full_title}&amp;url={$full_link}";
             $thread_action['social_linkedin']['name']   = \_MD_SHARE_LINKEDIN;
             $thread_action['social_linkedin']['target'] = '_blank';
 
             $thread_action['social_delicious']['image']  = newbb_displayImage('delicious', \_MD_SHARE_DELICIOUS);
-            $thread_action['social_delicious']['link']   = "http://del.icio.us/post?title={$full_title}&amp;url={$full_link}";
+            $thread_action['social_delicious']['link']   = "https://del.icio.us/post?title={$full_title}&amp;url={$full_link}";
             $thread_action['social_delicious']['name']   = \_MD_SHARE_DELICIOUS;
             $thread_action['social_delicious']['target'] = '_blank';
 
             $thread_action['social_digg']['image']  = newbb_displayImage('digg', \_MD_SHARE_DIGG);
-            $thread_action['social_digg']['link']   = "http://digg.com/submit?phase=2&amp;title={$full_title}&amp;url={$full_link}";
+            $thread_action['social_digg']['link']   = "https://digg.com/submit?phase=2&amp;title={$full_title}&amp;url={$full_link}";
             $thread_action['social_digg']['name']   = \_MD_SHARE_DIGG;
             $thread_action['social_digg']['target'] = '_blank';
 
             $thread_action['social_reddit']['image']  = newbb_displayImage('reddit', \_MD_SHARE_REDDIT);
-            $thread_action['social_reddit']['link']   = "http://reddit.com/submit?title={$full_title}&amp;url={$full_link}";
+            $thread_action['social_reddit']['link']   = "https://reddit.com/submit?title={$full_title}&amp;url={$full_link}";
             $thread_action['social_reddit']['name']   = \_MD_SHARE_REDDIT;
             $thread_action['social_reddit']['target'] = '_blank';
 
             $thread_action['social_wong']['image']  = newbb_displayImage('wong', \_MD_SHARE_MRWONG);
-            $thread_action['social_wong']['link']   = "http://www.mister-wong.de/index.php?action=addurl&bm_url=$full_link}";
+            $thread_action['social_wong']['link']   = "https://www.mister-wong.de/index.php?action=addurl&bm_url=$full_link}";
             $thread_action['social_wong']['name']   = \_MD_SHARE_MRWONG;
             $thread_action['social_wong']['target'] = '_blank';
         }
