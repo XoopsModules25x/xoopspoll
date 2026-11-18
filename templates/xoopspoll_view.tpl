@@ -20,6 +20,11 @@
         <{/foreach}>
         </tbody>
         <tfoot>
+        <{if "" != $lang_confirm|default:''}>
+            <tr>
+                <td class='center foot' colspan='2'><strong><{$lang_confirm}></strong></td>
+            </tr>
+        <{/if}>
         <{if "" != $lang_multi|default:''}>
             <tr>
                 <td class='center foot' colspan='2'><{$lang_multi}></td>
@@ -28,6 +33,9 @@
         <tr>
             <td class='center foot' colspan='2'>
                 <input type="hidden" name="poll_id" value="<{$poll.pollId}>">
+                <{if "" != $return_url|default:''}>
+                <input type="hidden" name="url" value="<{$return_url}>">
+                <{/if}>
                 <{if !empty($can_vote)}>
                 <input type='submit' value='<{$lang_vote}>'>&nbsp;
                 <{/if}>

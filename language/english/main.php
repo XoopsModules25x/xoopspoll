@@ -111,3 +111,6 @@ define('_PL_MAILBODY2', ' votes for: ');
 define('_PL_MAILBODY3', 'There were %d votes');
 define('_PL_HALFBLIND', 'This is a blind vote where the result of the vote is shown after the voting deadline');
 define('_PL_FULLBLIND', 'This is a blind vote where the result is not shown in public.');
+
+// 2.1.0 Beta 4
+define('_MD_XOOPSPOLL_CONFIRM_VOTE', 'Your vote has not been counted yet. Please check your choice and press Vote to confirm it.');

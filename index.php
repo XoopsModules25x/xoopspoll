@@ -164,8 +164,9 @@ if (empty($pollId)) {
     }
     unset($pollObjs);
     require $GLOBALS['xoops']->path('footer.php');
-} elseif (!empty($_POST['option_id'])) {
-    /* user just tried to vote */
+} elseif (!empty($_POST['option_id']) && $GLOBALS['xoopsSecurity']->check()) {
+    /* user just tried to vote; a vote without a valid token is not counted and
+       falls through to the poll form below, which asks to confirm the choice */
     //    $option_id   = Request::getInt('option_id', 0, 'POST');
     $mail_author = false;
     $pollObj     = $pollHandler->get($pollId);
@@ -221,14 +222,20 @@ if (empty($pollId)) {
     }
 } else {
     $pollObj = $pollHandler->get($pollId);
+    if (!$pollObj instanceof Poll) {
+        redirect_header($GLOBALS['xoops']->buildUrl('index.php'), Constants::REDIRECT_DELAY_MEDIUM, _MD_XOOPSPOLL_ERROR_INVALID_POLLID);
+    }
     if ($pollObj->hasExpired()) {
         redirect_header($GLOBALS['xoops']->buildUrl('pollresults.php', ['poll_id' => $pollId]), Constants::REDIRECT_DELAY_SHORT, _MD_XOOPSPOLL_SORRYEXPIRED);
     }
     $GLOBALS['xoopsOption']['template_main'] = 'xoopspoll_view.tpl';
     require $GLOBALS['xoops']->path('header.php');
 
+    /* a choice posted without a valid token (a cached block, an expired page)
+       is shown selected again, next to a fresh token, for the voter to confirm */
+    $selected = array_map('\intval', Request::getArray('option_id', [], 'POST'));
     $renderer = new Renderer($pollObj, $helper);
-    $renderer->assignForm($GLOBALS['xoopsTpl']);
+    $renderer->assignForm($GLOBALS['xoopsTpl'], $selected);
 
     $voteCount = $logHandler->getTotalVotesByPollId($pollId);
 
@@ -237,7 +244,7 @@ if (empty($pollId)) {
     if ($pollObj->isAllowedToVote()) {
         $thisVoter  = (!empty($GLOBALS['xoopsUser'])
                        && ($GLOBALS['xoopsUser'] instanceof \XoopsUser)) ? $GLOBALS['xoopsUser']->getVar('uid') : null;
-        $canVote    = !$logHandler->hasVoted($pollId, xoops_getenv('REMOTE_ADDR'), $thisVoter);
+        $canVote    = !$logHandler->hasVoted($pollId, xoops_getenv('REMOTE_ADDR'), (int)$thisVoter);
         $multiple   = $pollObj->getVar('multiple');
         $multiLimit = (int)$pollObj->getVar('multilimit');
         if ($multiple && ($multiLimit > 0)) {
@@ -253,6 +260,9 @@ if (empty($pollId)) {
             'disp_votes'   => $GLOBALS['xoopsModuleConfig']['disp_vote_nums'],
             'can_vote'     => $canVote,
             'lang_multi'   => $lang_multi,
+            'lang_confirm' => ($canVote && [] !== $selected) ? _MD_XOOPSPOLL_CONFIRM_VOTE : '',
+            /* the page a block sent the voter from; the form passes it on so the confirmed vote returns there */
+            'return_url'   => htmlspecialchars($url, ENT_QUOTES | ENT_HTML5),
         ]
     );
     require $GLOBALS['xoops']->path('footer.php');

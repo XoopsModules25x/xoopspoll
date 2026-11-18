@@ -93,9 +93,11 @@ class Renderer
 
     /**
      * assigns form values to template for display
-     * @var    \XoopsTpl
+     * @param \XoopsTpl $tpl
+     * @param int[]     $selected option ids to show as already chosen; ids that
+     *                            are not options of this poll are ignored
      */
-    public function assignForm(\XoopsTpl $tpl): void
+    public function assignForm(\XoopsTpl $tpl, array $selected = []): void
     {
         $myts       = \MyTextSanitizer::getInstance();
         $optionObjs = $this->optionHandler->getAllByPollId($this->pollObj->getVar('poll_id'));
@@ -114,7 +116,8 @@ class Renderer
         }
         foreach ($optionObjs as $optionObj) {
             $options[] = [
-                'input' => "<input type='{$optionType}' " . "name='{$optionName}' " . "value='" . $optionObj->getVar('option_id') . "'>",
+                'input' => "<input type='{$optionType}' " . "name='{$optionName}' " . "value='" . $optionObj->getVar('option_id') . "'"
+                           . (\in_array((int)$optionObj->getVar('option_id'), $selected, true) ? ' checked' : '') . '>',
                 'text'  => $optionObj->getVar('option_text'),
             ];
         }

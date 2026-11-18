@@ -127,7 +127,7 @@ class OptionHandler extends \XoopsPersistableObjectHandler
      */
     public function deleteByPollId(int $pid = 0): bool
     {
-        $success = $this->deleteAll(new \Criteria('poll_id', $pid, '='));
+        $success = false !== $this->deleteAll(new \Criteria('poll_id', $pid, '=')); // rows removed, or false on failure
 
         return $success;
     }

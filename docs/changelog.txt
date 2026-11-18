@@ -1,3 +1,11 @@
+<h5>2.1.0 Beta 4  [NOT RELEASED]</h5>  Dev: XOOPS 2.8.0, PHP 8.5.12
+<hr>
+- a vote is counted only when it carries the token of the poll form; a vote sent without one (from a cached block, from a page whose token has expired, or from another site) opens the poll page with the choice selected, and is counted once it is confirmed there (mamba)
+- the poll page no longer fails for a visitor who is not logged in when the poll allows anonymous voting (mamba)
+- deleting the votes or options of a poll no longer fails when rows were removed (mamba)
+- test/vote_token_check.php: command-line check for the vote token (mamba)
+
+
 <h5>2.1.0 Beta 3  [2025-03-24]</h5>  Dev: XOOPS 2.5.12, PHP 8.4.5
 <hr>
 - small fixes

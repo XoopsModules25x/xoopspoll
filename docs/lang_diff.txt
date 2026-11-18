@@ -3,6 +3,13 @@ LANGUAGE DIFFERENCES
 
 Below are language differences from a version to next version.
 
+Version 2.1.0 Beta 4
+----------------
+
+main.php
+----------
+- added define('_MD_XOOPSPOLL_CONFIRM_VOTE', 'Your vote has not been counted yet. Please check your choice and press Vote to confirm it.');
+
 Version 1.32
 ----------------
 
