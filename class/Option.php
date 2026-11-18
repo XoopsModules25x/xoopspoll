@@ -52,18 +52,13 @@ class Option extends XoopsObject
     private string $option_text;
     private int    $option_count;
     private string $option_color;
-    private mixed  $optHandler;
+    private $optHandler;
 
-    /**
-     * database connection object
-     * @var \XoopsDatabasefactory
-     */
-    //    protected $db;
     /**
      * holds option object
      * @var Option
      */
-    protected Option $option;
+    protected self $option;
     /**
      * Option Handler to be used to manipulate poll options
      * @var OptionHandler
@@ -126,7 +121,7 @@ class Option extends XoopsObject
     {
         $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use PollHandler::deleteAll instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
-        $criteria = new Criteria('poll_id', (int)$pid, '=');
+        $criteria = new Criteria('poll_id', $pid, '=');
 
         return $this->optHandler->deleteAll($criteria);
     }
@@ -141,7 +136,7 @@ class Option extends XoopsObject
     {
         $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use PollHandler::getAll instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
-        $criteria = new Criteria('poll_id', (int)$pid, '=');
+        $criteria = new Criteria('poll_id', $pid, '=');
 
         return $this->optHandler->getAll($criteria);
     }
@@ -157,7 +152,7 @@ class Option extends XoopsObject
         $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
         $GLOBALS['xoopsLogger']->addDeprecated(__CLASS__ . '::' . __METHOD__ . ' is deprecated since Xoopspoll 1.40, please use PollHandler::updateAll instead.' . ". Called from {$trace[0]['file']}line {$trace[0]['line']}");
         $soptHandler = $this->getStaticOptHandler();
-        $criteria    = new Criteria('poll_id', (int)$pid, '=');
+        $criteria    = new Criteria('poll_id', $pid, '=');
 
         return $soptHandler->updateAll('option_count', 0, $criteria);
     }
@@ -167,7 +162,7 @@ class Option extends XoopsObject
      * @return mixed handler object returned on success, false on failure
      * @uses xoops_getModuleHandler
      */
-    private function getStaticOptHandler(): mixed
+    private function getStaticOptHandler()
     {
         static $optionHandler;
 

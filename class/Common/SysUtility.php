@@ -187,8 +187,9 @@ class SysUtility
         // insert cloned copy of the original  record
         $sql    = "INSERT INTO $table (" . \implode(', ', \array_keys($tempTable)) . ") VALUES ('" . \implode("', '", $tempTable) . "')";
         $result = $GLOBALS['xoopsDB']->queryF($sql);
-        if (!$result) {
-            \trigger_error($GLOBALS['xoopsDB']->error());
+        if (!$GLOBALS['xoopsDB']->isResultSet($result)) {
+           \trigger_error(\sprintf(\_DB_QUERY_ERROR, $sql) . $GLOBALS['xoopsDB']->error(), \E_USER_ERROR);
+        
         }
         // Return the new id
         return $GLOBALS['xoopsDB']->getInsertId();
@@ -205,18 +206,21 @@ class SysUtility
      * @param string      $text         String to truncate.
      * @param int|null    $length       Length of returned string, including ellipsis.
      * @param string|null $ending       Ending to be appended to the trimmed string.
-     * @param bool        $exact        If false, $text will not be cut mid-word
+     * @param bool|null   $exact        If false, $text will not be cut mid-word
      * @param bool        $considerHtml If true, HTML tags would be handled correctly
      *
      * @return string Trimmed string.
      */
     public static function truncateHtml(
-        string $text,
-        ?int $length = 100,
-        ?string $ending = '...',
-        ?bool $exact = false,
-        ?bool $considerHtml = true
+        string  $text,
+        ?int    $length = null,
+        ?string $ending = null,
+        ?bool   $exact = null,
+        ?bool   $considerHtml = true
     ): string {
+        $length   ??= 100;
+        $ending   ??= '...';
+        $exact    ??= false;
         $openTags = [];
         if ($considerHtml) {
             // if the plain text is shorter than the maximum length, return the whole text
@@ -334,12 +338,12 @@ class SysUtility
 
         if (\class_exists('XoopsFormEditor')) {
             if ($isAdmin) {
-                $descEditor = new \XoopsFormEditor(\ucfirst($options['name']), $helper->getConfig('editorAdmin'), $options, $nohtml = false, $onfailure = 'textarea');
+                $descEditor = new \XoopsFormEditor(\ucfirst((string) $options['name']), $helper->getConfig('editorAdmin'), $options, $nohtml = false, $onfailure = 'textarea');
             } else {
-                $descEditor = new \XoopsFormEditor(\ucfirst($options['name']), $helper->getConfig('editorUser'), $options, $nohtml = false, $onfailure = 'textarea');
+                $descEditor = new \XoopsFormEditor(\ucfirst((string) $options['name']), $helper->getConfig('editorUser'), $options, $nohtml = false, $onfailure = 'textarea');
             }
         } else {
-            $descEditor = new \XoopsFormDhtmlTextArea(\ucfirst($options['name']), $options['name'], $options['value'], '100%', '100%');
+            $descEditor = new \XoopsFormDhtmlTextArea(\ucfirst((string) $options['name']), $options['name'], $options['value']);
         }
 
         //        $form->addElement($descEditor);
@@ -359,7 +363,7 @@ class SysUtility
     public static function fieldExists(string $fieldname, string $table): bool
     {
         $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-        \trigger_error(__METHOD__ . " is deprecated, use Xmf\Database\Tables instead - instantiated from {$trace[0]['file']} line {$trace[0]['line']},");
+        $GLOBALS['xoopsLogger']->addDeprecated(__METHOD__ . "() use Xmf\Database\Tables instead - instantiated from {$trace[0]['file']} line {$trace[0]['line']}");
 
         $result = $GLOBALS['xoopsDB']->queryF("SHOW COLUMNS FROM   $table LIKE '$fieldname'");
 
@@ -373,14 +377,14 @@ class SysUtility
      */
     public static function prepareFolder(string $folder): void
     {
-        try {
-            if (!@\mkdir($folder) && !\is_dir($folder)) {
-                throw new \RuntimeException(\sprintf('Unable to create the %s directory', $folder));
-            }
-            file_put_contents($folder . '/index.html', '<script>history.go(-1);</script>');
-        } catch (\Exception $e) {
-            echo 'Caught exception: ', $e->getMessage(), "\n", '<br>';
-        }
+try {
+    if (!\is_dir($folder) && !\mkdir($folder) && !\is_dir($folder)) {
+        throw new \RuntimeException(\sprintf('Unable to create the %s directory', $folder));
+    }
+    file_put_contents($folder . '/index.html', '<script>history.go(-1);</script>');
+} catch (\Exception $e) {
+    echo 'Caught exception: ', $e->getMessage(), "<br>\n";
+}
     }
 
     /**
@@ -392,11 +396,11 @@ class SysUtility
     public static function tableExists(string $tablename): bool
     {
         $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-        \trigger_error(__FUNCTION__ . " is deprecated, called from {$trace[0]['file']} line {$trace[0]['line']}");
         $GLOBALS['xoopsLogger']->addDeprecated(
             \basename(\dirname(__DIR__, 2)) . ' Module: ' . __FUNCTION__ . ' function is deprecated, please use Xmf\Database\Tables method(s) instead.' . " Called from {$trace[0]['file']}line {$trace[0]['line']}"
         );
-        $result = $GLOBALS['xoopsDB']->queryF("SHOW TABLES LIKE '$tablename'");
+        $sql = "SHOW TABLES LIKE '$tablename'";
+        $result = self::queryFAndCheck($GLOBALS['xoopsDB'], $sql);
 
         return $GLOBALS['xoopsDB']->getRowsNum($result) > 0;
     }
@@ -414,4 +418,49 @@ class SysUtility
 
         return $xoopsDB->queryF('ALTER TABLE ' . $table . " ADD $field;");
     }
+
+    /**
+     * Query and check if the result is a valid result set
+     *
+     * @param \XoopsMySQLDatabase $xoopsDB XOOPS Database
+     * @param string              $sql     a valid MySQL query
+     * @param int                 $limit   number of records to return
+     * @param int                 $start   offset of first record to return
+     *
+     * @return \mysqli_result query result
+     */
+    public static function queryAndCheck(\XoopsMySQLDatabase $xoopsDB, string $sql, int $limit = 0, int $start = 0): \mysqli_result
+    {
+        $result = $xoopsDB->query($sql, $limit, $start);
+
+        if (!$xoopsDB->isResultSet($result)) {
+            throw new \RuntimeException(
+                \sprintf(\_DB_QUERY_ERROR, $sql) . $xoopsDB->error(), \E_USER_ERROR);
+        }
+
+        return $result;
+    }
+
+    /**
+     * QueryF and check if the result is a valid result set
+     *
+     * @param \XoopsMySQLDatabase $xoopsDB XOOPS Database
+     * @param string              $sql     a valid MySQL query
+     * @param int                 $limit   number of records to return
+     * @param int                 $start   offset of first record to return
+     *
+     * @return \mysqli_result query result
+     */
+    public static function queryFAndCheck(\XoopsMySQLDatabase $xoopsDB, string $sql, int $limit = 0, int $start = 0): \mysqli_result
+    {
+        $result = $xoopsDB->queryF($sql, $limit, $start);
+
+        if (!$xoopsDB->isResultSet($result)) {
+            throw new \RuntimeException(
+                \sprintf(\_DB_QUERY_ERROR, $sql) . $xoopsDB->error(), \E_USER_ERROR);
+        }
+
+        return $result;
+    }
 }
+

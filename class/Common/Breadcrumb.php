@@ -42,14 +42,14 @@ class Breadcrumb
     /**
      * Add link to breadcrumb
      *
-     * @param string $title
-     * @param string $link
+     * @param string|null $title
+     * @param string|null $link
      */
-    public function addLink(string $title = '', string $link = ''): void
+    public function addLink(?string $title = null, ?string $link = null): void
     {
         $this->bread[] = [
-            'link'  => $link,
-            'title' => $title,
+            'link'  => $link ?? '',
+            'title' => $title ?? '',
         ];
     }
 

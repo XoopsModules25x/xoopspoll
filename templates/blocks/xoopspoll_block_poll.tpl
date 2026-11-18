@@ -1,4 +1,4 @@
-<{foreach item=poll from=$block.polls}>
+<{foreach item=poll from=$block.polls|default:null}>
     <form style="margin-top: 1px;" action="<{$xoops_url}>/modules/<{$block.thisModuleDir}>/index.php" method="post">
         <table class='outer' style='margin: 1px;'>
             <thead>
@@ -12,7 +12,7 @@
 
             <{if ($poll.visible && ($poll.hasExpired || (!$poll.hasExpired && (!$poll.canVote || $poll.hasVoted))))}>
                 <{* Show Results *}>
-                <{foreach item=option from=$poll.options}>
+                <{foreach item=option from=$poll.options|default:null}>
                     <tr class='<{cycle values='even,odd'}>'>
                         <td class='width30 left'><{$option.text}></td>
                         <td class='left' style='margin-left: 1em;'>
@@ -26,7 +26,7 @@
             <{elseif (!$poll.hasExpired && $poll.canVote)}>
                 <{* Show input form *}>
                 <{if $block.asList}>
-                <{foreach item=option from=$poll.options}>
+                <{foreach item=option from=$poll.options|default:null}>
                     <tr class='<{cycle values='even,odd'}>'>
                         <td class='center'><input type='<{$poll.optionType}>' name='<{$poll.optionName}>'
                                                   value='<{$option.id}>'></td>
@@ -43,7 +43,7 @@
                     <td class='even center' colspan='2'>
                         <{*     <{html_options name=$poll.optionName"<{if $poll.multiple}> multiple=$poll.multiple <{/if}>" options=$poll.options}> *}>
                         <select name='<{$poll.optionName}>'<{if $poll.multiple}> multiple='multiple'<{/if}>>
-                            <{foreach item=option from=$poll.options}>
+                            <{foreach item=option from=$poll.options|default:null}>
                             <option value='<{$option.id}>'><{$option.text}></option>
                             <{/foreach}>
                             <{if ("" != $poll.lang_multi)}>

@@ -4,7 +4,7 @@
     <thead>
     <tr>
         <th><{$lang_pollquestion}></th>
-        <{if $disp_votes}>
+        <{if !empty($disp_votes)}>
         <th class='center'><{$lang_pollvoters}></th>
         <th class='center'><{$lang_votes}></th>
         <{/if}>
@@ -22,7 +22,7 @@
             <{else}>
             <td><{$polls[i].pollQuestion}></td>
             <{/if}>
-            <{if $disp_votes}>
+            <{if !empty($disp_votes)}>
             <{if $polls[i].visible }>
             <td class='center'><{$polls[i].pollVoters}></td>
             <td class='center'><{$polls[i].pollVotes}></td>

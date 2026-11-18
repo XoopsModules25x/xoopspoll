@@ -56,6 +56,7 @@ function xoopspollChangeTableName(\XoopsDatabase $db, $fromTable, $toTable): boo
  * @param \XoopsModule $module
  * @param              $prev_version
  * @return bool
+ * @throws \Exception
  */
 function xoops_module_update_xoopspoll(\XoopsModule $module, $prev_version): bool
 {

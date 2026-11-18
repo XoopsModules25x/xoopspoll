@@ -64,6 +64,7 @@ class Helper extends \Xmf\Module\Helper
      * @param string $name name of handler to load
      *
      * @return bool|\XoopsObjectHandler|\XoopsPersistableObjectHandler
+     * @throws \Exception
      */
     public function getHandler($name)
     {

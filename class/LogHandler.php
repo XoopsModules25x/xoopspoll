@@ -52,7 +52,7 @@ class LogHandler extends \XoopsPersistableObjectHandler
      * @param null|\XoopsDatabase $db
      * @param null $helper
      */
-    public function __construct(\XoopsDatabase $db = null, $helper = null)
+    public function __construct(?\XoopsDatabase $db = null, $helper = null)
     {
         parent::__construct($db, 'xoopspoll_log', Log::class, 'log_id');
     }
@@ -65,7 +65,7 @@ class LogHandler extends \XoopsPersistableObjectHandler
     public function deleteByOptionId(int $option_id): bool
     {
         $criteria = new \Criteria('option_id', $option_id, '=');
-        $success  = $this->deleteAll($criteria);
+        $success  = false !== $this->deleteAll($criteria); // rows removed, or false on failure
 
         return $success;
     }
@@ -78,8 +78,8 @@ class LogHandler extends \XoopsPersistableObjectHandler
      */
     public function deleteByPollId(int $pid): bool
     {
-        $criteria = new \Criteria('poll_id', (int)$pid, '=');
-        $success  = $this->deleteAll($criteria);
+        $criteria = new \Criteria('poll_id', $pid, '=');
+        $success  = false !== $this->deleteAll($criteria); // rows removed, or false on failure
 
         return $success;
     }
@@ -87,16 +87,17 @@ class LogHandler extends \XoopsPersistableObjectHandler
     /**
      * Gets all log entries by Poll ID
      * @param int $pid
-     * @param string $sortby  sort all results by this field
+     * @param string|null $sortby  sort all results by this field
      * @param string $orderby sort order (ASC, DESC)
      * @return array $success
      * @uses CriteriaCompo
      */
-    public function getAllByPollId(int $pid, string $sortby = 'time', string $orderby = 'ASC'): array
+    public function getAllByPollId(int $pid, ?string $sortby = null, string $orderby = 'ASC'): array
     {
+        $sortby   ??= 'time';
         $ret      = [];
         $criteria = new \CriteriaCompo();
-        $criteria->add(new \Criteria('poll_id', (int)$pid, '='));
+        $criteria->add(new \Criteria('poll_id', $pid, '='));
         $criteria->setSort($sortby);
         $criteria->setOrder($orderby);
         $ret = &$this->getAll($criteria);
@@ -112,7 +113,7 @@ class LogHandler extends \XoopsPersistableObjectHandler
      */
     public function getTotalVotesByPollId(int $pid): int
     {
-        $criteria = new \Criteria('poll_id', (int)$pid, '=');
+        $criteria = new \Criteria('poll_id', $pid, '=');
         $numVotes = $this->getCount($criteria);
 
         return $numVotes;
@@ -127,7 +128,7 @@ class LogHandler extends \XoopsPersistableObjectHandler
     public function getTotalVotersByPollId(int $pid): int
     {
         $criteria = new \CriteriaCompo();
-        $criteria->add(new \Criteria('poll_id', (int)$pid, '='));
+        $criteria->add(new \Criteria('poll_id', $pid, '='));
         $criteria->setGroupBy('ip');
         $voterGrps = $this->getCount($criteria);
         //TODO Parameter '$voterGrps' type is not compatible with declaration
@@ -144,7 +145,7 @@ class LogHandler extends \XoopsPersistableObjectHandler
      */
     public function getTotalVotesByOptionId(int $option_id): int
     {
-        $criteria = new \Criteria('option_id', (int)$option_id, '=');
+        $criteria = new \Criteria('option_id', $option_id, '=');
         $votes    = $this->getCount($criteria);
 
         return $votes;
@@ -160,7 +161,7 @@ class LogHandler extends \XoopsPersistableObjectHandler
      */
     public function hasVoted(?int $pid, string $ip, int $uid = 0): bool
     {
-        $uid        = (int)$uid;
+//        $uid        = (int)$uid;
         $pid        = (int)$pid;
         $voted      = true;
         $votedPolls = Utility::getVoteCookie();
@@ -187,9 +188,8 @@ class LogHandler extends \XoopsPersistableObjectHandler
                 $criteria->add(new \Criteria('user_id', 0, '='));
                 $vCount = $this->getCount($criteria);
                 $voted  = $vCount > 0;
-            } else {
+            } elseif (\array_key_exists($pid, $votedPolls) && ((int)$votedPolls[$pid] >= $pollStarttime)) {
                 /* Check cookie to see if someone from this system has voted before */
-                if (\array_key_exists($pid, $votedPolls) && ((int)$votedPolls[$pid] >= $pollStarttime)) {
                     $criteria = new \CriteriaCompo();
                     $criteria->add(new \Criteria('poll_id', $pid, '='));
                     $criteria->add(new \Criteria('time', (int)$pollStarttime, '>='));
@@ -197,7 +197,6 @@ class LogHandler extends \XoopsPersistableObjectHandler
                     $voted  = $vCount > 0;
                 } else {
                     $voted = false;
-                }
             }
         }
 

@@ -50,7 +50,7 @@ class BlockActionsHandler
         $blockData->bvisible       = Request::getString('bvisible', '0', 'POST');
         $blockData->bmodule        = Request::getArray('bmodule', [], 'POST');
         $blockData->btitle         = Request::getString('btitle', '', 'POST');
-        $blockData->bcachetime     = Request::getString('bcachetime', '0', 'POST');
+        $blockData->bcachetime     = Request::getArray('bcachetime', [], 'POST');
         $blockData->groups         = Request::getArray('groups', [], 'POST');
         $blockData->options        = Request::getArray('options', [], 'POST');
         $blockData->submitblock    = Request::getString('submitblock', '', 'POST');
@@ -74,7 +74,7 @@ class BlockActionsHandler
     public function handleActions(BlockData $blockData)
     {
         $moduleDirNameUpper = \mb_strtoupper(Helper::getInstance()->getDirname());
-        $bid = Request::getInt('bid', 0);
+        $bid = Request::getArray('bid', []);
 
         switch ($blockData->op) {
             case 'order':
@@ -85,32 +85,32 @@ class BlockActionsHandler
                 break;
 
             case 'clone':
-                $this->blocksadmin->cloneBlock($bid);
+                $this->blocksadmin->cloneBlock((int)$bid);
                 break;
 
             case 'delete':
                 if (1 === $blockData->ok) {
                     $this->blocksadmin->deleteBlock($bid);
                 } else {
-                    xoops_confirm(['ok' => 1, 'op' => 'delete', 'bid' => $bid], 'blocksadmin.php', constant('CO_' . $moduleDirNameUpper . '_' . 'DELETE_BLOCK_CONFIRM'), constant('CO_' . $moduleDirNameUpper . '_' . 'CONFIRM'), true);
-                    xoops_cp_footer();
+                    \xoops_confirm(['ok' => 1, 'op' => 'delete', 'bid' => $bid], 'blocksadmin.php', \constant('CO_' . $moduleDirNameUpper . '_' . 'DELETE_BLOCK_CONFIRM'), \constant('CO_' . $moduleDirNameUpper . '_' . 'CONFIRM'), true);
+                    \xoops_cp_footer();
                 }
                 break;
 
             case 'edit':
                 if ($bid > 0) {
-                    $this->blocksadmin->editBlock($bid);
+                    $this->blocksadmin->editBlock((int)$bid[0]);
                 } else {
                     $this->helper->redirect('admin/blocksadmin.php', 3, _AM_BLOCK_EDIT_ID_ERROR);
                 }
                 break;
 
             case 'edit_ok':
-                $this->blocksadmin->updateBlock($bid, $blockData->btitle, $blockData->bside, $blockData->bweight, $blockData->bvisible, $blockData->bcachetime, $blockData->bmodule, $blockData->options, $blockData->groups);
+                $this->blocksadmin->updateBlock((int)$bid[0], $blockData->btitle, $blockData->bside, $blockData->bweight, $blockData->bvisible, (string)$blockData->bcachetime, $blockData->bmodule, $blockData->options, $blockData->groups);
                 break;
 
             case 'clone_ok':
-                $this->blocksadmin->isBlockCloned($bid, $blockData->bside, $blockData->bweight, $blockData->bvisible, $blockData->bcachetime, $blockData->bmodule, $blockData->options, $blockData->groups, true);
+                $this->blocksadmin->isBlockCloned((int)$bid[0], $blockData->bside, $blockData->bweight, $blockData->bvisible, (string)$blockData->bcachetime[0], $blockData->bmodule, $blockData->options, $blockData->groups, true);
                 break;
 
             case 'list':
@@ -149,7 +149,7 @@ class BlockActionsHandler
             $blockData->oldside,
             $blockData->oldweight,
             $blockData->oldvisible,
-            $blockData->oldgroups,
+//            $blockData->oldgroups,
             $blockData->oldbcachetime,
             $blockData->oldbmodule,
             $blockData->title,

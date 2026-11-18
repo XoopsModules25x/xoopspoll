@@ -105,4 +105,4 @@ if (($pollObj instanceof Poll)) {
     redirect_header('index.php', Constants::REDIRECT_DELAY_MEDIUM, _MD_XOOPSPOLL_ERROR_INVALID_POLLID);
 }
 require $GLOBALS['xoops']->path('include/comment_view.php');
-require_once $GLOBALS['xoops']->path('footer.php');
+require_once XOOPS_ROOT_PATH . '/footer.php';

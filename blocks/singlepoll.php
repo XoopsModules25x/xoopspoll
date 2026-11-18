@@ -45,8 +45,18 @@ require_once $GLOBALS['xoops']->path( "modules"
  * @uses   xoops_getUserTimestamp() function to convert time to user time
  * @uses   formatTimestamp() takes timestamp and converts to human-readable format
  */
-function xoopspollBlockSinglepollShow(mixed $options): array
+function xoopspollBlockSinglepollShow($options): array
 {
+    if (!xoops_isActiveModule('xoopspoll')) {
+        return [];
+    }
+
+    if (!class_exists(Helper::class)) {
+        return [];
+    }
+
+    $helper = Helper::getInstance();
+
     $block = [];
 
     /** @var \XoopsConfigHandler $configHandler */
@@ -161,7 +171,7 @@ function xoopspollBlockSinglepollShow(mixed $options): array
             }
 
             $xuEndTimestamp     = xoops_getUserTimestamp($pollObj->getVar('end_time'));
-            $xuEndFormattedTime = ucfirst(date(_MEDIUMDATESTRING, (int)$xuEndTimestamp));
+            $xuEndFormattedTime = ucfirst(date(_MEDIUMDATESTRING, $xuEndTimestamp));
 
             $isVisible = true === $pollObj->isResultVisible();
 
@@ -186,7 +196,7 @@ function xoopspollBlockSinglepollShow(mixed $options): array
             $block['canVote']     = $canVote;
             $block['totalVotes']  = sprintf(_MD_XOOPSPOLL_TOTALVOTES, $totalVotes);
             $block['endTime']     = $xuEndFormattedTime; // formatted output for current user
-            $block['comments']    = $pollObj->getComments($pollVars['poll_id']);
+            $block['comments']    = $pollObj->getComments(); //$pollObj->getComments($pollVars['poll_id']);
             $block['commentMode'] = Utility::commentMode();
 
             unset($optionsObjArray, $pollOptionsArray, $pollObj, $pollVars, $timeArray);

@@ -16,13 +16,13 @@
                 <td class='even center bold' colspan='2'><{$visible_msg}></td>
             </tr>
         <{else}>
-            <{foreach item=option from=$poll.options}>
+            <{foreach item=option from=$poll.options|default:null}>
             <tr>
                 <td class='even left width40 pad5'><{$option.text}></td>
                 <td class='odd left'><{$option.image}> <{$option.percent}></td>
             </tr>
             <{/foreach}>
-            <{if $disp_votes}>
+            <{if !empty($disp_votes)}>
             <tr>
                 <td class='foot right pad10'><{$poll.totalVotes}></td>
                 <td class='foot left pad10'><{$poll.totalVoters}></td>

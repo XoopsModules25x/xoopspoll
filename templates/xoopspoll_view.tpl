@@ -1,5 +1,5 @@
 <form action='<{$action}>' method='post'>
-    <{securityToken}><{*//mb*}>
+    <{securityToken}>
     <table class='outer center width90' style='margin: auto;'>
         <thead>
         <tr>
@@ -12,7 +12,7 @@
         </tr>
         </thead>
         <tbody>
-        <{foreach item=option from=$poll.options}>
+        <{foreach item=option from=$poll.options|default:null}>
             <tr class='<{cycle values="odd,even"}>'>
                 <td class='right width40' style='padding: 0 1em;'><{$option.input}></td>
                 <td class='left'><{$option.text}></td>
@@ -20,6 +20,11 @@
         <{/foreach}>
         </tbody>
         <tfoot>
+        <{if "" != $lang_confirm|default:''}>
+            <tr>
+                <td class='center foot' colspan='2'><strong><{$lang_confirm}></strong></td>
+            </tr>
+        <{/if}>
         <{if "" != $lang_multi|default:''}>
             <tr>
                 <td class='center foot' colspan='2'><{$lang_multi}></td>
@@ -28,7 +33,10 @@
         <tr>
             <td class='center foot' colspan='2'>
                 <input type="hidden" name="poll_id" value="<{$poll.pollId}>">
-                <{if $can_vote}>
+                <{if "" != $return_url|default:''}>
+                <input type="hidden" name="url" value="<{$return_url}>">
+                <{/if}>
+                <{if !empty($can_vote)}>
                 <input type='submit' value='<{$lang_vote}>'>&nbsp;
                 <{/if}>
                 <{if ($voteCount|default:0 > 0)}>

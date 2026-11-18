@@ -86,8 +86,9 @@ class Poll extends \XoopsObject
             if (\is_array($id)) {
                 $this->assignVars($id);
             } else {
+                /** @var \XoopsPersistableObjectHandler $pollHandler */
                 $pollHandler = Helper::getInstance()->getHandler('Poll');
-                $this->assignVars($pollHandler->getAll(new \Criteria('id', $id, '=')), null, false);
+                $this->assignVars($pollHandler->getAll(new \Criteria('id', $id, '='), null, false));
                 unset($pollHandler);
             }
         }
@@ -150,7 +151,7 @@ class Poll extends \XoopsObject
     public function vote(int $optionId, string $ip, int $time): bool
     {
         if (!empty($optionId) && $this->isAllowedToVote()) {
-            $voteTime      = empty($time) ? \time() : (int)$time;
+            $voteTime      = empty($time) ? \time() : $time;
             $uid           = ($GLOBALS['xoopsUser'] instanceof \XoopsUser) ? $GLOBALS['xoopsUser']->uid() : 0;
             $logHandler    = Helper::getInstance()->getHandler('Log');
             $optionHandler = Helper::getInstance()->getHandler('Option');
@@ -209,7 +210,7 @@ class Poll extends \XoopsObject
         $criteria->add(new \Criteria('com_itemid', $this->getVar('poll_id'), '='));
         $criteria->add(new \Criteria('com_modid', $pollModule->getVar('mid'), '='));
         $commentCount = $commentHandler->getCount($criteria);
-        $commentCount = (int)$commentCount;
+        $commentCount = $commentCount;
 
         return $commentCount;
     }
@@ -217,11 +218,12 @@ class Poll extends \XoopsObject
     /**
      * display the poll form
      * @param string $rtnPage   where to send the form result
-     * @param string $rtnMethod return method  get|post
+     * @param string|null $rtnMethod return method  get|post
      * @param array $addHidden
      */
-    public function renderForm(string $rtnPage, string $rtnMethod = 'post', array $addHidden = [])
+    public function renderForm(string $rtnPage, ?string $rtnMethod = null, array $addHidden = [])
     {
+        $rtnMethod ??= 'post';
         \xoops_load('xoopsformloader');
         $myts = \MyTextSanitizer::getInstance();
 
@@ -282,7 +284,7 @@ class Poll extends \XoopsObject
         $timeTray = new \XoopsFormElementTray(\_AM_XOOPSPOLL_POLL_TIMES, '&nbsp;&nbsp;', 'time_tray');
 
         $xuCurrentTimestamp = \xoops_getUserTimestamp(\time());
-        $xuCurrentFormatted = \ucfirst(\date(_MEDIUMDATESTRING, (int)$xuCurrentTimestamp));
+        $xuCurrentFormatted = \ucfirst(\date(\_MEDIUMDATESTRING, $xuCurrentTimestamp));
         $xuStartTimestamp   = \xoops_getUserTimestamp($this->getVar('start_time'));
         $xuEndTimestamp     = \xoops_getUserTimestamp($this->getVar('end_time'));
 
@@ -305,8 +307,8 @@ class Poll extends \XoopsObject
             $extra              = \is_array($addHidden) ? $addHidden : [];
             $extra              = \array_merge($extra, ['op' => 'restart', 'poll_id' => $this->getVar('poll_id')]);
             $query              = \http_build_query($extra, '', '&');
-            $query              = \htmlentities($query, \ENT_QUOTES);
-            $xuEndFormattedTime = \ucfirst(\date(_MEDIUMDATESTRING, $xuEndTimestamp));
+            $query              = \htmlentities($query, \ENT_QUOTES | ENT_HTML5);
+            $xuEndFormattedTime = \ucfirst(\date(\_MEDIUMDATESTRING, $xuEndTimestamp));
             $endTimeText        = new \XoopsFormLabel("<div class='bold middle'>" . \_AM_XOOPSPOLL_EXPIRATION, \sprintf(\_AM_XOOPSPOLL_EXPIREDAT, $xuEndFormattedTime) . "<br><a href='{$rtnPage}?{$query}'>" . \_AM_XOOPSPOLL_RESTART . '</a></div>');
         } else {
             $endTimeText = new FormDateTimePicker("<div class='bold middle'>" . \_AM_XOOPSPOLL_EXPIRATION . '</div>', 'xu_end_time', 20, $xuEndTimestamp);
@@ -329,7 +331,7 @@ class Poll extends \XoopsObject
         $pollForm->addElement($multiLimit);
 
         $optionHandler = Helper::getInstance()->getHandler('Option');
-        $optionTray    = $optionHandler->renderOptionFormTray($this->getVar('poll_id'));
+        $optionTray    = $optionHandler->renderOptionFormTray($this->getVar('poll_id') ?? 0);
         $pollForm->addElement($optionTray);
 
         /* add preferences to the form */
@@ -356,7 +358,7 @@ class Poll extends \XoopsObject
         $pollForm->addElement(new \XoopsFormHidden('op', 'update'));
         $pollForm->addElement(new \XoopsFormHidden('poll_id', $this->getVar('poll_id')));
         $pollForm->addElement(new \XoopsFormHidden('user_id', $this->getVar('user_id')));
-        $pollForm->addElement(new \XoopsFormButtonTray('submit', _SUBMIT, null, null, true));
+        $pollForm->addElement(new \XoopsFormButtonTray('submit', \_SUBMIT, null, null, true));
 
         //        $pollForm->addElement(new \XoopsFormButtonTray( "form_submit", _SUBMIT, "submit", "", true));
         return $pollForm->display();
@@ -410,7 +412,7 @@ class Poll extends \XoopsObject
      * @param \XoopsUser|null $user the Xoops user object for this user
      * @return bool      send status
      */
-    public function notifyVoter(\XoopsUser $user = null): bool
+    public function notifyVoter(?\XoopsUser $user = null): bool
     {
         if (($user instanceof \XoopsUser) && (Constants::MAIL_POLL_TO_VOTER === $this->getVar('mail_voter'))) {
             \xoops_loadLanguage('main', 'xoopspoll');
@@ -435,7 +437,7 @@ class Poll extends \XoopsObject
             $xoopsMailer->assign('POLL_QUESTION', $this->getVar('question'));
 
             $xuEndTimestamp     = \xoops_getUserTimestamp($this->getVar('end_time'));
-            $xuEndFormattedTime = \ucfirst(\date(_MEDIUMDATESTRING, (int)$xuEndTimestamp));
+            $xuEndFormattedTime = \ucfirst(\date(\_MEDIUMDATESTRING, $xuEndTimestamp));
             // on the outside chance this expired right after the user voted.
             if ($this->hasExpired()) {
                 $xoopsMailer->assign('POLL_END', \sprintf(\_MD_XOOPSPOLL_ENDED_AT, $xuEndFormattedTime));

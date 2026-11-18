@@ -145,13 +145,13 @@ switch ($op) {
                 $checked = (Constants::DISPLAY_POLL_IN_BLOCK === $pollVars['display']) ? ' checked' : '';
 
                 $xuCurrentTimestamp   = xoops_getUserTimestamp(time());
-                $xuCurrentFormatted   = ucfirst(date(_MEDIUMDATESTRING, (int)$xuCurrentTimestamp));
+                $xuCurrentFormatted   = ucfirst(date(_MEDIUMDATESTRING, $xuCurrentTimestamp));
                 $xuStartTimestamp     = xoops_getUserTimestamp($pollVars['start_time']);
-                $xuStartFormattedTime = ucfirst(date(_MEDIUMDATESTRING, (int)$xuStartTimestamp));
+                $xuStartFormattedTime = ucfirst(date(_MEDIUMDATESTRING, $xuStartTimestamp));
                 $xuEndTimestamp       = xoops_getUserTimestamp($pollVars['end_time']);
 
                 if ($xuEndTimestamp > $xuCurrentTimestamp) {
-                    $end = ucfirst(date(_MEDIUMDATESTRING, (int)$xuEndTimestamp)); // formatted output for current user
+                    $end = ucfirst(date(_MEDIUMDATESTRING, $xuEndTimestamp)); // formatted output for current user
                 } else {
                     $end = "<span class='red'>" . _AM_XOOPSPOLL_EXPIRED . '</span><br>' . "<a href='" . $_SERVER['SCRIPT_NAME'] . "?op=restart&amp;poll_id={$id}'>" . _AM_XOOPSPOLL_RESTART . '</a>';
                 }
@@ -376,7 +376,7 @@ switch ($op) {
 
         // setup times for forms
         $xuCurrentTimestamp = xoops_getUserTimestamp(time());
-        $xuCurrentFormatted = ucfirst(date(_MEDIUMDATESTRING, (int)$xuCurrentTimestamp));
+        $xuCurrentFormatted = ucfirst(date(_MEDIUMDATESTRING, $xuCurrentTimestamp));
         $xuStartTimestamp   = $xuCurrentTimestamp;
         $xuEndTimestamp     = $xuStartTimestamp + Constants::DEFAULT_POLL_DURATION;
 

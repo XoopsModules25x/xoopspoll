@@ -27,7 +27,7 @@ trait VersionChecks
      * @param string|null $requiredVer
      * @return bool true if meets requirements, false if not
      */
-    public static function checkVerXoops(\XoopsModule $module = null, string $requiredVer = null): bool
+    public static function checkVerXoops(?\XoopsModule $module = null, ?string $requiredVer = null): bool
     {
         $moduleDirName      = \basename(\dirname(__DIR__, 2));
         $moduleDirNameUpper = \mb_strtoupper($moduleDirName);
@@ -44,7 +44,7 @@ trait VersionChecks
         }
         $success = true;
 
-        if (\version_compare($currentVer, $requiredVer, '<')) {
+        if ($module->versionCompare($currentVer, $requiredVer, '<')) {
             $success = false;
             $module->setErrors(\sprintf(\constant('CO_' . $moduleDirNameUpper . '_' . 'ERROR_BAD_XOOPS'), $requiredVer, $currentVer));
         }
@@ -59,7 +59,7 @@ trait VersionChecks
      *
      * @return bool true if meets requirements, false if not
      */
-    public static function checkVerPhp(\XoopsModule $module = null): bool
+    public static function checkVerPhp(?\XoopsModule $module = null): bool
     {
         $moduleDirName      = \basename(\dirname(__DIR__, 2));
         $moduleDirNameUpper = \mb_strtoupper($moduleDirName);
@@ -76,7 +76,7 @@ trait VersionChecks
         $reqVer = &$module->getInfo('min_php');
 
         if (false !== $reqVer && '' !== $reqVer) {
-            if (\version_compare($verNum, $reqVer, '<')) {
+            if ($module->versionCompare($verNum, $reqVer, '<')) {
                 $module->setErrors(\sprintf(\constant('CO_' . $moduleDirNameUpper . '_' . 'ERROR_BAD_PHP'), $reqVer, $verNum));
                 $success = false;
             }
@@ -94,8 +94,9 @@ trait VersionChecks
      *
      * @return null|array info about the latest module version, if newer
      */
-    public static function checkVerModule(\Xmf\Module\Helper $helper, ?string $source = 'github', ?string $default = 'master'): ?array
+    public static function checkVerModule(\Xmf\Module\Helper $helper, ?string $source = null, ?string $default = 'master'): ?array
     {
+        $source             ??= 'github';
         $moduleDirName      = \basename(\dirname(__DIR__, 2));
         $moduleDirNameUpper = \mb_strtoupper($moduleDirName);
         $update             = '';
@@ -133,7 +134,7 @@ trait VersionChecks
                     $moduleVersion = \str_replace(' ', '', \mb_strtolower($moduleVersion));
                     //                    $moduleVersion = '1.0'; //for testing only
                     //                    $moduleDirName = 'publisher'; //for testing only
-                    if (!$prerelease && \version_compare($moduleVersion, $latestVersion, '<')) {
+                    if (!$prerelease && $module->versionCompare($moduleVersion, $latestVersion, '<')) {
                         $ret   = [];
                         $ret[] = $update;
                         $ret[] = $latestVersionLink;

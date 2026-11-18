@@ -45,16 +45,15 @@ class ModuleFeedback extends XoopsObject
     /**
      * Constructor
      *
-     * @param null
      */
     public function __construct()
     {
+        // parent::__construct();
     }
 
     /**
      * @static function &getInstance
      *
-     * @param null
      */
     public static function getInstance(): void
     {
@@ -121,7 +120,7 @@ class ModuleFeedback extends XoopsObject
         $form->addElement($editor, true);
 
         $form->addElement(new XoopsFormHidden('op', 'send'));
-        $form->addElement(new XoopsFormButtonTray('', _SUBMIT, 'submit', '', false));
+        $form->addElement(new XoopsFormButtonTray('', \_SUBMIT, 'submit', '', false));
 
         return $form;
     }

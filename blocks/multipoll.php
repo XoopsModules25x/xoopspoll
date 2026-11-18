@@ -60,6 +60,14 @@ require_once $GLOBALS['xoops']->path( "modules"
  */
 function xoopspollBlockMultiShow(array $options): array
 {
+    if (!xoops_isActiveModule('xoopspoll')) {
+        return [];
+    }
+
+    if (!class_exists(Helper::class)) {
+        return [];
+    }
+
     $block           = [];
     $pollOptionArray = [];
     /** @var \XoopsModuleHandler $moduleHandler */
@@ -156,7 +164,7 @@ function xoopspollBlockMultiShow(array $options): array
             }
             unset($pollOptionObjs, $optionObjVars);
             $xuEndTimestamp     = xoops_getUserTimestamp($pollObj->getVar('end_time'));
-            $xuEndFormattedTime = ucfirst(date(_MEDIUMDATESTRING, (int)$xuEndTimestamp));
+            $xuEndFormattedTime = ucfirst(date(_MEDIUMDATESTRING, $xuEndTimestamp));
 
             $isVisible  = true === $pollObj->isResultVisible();
             $multiple   = (bool)$pollVars['multiple'];

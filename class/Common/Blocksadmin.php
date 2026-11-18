@@ -56,6 +56,7 @@ class Blocksadmin
      * @param \XoopsModule        $xoopsModule
      * @param \XoopsSecurity      $xoopsSecurity
      *
+     * @throws \Exception
      */
     public function __construct(?\XoopsMySQLDatabase $db, Helper $helper, \XoopsModule $xoopsModule, \XoopsSecurity $xoopsSecurity)
     {
@@ -101,7 +102,7 @@ class Blocksadmin
         echo "<form action='" . $_SERVER['SCRIPT_NAME'] . "' name='blockadmin' method='post'>";
         echo $this->xoopsSecurity->getTokenHTML();
         echo "<table width='100%' class='outer' cellpadding='4' cellspacing='1'>
-        <tr valign='middle'><th align='center'>" . \_AM_SYSTEM_BLOCKS_TITLE . "</th><th align='center' nowrap='nowrap'>" . \constant('CO_' . $this->moduleDirNameUpper . '_' . 'SIDE') . '<br>' . _LEFT . '-' . _CENTER . '-' . _RIGHT . "</th>
+        <tr valign='middle'><th align='center'>" . \_AM_SYSTEM_BLOCKS_TITLE . "</th><th align='center' nowrap='nowrap'>" . \constant('CO_' . $this->moduleDirNameUpper . '_' . 'SIDE') . '<br>' . \_LEFT . '-' . \_CENTER . '-' . \_RIGHT . "</th>
         <th align='center'>" . \constant('CO_' . $this->moduleDirNameUpper . '_' . 'WEIGHT') . "</th>
         <th align='center'>" . \constant('CO_' . $this->moduleDirNameUpper . '_' . 'VISIBLE') . "</th><th align='center'>" . \_AM_SYSTEM_BLOCKS_VISIBLEIN . "</th>
         <th align='center'>" . \_AM_SYSTEM_ADGS . "</th>
@@ -130,9 +131,9 @@ class Blocksadmin
             $result            = $this->db->query($sql);
             if (!$this->db->isResultSet($result)) {
 //                \trigger_error("Query Failed! SQL: $sql Error: " . $this->db->error(), \E_USER_ERROR);
-                $errorMsg = \sprintf(_DB_QUERY_ERROR, $sql) . $this->db->error();
+                $errorMsg = \sprintf(\_DB_QUERY_ERROR, $sql) . $this->db->error();
                 $logger   = \XoopsLogger::getInstance();
-                $logger->handleError(E_USER_WARNING, $errorMsg, __FILE__, __LINE__);
+                $logger->handleError(\E_USER_WARNING, $errorMsg, __FILE__, __LINE__);
                 $this->helper->redirect('admin/blocksadmin.php', 3, $errorMsg);
             }
             $modules           = [];
@@ -302,9 +303,9 @@ class Blocksadmin
         $sql     = 'SELECT module_id FROM ' . $this->db->prefix('block_module_link') . ' WHERE block_id=' . $bid;
         $result  = $this->db->query($sql);
         if (!$this->db->isResultSet($result)) {
-            $errorMsg = \sprintf(_DB_QUERY_ERROR, $sql) . $this->db->error();
+            $errorMsg = \sprintf(\_DB_QUERY_ERROR, $sql) . $this->db->error();
             $logger   = \XoopsLogger::getInstance();
-            $logger->handleError(E_USER_WARNING, $errorMsg, __FILE__, __LINE__);
+            $logger->handleError(\E_USER_WARNING, $errorMsg, __FILE__, __LINE__);
             $this->helper->redirect('admin/blocksadmin.php', 3, $errorMsg);
         }
         $modules = [];
@@ -353,7 +354,7 @@ class Blocksadmin
      * @param array|null $groups
      * @param bool $redirect
      */
-    public function isBlockCloned(int $bid, string $bside, string $bweight, string $bvisible, string $bcachetime, ?array $bmodule, ?array $options, ?array $groups, bool $redirect = true)
+    public function isBlockCloned(int $bid, string $bside, string $bweight, string $bvisible, string $bcachetime, ?array $bmodule, ?array $options, ?array $groups, bool $redirect = true): bool
     {
         \xoops_loadLanguage('admin', 'system');
         \xoops_loadLanguage('admin/blocksadmin', 'system');
@@ -361,7 +362,7 @@ class Blocksadmin
 
         $block = new \XoopsBlock($bid);
         /** @var \XoopsBlock $clone */
-        $clone = $block->xoopsClone($bid);
+        $clone = $block->xoopsClone();
 //        if (empty($bmodule)) {
 //            //            \xoops_cp_header();
 //            \xoops_error(\sprintf(_AM_NOTSELNG, _AM_VISIBLEIN));
@@ -370,7 +371,7 @@ class Blocksadmin
 //        }
 
         if (empty($bmodule)) {
-            throw new \InvalidArgumentException(\sprintf(_AM_NOTSELNG, _AM_VISIBLEIN));
+            throw new \InvalidArgumentException(\sprintf(\_AM_NOTSELNG, _AM_VISIBLEIN));
         }
         $clone->setVar('side', $bside);
         $clone->setVar('weight', $bweight);
@@ -378,7 +379,7 @@ class Blocksadmin
         //$clone->setVar('content', $_POST['bcontent']);
         $clone->setVar('title', Request::getString('btitle', '', 'POST'));
         $clone->setVar('bcachetime', $bcachetime);
-        if (\is_array($options) && (\count($options) > 0)) {
+        if ($options && \is_array($options)) {
             $options = \implode('|', $options);
             $clone->setVar('options', $options);
         }
@@ -408,9 +409,9 @@ class Blocksadmin
 
             /** @var \XoopsTplfileHandler $tplfileHandler */
             $tplfileHandler = \xoops_getHandler('tplfile');
-            $configHandler = xoops_getHandler('config');
+            $configHandler = \xoops_getHandler('config');
             /** @var \XoopsConfigHandler $xoopsConfig */
-            $xoopsConfig = $configHandler->getConfigsByCat(XOOPS_CONF);
+            $xoopsConfig = $configHandler->getConfigsByCat(\XOOPS_CONF);
             $btemplate   = $tplfileHandler->find($xoopsConfig['template_set'], 'block', (string)$bid);
             if (\count($btemplate) > 0) {
                 $tplclone = $btemplate[0]->xoopsClone();
@@ -477,9 +478,9 @@ class Blocksadmin
         $result  = $this->db->query($sql);
         if (!$this->db->isResultSet($result)) {
             //            \trigger_error("Query Failed! SQL: $sql Error: " . $this->db->error(), \E_USER_ERROR);
-            $errorMsg = \sprintf(_DB_QUERY_ERROR, $sql) . $this->db->error();
+            $errorMsg = \sprintf(\_DB_QUERY_ERROR, $sql) . $this->db->error();
             $logger   = \XoopsLogger::getInstance();
-            $logger->handleError(E_USER_WARNING, $errorMsg, __FILE__, __LINE__);
+            $logger->handleError(\E_USER_WARNING, $errorMsg, __FILE__, __LINE__);
             $this->helper->redirect('admin/blocksadmin.php', 3, $errorMsg);
         }
         $modules = [];
@@ -702,9 +703,9 @@ class Blocksadmin
             /** @var \XoopsTplfileHandler $tplfileHandler */
             $tplfileHandler = \xoops_getHandler('tplfile');
             /** @var \XoopsConfigHandler $configHandler */
-            $configHandler = xoops_getHandler('config');
+            $configHandler = \xoops_getHandler('config');
             /** @var \XoopsConfigItem $xoopsConfig */
-            $xoopsConfig = $configHandler->getConfigsByCat(XOOPS_CONF);
+            $xoopsConfig = $configHandler->getConfigsByCat(\XOOPS_CONF);
             $btemplate   = $tplfileHandler->find($xoopsConfig['template_set'], 'block', $block['bid']);
             if (\count($btemplate) > 0) {
                 $form->addElement(new \XoopsFormLabel(\_AM_SYSTEM_BLOCKS_CONTENT, '<a href="' . XOOPS_URL . '/modules/system/admin.php?fct=tplsets&amp;op=edittpl&amp;id=' . $btemplate[0]->getVar('tpl_id') . '">' . \_AM_SYSTEM_BLOCKS_EDITTPL . '</a>'));

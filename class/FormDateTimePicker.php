@@ -40,7 +40,7 @@ class FormDateTimePicker extends \XoopsFormText
      */
     public function __construct($caption, $name, $size, $value)
     {
-        $value = (!\is_numeric($value) || (0 === (int)$value)) ? \time($value) : (int)$value;
+        $value = (!\is_numeric($value) || (0 === (int)$value)) ? \time() : (int)$value;
         $size  = (int)$size;
         $size  = ($size > 0 && $size <= self::MAXSIZE) ? $size : self::MAXSIZE;
         parent::__construct($caption, $name, $size, self::MAXSIZE, $value);
@@ -60,7 +60,7 @@ class FormDateTimePicker extends \XoopsFormText
         if (\is_numeric($ele_value)) {
             //            $display_value = '';
             //            $display_value = formatTimestamp($ele_value, 'm');
-            $display_value = \ucfirst(\date(_MEDIUMDATESTRING, (int)$ele_value));
+            $display_value = \ucfirst(\date(\_MEDIUMDATESTRING, (int)$ele_value));
         } else {
             $display_value = $ele_value;
             $ele_value     = \time();

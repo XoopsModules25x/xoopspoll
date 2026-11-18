@@ -62,7 +62,7 @@ switch ($op) {
             clearSampleData();
         } else {
             xoops_cp_header();
-            xoops_confirm(['ok' => 1, 'op' => 'clear'], 'index.php', sprintf(constant('CO_' . $moduleDirNameUpper . '_' . 'CLEAR_SAMPLEDATA')), constant('CO_' . $moduleDirNameUpper . '_' . 'CONFIRM'), true);
+            xoops_confirm(['ok' => 1, 'op' => 'clear'], 'index.php', constant('CO_' . $moduleDirNameUpper . '_' . 'CLEAR_SAMPLEDATA'), constant('CO_' . $moduleDirNameUpper . '_' . 'CONFIRM'), true);
             xoops_cp_footer();
         }
         break;
@@ -100,7 +100,7 @@ function loadSampleData(): void
     loadTableFromArrayWithReplace($table, $tabledata, 'gperm_modid', $mid);
 
     //  ---  COPY test folder files ---------------
-    if (is_array($configurator->copyTestFolders) && count($configurator->copyTestFolders) > 0) {
+    if ($configurator->copyTestFolders && \is_array($configurator->copyTestFolders)) {
         //        $file =  \dirname(__DIR__) . '/testdata/images/';
         foreach (array_keys($configurator->copyTestFolders) as $i) {
             $src  = $configurator->copyTestFolders[$i][0];
@@ -162,14 +162,15 @@ function exportSchema(): void
  *
  * @param string $table  value which should be used instead of original value of $search
  *
- * @param array $data   array of rows to insert
+ * @param array  $data   array of rows to insert
  *                       Each element of the outer array represents a single table row.
  *                       Each row is an associative array in 'column' => 'value' format.
  * @param string $search name of column for which the value should be replaced
  * @param        $replace
  * @return int number of rows inserted
+ * @throws \Exception
  */
-function loadTableFromArrayWithReplace(string $table, array $data, string $search, $replace): int
+function loadTableFromArrayWithReplace(string $table, $data, string $search, $replace): int
 {
     /** @var \XoopsMySQLDatabase $db */
     $db = \XoopsDatabaseFactory::getDatabaseConnection();

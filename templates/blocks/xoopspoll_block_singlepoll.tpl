@@ -11,7 +11,7 @@
             </thead>
             <{if ($block.visible && ($block.hasExpired || (!$block.hasExpired && (!$block.canVote || $block.hasVoted))))}>
                 <{* Show results *}>
-                <{foreach item=option from=$block.options}>
+                <{foreach item=option from=$block.options|default:null}>
                 <tr class='<{cycle values="even,odd"}>'>
                     <td class='width30 left'><{$option.text}></td>
                     <td class='left' style='margin-left: 1em;'>
@@ -26,7 +26,7 @@
             <{elseif (!$block.hasExpired && $block.canVote)}>
                 <{* Show input form *}>
                 <{if $block.asList}>
-                <{foreach item=option from=$block.options}>
+                <{foreach item=option from=$block.options|default:null}>
                 <tr class='<{cycle values="even,odd"}>'>
                     <td class='center'><input type='<{$block.optionType}>' name='<{$block.optionName}>'
                                               value='<{$option.id}>'></td>
@@ -42,7 +42,7 @@
                 <tr class='<{cycle values="even,odd"}>'>
                     <td class='center' colspan='2'>
                         <select name='<{$block.optionName}>'<{if ($block.multiple)}> multiple<{/if}>>
-                            <{foreach item=option from=$block.options}>
+                            <{foreach item=option from=$block.options|default:null}>
                             <option value='<{$option.id}>'><{$option.text}></option>
                             <{/foreach}>
                         </select>

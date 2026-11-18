@@ -29,7 +29,7 @@
             </tr>
             </tfoot>
             <tbody>
-            <{foreach item=pollItem from=$pollItems }>
+            <{foreach item=pollItem from=$pollItems|default:null }>
                 <tr class='<{cycle values="odd,even"}>'>
                     <td class='center'>
                         <input type='hidden' name='poll_id[<{$pollItem.id}>]' value='<{$pollItem.id}>'>

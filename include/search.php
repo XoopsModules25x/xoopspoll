@@ -82,7 +82,7 @@ function xoopspoll_search($queryArray, mixed $andor, mixed $limit, mixed $offset
         $criteria->setLimit((int)$limit);
         $criteria->setStart((int)$offset);
 
-        if (is_array($queryArray) && !empty($queryArray)) {
+        if ($queryArray && \is_array($queryArray)) {
             $criteria->add(new \Criteria('question', "%{$queryArray[0]}%", 'LIKE'));
             $criteria->add(new \Criteria('description', "%{$queryArray[0]}%", 'LIKE'), 'OR');
             array_shift($queryArray); //get rid of first element

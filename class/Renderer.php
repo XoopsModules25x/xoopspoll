@@ -60,7 +60,7 @@ class Renderer
      * @param Poll|null $poll
      * @param Helper|null $helper
      */
-    public function __construct(Poll $poll = null, Helper $helper = null)
+    public function __construct(?Poll $poll = null, ?Helper $helper = null)
     {
         $this->helper = $helper ?? Helper::getInstance();
         // setup handlers
@@ -80,6 +80,7 @@ class Renderer
     /**
      * create html form to display poll
      * @return string html form for display
+     * @throws \SmartyException
      */
     public function renderForm(): string
     {
@@ -92,9 +93,11 @@ class Renderer
 
     /**
      * assigns form values to template for display
-     * @var    \XoopsTpl
+     * @param \XoopsTpl $tpl
+     * @param int[]     $selected option ids to show as already chosen; ids that
+     *                            are not options of this poll are ignored
      */
-    public function assignForm(\XoopsTpl $tpl): void
+    public function assignForm(\XoopsTpl $tpl, array $selected = []): void
     {
         $myts       = \MyTextSanitizer::getInstance();
         $optionObjs = $this->optionHandler->getAllByPollId($this->pollObj->getVar('poll_id'));
@@ -113,7 +116,8 @@ class Renderer
         }
         foreach ($optionObjs as $optionObj) {
             $options[] = [
-                'input' => "<input type='{$optionType}' " . "name='{$optionName}' " . "value='" . $optionObj->getVar('option_id') . "'>",
+                'input' => "<input type='{$optionType}' " . "name='{$optionName}' " . "value='" . $optionObj->getVar('option_id') . "'"
+                           . (\in_array((int)$optionObj->getVar('option_id'), $selected, true) ? ' checked' : '') . '>',
                 'text'  => $optionObj->getVar('option_text'),
             ];
         }
@@ -150,6 +154,7 @@ class Renderer
 
     /**
      * display html results to screen (echo)
+     * @throws \SmartyException
      */
     public function renderResults()
     {
@@ -168,9 +173,9 @@ class Renderer
     {
         $myts             = \MyTextSanitizer::getInstance();
         $xuEndTimestamp   = \xoops_getUserTimestamp($this->pollObj->getVar('end_time'));
-        $xuEndFormatted   = \ucfirst(\date(_MEDIUMDATESTRING, (int)$xuEndTimestamp));
+        $xuEndFormatted   = \ucfirst(\date(\_MEDIUMDATESTRING, $xuEndTimestamp));
         $xuStartTimestamp = \xoops_getUserTimestamp($this->pollObj->getVar('start_time'));
-        $xuStartFormatted = \ucfirst(\date(_MEDIUMDATESTRING, (int)$xuStartTimestamp));
+        $xuStartFormatted = \ucfirst(\date(\_MEDIUMDATESTRING, $xuStartTimestamp));
         $options          = [];
 
         //        $logHandler =  $this->helper->getHandler('Log');

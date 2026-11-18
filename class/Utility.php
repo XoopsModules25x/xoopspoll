@@ -107,12 +107,13 @@ class Utility extends Common\SysUtility
      * smartClone module.
      * @param bool|int|string $index          array index to set in cookie
      * @param string          $value          data to store in cookie
-     * @param int             $expires        time when cookie expires
+     * @param int|null        $expires        time when cookie expires
      * @param string          $cookieBaseName name of cookie (without directory prefix)
      * @return bool         success in setting cookie
      */
-    public static function setVoteCookie($index, string $value, int $expires = 0, string $cookieBaseName = 'voted_polls'): bool
+    public static function setVoteCookie($index, string $value, ?int $expires = null, string $cookieBaseName = 'voted_polls'): bool
     {
+        $expires ??= 0;
         $pollDir = \basename(\dirname(__DIR__));
         $success = false;
         // do a little sanity check on $index and $cookieBaseName
@@ -124,7 +125,7 @@ class Utility extends Common\SysUtility
             }
             $iVal = (string)$index;
             if (!empty($iVal)) {
-                $success = setcookie($cookieName[$index], $value, (int)$expires);
+                $success = setcookie($cookieName[$index], $value, $expires);
                 if ($success) {
                     $clientCookie = self::getVoteCookie();
                     if (!\array_key_exists($index, $clientCookie) || $clientCookie[$index] !== $value) {
@@ -132,7 +133,7 @@ class Utility extends Common\SysUtility
                     }
                 }
             } else {  //clear the cookie
-                $success = setcookie($cookieName, '', (int)$expires);
+                $success = setcookie($cookieName, '', $expires);
                 if ($success) {
                     $clientCookie = self::getVoteCookie();
                     if (!empty($clientCookie)) {
@@ -163,7 +164,7 @@ class Utility extends Common\SysUtility
     public static function dbTableExists(\XoopsDatabase $db, string $tablename): bool
     {
         $tablename = \addslashes($tablename);
-        $mytable   = $db->prefix((string)$tablename);
+        $mytable   = $db->prefix($tablename);
         $result    = $db->queryF("SHOW TABLES LIKE '{$mytable}'");
         $found     = $db->getRowsNum($result);
 
